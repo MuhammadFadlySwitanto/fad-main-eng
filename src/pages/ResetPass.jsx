@@ -69,6 +69,7 @@ const ResetPass = () => {
           newPassword: password,
         }
       );
+      console.log(response);
 
       if (response.status === 200) {
         toast.success("Password reset successfully!");
