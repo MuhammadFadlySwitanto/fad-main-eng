@@ -70,7 +70,7 @@ const ResetPass = () => {
         }
       );
 
-      if (response.status === 204) {
+      if (response.status === 200) {
         toast.success("Password reset successfully!");
         setTimeout(() => {
           navigate("/login"); // Redirect to login page after registration
