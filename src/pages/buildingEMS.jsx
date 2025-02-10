@@ -345,7 +345,7 @@ function BuildingEMS() {
 
   return (
     <div>
-      <div className="flex flex-row justify-center mt-8 mb-8">
+      <div className="flex flex-row justify-center mt-8 mb-8 flex-wrap xl:flex-nowrap">
         <div className="w-96 ml-4">
           <label
             htmlFor="line"
@@ -417,12 +417,13 @@ function BuildingEMS() {
             }}
           />
         </div>
-        <div className="ml-4 mt-7 truncate">
-          <Button onClick={() => getSubmit()} colorScheme="blue">
-            Submit
-          </Button>
-        </div>
-        <div className="ml-4 mt-7 ">
+        <div className="w-full flex justify-center xl:w-auto">
+          <div className="ml-4 mt-7 truncate">
+            <Button onClick={() => getSubmit()} colorScheme="blue">
+              Submit
+            </Button>
+          </div>
+          <div className="ml-4 mt-7 ">
             <Button
             isDisabled={state}
             className="m1-4"
@@ -430,6 +431,7 @@ function BuildingEMS() {
             onClick={generatePDF}>
             Export to PDF
             </Button>
+          </div>
         </div>
       </div>
       <div className="block bg-card rounded-lg shadow-lg p-1 aspect-ratio-container">

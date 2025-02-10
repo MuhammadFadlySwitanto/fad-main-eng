@@ -92,6 +92,7 @@ function HardnessPage() {
     }));
 
     setTableData(processedData);
+    console.log(processedData);
   };
 
   const fetchGraphHardness = async () => {

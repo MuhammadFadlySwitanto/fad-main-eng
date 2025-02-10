@@ -94,7 +94,8 @@ module.exports = {
       },
       boxShadow: {
         default: '0px 8px 13px -3px rgba(0, 0, 0, 0.07)',
-        buatcard: '0px 6px 8px 0px rgba(0, 0, 0, 0.25)'
+        buatcard: '0px 6px 8px 0px rgba(0, 0, 0, 0.25)',
+        2: '0px 1px 4px rgba(0, 0, 0, 0.12)',
       },
     },
   },

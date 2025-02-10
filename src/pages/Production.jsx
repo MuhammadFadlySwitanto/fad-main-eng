@@ -32,15 +32,13 @@ import { useColorMode, useColorModeValue } from "@chakra-ui/react";
 import ProductionIsi from "./ProductionIsi";
 //import { useNavigate } from "react-router-dom";
 
-//var CanvasJS = CanvasJSReact.CanvasJS;
-var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 
 function Production() {
 
   return (
-    <div className="overflow-x-hidden">
-      <Header />
+    <div>
+      <Header/>
       <br />
       <ProductionIsi />
     </div>

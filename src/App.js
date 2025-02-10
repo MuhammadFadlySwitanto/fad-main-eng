@@ -108,6 +108,7 @@ function App() {
           </div> */}
         {/* </div> */}
 
+        {/* <div className="overflow-auto"> */}
         <Routes>
           {/* <Route path="/" element={<Login />} /> */}
           {/* <Route path="/register" element={<Register />} /> */}
@@ -134,6 +135,7 @@ function App() {
           <Route path="/Chart02" element={<Chart02 />} />
           <Route path="/HistoryTabel" element={<HistoryTabel />} />
         </Routes>
+        {/* </div> */}
       </div>
     );
   } else if (levelData === 4) {

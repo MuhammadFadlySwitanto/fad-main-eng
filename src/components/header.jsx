@@ -91,12 +91,12 @@ function Header()  {
 
     
   return (
-    <header className="sticky top-0 z-50 flex w-full drop-shadow-1 px-auto dark:drop-shadow-none bg-background border-b-2 border-border">
+    <header className="sticky top-0 z-50 flex w-full drop-shadow-1 px-0 dark:drop-shadow-none bg-background border-b-2 border-border">
       <div className="flex flex-grow items-center justify-between px-4 py-4 shadow-2 md:px-6 2xl:px-11 ">
         <div className="hidden sm:block">
           <form action="https://formbold.com/s/unique_form_id" method="POST">
             <div className="relative">
-              <button class="absolute left-0 top-1/2 -translate-y-1/2">
+              <button className="absolute left-0 top-1/2 -translate-y-1/2">
                 <SearchIcon />
               </button>
               <input
@@ -108,7 +108,7 @@ function Header()  {
         </div>
         <div className="flex items-center gap-3 ">
           <div>
-            <p class="text-text mr-4">{currentDateTimeString}</p>
+            <p className="text-text mr-4 my-0">{currentDateTimeString}</p>
           </div>
           <DarkMode />  
           <div className="relative">
@@ -125,7 +125,7 @@ function Header()  {
               <KeyboardArrowDownIcon sx={{ fontSize: 25 }} alt="Dropdown" className={`w-6 h-6 flex-shrink-0 cursor-pointer transform transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`} />
             </a>
             {isDropdownOpen && (
-            <div x-show="dropdownOpen" className="absolute right-0 mt-[30px] flex w-48 flex-col rounded-sm border border-border bg-background">
+            <div  className="absolute right-0 mt-[30px] flex w-48 flex-col rounded-sm border border-border bg-background">
               <ul className="flex flex-col gap-5 border-b px-6 py-2 bg-background">
                 <li>
                 <a className="flex items-center gap-3.5 mb-2 text-sm font-medium duration-300 ease-in-out lg:text-base cursor-pointer"
@@ -150,7 +150,7 @@ function Header()  {
 
               
 
-              <button className="flex items-center gap-3.5 px-6 py-2 text-sm font-medium duration-300 ease-in-out lg:text-base cursor-pointer border-none focus:outline-none"
+              <button className="flex items-center gap-3.5 px-6 py-2 my-0 text-sm font-medium duration-300 ease-in-out lg:text-base cursor-pointer border-none focus:outline-none"
               onClick={logOut}
               >
                 <LogoutIcon alt="keluar"  />

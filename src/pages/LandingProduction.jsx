@@ -31,6 +31,7 @@ import {
 import { getDateProd } from "../features/part/prodSlice";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { useColorMode, useColorModeValue } from "@chakra-ui/react";
 import Header from "../components/header";
 
 var CanvasJS = CanvasJSReact.CanvasJS;
@@ -50,6 +51,11 @@ function LandingProduction() {
   const [isDarkMode, setIsDarkMode] = useState(
     document.documentElement.getAttribute("data-theme") === "dark"
   );
+
+  const borderColor = useColorModeValue("rgba(var(--color-border))", "rgba(var(--color-border))");
+  const hoverBorderColor = useColorModeValue("rgba(var(--color-border2))", "rgba(var(--color-border2))");
+  const tulisanColor = useColorModeValue("rgba(var(--color-text))", "rgba(var(--color-text))");
+
 
   useEffect(() => {
     const handleThemeChange = () => {
@@ -161,8 +167,18 @@ function LandingProduction() {
       <div class="flex flex-col sm:grid-cols-6 mt-4 ">
         <div class="flex justify-center">
           <div className="mr-10">
-            <h2 className="mb-1">Year Search</h2>
-            <Select>
+            <h2 className="mb-1 text-text">Year Search</h2>
+            <Select
+              sx={{
+                border: "1px solid",
+                borderColor: borderColor,
+                text: tulisanColor,
+                borderRadius: "0.395rem",
+                background: "var(--color-background)",
+                _hover: {
+                  borderColor: hoverBorderColor,
+                },
+              }}>
               <option value="2021">2021</option>
               <option value="2022">2022</option>
               <option value="2023">2023</option>
@@ -171,8 +187,17 @@ function LandingProduction() {
             </Select>
           </div>
           <div>
-            <h2 className="mb-1">Month Search</h2>
-            <Select onChange={getDate} value={dateValue}>
+            <h2 className="mb-1 text-text">Month Search</h2>
+            <Select onChange={getDate} value={dateValue}
+              sx={{
+                border: "1px solid",
+                borderColor: borderColor,
+                borderRadius: "0.395rem",
+                background: "var(--color-background)",
+                _hover: {
+                  borderColor: hoverBorderColor,
+                },
+              }}>
               <option value="0">All</option>
               <option value="1">Jan</option>
               <option value="2">Feb</option>

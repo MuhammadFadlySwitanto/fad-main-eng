@@ -870,7 +870,7 @@
                   </div>
                   <div>
                     <h1 className="text-2xl text-text font-bold font-DMSans">Boiler</h1>
-                    <span className="inline-block text-text text-xl font-semibold">{data.Total_Gas_Boiler ?? "Loading..."}</span>
+                    <span className="inline-block text-text text-xl font-semibold truncate">{data.Total_Gas_Boiler ?? "Loading..."}</span>
                     <span className="block text-gray-500">MBTU</span>
                     <span className="block text-green-700 text-xl font-semibold">{(data.Total_Gas_Boiler * dataTotalUangGas).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) }</span>
                   </div>
