@@ -196,9 +196,8 @@ function LandingProduction() {
             class="text-center text-text text-5xl font-bold cursor-pointer mb-1 ml-12">
             Overall Plant Effectiveness
           </h1>
-          <Card overflow="hidden"
-          className="my-3 mx-5 flex justify-center">
-          <CanvasJSChart options={options} />
+          <Card overflow="hidden" className="my-3 mx-5 flex justify-center">
+            <CanvasJSChart options={options} />
           </Card>
         </div>      
       </div>

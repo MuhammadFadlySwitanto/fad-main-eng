@@ -321,11 +321,28 @@ const NVMDP = () => {
                 <h4 className="text-[28px] font-bold font-poppins text-black dark:text-white">{lvmdp1 ?? "N/A"}</h4>
                 <span className="text-[16px] font-medium font-poppins text-black dark:text-white">Total</span>
                 <span className="block text-green-700 text-xl font-semibold">{(lvmdp1*dataTotalUang).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</span>
-
-                <div className="flex-row mt-2">
-                <Progress hasStripe value={lvmdp1} max={getLimit.Limit_Listrik} colorScheme="green" />
-                <span className="text-gray-500">{((lvmdp1/getLimit.Limit_Listrik )*100).toFixed(2)} %</span>
-                </div>
+              </div>
+              <Progress hasStripe value={lvmdp1} max={getLimit.Limit_Listrik} colorScheme="green" className="rounded-full" 
+              sx={{
+                '& > div': { backgroundColor: '#FEE2E2' }, // Warna kustom untuk bar
+                backgroundColor: isDarkMode ? '#282828' : '#ededed' // Warna kustom untuk track
+              }}/>
+              <div className="flex justify-end">
+                <span className="flex items-center gap-1 text-[16px] pt-1 text-gray-500 font-light">{((lvmdp1/getLimit.Limit_Listrik )*100).toFixed(2)} %
+                  <svg
+                    className="fill-gray-500"
+                    width="10"
+                    height="11"
+                    viewBox="0 0 10 11"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M4.35716 2.47737L0.908974 5.82987L5.0443e-07 4.94612L5 0.0848689L10 4.94612L9.09103 5.82987L5.64284 2.47737L5.64284 10.0849L4.35716 10.0849L4.35716 2.47737Z"
+                      fill=""
+                    />
+                  </svg>
+                </span>
               </div>
             </div>
           </div>

@@ -63,11 +63,7 @@ function Login () {
 
   return (
     <div className="min-h-screen flex justify-end">
-    <div
-    className="w-1/2 min-h-screen bg-no-repeat bg-left bg-cover"
-    style={{ backgroundImage: `url(${imageIcon})` }}
-  ></div>
-    
+    <div className="w-1/2 min-h-screen bg-no-repeat bg-left bg-cover" style={{ backgroundImage: `url(${imageIcon})` }}></div>   
       
       <div className="bg-hitam2 min-h-screen w-1/2 flex justify-center items-center">
         <div>
