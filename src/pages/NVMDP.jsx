@@ -322,9 +322,10 @@ const NVMDP = () => {
                 <span className="text-[16px] font-medium font-poppins text-black dark:text-white">Total</span>
                 <span className="block text-green-700 text-xl font-semibold">{(lvmdp1*dataTotalUang).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</span>
               </div>
-              <Progress hasStripe value={lvmdp1} max={getLimit.Limit_Listrik} colorScheme="green" className="rounded-full" 
+            </div>
+            <Progress hasStripe value={lvmdp1} max={getLimit.Limit_Listrik} colorScheme="green" className="rounded-full" 
               sx={{
-                '& > div': { backgroundColor: '#FEE2E2' }, // Warna kustom untuk bar
+                '& > div': { backgroundColor: '#fffaa6' }, // Warna kustom untuk bar
                 backgroundColor: isDarkMode ? '#282828' : '#ededed' // Warna kustom untuk track
               }}/>
               <div className="flex justify-end">
@@ -344,7 +345,6 @@ const NVMDP = () => {
                   </svg>
                 </span>
               </div>
-            </div>
           </div>
           {/* Card Chiller */}
           <div className="rounded-md mt-2 border border-border px-7.5 py-6 shadow-buatcard bg-coba cursor-pointer"

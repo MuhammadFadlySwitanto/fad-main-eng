@@ -717,7 +717,7 @@
                     </svg>
                   </div>
                   <div>
-                    <h1 className="text-2xl text-text font-bold font-DMSans">MVMDP</h1>
+                    <h1 className="text-2xl text-text font-bold font-DMSans mb-0">MVMDP</h1>
                     <span className="inline-block text-text text-xl font-semibold">{data.MVMDP ?? "Loading..."}</span>
                     <span className="block text-gray-500">KWh</span>
                     <span className="block text-green-700 text-xl font-semibold">{(data.MVMDP * dataTotalUang).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</span>
@@ -793,7 +793,7 @@
                     </svg>
                   </div>
                   <div>
-                    <h1 className="text-2xl text-text font-bold font-DMSans">PDAM</h1>
+                    <h1 className="text-2xl text-text font-bold font-DMSans mb-0">PDAM</h1>
                     <span className="inline-block text-text text-xl font-semibold">{data.PDAM ?? "Loading..."}</span>
                     <span className="block text-gray-500">kubik</span>
                     <span className="block text-green-700 text-xl font-semibold">{(data.PDAM * dataTotalUangAir).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) }</span>
@@ -869,7 +869,7 @@
                     </svg>
                   </div>
                   <div>
-                    <h1 className="text-2xl text-text font-bold font-DMSans">Boiler</h1>
+                    <h1 className="text-2xl text-text font-bold font-DMSans mb-0">Boiler</h1>
                     <span className="inline-block text-text text-xl font-semibold truncate">{data.Total_Gas_Boiler ?? "Loading..."}</span>
                     <span className="block text-gray-500">MBTU</span>
                     <span className="block text-green-700 text-xl font-semibold">{(data.Total_Gas_Boiler * dataTotalUangGas).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) }</span>
@@ -908,7 +908,7 @@
                   </svg>
                 </div>
                 <div className="md:flex-1">
-                  <h1 className="text-2xl text-text font-bold font-DMSans text-center">Output Master Box</h1>
+                  <h1 className="text-2xl text-text font-bold font-DMSans text-center mb-0">Output Master Box</h1>
                   <div className="grid grid-cols-4 text-center border-b border-gray-300 text-text py-1">
                     <div className="font-bold text-text">ID</div>
                     <div className="font-bold text-text">Line 1</div>
