@@ -137,7 +137,7 @@ function Header()  {
                 </a>
                 {/* nyalain kondisinya biar fitur admin setting cuma buat admin doang bisa nyala dan kepake */}
                 {/* {userGlobal.isAdmin === 1 && ( */}
-                  <a className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out lg:text-base cursor-pointer "
+                  <a className="flex items-center gap-3.5 mb-1 text-sm font-medium duration-300 ease-in-out lg:text-base cursor-pointer "
                    onClick={() => {
                     navigate(`/admin`);
                   }}>
