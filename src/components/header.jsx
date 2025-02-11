@@ -126,7 +126,7 @@ function Header()  {
             </a>
             {isDropdownOpen && (
             <div  className="absolute right-0 mt-[30px] flex w-48 flex-col rounded-sm border border-border bg-background">
-              <ul className="flex flex-col gap-5 border-b px-6 py-2 bg-background">
+              <ul className="flex flex-col gap-5 border-b px-6 pt-2 bg-background">
                 <li>
                 <a className="flex items-center gap-3.5 mb-2 text-sm font-medium duration-300 ease-in-out lg:text-base cursor-pointer"
                  onClick={() => {
@@ -145,17 +145,18 @@ function Header()  {
                     <span className="hover:underline">Admin</span>
                   </a>
                 {/* )} */}
+                  <button className="flex items-center gap-3.5 px-[3px] py-2 my- text-sm font-medium duration-300 ease-in-out lg:text-base cursor-pointer border-none focus:outline-none"
+                    onClick={logOut}
+                    >
+                    <LogoutIcon alt="keluar"  />
+                    <span className="hover:underline">Logout</span>
+                  </button>
                 </li> 
               </ul>
 
               
 
-              <button className="flex items-center gap-3.5 px-6 py-2 my-0 text-sm font-medium duration-300 ease-in-out lg:text-base cursor-pointer border-none focus:outline-none"
-              onClick={logOut}
-              >
-                <LogoutIcon alt="keluar"  />
-                <span className="hover:underline">Logout</span>
-              </button>
+
             </div>
               )}
           </div>

@@ -37,7 +37,7 @@ import ProductionIsi from "./ProductionIsi";
 function Production() {
 
   return (
-    <div>
+    <div className="overflow-hidden">
       <Header/>
       <br />
       <ProductionIsi />

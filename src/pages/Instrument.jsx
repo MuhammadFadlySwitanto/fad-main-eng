@@ -13,6 +13,7 @@ import Header from "../components/header";
 import Sartorius from "./Sartorius";
 import Moisture from "./Moisture";
 import Mettler from "./Mettler";
+
 function Instrument() {
   return (
     <div>

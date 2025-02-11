@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import logoIcon from '../assets/kalbe CH-logo-putih.png';
 import { useNavigate } from "react-router";
 import Axios from 'axios';
@@ -9,6 +9,7 @@ import MySvgComponent from '../assets/GambarLanding';
 function LandingPage () {
     const navigate = useNavigate();
     const [connectionError, setConnectionError] = useState(false);
+    const hasFetched = useRef(false);
 
     const checkConnection = async () => {
         try {
@@ -57,7 +58,10 @@ function LandingPage () {
     };
 
     useEffect(() => {
-        checkConnection();
+        if (!hasFetched.current) {
+            checkConnection();
+            hasFetched.current = true;
+        }
     }, []);
 
     const goLogin = () => {
