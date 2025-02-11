@@ -47,6 +47,8 @@ module.exports = {
         primaryy: '#3C50E0',
         textclr: '#E6E6Ef',
         contoh: '#292929',
+        kotakMerah: '#f76650',
+        bdrMerah: '#f97a67',
         contoh1: '#363636',
         meta: {
           1: '#DC3545',

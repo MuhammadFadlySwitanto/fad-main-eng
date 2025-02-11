@@ -243,9 +243,9 @@ const ProductionIsi = () => {
             <Td>
               {moment
                 .unix(cm1.time)
-                .add(7, "hours")
-                .tz("America/Los_Angeles")
-                .format("YYYY-MM-DD HH:mm")}
+                .tz("GMT")
+                .format("YYYY-MM-DD HH:mm")
+                }
             </Td>
             <Td className="bg-blue-400">{cm1.avability.toFixed(2)}</Td>
             <Td className="bg-red-400">{cm1.performance.toFixed(2)}</Td>

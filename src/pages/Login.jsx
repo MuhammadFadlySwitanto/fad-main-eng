@@ -4,7 +4,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router";
 import { loginData } from "../features/part/userSlice";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -13,10 +13,12 @@ function Login () {
   const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
+  const connectionStatus = location.state?.connectionStatus || '';
 
   const emailHendeler = (event) => {
     setEmail(event.target.value);
@@ -63,9 +65,9 @@ function Login () {
 
   return (
     <div className="min-h-screen flex justify-end">
-    <div className="w-1/2 min-h-screen bg-no-repeat bg-left bg-cover" style={{ backgroundImage: `url(${imageIcon})` }}></div>   
+    <div className="hidden md:block md:w-1/2 min-h-screen bg-no-repeat bg-left bg-cover" style={{ backgroundImage: `url(${imageIcon})` }}></div>   
       
-      <div className="bg-hitam2 min-h-screen w-1/2 flex justify-center items-center">
+      <div className="bg-hitam2 min-h-screen w-full md:w-1/2 flex justify-center items-center">
         <div>
           <form onSubmit={(e) => e.preventDefault()}>
             {/* Logo */}
@@ -132,7 +134,8 @@ function Login () {
 
             {/* Login Button */}
             <div className="">
-              <button className="mt-4 mb-3 w-full bg-hijau hover:bg-hijau2 text-white py-2 rounded-md transition duration-100"
+              <button className={`mt-4 mb-3 w-full text-white py-2 rounded-md transition duration-100 ${connectionStatus === 'success' ? 'bg-hijau hover:bg-hijau2' 
+              : connectionStatus === 'error' ? 'bg-kotakMerah hover:bg-bdrMerah' : 'bg-blue-500'}`}
               onClick={addLogin} type="button">
                 Login now
               </button>

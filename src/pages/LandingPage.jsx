@@ -52,10 +52,13 @@ function LandingPage () {
     }, []);
 
     const goLogin = () => {
-        navigate("/login");
+        navigate("/login", { state: { connectionStatus } });
     };
     const goRegs = () => {
         navigate("/register");
+    };
+    const goDashboard = () => {
+        navigate("/dashboard");
     };
   
     
@@ -77,30 +80,34 @@ function LandingPage () {
 			<div className="w-[254px] h-[254px] right-[354px] top-[509px] absolute bg-[#008000] shadow-[201.8px_201.8px_201.8px_rgba(0,0,0,0.25)] rounded-full blur-[201.8px] z-0"></div>
 		</div>
 		{/* Header */}
-		<header className="sticky top-2 z-50">
-			<div className="container mx-auto px-8 py-4">
-				<div className="flex justify-between items-center">
-					<div className="w-32">
-						<img className="h-12 w-auto" src={logoIcon} alt="Logo" />
-					</div>
-					<div className="hidden md:flex space-x-4 items-center">
-						<button
-							onClick={goRegs}
-							className="py-3 px-8 text-sm border-2 border-hijau hover:bg-hijau rounded text-white"
-						>
-							Sign Up
-						</button>
-						<button
-							onClick={goLogin}
-							className="py-3 px-8 text-sm bg-hijau hover:bg-hijau2 rounded text-white"
-						>
-							Login
-						</button>
-                        <div className={`w-9 h-9 rounded-full flex-shrink-0 self-center ${connectionStatus === 'success' ? 'bg-green-500' : connectionStatus === 'error' ? 'bg-red-500' : 'bg-blue-500'}`}></div>
-					</div>
-				</div>
-			</div>
-		</header>
+        <header className="sticky top-2 z-50">
+            <div className="container mx-auto pl-8 pr-12 py-4">
+                <div className="flex justify-between items-center">
+                    <div className="w-32">
+                        <img className="h-12 w-auto" src={logoIcon} alt="Logo" />
+                    </div>
+                    <div className="flex items-center"> {/* Container untuk button dan indikator */}
+                        <div className="hidden md:flex space-x-4 items-center">
+                            <button
+                                onClick={goRegs}
+                                className={`py-3 px-8 text-sm border-2 text-white ${connectionStatus === 'success' ? 'border-hijau hover:bg-hijau rounded' 
+                                        : connectionStatus === 'error' ? 'border-kotakMerah hover:bg-bdrMerah rounded' : 'border-blue-500'}`}
+                            >Sign Up
+                            </button>
+                            <button
+                                onClick={goLogin}
+                                className={`py-3 px-8 text-sm rounded text-white ${connectionStatus === 'success' ? 'bg-hijau hover:bg-hijau2' 
+                                        : connectionStatus === 'error' ? 'bg-kotakMerah hover:bg-bdrMerah' : 'bg-blue-500'}`}
+                            >Login
+                            </button>
+                        </div>
+                        {/* <div className={`w-3 h-3 ml-6 flex-shrink-0 ${connectionStatus === 'success' ? 'bg-green-500' 
+                            : connectionStatus === 'error' ? 'bg-kotakMerah' : 'bg-blue-500'}`}>
+                        </div> */}
+                    </div>
+                </div>
+            </div>
+        </header>
 		{/* Main Content */}
 		<main className="container mx-auto px-8 relative z-10 md:mt-4 xl:-mt-7">
 			<div className="flex flex-col lg:flex-row items-center justify-between min-h-[calc(100vh-120px)]">
@@ -119,7 +126,7 @@ function LandingPage () {
                             </div>
                             <div className="mt-8 flex justify-center xl:justify-center xl:ml-6">
                                 <button
-                                    onClick={goLogin}
+                                    onClick={goDashboard}
                                     className="px-12 h-11 bg-hijau hover:bg-hijau2 rounded text-white"
                                 >
                                     Get Started
@@ -129,9 +136,9 @@ function LandingPage () {
                     </div>
 				 {/* SVG Section */}
                  <div className="w-full xl:w-1/2 mt-12 xl:mt-0">
-                        <div className="max-w-2xl mx-auto">
-                            <MySvgComponent />
-                        </div>
+                    <div className="max-w-2xl mx-auto">
+                        <MySvgComponent />
+                    </div>
 				</div>
 			</div>
 		</main>

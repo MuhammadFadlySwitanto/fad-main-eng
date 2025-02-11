@@ -32,8 +32,6 @@ import { useColorMode, useColorModeValue } from "@chakra-ui/react";
 import ProductionIsi from "./ProductionIsi";
 //import { useNavigate } from "react-router-dom";
 
-
-
 function Production() {
 
   return (
