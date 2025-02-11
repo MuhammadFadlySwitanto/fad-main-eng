@@ -18,11 +18,12 @@ function LandingPage () {
             const { db1, db2, db3, db4, postgresql } = response.data;
             
             const errors = [];
-            if (db1 !== "YOMAN") errors.push("DB1");
-            if (db2 !== "YOMAN") errors.push("DB2");
-            if (db3 !== "YOMAN") errors.push("DB3");
-            if (db4 !== "YOMAN") errors.push("DB4");
-            if (postgresql !== "YOMAN") errors.push("PostgreSQL");
+            //kirim pesan ke array error ceritanya, tergantung yang mana yg error
+            if (db1 !== "YOMAN") errors.push("DB1 failed.");
+            if (db2 !== "YOMAN") errors.push("DB2 failed.");
+            if (db3 !== "YOMAN") errors.push("DB3 failed.");
+            if (db4 !== "YOMAN") errors.push("DB4 failed.");
+            if (postgresql !== "YOMAN") errors.push("PostgreSQL failed.");
 
             if (errors.length === 0) {
                 setConnectionStatus('success');
@@ -95,7 +96,7 @@ function LandingPage () {
 						>
 							Login
 						</button>
-                        <div className={`w-8 h-8 rounded-full flex-shrink-0 self-center ${connectionStatus === 'success' ? 'bg-green-500' : connectionStatus === 'error' ? 'bg-red-500' : 'bg-blue-500'}`}></div>
+                        <div className={`w-9 h-9 rounded-full flex-shrink-0 self-center ${connectionStatus === 'success' ? 'bg-green-500' : connectionStatus === 'error' ? 'bg-red-500' : 'bg-blue-500'}`}></div>
 					</div>
 				</div>
 			</div>
