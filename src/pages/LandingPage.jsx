@@ -87,7 +87,7 @@ function LandingPage () {
                         <img className="h-12 w-auto" src={logoIcon} alt="Logo" />
                     </div>
                     <div className="flex items-center"> {/* Container untuk button dan indikator */}
-                        <div className="hidden md:flex space-x-4 items-center">
+                        <div className="flex space-x-4 items-center">
                             <button
                                 onClick={goRegs}
                                 className={`py-3 px-8 text-sm border-2 text-white ${connectionStatus === 'success' ? 'border-hijau hover:bg-hijau rounded' 
