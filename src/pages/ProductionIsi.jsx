@@ -688,7 +688,7 @@ const ProductionIsi = () => {
       )}
       </div>
       <br />
-      <div className="flex justify-center items-center mt-2 gap-4">
+      <div className="flex justify-center items-center mt-2 gap-4 mb-2">
         <Button 
           onClick={handlePrevPage} 
           isDisabled={currentPage === 1} 

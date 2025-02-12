@@ -334,7 +334,7 @@ function Sidebar() {
   
   return (
     <nav
-    className={`box-border min-h-screen ${
+    className={`box-border bg-background border-border min-h-screen ${
       open ? "w-[250px]" : "w-[88px]"
     } sticky left-0 self-start overflow-hidden top-0 transition-all duration-500 ease-in-out py-[5px]`}
     style={{ paddingInline: "1em" }}

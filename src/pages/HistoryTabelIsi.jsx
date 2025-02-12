@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import {
-  Table, TableContainer, TableCaption, Thead, Tr, Th, Tbody, Td, Button, Select
-} from '@chakra-ui/react';
 import { useColorMode, useColorModeValue } from "@chakra-ui/react";
 
 const HistoryTabelIsi = () => {
@@ -40,6 +37,7 @@ const HistoryTabelIsi = () => {
         }
     
         setLoading(true);
+        // setIsTableVisible(true); // Show table container when starting to fetch
         setError(false);
         try {
           const response = await axios.get(`http://10.126.15.137:8002/part${selectedEndpoint}`);
@@ -66,22 +64,22 @@ const HistoryTabelIsi = () => {
     
         if (flattenedData.length === 0) {
           return (
-            <Tr>
-              <Td colSpan={3} className="text-center text-text">
+            <tr>
+              <td colSpan={3} className="text-center py-4">
                 No data available
-              </Td>
-            </Tr>
+              </td>
+            </tr>
           );
         }
     
         return currentData.map((row, index) => {
           const [name, value] = Object.entries(row)[0];
           return (
-            <Tr key={index}>
-              <Td className="text-center">{indexOfFirstRow + index + 1}</Td>
-              <Td className="text-center">{name.replace(/_/g, ' ')}</Td>
-              <Td className="text-center">{formatDate(value)}</Td>
-            </Tr>
+            <tr key={index} className="border-b hover:bg-blue-100 text-white dark:hover:text-black">
+              <td className="text-center text-text py-2">{indexOfFirstRow + index + 1}</td>
+              <td className="text-center text-text py-2">{name.replace('Tanggal_', '').replace(/_/g, ' ')}</td>
+              <td className="text-center text-text py-2">{formatDate(value)}</td>
+            </tr>
           );
         });
       };
@@ -110,112 +108,148 @@ const HistoryTabelIsi = () => {
       return () => observer.disconnect();
     }, []);
 
-  return (
-    <>
-    <div className="w-full max-w-6xl mx-auto">
-      <div>
-        <h1 className="text-2xl font-bold text-text">Data Viewer</h1>
-      </div>   
-      <div>
+    return (
+      <div className="w-full max-w-6xl mx-auto p-6 bg-card rounded-lg shadow">
+        <h1 className="text-2xl font-bold mb-6">Data Viewer</h1>
+        
         <div className="space-y-6 md:space-y-0 xl:flex xl:items-start xl:space-x-4">
+          {/* Controls Section */}
           <div className="flex flex-col space-y-4 xl:w-1/3">
+            {/* Endpoint Select */}
             <div className="space-y-2">
-              <Select className="text-sm font-medium text-text" value={selectedEndpoint} onChange={(e) => setSelectedEndpoint(e.target.value)}>
+              <label className="block text-sm font-medium text-text">
+                Select Endpoint
+              </label>
+              <select
+                value={selectedEndpoint}
+                onChange={(e) => setSelectedEndpoint(e.target.value)}
+                className="w-full border-border bg-cobabg hover:border-border2 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
                 <option value="">Select an option</option>
-                  {endpoints.map((endpoint) => (
-                <option key={endpoint.value} value={endpoint.value}>
-                  {endpoint.label}
-                </option>
+                {endpoints.map((endpoint) => (
+                  <option key={endpoint.value} value={endpoint.value}>
+                    {endpoint.label}
+                  </option>
                 ))}
-              </Select>   
+              </select>
             </div>
+  
+            {/* Rows per page Select */}
             <div className="space-y-2">
-              <label className="text-sm font-medium text-text">Rows</label>
-              <Select
+              <label className="block text-sm font-medium text-text">
+                Rows per page
+              </label>
+              <select
                 value={rowsPerPage}
                 onChange={(e) => setRowsPerPage(Number(e.target.value))}
-                width="80px"
-                sx={{
-                  border: "1px solid",
-                  borderColor: borderColor,
-                  borderRadius: "0.395rem",
-                  background: "var(--color-background)",
-                  _hover: {
-                    borderColor: hoverBorderColor,
-                  },
-                }}
+                className="w-full md:w-32 border-border bg-cobabg hover:border-border2 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value={10}>10</option>
-                <option value={20}>20</option>
-                <option value={40}>40</option>
-                <option value={60}>60</option>
-                <option value={100}>100</option>
-              </Select>
+                {[10, 20, 40, 60, 100].map((value) => (
+                  <option key={value} value={value}>
+                    {value}
+                  </option>
+                ))}
+              </select>
             </div>
-           </div>
-           <div className="flex flex-col space-y-2">
-              <Button onClick={fetchData} colorScheme="blue" className="w-40 mt-8">Submit</Button>
-              <Button
-                className="w-40 mt-2"
-                colorScheme="red"
-                onClick={() => setIsTableVisible(!isTableVisible)}
+  
+            {/* Buttons */}
+            <div className="flex flex-col space-y-2">
+              <button
+                onClick={fetchData}
+                disabled={loading || !selectedEndpoint}
+                className={`px-4 py-2 rounded-md text-white font-medium
+                  ${loading || !selectedEndpoint 
+                    ? 'bg-blue-300 cursor-not-allowed' 
+                    : 'bg-blue-600 hover:bg-blue-700'
+                  }`}
               >
-                {isTableVisible ? "Hide All Data" : "Show All Data"}
-              </Button>
-           </div>
-           
+                {loading ? (
+                  <div className="flex items-center justify-center">
+                    <svg className="animate-spin h-5 w-5 mr-2 text-text" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                    </svg>
+                    Loading...
+                  </div>
+                ) : (
+                  'Fetch Data'
+                )}
+              </button>
+            </div>
           </div>
-
-        
-      </div>
-      <div>
-      <div className="col-span-1 xl:flex xl:flex-none xl:w-20 flex-col ">
-          
-          
+  
+          {/* Table Section */}
+          {isTableVisible && (
+            <div className="flex-1">
+              <div className="border rounded-md overflow-hidden">
+                {loading ? (
+                  <div className="flex items-center justify-center py-12">
+                    <svg className="animate-spin h-8 w-8 text-blue-600" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                    </svg>
+                  </div>
+                ) : error ? (
+                  <div className="text-center py-12 text-red-600">
+                    Error fetching data. Please try again.
+                  </div>
+                ) : (
+                  <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-cobabg">
+                      <tr>
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          No
+                        </th>
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Data Name
+                        </th>
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Date
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-cobabg divide-y divide-gray-200">
+                      {renderData()}
+                    </tbody>
+                  </table>
+                )}
+              </div>
+  
+              {/* Pagination */}
+              {!loading && data.length > 0 && (
+                <div className="flex items-center justify-center space-x-4 mt-4">
+                  <button
+                    onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                    disabled={currentPage === 1}
+                    className={`px-4 py-2 rounded-md border
+                      ${currentPage === 1
+                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                        : 'bg-blue-600 text-text hover:bg-blue-500'
+                      }`}
+                  >
+                    Previous
+                  </button>
+                  <span className="text-sm text-text">
+                    Page {currentPage} of {Math.ceil(data.flat().length / rowsPerPage)}
+                  </span>
+                  <button
+                    onClick={() => setCurrentPage(prev => Math.min(Math.ceil(data.flat().length / rowsPerPage), prev + 1))}
+                    disabled={currentPage === Math.ceil(data.flat().length / rowsPerPage)}
+                    className={`px-4 py-2 rounded-md border
+                      ${currentPage === Math.ceil(data.flat().length / rowsPerPage)
+                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                        : 'bg-blue-600 text-text hover:bg-blue-500'
+                      }`}
+                  >
+                    Next
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
         </div>
-
       </div>
-      {isTableVisible && (
-        <div className="flex-1">
-          <TableContainer className="bg-card rounded-md">
-            <Table variant="simple">
-              <TableCaption>Motor Vibration Data</TableCaption>
-              <Thead>
-                <Tr>
-                  <Th className="w-3/12 text-center px-6"
-                  sx={{
-                    color: tulisanColor,
-                    }}>No</Th>
-                  <Th className="w-6/12 text-center px-6"
-                  sx={{
-                    color: tulisanColor,
-                    }}>Data Name</Th>
-                  <Th className="w-3/12 text-center px-6"
-                  sx={{
-                    color: tulisanColor,
-                    }}>Date</Th>
-                </Tr>
-              </Thead>
-              <Tbody>{renderData()}</Tbody>
-            </Table>
-          </TableContainer>
-
-          <div className="flex justify-center items-center mt-4 gap-4">
-            <Button onClick={handlePrevPage} isDisabled={currentPage === 1} colorScheme="blue">
-              Previous
-            </Button>
-            <span className="text-text">Page {currentPage} of {Math.ceil(data.flat().length / rowsPerPage)}</span>
-            <Button onClick={handleNextPage} isDisabled={currentPage === Math.ceil(data.flat().length / rowsPerPage)} colorScheme="blue">
-              Next
-            </Button>
-          </div>
-        </div>
-      )}
-      {loading && <p>Loading...</p>}
-      {error && <p>Error fetching data</p>}
-      </div>
-    </>
-  )
-}
+    );
+  };
 
 export default HistoryTabelIsi
