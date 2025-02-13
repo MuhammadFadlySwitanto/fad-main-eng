@@ -10,9 +10,12 @@ const HistoryTabelIsi = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [selectedEndpoint, setSelectedEndpoint] = useState('');
+    const [sortConfig, setSortConfig] = useState({
+      key: 'number',
+      direction: 'asc'
+    });
 
     const { colorMode } = useColorMode();
-    const borderColor = useColorModeValue("rgba(var(--color-border))", "rgba(var(--color-border))");
     const tulisanColor = useColorModeValue("rgba(var(--color-text))", "rgba(var(--color-text))");
     const hoverBorderColor = useColorModeValue("rgba(var(--color-border2))", "rgba(var(--color-border2))");
     const kartuColor = useColorModeValue("rgba(var(--color-card))", "rgba(var(--color-card))");
@@ -32,17 +35,18 @@ const HistoryTabelIsi = () => {
     
       const fetchData = async () => {
         if (!selectedEndpoint) {
+          //sebenarnya gak perlu bikin alert ini kan buttonnya udah di disable kalau belum milih endpoint
           alert('Please select an endpoint');
           return;
         }
     
         setLoading(true);
-        // setIsTableVisible(true); // Show table container when starting to fetch
+        setIsTableVisible(true); // Show table container when starting to fetch
         setError(false);
         try {
           const response = await axios.get(`http://10.126.15.137:8002/part${selectedEndpoint}`);
           setData(response.data);
-          setIsTableVisible(true);
+          // setIsTableVisible(true);
         } catch (error) {
           console.error('Error fetching data: ', error);
           setError(true);
@@ -55,14 +59,55 @@ const HistoryTabelIsi = () => {
         const date = new Date(dateString);
         return date.toLocaleDateString();
       };
+
+      const handleSort = (key) => {
+        let direction = 'asc';
+        if (sortConfig.key === key && sortConfig.direction === 'asc') {
+          direction = 'desc';
+        }
+        setSortConfig({ key, direction });
+        setCurrentPage(1); // Reset ke halaman pertama ketika sorting buat di pagination ini
+      };
+    
+      const getSortedData = (dataToSort) => {
+        const flattenedData = dataToSort.flat();
+        
+        return flattenedData.sort((a, b) => {
+          //ini kalau pake filter sorting date, tapi karena gak pake yaudah kita pake yg dibawah
+          if (sortConfig.key === 'date') {
+            const dateA = new Date(Object.values(a)[0]);
+            const dateB = new Date(Object.values(b)[0]);
+            return sortConfig.direction === 'asc' ? dateA - dateB : dateB - dateA;
+          }
+          // Untuk sorting berdasarkan number
+          return sortConfig.direction === 'asc' ? 1 : -1;
+        });
+      };
+    
+      const SortIcon = ({ active, direction }) => (
+        <span className="inline-block ml-1">
+          <svg 
+            className={`w-4 h-4 transform ${active ? 'text-blue-600' : 'text-gray-400'}`}
+            fill="none" 
+            stroke="currentColor" 
+            viewBox="0 0 24 24"
+          >
+            {direction === 'asc' ? (
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+            ) : (
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            )}
+          </svg>
+        </span>
+      );
     
       const renderData = () => {
-        const flattenedData = data.flat();
+        const sortedData = getSortedData(data);
         const indexOfLastRow = currentPage * rowsPerPage;
         const indexOfFirstRow = indexOfLastRow - rowsPerPage;
-        const currentData = flattenedData.slice(indexOfFirstRow, indexOfLastRow);
+        const currentData = sortedData.slice(indexOfFirstRow, indexOfLastRow);
     
-        if (flattenedData.length === 0) {
+        if (sortedData.length === 0) {
           return (
             <tr>
               <td colSpan={3} className="text-center py-4">
@@ -74,27 +119,18 @@ const HistoryTabelIsi = () => {
     
         return currentData.map((row, index) => {
           const [name, value] = Object.entries(row)[0];
+          const displayIndex = sortConfig.direction === 'asc' 
+          ? indexOfFirstRow + index + 1 
+          : sortedData.length - (indexOfFirstRow + index);
           return (
-            <tr key={index} className="border-b hover:bg-blue-100 text-white dark:hover:text-black">
-              <td className="text-center text-text py-2">{indexOfFirstRow + index + 1}</td>
+            <tr key={index} className="border-b hover:bg-blue-100 dark:hover:bg-blue-900 text-text">
+              <td className="text-center text-text py-2">{displayIndex}</td>
               <td className="text-center text-text py-2">{name.replace('Tanggal_', '').replace(/_/g, ' ')}</td>
               <td className="text-center text-text py-2">{formatDate(value)}</td>
             </tr>
           );
         });
       };
-    
-      const handleNextPage = () => {
-        if (currentPage < Math.ceil(data.flat().length / rowsPerPage)) {
-          setCurrentPage(currentPage + 1);
-        }
-      };
-    
-      const handlePrevPage = () => {
-        if (currentPage > 1) {
-          setCurrentPage(currentPage - 1);
-        }
-      };  
 
     useEffect(() => {
       const handleThemeChange = () => {
@@ -197,13 +233,22 @@ const HistoryTabelIsi = () => {
                   <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-cobabg">
                       <tr>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          No
+                        <th 
+                          className="px-6 py-3 text-center text-xs font-medium text-text uppercase tracking-wider cursor-pointer hover:bg-tombol"
+                          onClick={() => handleSort('number')}
+                        >
+                          <div className="flex items-center justify-center">
+                            No
+                            <SortIcon 
+                              active={sortConfig.key === 'number'} 
+                              direction={sortConfig.direction} 
+                            />
+                          </div>
                         </th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-6 py-3 text-center text-xs font-medium text-text uppercase tracking-wider">
                           Data Name
                         </th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th  className="px-6 py-3 text-center text-xs font-medium text-text uppercase tracking-wider">
                           Date
                         </th>
                       </tr>
@@ -223,7 +268,7 @@ const HistoryTabelIsi = () => {
                     disabled={currentPage === 1}
                     className={`px-4 py-2 rounded-md border
                       ${currentPage === 1
-                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                        ? 'bg-tombol text-gray-400 cursor-not-allowed'
                         : 'bg-blue-600 text-text hover:bg-blue-500'
                       }`}
                   >
@@ -237,7 +282,7 @@ const HistoryTabelIsi = () => {
                     disabled={currentPage === Math.ceil(data.flat().length / rowsPerPage)}
                     className={`px-4 py-2 rounded-md border
                       ${currentPage === Math.ceil(data.flat().length / rowsPerPage)
-                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                        ? 'bg-tombol text-gray-400 cursor-not-allowed'
                         : 'bg-blue-600 text-text hover:bg-blue-500'
                       }`}
                   >

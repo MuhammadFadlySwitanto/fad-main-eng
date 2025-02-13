@@ -17,6 +17,7 @@ module.exports = {
         border2: "rgba(var(--color-border2))",
         card: "rgba(var(--color-card))",
         lingkaran: "rgba(var(--color-lingkaran))",
+        tombol: "rgba(var(--color-tombol))",
 
         text: "rgba(var(--color-text))",
         text2: "rgba(var(--color-text2))",      

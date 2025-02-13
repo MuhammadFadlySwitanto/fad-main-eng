@@ -323,11 +323,7 @@ export default function BuildingRnD() {
 
   return(
     <div>
-      <Stack
-        className="flex flex-row justify-center mb-4  "
-        direction="row"
-        spacing={4}
-        align="center">
+      <div className="flex flex-row justify-center space-x-4 mt-8 mb-8 flex-wrap xl:flex-nowrap ">
         <div>
           <h2 className="mb-1">Area</h2>
           <Select placeholder="Select Area"  onChange={getArea}>
@@ -397,27 +393,25 @@ export default function BuildingRnD() {
             }}
           />
         </div>
-        <div>
-        <br />
-          <Button
-            className="m1-4"
-            colorScheme="blue"
-            onClick={() => fetchRNDSuhu()}>
-            Submit
-          </Button>
+        <div className="w-full flex justify-center xl:w-auto">
+          <div className="ml-0 xl:ml-6 mt-[21px] truncate">
+            <Button
+              colorScheme="blue"
+              onClick={() => fetchRNDSuhu()}>
+              Submit
+            </Button>
+          </div>
+          <div className="ml-2 mt-[21px] truncate">
+            <Button
+              isDisabled={state}
+              colorScheme="green"
+              onClick={generatePDF}>
+              Export to PDF
+            </Button>
+          </div>
         </div>
-        <div>
-        <br />
-          <Button
-            isDisabled={state}
-            className="m1-4"
-            colorScheme="green"
-            onClick={generatePDF}>
-            Export to PDF
-          </Button>
-        </div>
-      </Stack>
-      <div className="flex flex-row justify-center mx-12 p-1 bg-card rounded-lg aspect-ratio-container"> 
+      </div>
+      <div className="block p-1 bg-card rounded-lg shadow-lg aspect-ratio-container"> 
       {loading ? (
       <Spinner
         thickness="4px"

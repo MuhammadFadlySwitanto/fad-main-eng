@@ -135,7 +135,7 @@ function Login () {
             {/* Login Button */}
             <div className="">
               <button className={`mt-4 mb-3 w-full text-white py-2 rounded-md transition duration-100 ${connectionStatus === 'success' ? 'bg-hijau hover:bg-hijau2' 
-              : connectionStatus === 'error' ? 'bg-kotakMerah hover:bg-bdrMerah' : 'bg-blue-500 cursor-not-allowed opacity-75'}`}
+              : connectionStatus === 'error' ? 'bg-kotakMerah hover:bg-bdrMerah' : 'bg-blue-500 cursor-not-allowed opacity-60'}`}
               onClick={addLogin} type="button">
                 Login now
               </button>

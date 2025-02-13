@@ -426,7 +426,6 @@ function BuildingEMS() {
           <div className="ml-4 mt-7 ">
             <Button
             isDisabled={state}
-            className="m1-4"
             colorScheme="red"
             onClick={generatePDF}>
             Export to PDF
