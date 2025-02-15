@@ -31,6 +31,11 @@ const HistoryTabelIsi = () => {
         { value: '/GetDailyBoiler138', label: 'Get Daily Boiler 138' },
         { value: '/GetDailyInstrumentIPC', label: 'Get Daily Instrument IPC' },
         { value: '/GetDailyPower55', label: 'Get Daily Power 55' },
+        { value: '/GetDailyHVAC55', label: 'Get Daily HVAC 55' },
+        { value: '/GetDailyINV_HVAC', label: 'Get Daily INV_HVAC' },
+        { value: '/GetDailyEMSUTY', label: 'Get Daily EMS-UTY' },
+        { value: '/GetDailyDehum', label: 'Get Daily Dehum' },
+        { value: '/GetDailyWATER', label: 'Get Daily Water' },
       ];
     
       const fetchData = async () => {

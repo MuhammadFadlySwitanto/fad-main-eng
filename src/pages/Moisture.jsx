@@ -20,7 +20,6 @@ import {
 } from "@chakra-ui/react";
 import Axios from "axios";
 import { useColorMode, useColorModeValue } from "@chakra-ui/react";
-import Header from "../components/header";
 import { color } from "framer-motion";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -55,6 +54,8 @@ const Moisture = () => {
     color: tulisanColor
   };
 
+  const [sortConfig, setSortConfig] = useState({ key: 'id_setup', direction: 'asc' });
+
   const fetchTableData = async () => {
     let response = await Axios.get(
       `http://10.126.15.137:8002/part/getMoistureData`,
@@ -66,6 +67,7 @@ const Moisture = () => {
       }
     );
     setMoistureData(response.data)
+    console.log(response.data);
   };
 
   const fetchGraphMoisture = async () => {
@@ -88,13 +90,15 @@ const Moisture = () => {
       
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
     setLoading(true); // Start spinner
     setError(null);   // Clear previous errors
 
     try {
     if (!startDate || !finishDate) {
       toast.error("Please enter both start and finish dates.");
+      setLoading(false);
       return;
     }
     // fetching table data and 3 charts
@@ -113,19 +117,10 @@ const Moisture = () => {
   };
 
   const handleShowAll = () => {
-    toast.promise(
-      new Promise((resolve, reject) => {
-        setTimeout(() => {
-          resolve("Data loaded successfully!");
-          // Or call reject("Error message") to simulate an error.
-        }, 2000); // Simulating a delay, replace with your logic
-      }),
-      {
-        pending: "Loading data, please wait...",
-        success: "Data successfully loaded!",
-        error: "Failed to load data, please try again later.",
-      }
-    );
+    if (moistureData.length === 0) {
+      toast.error("Please load data by submitting the form first.");
+      return;
+    }
     setShowAllData(true);
   };
 
@@ -135,10 +130,12 @@ const Moisture = () => {
 
   const handleStartDateChange = (e) => {
     setStartDate(e.target.value);
+    console.log("ini", startDate);
   };
   
   const handleFinishDateChange = (e) => {
     setFinishDate(e.target.value);
+    console.log("ini", finishDate);
   };
 
   const handlePrevPage = () => {
@@ -149,9 +146,32 @@ const Moisture = () => {
     setCurrentPage((prev) => Math.min(prev + 1, Math.ceil(moistureData.length / rowsPerPage)));
   };
 
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
+  const handleSort = (key) => {
+    let direction = 'asc';
+    if (sortConfig.key === key && sortConfig.direction === 'asc') {
+      direction = 'desc';
+    }
+    setSortConfig({ key, direction });
+  };
+
+  const sortedData = [...moistureData].sort((a, b) => {
+    if (a[sortConfig.key] < b[sortConfig.key]) {
+      return sortConfig.direction === 'asc' ? -1 : 1;
+    }
+    if (a[sortConfig.key] > b[sortConfig.key]) {
+      return sortConfig.direction === 'asc' ? 1 : -1;
+    }
+    return 0;
+  });
+
   const renderInstrumentList = () => {  
     const startIndex = (currentPage - 1) * rowsPerPage;
-    const visibleData = moistureData.slice(startIndex, startIndex + rowsPerPage);
+    const visibleData = sortedData.slice(startIndex, startIndex + rowsPerPage);
 
     if (moistureData.length === 0) {
       return (
@@ -164,20 +184,33 @@ const Moisture = () => {
     } 
     return visibleData.map((instrument, index) => (
       <Tr key={index}>
-        <Td style={warnaText}>{instrument.id}</Td>
-        <Td style={warnaText}>{instrument.Operator}</Td>
-        <Td style={warnaText}>{instrument.Batch}</Td>
-        <Td style={warnaText}>{instrument.Date}</Td>
-        <Td style={warnaText}>{instrument.Limit_atas}</Td>
-        <Td style={warnaText}>{instrument.Limit_bawah}</Td>
-        <Td style={warnaText}>{instrument.Berat_awal}</Td>
-        <Td style={warnaText}>{instrument.Berat_kering}</Td>
-        <Td style={warnaText}>{instrument.Moisture}</Td>
-        <Td style={warnaText}>{instrument.Result}</Td>
-        <Td style={warnaText}>{instrument.Status}</Td>
+        <Td>{instrument.id_setup}</Td>
+        <Td>{instrument.start_weight}</Td>
+        <Td>{instrument.end_weight}</Td>
+        <Td>{instrument.instrument_code}</Td>
+        <Td>{formatDate(instrument.created_date)}</Td>
+        <Td>{instrument.created_time}</Td>
+        <Td>{instrument.status}</Td>
       </Tr>
     ));
   };
+
+  const SortIcon = ({ active, direction }) => (
+    <span className="inline-block ml-1">
+      <svg 
+        className={`w-4 h-4 transform ${active ? 'text-blue-600' : 'text-gray-400'}`}
+        fill="none" 
+        stroke="currentColor" 
+        viewBox="0 0 24 24"
+      >
+        {direction === 'asc' ? (
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+        ) : (
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        )}
+      </svg>
+    </span>
+  );
 
   useEffect(() => {
     const handleThemeChange = () => {
@@ -258,84 +291,83 @@ const Moisture = () => {
           )}
         </div>
         <br />
-        <div
-          className="flex flex-row justify-center"
-          direction="row"
-          align="center">
-          <div className="main flex flex-col xl:flex-row gap-x-2 xl:gap-x-6">
-            <div>
-              <label
-                htmlFor="date"
-                className="block text-sm font-medium leading-6 text-text">
-                Start Date
-              </label>
-              <Input
-                type="date"
-                placeholder="Select Start Date"
-                size="md"
-                value={startDate}
-                onChange={handleStartDateChange}
-                css={{
-                  "&::-webkit-calendar-picker-indicator": {
-                    color: isDarkMode ? "white" : "black",
-                    filter: isDarkMode ? "invert(1)" : "none",
-                  },
-                }}
-                sx={{
-                  border: "1px solid",
-                  borderColor: borderColor,
-                  borderRadius: "0.395rem",
-                  background: "var(--color-background)", // background color from Tailwind config
-        
-                  _hover: {
-                    borderColor: hoverBorderColor,
-                  },
-                }}
-              />
+        <div className="flex flex-row justify-center" direction="row" align="center">
+          <form onSubmit={handleSubmit}>
+            <div className="main flex flex-col xl:flex-row gap-x-2 xl:gap-x-6">
+              <div>
+                <label
+                  htmlFor="date"
+                  className="block text-sm font-medium leading-6 text-text">
+                  Start Date
+                </label>
+                <Input
+                  type="date"
+                  placeholder="Select Start Date"
+                  size="md"
+                  value={startDate}
+                  onChange={handleStartDateChange}
+                  css={{
+                    "&::-webkit-calendar-picker-indicator": {
+                      color: isDarkMode ? "white" : "black",
+                      filter: isDarkMode ? "invert(1)" : "none",
+                    },
+                  }}
+                  sx={{
+                    border: "1px solid",
+                    borderColor: borderColor,
+                    borderRadius: "0.395rem",
+                    background: "var(--color-background)", // background color from Tailwind config
+          
+                    _hover: {
+                      borderColor: hoverBorderColor,
+                    },
+                  }}
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="date"
+                  className="block text-sm font-medium leading-6 text-text">
+                  Finish Date
+                </label>
+                <Input
+                  type="date"
+                  placeholder="Select Finish Date"
+                  size="md"
+                  value={finishDate}
+                  onChange={handleFinishDateChange}
+                  css={{
+                    "&::-webkit-calendar-picker-indicator": {
+                      color: isDarkMode ? "white" : "black",
+                      filter: isDarkMode ? "invert(1)" : "none",
+                    },
+                  }}
+                  sx={{
+                    border: "1px solid",
+                    borderColor: borderColor,
+                    borderRadius: "0.395rem",
+                    background: "var(--color-background)", // background color from Tailwind config
+          
+                    _hover: {
+                      borderColor: hoverBorderColor,
+                    },
+                  }}
+                />
+              </div>
+              <div className="xl:mt-8 sm:mt-2">
+                <Button
+                  colorScheme="blue"
+                  type="submit"
+                >
+                  Submit
+                </Button>
+              </div>
             </div>
-            <div>
-              <label
-                htmlFor="date"
-                className="block text-sm font-medium leading-6 text-text">
-                Finish Date
-              </label>
-              <Input
-                type="date"
-                placeholder="Select Finish Date"
-                size="md"
-                value={finishDate}
-                onChange={handleFinishDateChange}
-                css={{
-                  "&::-webkit-calendar-picker-indicator": {
-                    color: isDarkMode ? "white" : "black",
-                    filter: isDarkMode ? "invert(1)" : "none",
-                  },
-                }}
-                sx={{
-                  border: "1px solid",
-                  borderColor: borderColor,
-                  borderRadius: "0.395rem",
-                  background: "var(--color-background)", // background color from Tailwind config
-        
-                  _hover: {
-                    borderColor: hoverBorderColor,
-                  },
-                }}
-              />
-            </div>
-            <div className="xl:mt-8 sm:mt-2">
-              <Button
-                colorScheme="blue"
-                onClick={() => handleSubmit()}
-              >
-                Submit
-              </Button>
-            </div>
-          </div>
+          </form>
         </div>
         <br />
         <div className="flex justify-center gap-6 mt-2">
-          <Button colorScheme="blue" onClick={() => handleShowAll()}>
+          <Button colorScheme="blue" onClick={handleShowAll}>
             Show All Data
           </Button>
           <div                   
@@ -377,39 +409,18 @@ const Moisture = () => {
             }}>Imperial to metric conversion factors</TableCaption>
             <Thead>
               <Tr>
-                  <Th sx={{
-                color: tulisanColor,
-                }}>ID</Th>
-                  <Th sx={{
-                color: tulisanColor,
-                }}>Operator</Th>
-                  <Th sx={{
-                color: tulisanColor,
-                }}>Batch</Th>
-                  <Th sx={{
-                color: tulisanColor,
-                }}>Date</Th>
-                  <Th sx={{
-                color: tulisanColor,
-                }}>Limit Atas</Th>
-                  <Th sx={{
-                color: tulisanColor,
-                }}>Limit Bawah</Th>
-                  <Th sx={{
-                color: tulisanColor,
-                }}>Berat Awal</Th>
-                  <Th sx={{
-                color: tulisanColor,
-                }}>Berat Kering</Th>
-                  <Th sx={{
-                color: tulisanColor,
-                }}>Moisture</Th>
-                  <Th sx={{
-                color: tulisanColor,
-                }}>Result</Th>
-                  <Th sx={{
-                color: tulisanColor,
-                }}>Status</Th>
+                  <Th sx={{color: tulisanColor}} onClick={() => handleSort('id_setup')} className="hover:bg-tombol">
+                    <div className="flex items-center justify-between cursor-pointer">
+                      ID
+                      <SortIcon active={sortConfig.key === 'id_setup'} direction={sortConfig.direction} />
+                    </div>
+                  </Th>
+                  <Th sx={{color: tulisanColor,}}>Berat Awal</Th>
+                  <Th sx={{color: tulisanColor,}}>Berat Akhir</Th>
+                  <Th sx={{color: tulisanColor,}}>Batch</Th>
+                  <Th sx={{color: tulisanColor,}}>Date</Th>
+                  <Th sx={{color: tulisanColor,}}>Time</Th>
+                  <Th sx={{color: tulisanColor,}}>Status</Th>
               </Tr>
             </Thead>
             <Tbody>{renderInstrumentList()}</Tbody>

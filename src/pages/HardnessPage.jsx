@@ -55,6 +55,8 @@ function HardnessPage() {
     document.documentElement.getAttribute("data-theme") === "dark"
   );
 
+  const [sortConfig, setSortConfig] = useState({ key: 'id_setup', direction: 'asc' });
+
   // const fetchData = async () => {
   //   let response = await Axios.get("http://10.126.15.137:8002/part/getHardnessData");
   //   setDataInstrument(response.data);
@@ -228,7 +230,7 @@ function HardnessPage() {
     }
   };
 
-  const handleShowAll = (e) => {
+  const handleShowAll = () => {
     if (tableData.length === 0) {
       toast.error("Please load data by submitting the form first.");
       return;
@@ -256,14 +258,32 @@ function HardnessPage() {
     setCurrentPage((prev) => Math.min(prev + 1, Math.ceil(tableData.length / rowsPerPage)));
   };
 
+  const handleSort = (key) => {
+    let direction = 'asc';
+    if (sortConfig.key === key && sortConfig.direction === 'asc') {
+      direction = 'desc';
+    }
+    setSortConfig({ key, direction });
+  };
+
+  const sortedData = [...tableData].sort((a, b) => {
+    if (a[sortConfig.key] < b[sortConfig.key]) {
+      return sortConfig.direction === 'asc' ? -1 : 1;
+    }
+    if (a[sortConfig.key] > b[sortConfig.key]) {
+      return sortConfig.direction === 'asc' ? 1 : -1;
+    }
+    return 0;
+  });
+
   const renderInstrumentList = () => {  
     const startIndex = (currentPage - 1) * rowsPerPage;
-    const visibleData = tableData.slice(startIndex, startIndex + rowsPerPage);
+    const visibleData = sortedData.slice(startIndex, startIndex + rowsPerPage);
 
     if (tableData.length === 0) {
       return (
         <Tr>
-          <Td colSpan={12} className="text-center text-text">
+          <Td colSpan={12} className="text-center text-red-500">
             No data available
           </Td>
         </Tr>
@@ -283,6 +303,23 @@ function HardnessPage() {
       </Tr>
     ));
   };
+
+  const SortIcon = ({ active, direction }) => (
+    <span className="inline-block ml-1">
+      <svg 
+        className={`w-4 h-4 transform ${active ? 'text-blue-600' : 'text-gray-400'}`}
+        fill="none" 
+        stroke="currentColor" 
+        viewBox="0 0 24 24"
+      >
+        {direction === 'asc' ? (
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+        ) : (
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        )}
+      </svg>
+    </span>
+  );
 
   useEffect(() => {
     const handleThemeChange = () => {
@@ -598,33 +635,20 @@ function HardnessPage() {
           }}>Imperial to metric conversion factors</TableCaption>
           <Thead>
             <Tr>
-                <Th sx={{
-              color: tulisanColor,
-              }}>No</Th>
-                <Th sx={{
-              color: tulisanColor,
-              }}>Hardness</Th>
-                <Th sx={{
-              color: tulisanColor,
-              }}>Diameter</Th>
-                <Th sx={{
-              color: tulisanColor,
-              }}>Thickness</Th>
-                <Th sx={{
-              color: tulisanColor,
-              }}>Status</Th>
-                <Th sx={{
-              color: tulisanColor,
-              }}>Code Instrument</Th>
-                <Th sx={{
-              color: tulisanColor,
-              }}>Date</Th>
-                <Th sx={{
-              color: tulisanColor,
-              }}>Time</Th>
-                <Th sx={{
-              color: tulisanColor,
-              }}>Time Series</Th>
+                <Th sx={{color: tulisanColor}} onClick={() => handleSort('id_setup')} className="hover:bg-tombol">
+                  <div className="flex items-center justify-between cursor-pointer">
+                    ID
+                    <SortIcon active={sortConfig.key === 'id_setup'} direction={sortConfig.direction} />
+                  </div>
+                </Th>
+                <Th sx={{color: tulisanColor}}>Hardness</Th>
+                <Th sx={{color: tulisanColor}}>Diameter</Th>
+                <Th sx={{color: tulisanColor}}>Thickness</Th>
+                <Th sx={{color: tulisanColor}}>Status</Th>
+                <Th sx={{color: tulisanColor}}>Code Instrument</Th>
+                <Th sx={{color: tulisanColor}}>Date</Th>
+                <Th sx={{color: tulisanColor}}>Time</Th>
+                <Th sx={{color: tulisanColor}}>Time Series</Th>
             </Tr>
           </Thead>
           <Tbody>{renderInstrumentList()}</Tbody>

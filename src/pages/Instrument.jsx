@@ -8,7 +8,6 @@ import {
   Box,
 } from "@chakra-ui/react";
 import HardnessPage from "./HardnessPage";
-import IPCPage from "./IPCPage";
 import Header from "../components/header";
 import Sartorius from "./Sartorius";
 import Moisture from "./Moisture";
@@ -36,7 +35,9 @@ function Instrument() {
               <IPCPage />
             </TabPanel> */}
             <TabPanel>
-              <Sartorius />
+              <Box overflow="auto">
+                <Sartorius />
+              </Box>
             </TabPanel>
             <TabPanel>
               <Moisture />

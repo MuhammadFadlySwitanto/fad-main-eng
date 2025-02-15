@@ -55,6 +55,8 @@ const Mettler = () => {
     color: tulisanColor
   };
 
+  const [sortConfig, setSortConfig] = useState({ key: 'id', direction: 'asc' });
+
   const fetchTableData = async () => {
     let response = await Axios.get(
       `http://10.126.15.137:8002/part/getMettlerData`,
@@ -89,6 +91,7 @@ const Mettler = () => {
     try {
     if (!startDate || !finishDate) {
       toast.error("Please enter both start and finish dates.");
+      setLoading(false);
       return;
     }
     // fetching table data and 3 charts
@@ -107,19 +110,10 @@ const Mettler = () => {
   };
 
   const handleShowAll = () => {
-    toast.promise(
-      new Promise((resolve, reject) => {
-        setTimeout(() => {
-          resolve("Data loaded successfully!");
-          // Or call reject("Error message") to simulate an error.
-        }, 2000); // Simulating a delay, replace with your logic
-      }),
-      {
-        pending: "Loading data, please wait...",
-        success: "Data successfully loaded!",
-        error: "Failed to load data, please try again later.",
-      }
-    );
+    if (mettlerData.length === 0) {
+      toast.error("Please load data by submitting the form first.");
+      return;
+    }
     setShowAllData(true);
   };
 
@@ -143,9 +137,27 @@ const Mettler = () => {
     setCurrentPage((prev) => Math.min(prev + 1, Math.ceil(mettlerData.length / rowsPerPage)));
   };
 
+  const handleSort = (key) => {
+    let direction = 'asc';
+    if (sortConfig.key === key && sortConfig.direction === 'asc') {
+      direction = 'desc';
+    }
+    setSortConfig({ key, direction });
+  };
+
+  const sortedData = [...mettlerData].sort((a, b) => {
+    if (a[sortConfig.key] < b[sortConfig.key]) {
+      return sortConfig.direction === 'asc' ? -1 : 1;
+    }
+    if (a[sortConfig.key] > b[sortConfig.key]) {
+      return sortConfig.direction === 'asc' ? 1 : -1;
+    }
+    return 0;
+  });
+
   const renderInstrumentList = () => {  
     const startIndex = (currentPage - 1) * rowsPerPage;
-    const visibleData = mettlerData.slice(startIndex, startIndex + rowsPerPage);
+    const visibleData = sortedData.slice(startIndex, startIndex + rowsPerPage);
 
     if (mettlerData.length === 0) {
       return (
@@ -169,10 +181,26 @@ const Mettler = () => {
         <Td style={warnaText}>{instrument.max_value}</Td>
         <Td style={warnaText}>{instrument.diff}</Td>
         <Td style={warnaText}>{instrument.sum_value}</Td>
-
       </Tr>
     ));
   };
+
+  const SortIcon = ({ active, direction }) => (
+    <span className="inline-block ml-1">
+      <svg 
+        className={`w-4 h-4 transform ${active ? 'text-blue-600' : 'text-gray-400'}`}
+        fill="none" 
+        stroke="currentColor" 
+        viewBox="0 0 24 24"
+      >
+        {direction === 'asc' ? (
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+        ) : (
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        )}
+      </svg>
+    </span>
+  );
 
   useEffect(() => {
     const handleThemeChange = () => {
@@ -372,39 +400,22 @@ const Mettler = () => {
               }}>Imperial to metric conversion factors</TableCaption>
               <Thead>
                 <Tr>
-                    <Th sx={{
-                  color: tulisanColor,
-                  }}>ID</Th>
-                    <Th sx={{
-                  color: tulisanColor,
-                  }}>Operator</Th>
-                    <Th sx={{
-                  color: tulisanColor,
-                  }}>Date</Th>
-                    <Th sx={{
-                  color: tulisanColor,
-                  }}>N</Th>
-                    <Th sx={{
-                  color: tulisanColor,
-                  }}>X</Th>
-                    <Th sx={{
-                  color: tulisanColor,
-                  }}>S Dev</Th>
-                    <Th sx={{
-                  color: tulisanColor,
-                  }}>S Rel</Th>
-                    <Th sx={{
-                  color: tulisanColor,
-                  }}>Min Value</Th>
-                    <Th sx={{
-                  color: tulisanColor,
-                  }}>Max Value</Th>
-                    <Th sx={{
-                  color: tulisanColor,
-                  }}>Diff</Th>
-                    <Th sx={{
-                  color: tulisanColor,
-                  }}>Sum Value</Th>
+                    <Th sx={{color: tulisanColor}} onClick={() => handleSort('id')} className="hover:bg-tombol">
+                      <div className="flex items-center justify-between cursor-pointer">
+                        ID
+                        <SortIcon active={sortConfig.key === 'id'} direction={sortConfig.direction} />
+                      </div>
+                    </Th>
+                    <Th sx={{color: tulisanColor,}}>Operator</Th>
+                    <Th sx={{color: tulisanColor,}}>Date</Th>
+                    <Th sx={{color: tulisanColor,}}>N</Th>
+                    <Th sx={{color: tulisanColor,}}>X</Th>
+                    <Th sx={{color: tulisanColor,}}>S Dev</Th>
+                    <Th sx={{color: tulisanColor,}}>S Rel</Th>
+                    <Th sx={{color: tulisanColor,}}>Min Value</Th>
+                    <Th sx={{color: tulisanColor,}}>Max Value</Th>
+                    <Th sx={{color: tulisanColor,}}>Diff</Th>
+                    <Th sx={{color: tulisanColor,}}>Sum Value</Th>
                 </Tr>
               </Thead>
               <Tbody>{renderInstrumentList()}</Tbody>

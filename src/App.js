@@ -94,10 +94,10 @@ function App() {
 
   if (levelData === 5) {
     return (
-      <div className="bg-background min-h-full min-h-dvh grid grid-cols-[auto_1fr] relative ">
-        <div>
+      <div className="bg-background min-h-full min-h-dvh grid grid-cols-[auto_1fr] ">
+        <>
           <Sidebar /> 
-        </div>
+        </>
         {/* <div> */}
           {/* <div>
             <Navbar />
