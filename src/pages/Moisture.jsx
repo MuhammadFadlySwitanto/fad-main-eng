@@ -54,7 +54,7 @@ const Moisture = () => {
     color: tulisanColor
   };
 
-  const [sortConfig, setSortConfig] = useState({ key: 'id_setup', direction: 'asc' });
+  const [sortConfig, setSortConfig] = useState({ key: 'created_date', direction: 'asc' });
 
   const fetchTableData = async () => {
     let response = await Axios.get(
@@ -160,13 +160,19 @@ const Moisture = () => {
   };
 
   const sortedData = [...moistureData].sort((a, b) => {
-    if (a[sortConfig.key] < b[sortConfig.key]) {
-      return sortConfig.direction === 'asc' ? -1 : 1;
+    if (sortConfig.key === 'created_date') {
+      const dateA = new Date(a[sortConfig.key]);
+      const dateB = new Date(b[sortConfig.key]);
+      return sortConfig.direction === 'asc' ? dateA - dateB : dateB - dateA;
+    } else {
+      if (a[sortConfig.key] < b[sortConfig.key]) {
+        return sortConfig.direction === 'asc' ? -1 : 1;
+      }
+      if (a[sortConfig.key] > b[sortConfig.key]) {
+        return sortConfig.direction === 'asc' ? 1 : -1;
+      }
+      return 0;
     }
-    if (a[sortConfig.key] > b[sortConfig.key]) {
-      return sortConfig.direction === 'asc' ? 1 : -1;
-    }
-    return 0;
   });
 
   const renderInstrumentList = () => {  

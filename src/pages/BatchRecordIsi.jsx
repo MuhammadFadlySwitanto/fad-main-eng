@@ -42,6 +42,7 @@ const BatchRecordIsi = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [sortConfig, setSortConfig] = useState({ key: 'time@timestamp', direction: 'asc' });
 
   const { colorMode } = useColorMode();
   const borderColor = useColorModeValue("rgba(var(--color-border))", "rgba(var(--color-border))");
@@ -186,11 +187,7 @@ const BatchRecordIsi = () => {
           }
         }
       )
-      setAllDataEBR(response.data)
-      
-      
-      
-      
+      setAllDataEBR(response.data)     
     }
     
     const handleSubmit = async (e) => {
@@ -206,19 +203,12 @@ const BatchRecordIsi = () => {
     
       try {
         setMainData([]); // Reset main data before fetching
-    
-        
-             
-              
-   
       } catch (error) {
         //console.error("Error fetching batch record:", error);
         alert("An error occurred while fetching the batch record.");
       }
     };
     
-    
-  
     // Handlers for input changes
     const lineHandler = (event) => {
       const selectedLine = event.target.value;
@@ -333,6 +323,31 @@ const BatchRecordIsi = () => {
     setCurrentPage((prev) => Math.min(prev + 1, Math.ceil(allDataEBR.length / rowsPerPage)));
   };
 
+  const handleSort = (key) => {
+    let direction = 'asc';
+    if (sortConfig.key === key && sortConfig.direction === 'asc') {
+      direction = 'desc';
+    }
+    setSortConfig({ key, direction });
+  };
+
+  const sortedData = [...allDataEBR].sort((a, b) => {
+    if (sortConfig.key === 'time@timestamp') {
+      const dateA = new Date(a[sortConfig.key]);
+      const dateB = new Date(b[sortConfig.key]);
+      return sortConfig.direction === 'asc' ? dateA - dateB : dateB - dateA;
+    } else {
+      if (a[sortConfig.key] < b[sortConfig.key]) {
+        return sortConfig.direction === 'asc' ? -1 : 1;
+      }
+      if (a[sortConfig.key] > b[sortConfig.key]) {
+        return sortConfig.direction === 'asc' ? 1 : -1;
+      }
+      return 0;
+    }
+  });
+
+
   const renderTableHeader= () => {
     // Pastikan visibleData tidak kosong
     if (allDataEBR.length > 0) {
@@ -343,8 +358,18 @@ const BatchRecordIsi = () => {
         <thead>
           <tr>
             {dataKeys.map((dataKey, index) => (
-              <th className="text-center px-4 py-2 whitespace-normal" key={index}>
-                {dataKey}
+              <th className="text-center px-4 py-2 whitespace-normal" key={index} onClick={() => handleSort(dataKey)}>
+                <div className="flex items-center justify-between cursor-pointer">
+                  {dataKey}
+                  {dataKey === 'time@timestamp' && (
+                    <SortIcon active={sortConfig.key === dataKey} direction={sortConfig.direction} />
+                  )}
+                </div>
+                <div className="flex items-center justify-between cursor-pointer">
+                  {dataKey === 'data_index' && (
+                    <SortIcon active={sortConfig.key === dataKey} direction={sortConfig.direction} />
+                  )}
+                </div>
               </th>
             ))}
           </tr>
@@ -371,7 +396,7 @@ const BatchRecordIsi = () => {
 
   const renderData = () => {
     const startIndex = (currentPage - 1) * rowsPerPage;
-    const visibleData = allDataEBR.slice(startIndex, startIndex + rowsPerPage);
+    const visibleData = sortedData.slice(startIndex, startIndex + rowsPerPage);
 
     if (allDataEBR.length == 0) {
       return (
@@ -395,12 +420,27 @@ const BatchRecordIsi = () => {
             ))}
           </Tr>
         );
-      });
-      
+      });  
     }
-
-  
   };
+
+  const SortIcon = ({ active, direction }) => (
+    <span className="inline-block ml-1">
+      <svg
+        className={`w-4 h-4 transform ${active ? 'text-blue-600' : 'text-gray-400'}`}
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        {direction === 'asc' ? (
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+        ) : (
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        )}
+      </svg>
+    </span>
+  );
+
 
   useEffect(() => {
     const handleThemeChange = () => {
@@ -637,9 +677,7 @@ const BatchRecordIsi = () => {
             <div className="flex justify-center">
             <TableContainer className="bg-card rounded-md mt-4 mx-6" sx={{ overflowX: "auto", maxWidth: "90%" }}>
                 <Table key={colorMode} variant="simple" sx={{ minWidth: "1200px"}} >
-                  <TableCaption sx={{
-                      color: tulisanColor,
-                      }}>Batch Record</TableCaption>
+                  <TableCaption sx={{color: tulisanColor}}>Batch Record</TableCaption>
                   {renderTableHeader()}
                   <Tbody>{renderData()}</Tbody>
                 </Table>

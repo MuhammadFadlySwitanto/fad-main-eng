@@ -32,6 +32,7 @@ import LandingPage from "./pages/LandingPage";
 import ResetPass from "./pages/ResetPass";
 import Dashboard from "./pages/Dashboard";
 import Chart02 from "./pages/chart02";
+import Chat from "./components/Chat";
 
 
 function App() {
@@ -94,7 +95,7 @@ function App() {
 
   if (levelData === 5) {
     return (
-      <div className="bg-background min-h-full min-h-dvh grid grid-cols-[auto_1fr] ">
+      <div className="bg-background min-h-full min-w-full grid grid-cols-[auto_1fr] ">
         <>
           <Sidebar /> 
         </>
@@ -136,6 +137,9 @@ function App() {
           <Route path="/HistoryTabel" element={<HistoryTabel />} />
         </Routes>
         {/* </div> */}
+        <>
+          <Chat />
+        </>
       </div>
     );
   } else if (levelData === 4) {
@@ -247,16 +251,19 @@ function App() {
     );
   } else {
     return (
-     <div className="bg-background min-h-screen min-h-dvh grid grid-cols-[auto_1fr]">
-      {/* <div> */} 
-        <div>
+     <div className="bg-background min-h-screen min-w-full grid grid-cols-[auto_1fr]">
+        {/* <div> */} 
+        <>
           <Sidebar /> 
-        </div>
-            <Routes>
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/mail" element={<CheckMail />} />
-              <Route path="/Stopwatch" element={<Stopwatch />} />            
-            </Routes>
+        </>
+        <Routes>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/mail" element={<CheckMail />} />
+          <Route path="/Stopwatch" element={<Stopwatch />} />            
+        </Routes>
+        <>
+          <Chat />
+        </>
       </div>
     );
   }

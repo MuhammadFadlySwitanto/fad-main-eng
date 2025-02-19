@@ -48,6 +48,12 @@ function LandingProduction() {
   const [datawidth, setWidth] = useState(window.innerWidth);
   const [dataheight, setHeight] = useState(500);
 
+  // Responsive sizing with mobile-first approach
+  const [dimensions, setDimensions] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight
+  });
+
   const [isDarkMode, setIsDarkMode] = useState(
     document.documentElement.getAttribute("data-theme") === "dark"
   );
@@ -69,17 +75,29 @@ function LandingProduction() {
     return () => observer.disconnect();
   }, []);
 
+  // useEffect(() => {
+  //   const handleResize = () => {
+  //     setWidth(document.body.clientWidth);
+  //     setHeight(document.body.clientHeight > 600 ? 500 : 800); // Adjust height based on conditions
+  //   };
+
+  //   window.addEventListener("resize", handleResize);
+
+  //   return () => {
+  //     window.removeEventListener("resize", handleResize);
+  //   };
+  // }, []);
+
   useEffect(() => {
     const handleResize = () => {
-      setWidth(document.body.clientWidth);
-      setHeight(document.body.clientHeight > 600 ? 500 : 800); // Adjust height based on conditions
+      setDimensions({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
     };
 
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   useEffect(() => {
@@ -97,6 +115,20 @@ function LandingProduction() {
       },
     });
     setOpeVar(response.data);
+  };
+
+  const getChartDimensions = () => {
+    // Mobile-first responsive dimensions
+    const width = dimensions.width;
+    if (width < 640) { // sm breakpoint
+      return { width: width - 40, height: 400 };
+    } else if (width < 768) { // md breakpoint
+      return { width: width - 80, height: 450 };
+    } else if (width < 1024) { // lg breakpoint
+      return { width: width - 120, height: 500 };
+    } else { // xl and above
+      return { width: Math.min(1360, width - 160), height: 500 };
+    }
   };
 
   var visitorsChartDrilldownHandler = (e) => {
@@ -124,8 +156,7 @@ function LandingProduction() {
     zoomEnabled: true,
     theme: isDarkMode ? "dark2" : "light2",
     backgroundColor: isDarkMode ? "#171717" : "#ffffff",
-    width: datawidth > 800 ? 1360 : datawidth - 450,
-    height: dataheight,
+    ...getChartDimensions(),
     title: {},
     subtitles: [
       {
@@ -133,10 +164,8 @@ function LandingProduction() {
 
         text: `${opeCalculation.toFixed(2)}% OEE`,
         verticalAlign: "center",
-        
         fontColor: isDarkMode ? "white" : "black",
-
-        fontSize: 36,
+        fontSize: dimensions.width < 640 ? 24 : 36,
         fontStyle: "oblique",
         dockInsidePlotArea: true,
       },
@@ -145,11 +174,10 @@ function LandingProduction() {
     data: [
       {
         click: visitorsChartDrilldownHandler,
-
         type: "doughnut",
         showInLegend: true,
         indexLabel: "{name}: {y}",
-        indexLabelFontSize: 20, // Adjust this value as needed
+        indexLabelFontSize: dimensions.width < 640 ? 14 : 20,
         yValueFormatString: "#,###'%'",
 
         dataPoints: [
@@ -162,59 +190,60 @@ function LandingProduction() {
   };
 
   return (
-    <div>
+    <div className="min-h-screen bg-background">
     <Header />
-      <div class="flex flex-col sm:grid-cols-6 mt-4 ">
-        <div class="flex justify-center">
-          <div className="mr-10">
-            <h2 className="mb-1 text-text">Year Search</h2>
-            <Select
-              sx={{
-                border: "1px solid",
-                borderColor: borderColor,
-                text: tulisanColor,
-                borderRadius: "0.395rem",
-                background: "var(--color-background)",
-                _hover: {
-                  borderColor: hoverBorderColor,
-                },
-              }}>
-              <option value="2021">2021</option>
-              <option value="2022">2022</option>
-              <option value="2023">2023</option>
-              <option value="2024">2024</option>
-              <option value="2025">2025</option>
-            </Select>
-          </div>
-          <div>
-            <h2 className="mb-1 text-text">Month Search</h2>
-            <Select onChange={getDate} value={dateValue}
-              sx={{
-                border: "1px solid",
-                borderColor: borderColor,
-                borderRadius: "0.395rem",
-                background: "var(--color-background)",
-                _hover: {
-                  borderColor: hoverBorderColor,
-                },
-              }}>
-              <option value="0">All</option>
-              <option value="1">Jan</option>
-              <option value="2">Feb</option>
-              <option value="3">Mar</option>
-              <option value="4">Apr</option>
-              <option value="5">Mei</option>
-              <option value="6">Jun</option>
-              <option value="7">Jul</option>
-              <option value="8">Agu</option>
-              <option value="9">Sep</option>
-              <option value="10">Okt</option>
-              <option value="11">Nov</option>
-              <option value="12">Des</option>
-            </Select>
+
+        <div className="container mx-auto px-4 py-6">
+          <div className="flex flex-col sm:flex-row justify-center gap-6 mb-8">
+            <div>
+              <h2 className="mb-1 text-text">Year Search</h2>
+              <Select
+                sx={{
+                  border: "1px solid",
+                  borderColor: borderColor,
+                  text: tulisanColor,
+                  borderRadius: "0.395rem",
+                  background: "var(--color-background)",
+                  _hover: {
+                    borderColor: hoverBorderColor,
+                  },
+                }}>
+                <option value="2021">2021</option>
+                <option value="2022">2022</option>
+                <option value="2023">2023</option>
+                <option value="2024">2024</option>
+                <option value="2025">2025</option>
+              </Select>
+            </div>
+            <div>
+              <h2 className="mb-1 text-text">Month Search</h2>
+              <Select onChange={getDate} value={dateValue}
+                sx={{
+                  border: "1px solid",
+                  borderColor: borderColor,
+                  borderRadius: "0.395rem",
+                  background: "var(--color-background)",
+                  _hover: {
+                    borderColor: hoverBorderColor,
+                  },
+                }}>
+                <option value="0">All</option>
+                <option value="1">Jan</option>
+                <option value="2">Feb</option>
+                <option value="3">Mar</option>
+                <option value="4">Apr</option>
+                <option value="5">Mei</option>
+                <option value="6">Jun</option>
+                <option value="7">Jul</option>
+                <option value="8">Agu</option>
+                <option value="9">Sep</option>
+                <option value="10">Okt</option>
+                <option value="11">Nov</option>
+                <option value="12">Des</option>
+              </Select>
+            </div>
           </div>
         </div>
-        <br />
         <div className="flex flex-col ">
           <h1
             onClick={() => headerHendeler()}
@@ -225,7 +254,7 @@ function LandingProduction() {
             <CanvasJSChart options={options} />
           </Card>
         </div>      
-      </div>
+
     </div>
   );
 }

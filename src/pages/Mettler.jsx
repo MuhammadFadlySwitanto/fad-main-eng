@@ -55,7 +55,7 @@ const Mettler = () => {
     color: tulisanColor
   };
 
-  const [sortConfig, setSortConfig] = useState({ key: 'id', direction: 'asc' });
+  const [sortConfig, setSortConfig] = useState({ key: 'date', direction: 'asc' });
 
   const fetchTableData = async () => {
     let response = await Axios.get(
@@ -146,14 +146,21 @@ const Mettler = () => {
   };
 
   const sortedData = [...mettlerData].sort((a, b) => {
-    if (a[sortConfig.key] < b[sortConfig.key]) {
-      return sortConfig.direction === 'asc' ? -1 : 1;
+    if (sortConfig.key === 'date') {
+      const dateA = new Date(a[sortConfig.key]);
+      const dateB = new Date(b[sortConfig.key]);
+      return sortConfig.direction === 'asc' ? dateA - dateB : dateB - dateA;
+    } else {
+      if (a[sortConfig.key] < b[sortConfig.key]) {
+        return sortConfig.direction === 'asc' ? -1 : 1;
+      }
+      if (a[sortConfig.key] > b[sortConfig.key]) {
+        return sortConfig.direction === 'asc' ? 1 : -1;
+      }
+      return 0;
     }
-    if (a[sortConfig.key] > b[sortConfig.key]) {
-      return sortConfig.direction === 'asc' ? 1 : -1;
-    }
-    return 0;
   });
+
 
   const renderInstrumentList = () => {  
     const startIndex = (currentPage - 1) * rowsPerPage;
@@ -407,7 +414,12 @@ const Mettler = () => {
                       </div>
                     </Th>
                     <Th sx={{color: tulisanColor,}}>Operator</Th>
-                    <Th sx={{color: tulisanColor,}}>Date</Th>
+                    <Th sx={{color: tulisanColor}} onClick={() => handleSort('date')} className="hover:bg-tombol">
+                      <div className="flex items-center justify-between cursor-pointer">
+                        Date
+                        <SortIcon active={sortConfig.key === 'date'} direction={sortConfig.direction} />
+                      </div>
+                    </Th>
                     <Th sx={{color: tulisanColor,}}>N</Th>
                     <Th sx={{color: tulisanColor,}}>X</Th>
                     <Th sx={{color: tulisanColor,}}>S Dev</Th>

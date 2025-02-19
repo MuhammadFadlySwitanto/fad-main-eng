@@ -14,7 +14,6 @@
     "@material-ui/utils": "^4.11.3",
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.13.2",
-    "@radix-ui/react-select": "^2.1.6",
     "@reduxjs/toolkit": "^1.9.3",
     "@shadcn/ui": "^0.0.4",
     "@testing-library/jest-dom": "^5.16.5",

@@ -55,7 +55,7 @@ function HardnessPage() {
     document.documentElement.getAttribute("data-theme") === "dark"
   );
 
-  const [sortConfig, setSortConfig] = useState({ key: 'id_setup', direction: 'asc' });
+  const [sortConfig, setSortConfig] = useState({ key: 'created_date', direction: 'asc' });
 
   // const fetchData = async () => {
   //   let response = await Axios.get("http://10.126.15.137:8002/part/getHardnessData");
@@ -267,13 +267,19 @@ function HardnessPage() {
   };
 
   const sortedData = [...tableData].sort((a, b) => {
-    if (a[sortConfig.key] < b[sortConfig.key]) {
-      return sortConfig.direction === 'asc' ? -1 : 1;
+    if (sortConfig.key === 'created_date') {
+      const dateA = new Date(a[sortConfig.key]);
+      const dateB = new Date(b[sortConfig.key]);
+      return sortConfig.direction === 'asc' ? dateA - dateB : dateB - dateA;
+    } else {
+      if (a[sortConfig.key] < b[sortConfig.key]) {
+        return sortConfig.direction === 'asc' ? -1 : 1;
+      }
+      if (a[sortConfig.key] > b[sortConfig.key]) {
+        return sortConfig.direction === 'asc' ? 1 : -1;
+      }
+      return 0;
     }
-    if (a[sortConfig.key] > b[sortConfig.key]) {
-      return sortConfig.direction === 'asc' ? 1 : -1;
-    }
-    return 0;
   });
 
   const renderInstrumentList = () => {  
@@ -646,7 +652,12 @@ function HardnessPage() {
                 <Th sx={{color: tulisanColor}}>Thickness</Th>
                 <Th sx={{color: tulisanColor}}>Status</Th>
                 <Th sx={{color: tulisanColor}}>Code Instrument</Th>
-                <Th sx={{color: tulisanColor}}>Date</Th>
+                <Th sx={{color: tulisanColor}} onClick={() => handleSort('created_date')} className="hover:bg-tombol">
+                  <div className="flex items-center justify-between cursor-pointer">
+                    Date
+                    <SortIcon active={sortConfig.key === 'created_date'} direction={sortConfig.direction} />
+                  </div>
+                </Th>
                 <Th sx={{color: tulisanColor}}>Time</Th>
                 <Th sx={{color: tulisanColor}}>Time Series</Th>
             </Tr>
