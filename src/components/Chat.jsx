@@ -50,8 +50,7 @@ const Chat = () => {
       // Add loading state: const [isLoading, setIsLoading] = useState(false);
       setIsLoading(true);
       
-      const response = await fetch('http://10.126.15.125:11434/api/generate', {
-        method: "POST",
+      const response = await axios.post('http://10.126.15.125:11434/api/generate', {
         headers: { "Content-Type": "application/json" },
         model: 'deepseek-r1:1.5b',
         prompt: userMessage,
