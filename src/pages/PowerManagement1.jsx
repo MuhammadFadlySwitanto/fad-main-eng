@@ -1796,10 +1796,10 @@ export default function PowerManagement() {
           </Button>
         </div>
       </Stack>
-      <div className="flex justify-center font-bold text-text text-4xl mt-10">
+      <div className="flex justify-center font-bold text-text text-4xl mt-8">
         Voltage Balance
       </div>
-      <div className="flex flex-row mx-50 px-30 mt-2">
+      <div className="flex flex-row mx-50 px-30 mt-3">
         <CanvasJSChart className="" options={options6} />
         <CanvasJSChart className="" options={options7} />
       </div>

@@ -135,7 +135,7 @@ const Chat = () => {
         </svg>
       </button>
       {isOpen && (
-      <div className="fixed bottom-[calc(4rem+1.5rem)] right-0 mr-4 bg-coba p-6 rounded-lg border border-border2 w-[440px] h-[592px] flex flex-col shadow-xl">
+      <div className="fixed bottom-[calc(4rem+1.5rem)] right-0 mr-4 bg-coba p-6 rounded-lg border border-border2 w-[440px] h-[592px] flex flex-col shadow-xl z-30">
         {/* Header */}
         <div className="flex flex-col space-y-1.5 pb-6">
           <h2 className="font-semibold flex flex-row text-text text-lg tracking-tight">
