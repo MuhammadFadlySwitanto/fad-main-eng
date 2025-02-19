@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+import axios from "axios";
 
 const Chat = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -6,6 +7,8 @@ const Chat = () => {
   const [messages, setMessages] = useState([]);
   const messagesEndRef = useRef(null);
   const textareaRef = useRef(null);
+
+  const [isLoading, setIsLoading] = useState(true);
   
   const scrollToBottom = () => {
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -34,33 +37,94 @@ const Chat = () => {
     }
   };
 
-  const handleSubmit = (e) => {
-      e.preventDefault();
-      if (myChat.trim() === "") return;
-
+  const sendMessage = async (userMessage) => {
+    try {
       // Add user message
       setMessages(prev => [...prev, {
-          id: Date.now(),
-          text: myChat,
-          sender: 'user'
+        id: Date.now(),
+        text: userMessage,
+        sender: 'user'
       }]);
-
-      // Simulate AI response
-      setTimeout(() => {
-          setMessages(prev => [...prev, {
-              id: Date.now() + 1,
-              text: "Ini ceritanya simulasi AI-nya ngomong gengs!",
-              sender: 'ai'
-          }]);
-      }, 500);
-
-      setMyChat("");
       
-      // Reset textarea height
-      if (textareaRef.current) {
-          textareaRef.current.style.height = 'auto';
+      // Show loading state (optional)
+      // Add loading state: const [isLoading, setIsLoading] = useState(false);
+      setIsLoading(true);
+      
+      const response = await axios.post('http://10.126.15.125:11434/api/generate', {
+        headers: { "Content-Type": "application/json" },
+        model: 'deepseek-r1:1.5b',
+        prompt: userMessage,
+        stream: false,
+        messages: [...messages, userMessage],
+      });
+      
+      // console.log(response);
+      
+
+
+      
+      
+      // Process the response
+      let aiResponse = response.data.response || "";
+      
+      // Clean up the response
+      aiResponse = aiResponse 
+      .replace(/<think>[\s\S]*?<\/think>/, '') // Hapus blok <think> ... </think>
+      .replace(/\\boxed{(.*?)}/g, '$1') // Hapus \boxed{} tanpa mengganti dengan bold
+      .replace(/\*\*(.*?)\*\*/g, '$1') // Hapus **bold** yang sudah ada
+      .replace(/\\\(/g, '(').replace(/\\\)/g, ')') // Hapus escape karakter di dalam kurung LaTeX
+      .replace(/\\\[/g, '').replace(/\\\]/g, '') // Hapus escape karakter untuk blok LaTeX
+      .replace(/\n\s*-\s*/g, '\n- ') // Pastikan list tetap rapi
+      .replace(/\n{2,}/g, '\n\n') // Batasi newline berlebih menjadi 1 baris kosong
+      .trim(); // Hapus spasi kosong di awal/akhir
+
+      
+      // Parse JSON if the response contains JSON data
+      try {
+        // Only attempt to parse if the response looks like JSON
+        if (aiResponse.startsWith('{') && aiResponse.endsWith('}')) {
+          const jsonData = JSON.parse(aiResponse);
+          // Handle the parsed JSON data as needed
+          aiResponse = jsonData.message || JSON.stringify(jsonData, null, 2);
+        }
+      } catch (jsonError) {
+        // If parsing fails, just use the original response text
+        console.log("Response wasn't valid JSON, using as plain text");
       }
-      console.log(myChat)
+      
+      // Add AI response
+      setMessages(prev => [...prev, {
+        id: Date.now() + 1,
+        text: aiResponse,
+        sender: 'ai'
+      }]);
+    } catch (error) {
+      console.error('Error communicating with AI service:', error);
+      // Handle error - add an error message to chat
+      setMessages(prev => [...prev, {
+        id: Date.now() + 1,
+        text: "Sorry, I encountered an error connecting to the AI service. Please try again.",
+        sender: 'ai'
+      }]);
+    } finally {
+      setIsLoading && setIsLoading(false);
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (myChat.trim() === "") return;
+  
+    // Send message to AI
+    sendMessage(myChat);
+    
+    // Clear input
+    setMyChat("");
+    
+    // Reset textarea height
+    if (textareaRef.current) {
+        textareaRef.current.style.height = 'auto';
+    }
   };
 
   return (
@@ -137,66 +201,6 @@ const Chat = () => {
           <div ref={messagesEndRef} />
           </div>
         </div>
-
-        {/* <div className="pr-4 h-[474px] overflow-y-auto" style={{ minWidth: "100%", display: "table" }}>
-          <div className="flex flex-col gap-3 my-4 text-gray-600 text-sm flex-1">
-          {mybutton ? (
-            Object.entries(objChat).map(([key, value]) => (
-              <div key={key} className="flex gap-3 my-4">
-                <span className="relative flex shrink-0 overflow-hidden rounded-full w-8 h-8">
-                  <div className="rounded-full bg-gray-100 border p-1">
-                    <svg stroke="none" fill="black" strokeWidth="0" viewBox="0 0 16 16" height="20" width="20" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z">
-                      </path>
-                    </svg>
-                  </div>
-                </span>
-                <p className="leading-relaxed">
-                  <span className="block font-bold text-gray-700">You </span>{value}
-                </p>
-              </div>
-            ))
-            ) : (
-            <>
-              <div class="flex gap-3 my-4 text-gray-600 text-sm flex-1"><span
-                  class="relative flex shrink-0 overflow-hidden rounded-full w-8 h-8">
-                  <div class="rounded-full bg-gray-100 border p-1"><svg stroke="none" fill="black" stroke-width="1.5"
-                      viewBox="0 0 24 24" aria-hidden="true" height="20" width="20" xmlns="http://www.w3.org/2000/svg">
-                      <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z">
-                      </path>
-                    </svg></div>
-                </span>
-                <p class="leading-relaxed"><span class="block font-bold text-gray-700">AI </span>Hi, how can I help you today?
-                </p>
-              </div>
-              <div className="flex gap-3 my-4 text-gray-600 text-sm flex-1">
-                <span className="relative flex shrink-0 overflow-hidden rounded-full w-8 h-8">
-                  <div className="rounded-full bg-gray-100 border p-1">
-                    <svg stroke="none" fill="black" strokeWidth="0" viewBox="0 0 16 16" height="20" width="20" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z">
-                      </path>
-                    </svg>
-                  </div>
-                </span>
-                <p className="leading-relaxed"><span className="block font-bold text-gray-700">You </span>fewafef</p>
-              </div>
-              <div className="flex gap-3 my-4 text-gray-600 text-sm flex-1">
-                <span className="relative flex shrink-0 overflow-hidden rounded-full w-8 h-8">
-                  <div className="rounded-full bg-gray-100 border p-1">
-                    <svg stroke="none" fill="black" strokeWidth="1.5" viewBox="0 0 24 24" aria-hidden="true" height="20" width="20" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round"
-                        d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z">
-                      </path>
-                    </svg>
-                  </div>
-                </span>
-                <p className="leading-relaxed"><span className="block font-bold text-gray-700">AI </span>Sorry, I couldn't find any information in the documentation about that. Expect answer to be less accurateI could not find the answer to this in the verified sources.</p>
-              </div>
-            </>
-          )}
-        </div>
-        </div> */}
         {/* Input Form */}
         <form onSubmit={handleSubmit} className="flex items-end space-x-2">
           <textarea 
@@ -212,7 +216,7 @@ const Chat = () => {
                   wordWrap: 'break-word'
               }}
             />
-            <button type="submit"
+            <button type="submit" 
               className="inline-flex items-center justify-center rounded-md text-sm font-medium text-text bg-lingkaran disabled:pointer-events-none disabled:opacity-50 hover:bg-[#cbcbcb] dark:hover:bg-[#111827E6] h-10 px-4 py-2"
             >
               Send
