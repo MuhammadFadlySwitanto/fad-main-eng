@@ -188,7 +188,7 @@ function App() {
 
         <Routes>
           {/* <Route path="/" element={<Login />} /> */}
-          {/* <Route path="/register" element={<Register />} /> */}
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/maintenance" element={<Maintenance />} />
           <Route path="/Instrument" element={<Instrument />} />
           <Route path="/pareto" element={<Pareto />} />
@@ -222,7 +222,7 @@ function App() {
 
         <Routes>
           {/* <Route path="/" element={<Login />} /> */}
-          {/* <Route path="/register" element={<Register />} /> */}
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/maintenance" element={<Maintenance />} />
           <Route path="/Instrument" element={<Instrument />} />
           <Route path="/production" element={<Production />} />
@@ -241,8 +241,7 @@ function App() {
           <Sidebar /> 
         </div>
           <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/maintenance" element={<Maintenance />} />
           </Routes>
       </div>

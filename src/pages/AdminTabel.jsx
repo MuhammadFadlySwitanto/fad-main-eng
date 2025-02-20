@@ -43,7 +43,7 @@ function AdminTabel() {
       dataUser
     );
     if (response) {
-      alert(response.data.message);
+      toast.success(response.data.message);
     }
     fetchUser();
   };
