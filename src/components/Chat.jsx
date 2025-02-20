@@ -1,15 +1,38 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
+import { useSelector } from "react-redux";
+import { useColorMode, useColorModeValue } from "@chakra-ui/react";
+import {   
+  Select, 
+} from "@chakra-ui/react";
 
 const Chat = () => {
+  const userGlobal = useSelector((state) => state.user.user);
   const [isOpen, setIsOpen] = useState(false);
   const [myChat, setMyChat] = useState("");
   const [messages, setMessages] = useState([]);
   const messagesEndRef = useRef(null);
   const textareaRef = useRef(null);
+  const kartuColor = useColorModeValue("rgba(var(--color-coba))", "rgba(var(--color-coba))");
+  const [isLoading, setIsLoading] = useState(false);
+  const cancelTokenSource = useRef(null);
+  const [provider, setProvider] = useState("deepseek-r1:1.5b");
 
-  const [isLoading, setIsLoading] = useState(true);
-  
+        const [isDarkMode, setIsDarkMode] = useState(
+          document.documentElement.getAttribute("data-theme") === "dark"
+        );
+              useEffect(() => {
+                const handleThemeChange = () => {
+                  const currentTheme = document.documentElement.getAttribute('data-theme');
+                  setIsDarkMode(currentTheme === 'dark');
+                };
+                // Observe attribute changes
+                const observer = new MutationObserver(handleThemeChange);
+                observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+            
+                return () => observer.disconnect();
+              }, []);
+
   const scrollToBottom = () => {
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -39,6 +62,13 @@ const Chat = () => {
 
   const sendMessage = async (userMessage) => {
     try {
+    // Cancel any existing request
+    if (cancelTokenSource.current) {
+      cancelTokenSource.current.cancel('User canceled request');
+    }
+    
+    // Create new cancel token
+    cancelTokenSource.current = axios.CancelToken.source();
       // Add user message
       setMessages(prev => [...prev, {
         id: Date.now(),
@@ -46,37 +76,42 @@ const Chat = () => {
         sender: 'user'
       }]);
       
-      // Show loading state (optional)
       // Add loading state: const [isLoading, setIsLoading] = useState(false);
       setIsLoading(true);
-      
-      const response = await axios.post('http://10.126.15.125:11434/api/generate', {
-        headers: { "Content-Type": "application/json" },
-        model: 'deepseek-r1:1.5b',
+      const responseAI = await axios.post(`http://10.126.15.137:8002/ask-ollama`,{
         prompt: userMessage,
-        stream: false,
-        messages: [...messages, userMessage],
-      });
-      
-      // console.log(response);
-      
-
-
-      
-      
-      // Process the response
-      let aiResponse = response.data.response || "";
-      
-      // Clean up the response
-      aiResponse = aiResponse 
-      .replace(/<think>[\s\S]*?<\/think>/, '') // Hapus blok <think> ... </think>
+        machine: provider
+      })
+      const responses = responseAI.data.split('\n').filter(Boolean).map(JSON.parse);
+      const fullResponse = responses.map(item => item.response).join('')      .replace(/<think>[\s\S]*?<\/think>/, '') // Hapus blok <think> ... </think>
       .replace(/\\boxed{(.*?)}/g, '$1') // Hapus \boxed{} tanpa mengganti dengan bold
       .replace(/\*\*(.*?)\*\*/g, '$1') // Hapus **bold** yang sudah ada
       .replace(/\\\(/g, '(').replace(/\\\)/g, ')') // Hapus escape karakter di dalam kurung LaTeX
       .replace(/\\\[/g, '').replace(/\\\]/g, '') // Hapus escape karakter untuk blok LaTeX
       .replace(/\n\s*-\s*/g, '\n- ') // Pastikan list tetap rapi
       .replace(/\n{2,}/g, '\n\n') // Batasi newline berlebih menjadi 1 baris kosong
-      .trim(); // Hapus spasi kosong di awal/akhir
+      .trim(); // Hapus spasi kosong di awal/akhir;
+
+      console.log(fullResponse);
+      
+      
+      // const response = await axios.post('http://10.126.151.125:11434/api/generate', {
+      //   model: 'Mistral',
+      //   prompt: userMessage,
+      //   stream: false,
+      //   messages: [...messages, userMessage],
+      // }, {
+      //   headers: { "Content-Type": "application/json" },
+      //   cancelToken: cancelTokenSource.current.token
+      // });
+      
+      // // console.log(response);
+      
+      // // Process the response
+      // let aiResponse = response.data.response || "";
+      
+      // Clean up the response
+      const aiResponse = fullResponse 
 
       
       // Parse JSON if the response contains JSON data
@@ -99,15 +134,24 @@ const Chat = () => {
         sender: 'ai'
       }]);
     } catch (error) {
-      console.error('Error communicating with AI service:', error);
-      // Handle error - add an error message to chat
-      setMessages(prev => [...prev, {
-        id: Date.now() + 1,
-        text: "Sorry, I encountered an error connecting to the AI service. Please try again.",
-        sender: 'ai'
-      }]);
+      if (axios.isCancel(error)) {
+        console.log('Request canceled:', error.message);
+        setMessages(prev => [...prev, {
+          id: Date.now() + 1,
+          text: "Generation stopped by user.",
+          sender: 'system'
+        }]);
+      } else {
+        console.error('Error communicating with AI service:', error);
+        setMessages(prev => [...prev, {
+          id: Date.now() + 1,
+          text: "Sorry, I encountered an error connecting to the AI service. Please try again.",
+          sender: 'ai'
+        }]);
+      }
     } finally {
       setIsLoading && setIsLoading(false);
+      cancelTokenSource.current = null;
     }
   };
 
@@ -150,7 +194,17 @@ const Chat = () => {
               </g>
             </svg>Chatbot
           </h2>
-          <p className="text-sm text-text leading-3">Powered by Mendable and Vercel</p>
+          <Select 
+        className="text-sm text-text leading-3 border p-1 rounded-md" 
+        value={provider} 
+        onChange={(e) => setProvider(e.target.value)}
+        sx={{
+          background: kartuColor,
+        }}
+      >
+        <option value="deepseek-r1:1.5b">deepseek-r1:1.5b</option>
+        <option value="Mistral">Mistral:7b</option>
+      </Select>
           <hr className="bg-border"/>
         </div>
         {/* Messages Container */}
@@ -191,7 +245,7 @@ const Chat = () => {
                 <div className="flex-1 min-w-0">
                   <p className={`leading-relaxed break-words whitespace-pre-wrap text-text ${message.sender === 'user' ? 'block text-right rtl' : ' '}`}>
                     <span className={`block font-bold text-text font-DMSans ${message.sender === 'user' ? 'text-right' : 'text-left'}`}>
-                      {message.sender === 'user' ? 'You' : 'AI'} 
+                      {message.sender === 'user' ? userGlobal.name : 'AI'} 
                     </span>
                     {message.text}
                   </p>
@@ -216,11 +270,21 @@ const Chat = () => {
                   wordWrap: 'break-word'
               }}
             />
+            {isLoading ? (
+              <button 
+                type="button"
+                onClick={() => cancelTokenSource.current?.cancel('User canceled request')}
+                className="inline-flex items-center justify-center rounded-md text-sm font-medium text-white bg-red-500 hover:bg-red-600 h-10 px-4 py-2"
+              >
+                Stop
+              </button>
+            ) : (
             <button type="submit" 
               className="inline-flex items-center justify-center rounded-md text-sm font-medium text-text bg-lingkaran disabled:pointer-events-none disabled:opacity-50 hover:bg-[#cbcbcb] dark:hover:bg-[#111827E6] h-10 px-4 py-2"
             >
               Send
             </button>
+            )}
         </form>
       </div>
       )}

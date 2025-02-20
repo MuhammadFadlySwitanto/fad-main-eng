@@ -125,6 +125,8 @@ export default function PowerManagement() {
   const [error, setError] = useState(null);
   const [loading2, setLoading2] = useState(false);
   const [error2, setError2] = useState(null);
+  const [loading3, setLoading3] = useState(false);
+  const [error3, setError3] = useState(null);
 
   const { colorMode } = useColorMode();
   const [isTableVisible, setIsTableVisible] = useState(true);
@@ -840,54 +842,56 @@ export default function PowerManagement() {
   };
 
   const fetchSec = async () => {
-    let response = await axios.get(
-      "http://10.126.15.137:8002/part/getPowerSec",
-      {
+    setLoading3(true);
+    setError3(null);
+    try {
+      let response = await axios.get("http://10.126.15.137:8002/part/getPowerSec", {
         params: {
           area: secArea,
           start: secStart,
           finish: secFinish,
         },
-      }
-    );
-    let response2 = await axios.get(
-      "http://10.126.15.137:8002/part/getavgpower",
-      {
+      });
+
+      let response2 = await axios.get("http://10.126.15.137:8002/part/getavgpower", {
         params: {
           area: secArea,
           start: secStart,
           finish: secFinish,
         },
+      });
+
+      console.log('Response1:', response.data);
+      console.log('Response2:', response2.data);
+
+      if (Array.isArray(response2.data) && response2.data.length > 0) {
+        const totalLL = Number(response2.data[0].RR) + Number(response2.data[0].SS) + Number(response2.data[0].TT);
+        const totalLN = Number(response2.data[0].RN) + Number(response2.data[0].SN) + Number(response2.data[0].TN);
+
+        const RRdata = (Number(response2.data[0].RR) / totalLL) * 100;
+        const SSdata = (Number(response2.data[0].SS) / totalLL) * 100;
+        const TTdata = (Number(response2.data[0].TT) / totalLL) * 100;
+
+        const RNdata = (Number(response2.data[0].RN) / totalLN) * 100;
+        const SNdata = (Number(response2.data[0].SN) / totalLN) * 100;
+        const TNdata = (Number(response2.data[0].TN) / totalLN) * 100;
+
+        setPercentRR(RRdata);
+        setPercentSS(SSdata);
+        setPercentTT(TTdata);
+        setPercentRN(RNdata);
+        setPercentSN(SNdata);
+        setPercentTN(TNdata);
+        settotalRR(Number(response2.data[0].RR).toFixed(2));
+        settotalSS(Number(response2.data[0].SS).toFixed(2));
+        settotalTT(Number(response2.data[0].TT).toFixed(2));
+        settotalRN(Number(response2.data[0].RN).toFixed(2));
+        settotalSN(Number(response2.data[0].SN).toFixed(2));
+        settotalTN(Number(response2.data[0].TN).toFixed(2));
+      } else {
+        console.error("Data response2 tidak ditemukan atau kosong atau bukan array");
       }
-    );
 
-    const totalLL =
-      Number(response2.data[0].RR) +
-      Number(response2.data[0].SS) +
-      Number(response2.data[0].TT);
-
-    const totalLN =
-      Number(response2.data[0].RN) +
-      Number(response2.data[0].SN) +
-      Number(response2.data[0].TN);
-
-    const RRdata = (Number(response2.data[0].RR) / totalLL) * 100;
-    const SSdata = (Number(response2.data[0].SS) / totalLL) * 100;
-    const TTdata = (Number(response2.data[0].TT) / totalLL) * 100;
-
-    const RNdata = (Number(response2.data[0].RN) / totalLN) * 100;
-    const SNdata = (Number(response2.data[0].SN) / totalLN) * 100;
-    const TNdata = (Number(response2.data[0].TN) / totalLN) * 100;
-
-    // let response1 = await axios.get("http://10.126.15.137:8002/part/getRangeSet");
-
-    setPercentRR(RRdata);
-    setPercentSS(SSdata);
-    setPercentTT(TTdata);
-    setPercentRN(RNdata);
-    setPercentSN(SNdata);
-    setPercentTN(TNdata);
-    if (secArea == "cMT-Gedung-UTY_MVMDP_Detik_data") {
       var multipliedData = response.data.map((data) => ({
         label: data.datetime.slice(0, -5).replace("T", " "),
         y: Number(data.freq.toFixed(2)),
@@ -910,21 +914,13 @@ export default function PowerManagement() {
       const minFreq = Math.min(...response.data.map((item) => item.freq));
       const minPtoP = Math.min(...response.data.map((item) => item.PtoP));
       const minPtoN = Math.min(...response.data.map((item) => item.PtoN));
-      const sumFreq = response.data.reduce(
-        (total, item) => total + item.freq,
-        0
-      );
-      const sumPtoP = response.data.reduce(
-        (total, item) => total + item.PtoP,
-        0
-      );
-      const sumPtoN = response.data.reduce(
-        (total, item) => total + item.PtoN,
-        0
-      );
+      const sumFreq = response.data.reduce((total, item) => total + item.freq, 0);
+      const sumPtoP = response.data.reduce((total, item) => total + item.PtoP, 0);
+      const sumPtoN = response.data.reduce((total, item) => total + item.PtoN, 0);
       const avgFreq = sumFreq / response.data.length;
       const avgPtoP = sumPtoP / response.data.length;
       const avgPtoN = sumPtoN / response.data.length;
+
       setdatamaxFreq(maxFreq.toFixed(2));
       setdatamaxPtoP(maxPtoP.toFixed(2));
       setdatamaxPtoN(maxPtoN.toFixed(2));
@@ -934,92 +930,22 @@ export default function PowerManagement() {
       setdataavgFreq(avgFreq.toFixed(2));
       setdataavgPtoP(avgPtoP.toFixed(2));
       setdataavgPtoN(avgPtoN.toFixed(2));
-      settotalRR(Number(response2.data[0].RR).toFixed(2));
-      settotalSS(Number(response2.data[0].SS).toFixed(2));
-      settotalTT(Number(response2.data[0].TT).toFixed(2));
-      settotalRN(Number(response2.data[0].RN).toFixed(2));
-      settotalSN(Number(response2.data[0].SN).toFixed(2));
-      settotalTN(Number(response2.data[0].TN).toFixed(2));
-    } else {
-      var multipliedData = response.data.map((data) => ({
-        label: data.datetime.slice(0, -5).replace("T", " "),
-        y: Number(data.freq.toFixed(2)) / 1000,
-        x: data.id,
-      }));
-      var multipliedData1 = response.data.map((data) => ({
-        label: data.datetime.slice(0, -5).replace("T", " "),
-        y: Number(data.PtoP.toFixed(2)) / 100,
-        x: data.id,
-      }));
-      var multipliedData2 = response.data.map((data) => ({
-        label: data.datetime.slice(0, -5).replace("T", " "),
-        y: Number(data.PtoN.toFixed(2)) / 100,
-        x: data.id,
-      }));
 
-      var freqArrayMax = [];
-      var freqArrayMin = [];
-
-      // for (var i = 0; i <= response.data.length; i++) {
-      //   freqArrayMax.push({
-      //     y: response1.data[0].Freq_max,
-      //     x: response.data[0].id + i,
-      //   });
-      //   freqArrayMin.push({
-      //     y: response1.data[0].Freq_min,
-      //     x: response.data[0].id + i,
-      //   });
-      // }
-
-      setmaxSecFreq(freqArrayMax);
-      setminSecFreq(freqArrayMin);
-
-      // var multipliedData3 = response1.data.map((data) => ({
-      //   y: Number(data.Freq_max),
-      //   x: data.id,
-      // }));
-      const maxFreq = Math.max(...response.data.map((item) => item.freq));
-      const maxPtoP = Math.max(...response.data.map((item) => item.PtoP));
-      const maxPtoN = Math.max(...response.data.map((item) => item.PtoN));
-      const minFreq = Math.min(...response.data.map((item) => item.freq));
-      const minPtoP = Math.min(...response.data.map((item) => item.PtoP));
-      const minPtoN = Math.min(...response.data.map((item) => item.PtoN));
-      const sumFreq = response.data.reduce(
-        (total, item) => total + item.freq,
-        0
-      );
-      const sumPtoP = response.data.reduce(
-        (total, item) => total + item.PtoP,
-        0
-      );
-      const sumPtoN = response.data.reduce(
-        (total, item) => total + item.PtoN,
-        0
-      );
-      const avgFreq = sumFreq / response.data.length;
-      const avgPtoP = sumPtoP / response.data.length;
-      const avgPtoN = sumPtoN / response.data.length;
-      setdatamaxFreq((maxFreq / 1000).toFixed(2));
-      setdatamaxPtoP((maxPtoP / 100).toFixed(2));
-      setdatamaxPtoN((maxPtoN / 100).toFixed(2));
-      setdataminFreq((minFreq / 1000).toFixed(2));
-      setdataminPtoP((minPtoP / 100).toFixed(2));
-      setdataminPtoN((minPtoN / 100).toFixed(2));
-      setdataavgFreq((avgFreq / 1000).toFixed(2));
-      setdataavgPtoP((avgPtoP / 100).toFixed(2));
-      setdataavgPtoN((avgPtoN / 100).toFixed(2));
-      settotalRR((Number(response2.data[0].RR) / 100).toFixed(2));
-      settotalSS((Number(response2.data[0].SS) / 100).toFixed(2));
-      settotalTT((Number(response2.data[0].TT) / 100).toFixed(2));
-      settotalRN((Number(response2.data[0].RN) / 100).toFixed(2));
-      settotalSN((Number(response2.data[0].SN) / 100).toFixed(2));
-      settotalTN((Number(response2.data[0].TN) / 100).toFixed(2));
+      setSecFreq(multipliedData);
+      setSecPtP(multipliedData1);
+      setSecPtN(multipliedData2);
+    } catch (error) {
+      console.error("Error fetching data", error);
+      setError3("Failed to fetch data. Please try again.");
+    } finally {
+      const delay = 2000; // 2 seconds in milliseconds
+      setTimeout(() => {
+        setLoading3(false);
+        console.log("Finished fetching data, stopping spinner...");
+      }, delay);
     }
-
-    setSecFreq(multipliedData);
-    setSecPtP(multipliedData1);
-    setSecPtN(multipliedData2);
   };
+
 
   let dateStart = (e) => {
     var dataInput = e.target.value;
@@ -1799,15 +1725,33 @@ export default function PowerManagement() {
       <div className="flex justify-center font-bold text-text text-4xl mt-8">
         Voltage Balance
       </div>
-      <div className="flex flex-row mx-50 px-30 mt-3">
-        <CanvasJSChart className="" options={options6} />
-        <CanvasJSChart className="" options={options7} />
-      </div>
+      <div>
+      {loading3 ? (
+        <div className="flex justify-center items-center mt-3 w-full h-full">
+          <Spinner
+            thickness="4px"
+            speed="0.65s"
+            emptyColor="gray.200"
+            color="blue.500"
+            size="xl"
+          />
+         </div>
+        ) : error3 ? (
+          <div className="text-red-500 flex flex-col items-center">No available data</div>
+        ) : (
+          <>
+          <div className="flex flex-row mx-50 px-30 mt-3">
+            <CanvasJSChart className="" options={options6} />
+            <CanvasJSChart className="" options={options7} />
+          </div>
 
-      <div className="flex flex-row mt-10 gap-1">
-        <CanvasJSChart className="" options={options3} />
-        <CanvasJSChart className="" options={options4} />
-        <CanvasJSChart className="" options={options5} />
+          <div className="flex flex-row mt-10 gap-1">
+            <CanvasJSChart className="" options={options3} />
+            <CanvasJSChart className="" options={options4} />
+            <CanvasJSChart className="" options={options5} />
+          </div>
+          </>
+        )}
       </div>
       <div className="flex flex-row justify-around mt-4">
         <div className="flex flex-col">
