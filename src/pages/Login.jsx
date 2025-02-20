@@ -2,8 +2,9 @@ import logoIcon from '../assets/kalbe CH-logo-putih.png';
 import imageIcon from '../assets/gambar.jpg';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
+import axios from "axios";
 import { useNavigate, useLocation } from "react-router";
 import { loginData } from "../features/part/userSlice";
 import { toast, ToastContainer } from "react-toastify";
@@ -18,7 +19,8 @@ function Login () {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
-  const connectionStatus = location.state?.connectionStatus || '';
+  const [connectionStatus, setConnectionStatus] = useState('');
+  const toastDisplayed = useRef(false);
 
   const emailHendeler = (event) => {
     setEmail(event.target.value);
@@ -39,6 +41,44 @@ function Login () {
   const handleRememberMe = (event) => {
     setRememberMe(event.target.checked);
   };
+
+  const checkConnection = async () => {
+    try {
+      const response = await axios.get('http://10.126.15.137:8002/api/connection');
+      const { db1, db2, db3, db4, postgresql } = response.data;
+
+      const errors = [];
+      if (db1 !== "YOMAN") errors.push("DB1");
+      if (db2 !== "YOMAN") errors.push("DB2");
+      if (db3 !== "YOMAN") errors.push("DB3");
+      if (db4 !== "YOMAN") errors.push("DB4");
+      if (postgresql !== "YOMAN") errors.push("PostgreSQL");
+
+      if (errors.length === 0) {
+        setConnectionStatus('success');
+        if (!toastDisplayed.current) {
+          toast.success("All connections are successful!");
+          toastDisplayed.current = true;
+        }
+      } else {
+        setConnectionStatus('error');
+        if (!toastDisplayed.current) {
+          toast.error(`Error: Connection to ${errors.join(', ')} failed.`);
+          toastDisplayed.current = true;
+        }
+      }
+    } catch (error) {
+      setConnectionStatus('error');
+      if (!toastDisplayed.current) {
+        toast.error("Error: Unable to connect to the server. Please check your connection and try again.");
+        toastDisplayed.current = true;
+      }
+    }
+  };
+
+  useEffect(() => {
+    checkConnection();
+  }, []);
 
   const addLogin = async () => {
     if (!email || !password) {

@@ -144,7 +144,7 @@ function App() {
     );
   } else if (levelData === 4) {
     return (
-      <div className="bg-background min-h-screen min-h-dvh grid grid-cols-[auto_1fr]">
+      <div className="bg-background min-h-screen min-w-full grid grid-cols-[auto_1fr]">
       {/* <div> */} 
         <div>
           <Sidebar /> 
@@ -165,7 +165,6 @@ function App() {
           <Route path="/HistoricalMachine" element={<MachineHistorical />} />
           <Route path="/avabilityope" element={<AvabilityOPE />} />
           <Route path="/avabilitmachine" element={<AvabilityMachine />} />
-          <Route path="/admin" element={<Admin />} />
           <Route path="/oeeLine" element={<OEEline />} />
           <Route path="/utility" element={<Utility />} />
           <Route path="/Stopwatch" element={<Stopwatch />} />
@@ -181,7 +180,7 @@ function App() {
       //       <Navbar />
       //     </div>
       //   </div>
-      <div className="bg-background min-h-screen min-h-dvh grid grid-cols-[auto_1fr]">
+      <div className="bg-background min-h-screen min-w-full grid grid-cols-[auto_1fr]">
       {/* <div> */} 
         <div>
           <Sidebar /> 
@@ -201,7 +200,6 @@ function App() {
           <Route path="/OPE" element={<App1 />} />
           <Route path="/avabilityope" element={<AvabilityOPE />} />
           <Route path="/avabilitmachine" element={<AvabilityMachine />} />
-          <Route path="/admin" element={<Admin />} />
           <Route path="/oeeLine" element={<OEEline />} />
           <Route path="/utility" element={<Utility />} />
           <Route path="/Stopwatch" element={<Stopwatch />} />
@@ -216,7 +214,7 @@ function App() {
       //       <Navbar />
       //     </div>
       //   </div>
-      <div className="bg-background min-h-screen min-h-dvh grid grid-cols-[auto_1fr]">
+      <div className="bg-background min-h-screen min-w-full grid grid-cols-[auto_1fr]">
       {/* <div> */} 
         <div>
           <Sidebar /> 
@@ -237,7 +235,7 @@ function App() {
       //   <div>
       //     <Navbar /> 
       //   </div>
-      <div className="bg-background min-h-screen min-h-dvh grid grid-cols-[auto_1fr]">
+      <div className="bg-background min-h-screen min-w-full grid grid-cols-[auto_1fr]">
       {/* <div> */} 
         <div>
           <Sidebar /> 

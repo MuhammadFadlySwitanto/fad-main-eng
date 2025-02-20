@@ -14,6 +14,8 @@ import {
   Stack
 } from "@chakra-ui/react";
 import { useColorMode, useColorModeValue} from "@chakra-ui/react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function AdminTabel() {
   const [userData, setUserData] = useState([]);
@@ -51,7 +53,7 @@ function AdminTabel() {
       `http://10.126.15.137:8002/part/userdelete/${id}`
     );
     if (response) {
-      alert(response.data.message);
+      toast.success(response.data.message);
     }
     fetchUser();
   };
@@ -249,7 +251,9 @@ function AdminTabel() {
         >
           Next
         </Button>
-      </div>      
+      </div>  
+
+      <ToastContainer position="top-center" draggable/>    
     </>
   );
 }
