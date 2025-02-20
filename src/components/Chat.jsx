@@ -3,7 +3,8 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { useColorMode, useColorModeValue } from "@chakra-ui/react";
 import {   
-  Select, 
+  Select,
+  Spinner 
 } from "@chakra-ui/react";
 
 const Chat = () => {
@@ -18,20 +19,21 @@ const Chat = () => {
   const cancelTokenSource = useRef(null);
   const [provider, setProvider] = useState("deepseek-r1:1.5b");
 
-        const [isDarkMode, setIsDarkMode] = useState(
-          document.documentElement.getAttribute("data-theme") === "dark"
-        );
-              useEffect(() => {
-                const handleThemeChange = () => {
-                  const currentTheme = document.documentElement.getAttribute('data-theme');
-                  setIsDarkMode(currentTheme === 'dark');
-                };
-                // Observe attribute changes
-                const observer = new MutationObserver(handleThemeChange);
-                observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
-            
-                return () => observer.disconnect();
-              }, []);
+  const [isDarkMode, setIsDarkMode] = useState(
+    document.documentElement.getAttribute("data-theme") === "dark"
+  );
+
+  useEffect(() => {
+    const handleThemeChange = () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      setIsDarkMode(currentTheme === 'dark');
+    };
+    // Observe attribute changes
+    const observer = new MutationObserver(handleThemeChange);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+
+    return () => observer.disconnect();
+  }, []);
 
   const scrollToBottom = () => {
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -93,8 +95,7 @@ const Chat = () => {
       .trim(); // Hapus spasi kosong di awal/akhir;
 
       console.log(fullResponse);
-      
-      
+       
       // const response = await axios.post('http://10.126.151.125:11434/api/generate', {
       //   model: 'Mistral',
       //   prompt: userMessage,
@@ -112,8 +113,6 @@ const Chat = () => {
       
       // Clean up the response
       const aiResponse = fullResponse 
-
-      
       // Parse JSON if the response contains JSON data
       try {
         // Only attempt to parse if the response looks like JSON
@@ -245,7 +244,7 @@ const Chat = () => {
                 <div className="flex-1 min-w-0">
                   <p className={`leading-relaxed break-words whitespace-pre-wrap text-text ${message.sender === 'user' ? 'block text-right rtl' : ' '}`}>
                     <span className={`block font-bold text-text font-DMSans ${message.sender === 'user' ? 'text-right' : 'text-left'}`}>
-                      {message.sender === 'user' ? userGlobal.name : 'AI'} 
+                      {message.sender === 'user' ? (userGlobal.name || 'You') : 'AI'} 
                     </span>
                     {message.text}
                   </p>
@@ -274,9 +273,15 @@ const Chat = () => {
               <button 
                 type="button"
                 onClick={() => cancelTokenSource.current?.cancel('User canceled request')}
-                className="inline-flex items-center justify-center rounded-md text-sm font-medium text-white bg-red-500 hover:bg-red-600 h-10 px-4 py-2"
+                className="inline-flex items-center justify-center rounded-md text-sm font-medium text-white bg-card hover:bg-lingkaran h-10 px-4 py-2"
               >
-                Stop
+                <Spinner
+                  thickness="4px"
+                  speed="0.65s"
+                  emptyColor="gray.200"
+                  color="blue.500"
+                  size="sm"
+                />
               </button>
             ) : (
             <button type="submit" 
