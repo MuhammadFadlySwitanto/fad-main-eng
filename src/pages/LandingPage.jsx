@@ -19,10 +19,10 @@ function LandingPage () {
             
             const errors = [];
             //kirim pesan ke array error ceritanya, tergantung yang mana yg error
-            if (db1 !== "YOMAN") errors.push("DB1 failed.");
-            if (db2 !== "YOMAN") errors.push("DB2 failed.");
-            if (db3 !== "YOMAN") errors.push("DB3 failed.");
-            if (db4 !== "YOMAN") errors.push("DB4 failed.");
+            if (db1 !== "YOMAN") errors.push("DB1");
+            if (db2 !== "YOMAN") errors.push("DB2");
+            if (db3 !== "YOMAN") errors.push("DB3");
+            if (db4 !== "YOMAN") errors.push("DB4");
             if (postgresql !== "YOMAN") errors.push("PostgreSQL failed.");
 
             if (errors.length === 0) {
