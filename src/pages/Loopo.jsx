@@ -214,30 +214,31 @@ export default function Loopo() {
         </div>
         <div>
           <h2 className="mb-1">Start Time</h2>
-            <Input
-              onChange={dateStart}
-              placeholder="Select Date and Time"
-              size="md"
-              type="date"
-              css={{
-                "&::-webkit-calendar-picker-indicator": {
-                  color: isDarkMode ? "white" : "black",
-                  filter: isDarkMode ? "invert(1)" : "none",
-                },
-              }}
-              sx={{
-                border: "1px solid",
-                borderColor: borderColor,
-                borderRadius: "0.395rem",
-                background: "var(--color-background)", // background color from Tailwind config
-      
-                _hover: {
-                  borderColor: hoverBorderColor,
-                },
-              }}
-            /> 
+          <Input
+            onChange={dateStart}
+            placeholder="Select Date and Time"
+            size="md"
+            type="date"
+            css={{
+              "&::-webkit-calendar-picker-indicator": {
+                color: isDarkMode ? "white" : "black",
+                filter: isDarkMode ? "invert(1)" : "none",
+              },
+            }}
+            sx={{
+              border: "1px solid",
+              borderColor: borderColor,
+              borderRadius: "0.395rem",
+              background: "var(--color-background)", // background color from Tailwind config
+    
+              _hover: {
+                borderColor: hoverBorderColor,
+              },
+            }}
+          /> 
         </div>
-        <div className="mb-1">Finish Time
+        <div>
+          <h2 className="mb-1">Finish Time</h2>
           <Input
             onChange={dateFinish}
             placeholder="Select Date and Time"
@@ -277,7 +278,7 @@ export default function Loopo() {
           <div className="ml-16 text-text">Min = {min.toLocaleString()} {unit}</div>
         </div>
       </Stack>
-      <div className="flex flex-row justify-center mx-12 pb-1 "> 
+      <div className="flex flex-row justify-center mx-8 p-1 rounded-md overflow-x-auto "> 
           <CanvasJSChart className="" options={options} />
       </div>
       <br />

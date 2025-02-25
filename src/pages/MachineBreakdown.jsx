@@ -160,7 +160,7 @@ function MaintenanceBreakdown() {
   });
 
   return (
-    <div>
+    <>
       <div>
         <h1 class="text-center text-4xl antialiased hover:subpixel-antialiased; p-8 mr-5">
           PARETO MACHINE BREAKDOWN
@@ -175,108 +175,101 @@ function MaintenanceBreakdown() {
         )}
       </div>
 
-      <Stack
-        className="flex flex-row justify-center   "
-        direction="row"
-        spacing={4}
-        align="center"
-      >
-        <div className="main">
-          <h6 className="mb-2">Search Mesin</h6>
-          <div className="search">
-            <input
-              onChange={inputHandler}
-              id="outlined-basic"
-              data-type="instrument"
-              variant="outlined"
-              fullWidth
-              label="Search"
-              className="block w-full rounded-md pl-1 bg-background border border-border hover:border-border2 text-text py-1.5 focus:ring-1 focus:ring-blue-700 focus:outline-none sm:text-sm sm:leading-6"
-            />
+      <div className="flex flex-col xl:flex-row justify-center space-y-4 xl:space-y-0 xl:space-x-4">
+        <div className="flex flex-col xl:flex-row justify-center space-y-4 xl:space-y-0 xl:space-x-4">
+          <div className="flex flex-col items-center xl:w-1/3">
+            <h6 className="mb-2">Search Mesin</h6>
+            <div>
+              <input
+                onChange={inputHandler}
+                id="outlined-basic"
+                data-type="instrument"
+                variant="outlined"
+                fullWidth
+                label="Search"
+                className="block w-full rounded-md pl-1 bg-background border border-border hover:border-border2 text-text py-1.5 focus:ring-1 focus:ring-blue-700 focus:outline-none sm:text-sm sm:leading-6"
+              />
+            </div>
+          </div>
+          <Box className="flex flex-col items-center xl:w-1/3" key={colorMode}>
+            <h6 className="mb-2">Monthly Search</h6>
+            <Select placeholder="Select Month" onChange={getDate} 
+              sx={{
+                border: "1px solid",
+                borderColor: borderColor,
+                borderRadius: "0.395rem",
+                background: "var(--color-background)", // background color from Tailwind config
+      
+                _hover: {
+                  borderColor: hoverBorderColor,
+                },
+              }}>
+              <option value="1">Jan</option>
+              <option value="2">Feb</option>
+              <option value="3">Mar</option>
+              <option value="4">Apr</option>
+              <option value="5">Mei</option>
+              <option value="6">Jun</option>
+              <option value="7">Jul</option>
+              <option value="8">Agu</option>
+              <option value="9">Sep</option>
+              <option value="10">Okt</option>
+              <option value="11">Nov</option>
+              <option value="12">Des</option>
+            </Select>
+          </Box>
+          <Box className="flex flex-col items-center xl:w-1/3" key={colorMode}>
+            <h6 className="mb-2">Line</h6>
+            <Select placeholder="Select Line" onChange={doprDown}
+              sx={{
+                border: "1px solid",
+                borderColor: borderColor,
+                borderRadius: "0.395rem",
+                background: "var(--color-background)", // background color from Tailwind config
+      
+                _hover: {
+                  borderColor: hoverBorderColor,
+                },
+              }}>
+              <option value="Line1">Line 1</option>
+              <option value="Line2">Line 2</option>
+              <option value="Line3">Line 3</option>
+              <option value="Line4">Line 4</option>
+            </Select>
+          </Box>
+        </div>
+        <div className="flex flex-col xl:flex-row justify-center space-y-4 xl:space-y-0 xl:space-x-4">
+          <div className="flex flex-col items-center">
+            <Button
+              className="w-40 font-sans"
+              colorScheme="blue"
+              onClick={() => {
+                navigate(`/createnew`);
+              }}
+            >
+              Create New
+            </Button>
+          </div>
+          <div className="flex flex-col items-center">
+            <Button
+              className="w-40 font-sans"
+              colorScheme="red"
+              onClick={() => setIsTableVisible(!isTableVisible)}
+            >
+              {isTableVisible ? "Hide All Data" : "Show All Data"}
+            </Button>
+          </div>
+          <div className="flex flex-col items-center">
+            <Button
+              className="w-40 font-sans"
+              colorScheme="green"
+              onClick={generatePDF}
+            >
+              Export to PDF
+            </Button>
           </div>
         </div>
-
-        <Box key={colorMode}>
-          <h6 className="mb-2">Monthly Search</h6>
-          <Select placeholder="Select Month" onChange={getDate} 
-          sx={{
-            border: "1px solid",
-            borderColor: borderColor,
-            borderRadius: "0.395rem",
-            background: "var(--color-background)", // background color from Tailwind config
-  
-            _hover: {
-              borderColor: hoverBorderColor,
-            },
-          }}>
-            <option value="1">Jan</option>
-            <option value="2">Feb</option>
-            <option value="3">Mar</option>
-            <option value="4">Apr</option>
-            <option value="5">Mei</option>
-            <option value="6">Jun</option>
-            <option value="7">Jul</option>
-            <option value="8">Agu</option>
-            <option value="9">Sep</option>
-            <option value="10">Okt</option>
-            <option value="11">Nov</option>
-            <option value="12">Des</option>
-          </Select>
-        </Box>
-
-        <Box key={colorMode}>
-          <h6 className="mb-2">Line</h6>
-          <Select placeholder="Select Line" onChange={doprDown}
-          sx={{
-            border: "1px solid",
-            borderColor: borderColor,
-            borderRadius: "0.395rem",
-            background: "var(--color-background)", // background color from Tailwind config
-  
-            _hover: {
-              borderColor: hoverBorderColor,
-            },
-          }}>
-            <option value="Line1">Line 1</option>
-            <option value="Line2">Line 2</option>
-            <option value="Line3">Line 3</option>
-            <option value="Line4">Line 4</option>
-          </Select>
-        </Box>
-
-        <div>
-          <br />
-          <Button
-            className="w-40 font-sans"
-            colorScheme="blue"
-            onClick={() => {
-              navigate(`/createnew`);
-            }}
-          >
-            Create New
-          </Button>
-        </div>
-        <div>
-          <br />
-          <Button
-            className="w-40 font-sans"
-            colorScheme="red"
-            onClick={() => setIsTableVisible(!isTableVisible)}
-          >
-            {isTableVisible ? "Hide All Data" : "Show All Data"}
-          </Button>
-        </div>
-        <div>
-          <br />
-          <Button
-            className="w-40 font-sans"
-            colorScheme="green"
-            onClick={generatePDF}
-          >
-            Export to PDF
-          </Button>
-        </div>
-      </Stack>
+      </div>
       <br />
       {isTableVisible && (
       <TableContainer className="bg-card rounded-md"           
@@ -330,7 +323,7 @@ function MaintenanceBreakdown() {
       </TableContainer>
       )}
 
-    </div>
+    </>
   );
 }
 

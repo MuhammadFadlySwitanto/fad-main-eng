@@ -61,9 +61,9 @@ function Maintenance() {
   return (
     <div>
       <Header />
-      <div className=" bg-background shadow-md p-6">
-        <div className="tab-content">{renderTabContent()}</div>
-      </div>
+      <>
+        <>{renderTabContent()}</>
+      </>
     </div>
       
   );

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import {
   Table,
@@ -23,6 +23,7 @@ function AdminTabel() {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const toastDisplayed = useRef(false);
 
   const { colorMode } = useColorMode();
   const tulisanColor = useColorModeValue("rgba(var(--color-text))", "rgba(var(--color-text))");
@@ -43,7 +44,10 @@ function AdminTabel() {
       dataUser
     );
     if (response) {
-      toast.success(response.data.message);
+      if (!toastDisplayed.current) {
+        toast.success(response.data.message);
+      }
+      toastDisplayed.current = true;
     }
     fetchUser();
   };
@@ -53,7 +57,10 @@ function AdminTabel() {
       `http://10.126.15.137:8002/part/userdelete/${id}`
     );
     if (response) {
-      toast.success(response.data.message);
+      if (!toastDisplayed.current) {
+        toast.success(response.data.message);
+      }
+      toastDisplayed.current = true;
     }
     fetchUser();
   };
@@ -104,6 +111,17 @@ function AdminTabel() {
   useEffect(() => {
     fetchUser();
   }, []);
+
+  useEffect(() => {
+    // Reset toastDisplayed when changing pages
+    toastDisplayed.current = false;
+  }, [currentPage]);
+
+  useEffect(() => {
+    // Reset toastDisplayed when component mounts
+    toastDisplayed.current = false;
+  }, [userData]);
+
 
   const renderUserList = () => {
     const startIndex = (currentPage - 1) * rowsPerPage;
@@ -253,7 +271,7 @@ function AdminTabel() {
         </Button>
       </div>  
 
-      <ToastContainer position="top-center" draggable/>    
+      <ToastContainer position="top-center" draggable autoClose={3000}/>    
     </>
   );
 }

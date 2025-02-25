@@ -54,7 +54,7 @@ function ParetoLine() {
   }, [date]);
 
   return (
-    <div class="p-6">
+    <div className="p-6">
       <ParetoChart
         width={3}
         height={1}
