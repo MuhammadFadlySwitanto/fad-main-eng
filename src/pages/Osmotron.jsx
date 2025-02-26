@@ -194,8 +194,7 @@ export default function Osmotron() {
         spacing={4}
         align="center"
         >
-        <div>
-          <h2>Parameter</h2>
+        <div>Parameter
           <Select placeholder="Select Parameter" onChange={getOsmoArea}>
             <option value="osmo_B270A_6.1">B270A_6.1 (Unit EDI)</option>
             <option value="osmo_ET270A_6.11">ET270A_6.11 (Voltase EDI)</option>
@@ -275,7 +274,7 @@ export default function Osmotron() {
         <div>
           <br />
           <Button
-            className="m1-4"
+            className="ml-4 mt-4"
             colorScheme="blue"
             onClick={() => fetchOsmo()}
           >

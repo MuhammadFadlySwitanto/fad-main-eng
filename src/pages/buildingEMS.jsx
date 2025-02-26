@@ -345,11 +345,11 @@ function BuildingEMS() {
 
   return (
     <div>
-      <div className="flex flex-row justify-center mt-8 mb-8 flex-wrap xl:flex-nowrap">
+      <div className="flex flex-row justify-center my-8 flex-wrap xl:flex-nowrap">
         <div className="w-96 ml-4">
           <label
             htmlFor="line"
-            className="block text-sm font-medium leading-6 text-text ml-1"
+            className="block text-md font-medium leading-4 text-text ml-1"
             >
             Room
           </label>
@@ -360,7 +360,7 @@ function BuildingEMS() {
         <div className="ml-4 ">
           <label
             htmlFor="line"
-            className="block text-sm font-medium leading-6 text-text"
+            className="block text-md font-medium leading-4 text-text"
             >
             Start Date
           </label>
@@ -390,7 +390,7 @@ function BuildingEMS() {
         <div className="ml-4 ">
           <label
             htmlFor="line"
-            className="block text-sm font-medium leading-6 text-text"
+            className="block text-md font-medium leading-4 text-text"
             >
             Finish Date
           </label>

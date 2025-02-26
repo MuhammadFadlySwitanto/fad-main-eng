@@ -195,7 +195,7 @@ export default function Loopo() {
         align="center"
         >
         <div>
-          <h2 className="mb-1">Parameter</h2>
+          <h5 className="mb-1">Parameter</h5>
           <Select placeholder="Select Parameter" onChange={getLoopoArea}>
             <option value="lopo_A845A_2.1">A845A_2.1 (Ozone Hours Meter)</option>
             <option value="lopo_FT845A_8.1">FT845A_8.1 (Flow Meter Return)</option>
@@ -213,7 +213,7 @@ export default function Loopo() {
           </Select>
         </div>
         <div>
-          <h2 className="mb-1">Start Time</h2>
+          <h5 className="mb-1">Start Time</h5>
           <Input
             onChange={dateStart}
             placeholder="Select Date and Time"
@@ -238,7 +238,7 @@ export default function Loopo() {
           /> 
         </div>
         <div>
-          <h2 className="mb-1">Finish Time</h2>
+          <h5 className="mb-1">Finish Time</h5>
           <Input
             onChange={dateFinish}
             placeholder="Select Date and Time"
@@ -265,7 +265,7 @@ export default function Loopo() {
         <div>
           <br />
           <Button
-            className="m1-4"
+            className="ml-4 mt-[10px]"
             colorScheme="blue"
             onClick={() => fetchLoopo()}
           >
