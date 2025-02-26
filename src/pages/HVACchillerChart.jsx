@@ -660,7 +660,7 @@ export default function HVACchillerChart() {
             spacing={4}
             align="center">
             <div>
-              <h2 className="mb-1">Area</h2>
+              <h5 className="mb-1">Area</h5>
               <Select value = {list.area} name="area" placeholder="Select Area" onChange={(e) => handleListChange(e, index)}>
                 <option value="R-ActiSetpoiCH">Active Setpoint</option>
                 <option value="R-EvapLWTCH">Evap LWT</option>
@@ -711,7 +711,7 @@ export default function HVACchillerChart() {
               </Select>
             </div>
             <div>
-              <h2 className="mb-1">Chiller</h2>
+              <h5 className="mb-1">Chiller</h5>
               <Select value = {list.chiller} name="chiller" placeholder="Select Chiller" onChange={(e) => handleListChange(e, index)}>
                   <option value="1">Chiller 1</option>
                   <option value="2">Chiller 2</option>
@@ -719,14 +719,14 @@ export default function HVACchillerChart() {
               </Select>
             </div>
             <div>
-              <h2 className="mb-1">Kompresor</h2>
+              <h5 className="mb-1">Kompresor</h5>
               <Select value = {list.komp} name="komp" placeholder="Full Chiller" onChange={(e) => handleListChange(e, index)}>
                   <option value="K1CH">Kompresor 1</option>
                   <option value="K2CH">Kompresor 2</option>
               </Select>
             </div>
             <div>
-              <h2 className="mb-1">Start Time</h2>
+              <h5 className="mb-1">Start Time</h5>
               <Input
                 onChange={(e) => handleListChange(e, index)}
                 placeholder="Select Date and Time"
@@ -750,7 +750,8 @@ export default function HVACchillerChart() {
                   },
                 }}/> 
             </div>
-            <div className="mb-1">Finish Time
+            <div>
+              <h5 className="mb-1">Finish Time</h5>
               <Input
                 onChange={(e) => handleListChange(e, index)}
                 placeholder="Select Date and Time"
@@ -774,10 +775,10 @@ export default function HVACchillerChart() {
                   },
                 }}/>
             </div>
-            <div className="mb-1">
+            <div>
               <br />
               <Button
-                className="m1-4"
+                className="ml-1 mt-1"
                 colorScheme="red"
                 onClick={() => handleDeleteList(index)}>
                 Delete
@@ -834,7 +835,7 @@ export default function HVACchillerChart() {
         spacing={4}
         align="center">
         <div>
-          <h2 className="mb-1">Chiller</h2>
+          <h5 className="mb-1">Chiller</h5>
           <Select  placeholder="Select Chiller" onChange={chillerData}>
             <option value="1">Chiller 1</option>
             <option value="2">Chiller 2</option>
@@ -842,14 +843,14 @@ export default function HVACchillerChart() {
           </Select>
         </div>
         <div>
-          <h2 className="mb-1">Kompresor</h2>
+          <h5 className="mb-1">Kompresor</h5>
           <Select  placeholder="Select Kompresor" onChange={KompData}>
             <option value="K1CH">Kompresor 1</option>
             <option value="K2CH">Kompresor 2</option>
           </Select>
         </div>
         <div>
-          <h2 className="mb-1">Start Time</h2>
+          <h5 className="mb-1">Start Time</h5>
           <Input
             onChange={dateStart}
             placeholder="Select Date and Time"
@@ -863,7 +864,7 @@ export default function HVACchillerChart() {
             }}/> 
         </div>
         <div>
-          <h2 className="mb-1">Finish Time</h2>
+          <h5 className="mb-1">Finish Time</h5>
           <Input
             onChange={dateFinish}
             placeholder="Select Date and Time"
@@ -879,7 +880,7 @@ export default function HVACchillerChart() {
         <div>
           <br />
           <Button
-            className="m1-4"
+            className="ml-1 mt-1"
             colorScheme="blue"
             onClick={() => fetchChillerTable()}
             disabled={loadingTable}
@@ -888,12 +889,8 @@ export default function HVACchillerChart() {
           </Button>
         </div>
         <div>
-          <br />
-          <ExportToExcel apiData={result} fileName={fileName} />
-        </div>
-        <div>
           <Button
-            className="w-32 mt-4"
+            className="w-32 mt-1"
             colorScheme="red"
             onClick={() => setIsTableVisible(!isTableVisible)}>
             {isTableVisible ? "Hide All Data" : "Show All Data"}
@@ -916,6 +913,9 @@ export default function HVACchillerChart() {
             <option value={60}>60</option>
             <option value={100}>100</option>
           </Select>
+        </div>
+        <div>
+          <ExportToExcel apiData={result} fileName={fileName} />
         </div>
       </Stack>
       <br />

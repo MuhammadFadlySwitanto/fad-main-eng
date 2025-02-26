@@ -366,7 +366,7 @@ function Motor() {
             </Select>
           </div>
 
-          <div className="mt-8">
+          <div className="mt-4">
             <Select
               value={rowsPerPage}
               onChange={(e) => setRowsPerPage(Number(e.target.value))}
@@ -384,7 +384,7 @@ function Motor() {
           {/* Submit Button */}
           <div>
             <Button
-              className="w-40 mt-8"
+              className="w-40 mt-4"
               colorScheme="blue"
               onClick={submitHandler}
             >
@@ -396,7 +396,7 @@ function Motor() {
           <div>
             <br />
             <Button
-              className="w-40 mt-2"
+              className="w-40 mt-4"
               colorScheme="red"
               onClick={() => setIsTableVisible(!isTableVisible)}
             >
