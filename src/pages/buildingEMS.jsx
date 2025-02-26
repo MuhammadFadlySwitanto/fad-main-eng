@@ -349,7 +349,7 @@ function BuildingEMS() {
         <div className="w-96 ml-4">
           <label
             htmlFor="line"
-            className="block text-md font-medium leading-4 text-text ml-1"
+            className="block text-lg font-medium leading-4 text-text ml-1"
             >
             Room
           </label>
@@ -360,7 +360,7 @@ function BuildingEMS() {
         <div className="ml-4 ">
           <label
             htmlFor="line"
-            className="block text-md font-medium leading-4 text-text"
+            className="block text-lg font-medium leading-4 text-text"
             >
             Start Date
           </label>
@@ -390,7 +390,7 @@ function BuildingEMS() {
         <div className="ml-4 ">
           <label
             htmlFor="line"
-            className="block text-md font-medium leading-4 text-text"
+            className="block text-lg font-medium leading-4 text-text"
             >
             Finish Date
           </label>
@@ -418,12 +418,12 @@ function BuildingEMS() {
           />
         </div>
         <div className="w-full flex justify-center xl:w-auto">
-          <div className="ml-4 mt-6 truncate">
+          <div className="ml-4 mt-5 truncate">
             <Button onClick={() => getSubmit()} colorScheme="blue">
               Submit
             </Button>
           </div>
-          <div className="ml-4 mt-6">
+          <div className="ml-4 mt-5">
             <Button
             isDisabled={state}
             colorScheme="red"
