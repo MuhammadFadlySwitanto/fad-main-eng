@@ -418,12 +418,12 @@ function BuildingEMS() {
           />
         </div>
         <div className="w-full flex justify-center xl:w-auto">
-          <div className="ml-4 mt-7 truncate">
+          <div className="ml-4 mt-6 truncate">
             <Button onClick={() => getSubmit()} colorScheme="blue">
               Submit
             </Button>
           </div>
-          <div className="ml-4 mt-7 ">
+          <div className="ml-4 mt-6">
             <Button
             isDisabled={state}
             colorScheme="red"
