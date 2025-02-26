@@ -325,7 +325,7 @@ export default function BuildingRnD() {
     <div>
       <div className="flex flex-row justify-center space-x-4 mt-8 mb-8 flex-wrap xl:flex-nowrap ">
         <div>
-          <h2 className="mb-1">Area</h2>
+          <h5 className="mb-1">Area</h5>
           <Select placeholder="Select Area"  onChange={getArea}>
             <option value="cMT-HVAC-RND-Lt.3_EMS_RND3_HMI-01_data">R. ACCEDE</option>
             <option value="cMT-HVAC-RND-Lt.3_EMS_RND3_HMI-02_data">R. JMCO RND Lt.3</option>
@@ -344,7 +344,7 @@ export default function BuildingRnD() {
           </Select>
         </div>
         <div>
-          <h2 className="mb-1">Start Time</h2>
+          <h5 className="mb-1">Start Time</h5>
           <Input
             onChange={dateStart}
             placeholder="Select Date and Time"
@@ -369,7 +369,7 @@ export default function BuildingRnD() {
           /> 
         </div>
         <div>
-          <h2 className="mb-1">Finish Time</h2>
+          <h5 className="mb-1">Finish Time</h5>
           <Input
             onChange={dateFinish}
             placeholder="Select Date and Time"
@@ -394,14 +394,14 @@ export default function BuildingRnD() {
           />
         </div>
         <div className="w-full flex justify-center xl:w-auto">
-          <div className="ml-0 xl:ml-6 mt-[21px] truncate">
+          <div className="ml-0 xl:ml-6 mt-6 truncate">
             <Button
               colorScheme="blue"
               onClick={() => fetchRNDSuhu()}>
               Submit
             </Button>
           </div>
-          <div className="ml-2 mt-[21px] truncate">
+          <div className="ml-2 mt-6 truncate">
             <Button
               isDisabled={state}
               colorScheme="green"
