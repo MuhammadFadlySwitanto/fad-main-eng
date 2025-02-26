@@ -194,7 +194,8 @@ export default function Osmotron() {
         spacing={4}
         align="center"
         >
-        <div>Parameter
+        <div>
+          <h5 className="mb-1">Parameter</h5>
           <Select placeholder="Select Parameter" onChange={getOsmoArea}>
             <option value="osmo_B270A_6.1">B270A_6.1 (Unit EDI)</option>
             <option value="osmo_ET270A_6.11">ET270A_6.11 (Voltase EDI)</option>
@@ -243,7 +244,8 @@ export default function Osmotron() {
             <option value="FT270A_6.1">FT270A_6.1 (Output Osmotron)</option>
           </Select>
         </div>
-        <div>Start Time
+        <div>
+          <h5 className="mb-1">Start Time</h5>
           <Input
             onChange={dateStart}
             placeholder="Select Date and Time"
@@ -257,7 +259,8 @@ export default function Osmotron() {
             }}
           /> 
         </div>
-        <div>Finish Time
+        <div>
+          <h5 className="mb-1">Finish Time</h5>
           <Input
             onChange={dateFinish}
             placeholder="Select Date and Time"
@@ -274,7 +277,7 @@ export default function Osmotron() {
         <div>
           <br />
           <Button
-            className="ml-4 mt-4"
+            className="mt-1"
             colorScheme="blue"
             onClick={() => fetchOsmo()}
           >

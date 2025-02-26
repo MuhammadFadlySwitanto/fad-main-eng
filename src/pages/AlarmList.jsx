@@ -117,7 +117,7 @@ function AlarmList() {
         spacing={4}
         align="center">
         <div>
-          <h2 className="mb-1">Parameter</h2>
+          <h5 className="mb-1">Parameter</h5>
           <Select placeholder="Select Alarm" onChange={getAlarmType}>
             <option value="Alarm_Air_Event_Log">Pemakaian Air</option>
             <option value="Alarm_Loopo_Event_Log">Loopo</option>
@@ -128,7 +128,7 @@ function AlarmList() {
           </Select>
         </div>
         <div>
-          <h2 className="mb-1">Start Time</h2>
+          <h5 className="mb-1">Start Time</h5>
           <Input
             onChange={dateStart} 
             placeholder="Select Date"
@@ -153,7 +153,7 @@ function AlarmList() {
           />
         </div>
         <div>
-          <h2 className="mb-1">Finish Time</h2>
+          <h5 className="mb-1">Finish Time</h5>
           <Input
             onChange={dateFinish}
             placeholder="Select Date"
@@ -177,7 +177,7 @@ function AlarmList() {
             }}
           />
         </div>
-        <div className="mt-2">
+        <div className="mt-4">
           <Select
             value={rowsPerPage}
             onChange={(e) => setRowsPerPage(Number(e.target.value))}
@@ -193,7 +193,7 @@ function AlarmList() {
         <div>
           <br />
           <Button
-            className="m1-4"
+            className="ml-2"
             colorScheme="blue"
             onClick={() => fetchAlarm()}
           >

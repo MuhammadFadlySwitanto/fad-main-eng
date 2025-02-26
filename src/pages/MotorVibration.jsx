@@ -233,12 +233,6 @@ function Motor() {
 
   return (
     <div>
-      <div>
-        <h1 className="text-center text-text text-4xl antialiased hover:subpixel-antialiased p-6">
-          MOTOR VIBRATION
-        </h1>
-      </div>
-
       {/* Input Form */}
       <div className="flex flex-row justify-center items-center">
         <div className="main flex flex-row gap-x-6">
@@ -246,7 +240,7 @@ function Motor() {
           <div>
             <label
               htmlFor="start-date"
-              className="block text-sm font-medium leading-6 text-text"
+              className="block text-lg font-medium leading-4 text-text"
             >
               Start Date
             </label>
@@ -279,7 +273,7 @@ function Motor() {
           <div>
             <label
               htmlFor="finish-date"
-              className="block text-sm font-medium leading-6 text-text"
+              className="block text-lg font-medium leading-4 text-text"
             >
               Finish Date
             </label>
@@ -312,7 +306,7 @@ function Motor() {
           <div>
             <label
               htmlFor="machine"
-              className="block text-sm font-medium leading-6 text-text"
+              className="block text-lg font-medium leading-4 text-text"
             >
               Machine
             </label>
