@@ -1319,7 +1319,7 @@ export default function PowerManagement() {
         align="center"
       >
         <div>
-          <h2 className="mb-1">Panel</h2>
+          <h5 className="mb-1">Panel</h5>
           <Select placeholder="Select Panel" onChange={getPowerArea}>
             <option value="cMT-Gedung-UTY_MVMDP_data">MVMDP</option>
             <option value="cMT-Gedung-UTY_LVMDP1_data">LVMDP1</option>
@@ -1421,7 +1421,7 @@ export default function PowerManagement() {
           </Select>
         </div>
         <div>
-          <h2 className="mb-1">Start Time</h2>
+          <h5 className="mb-1">Start Time</h5>
           <Input
             onChange={dateStart}
             placeholder="Select Date and Time"
@@ -1436,7 +1436,7 @@ export default function PowerManagement() {
           />
         </div>
         <div>
-          <h2 className="mb-1">Finish Time</h2>
+          <h5 className="mb-1">Finish Time</h5>
           <Input
             onChange={dateFinish}
             placeholder="Select Date and Time"
@@ -1453,7 +1453,7 @@ export default function PowerManagement() {
         <div>
           <br />
           <Button
-            className="ml-4"
+            className="ml-2 mt-1"
             sx={{
               marginBottom: "4px"
             }}
@@ -1494,7 +1494,7 @@ export default function PowerManagement() {
         align="center"
       >
         <div>
-          <h2 className="mb-1">Panel</h2>
+          <h5 className="mb-1">Panel</h5>
           <Select placeholder="Select Panel" onChange={getAreaMonth}>
             <option value="cMT-Gedung-UTY_MVMDP_data">MVMDP</option>
             <option value="cMT-Gedung-UTY_LVMDP1_data">LVMDP1</option>
@@ -1596,7 +1596,7 @@ export default function PowerManagement() {
           </Select>
         </div>
         <div>
-          <h2 className="mb-1">Start Monthly Search</h2>
+          <h5 className="mb-1">Start Monthly Search</h5>
           <Input
               onChange={getStartMonth}
               placeholder="Select Month"
@@ -1611,7 +1611,7 @@ export default function PowerManagement() {
             />
         </div>
         <div>
-          <h2 className="mb-1">Finish Monthly search</h2>
+          <h5 className="mb-1">Finish Monthly search</h5>
           <Input
             onChange={getFinishMonth}
             placeholder="Select Month"
@@ -1628,7 +1628,7 @@ export default function PowerManagement() {
         <div>
           <br />
           <Button
-            className="ml-4"
+            className="ml-2 mt-1"
             colorScheme="blue"
             sx={{
               marginBottom: "4px"
@@ -1670,7 +1670,7 @@ export default function PowerManagement() {
         align="center"
       >
         <div>
-          <h2 className="mb-1">Panel</h2>
+          <h5 className="mb-1">Panel</h5>
           <Select placeholder="Select Panel" onChange={getSecArea}>
             <option value="cMT-Gedung-UTY_MVMDP_Detik_data">MVMDP</option>
             <option value="cMT-Gedung-UTY_LVMDP1_Detik_data">LVMDP1</option>
@@ -1681,7 +1681,7 @@ export default function PowerManagement() {
           </Select>
         </div>
         <div>
-          <h2 className="mb-1">Start Time</h2>
+          <h5 className="mb-1">Start Time</h5>
           <Input
             onChange={getSecStart}
             placeholder="Select Date and Time"
@@ -1696,7 +1696,7 @@ export default function PowerManagement() {
           />
         </div>
         <div>
-          <h2 className="mb-1">Finish Time</h2>
+          <h5 className="mb-1">Finish Time</h5>
           <Input
             onChange={getSecFinish}
             placeholder="Select Date and Time"
@@ -1711,10 +1711,12 @@ export default function PowerManagement() {
           />
         </div>
         <div>
+          <br />
           <Button
             sx={{
               marginTop: "20px"
             }}
+            className="mt-1"
             colorScheme="blue"
             onClick={() => fetchSec()}
           >
@@ -1777,7 +1779,7 @@ export default function PowerManagement() {
         spacing={4}
         align="center">  
         <div>
-          <h2 className="mb-1">Start Time</h2>
+          <h5 className="mb-1">Start Time</h5>
           <Input onChange={sankeyStart}
             placeholder="Select Date and Time"
             size="md"
@@ -1791,7 +1793,7 @@ export default function PowerManagement() {
           />
         </div>
         <div>
-          <h2 className="mb-1">Finish Time</h2>
+          <h5 className="mb-1">Finish Time</h5>
           <Input
             onChange={sankeyFinish}
             placeholder="Select Date and Time"
@@ -1812,6 +1814,7 @@ export default function PowerManagement() {
               marginBottom: "4px"
             }}
             colorScheme="blue"
+            className="mt-1"
             onClick={() => fetchPowerSankey()}
             >
             Submit

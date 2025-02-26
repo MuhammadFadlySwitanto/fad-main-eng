@@ -28,6 +28,19 @@ const Chat = () => {
   const cancelTokenRef = useRef(null);
   const currentResponseRef = useRef([]);
 
+  useEffect(() => {
+    const handleThemeChange = () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      setIsDarkMode(currentTheme === 'dark');
+    };
+    // Observe attribute changes
+    const observer = new MutationObserver(handleThemeChange);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+
+    return () => observer.disconnect();
+  }, []);
+
+
   const toggleChatbot = () => {
     setIsOpen(!isOpen);
   };

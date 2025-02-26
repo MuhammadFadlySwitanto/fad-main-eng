@@ -8,6 +8,7 @@ import { GiPowerGenerator } from "react-icons/gi";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import axios from "axios";
 import   {Progress  } from "@chakra-ui/react";
+import ChartDashboard from "../components/ChartDashboard";
 
 
 const NVMDP = () => {
@@ -34,6 +35,10 @@ const NVMDP = () => {
     const [showUtil, setShowUtil] = useState(false); 
     const [showProd, setShowProd] = useState(false); 
     const [showProd2, setShowProd2] = useState(false); 
+
+    const Colors1 = { dark: "#1e61ff", light: "#1e92ff" };
+    const Colors2 = { dark: "#07f737", light: "#8afc58" };
+    const Colors3 = { dark: "#fadd05", light: "#ffff8f" };
 
     const [isDarkMode, setIsDarkMode] = useState(
         document.documentElement.getAttribute("data-theme") === "dark"
@@ -70,13 +75,9 @@ const NVMDP = () => {
     const grafanaProd2 = isDarkMode 
     ? "https://snapshots.raintank.io/dashboard/snapshot/DGARCPDLcEQknBXOmReLJ8Zm8omafpZz?orgId=0&kiosk"
     : "https://snapshots.raintank.io/dashboard/snapshot/DGARCPDLcEQknBXOmReLJ8Zm8omafpZz?orgId=0&kiosk&theme=light";
-
-
   
     useEffect(() => {
-      // Buat koneksi WebSocket
-
-      
+      // Buat koneksi WebSocket     
       socketRef.current = new WebSocket("ws://10.126.15.137:1880/ws/test");
   
       socketRef.current.onopen = () => {
@@ -318,8 +319,8 @@ const NVMDP = () => {
             </div>
             <div className="mt-7 flex items-end justify-between">
               <div>
-                <h4 className="text-[28px] font-bold font-poppins text-black dark:text-white">{lvmdp1 ?? "N/A"}</h4>
-                <span className="text-[16px] font-medium font-poppins text-black dark:text-white">Total</span>
+                <h4 className="text-[28px] font-bold font-poppins text-text">{lvmdp1 ?? "N/A"}</h4>
+                <span className="text-[16px] font-medium font-poppins text-text">Total</span>
                 <span className="block text-green-700 text-xl font-semibold">{(lvmdp1*dataTotalUang).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</span>
               </div>
             </div>
@@ -357,8 +358,8 @@ const NVMDP = () => {
             </div>
             <div className="mt-7 flex items-end justify-between">
               <div>
-                <h4 className="text-[28px] font-bold font-poppins text-black dark:text-white">{pp1Chiller ?? "N/A"}</h4>
-                <span className="text-[16px] font-medium font-poppins text-black dark:text-white">Total</span>
+                <h4 className="text-[28px] font-bold font-poppins text-text">{pp1Chiller ?? "N/A"}</h4>
+                <span className="text-[16px] font-medium font-poppins text-text">Total</span>
               </div>
             </div>
           </div>
@@ -373,8 +374,8 @@ const NVMDP = () => {
             </div>
             <div className="mt-7 flex items-end justify-between">
               <div>
-                <h4 className="text-[28px] font-bold font-poppins text-black dark:text-white">{pp2Hydrant ?? "N/A"}</h4>
-                <span className="text-[16px] font-medium font-poppins text-black dark:text-white">Total</span>
+                <h4 className="text-[28px] font-bold font-poppins text-text">{pp2Hydrant ?? "N/A"}</h4>
+                <span className="text-[16px] font-medium font-poppins text-text">Total</span>
               </div>
             </div>
           </div>
@@ -395,10 +396,10 @@ const NVMDP = () => {
             </div>
             <div className="mt-4 flex items-end justify-between">
               <div>
-                <h4 className="text-[28px] font-bold font-poppins text-black dark:text-white">
+                <h4 className="text-[28px] font-bold font-poppins text-text">
                   {sdp1Utility ?? "N/A"}
                 </h4>
-                <span className="text-[16px] font-medium font-poppins text-black dark:text-white">
+                <span className="text-[16px] font-medium font-poppins text-text">
                   Total
                 </span>
               </div>
@@ -415,10 +416,10 @@ const NVMDP = () => {
             </div>
             <div className="mt-4 flex items-end justify-between">
               <div>
-                <h4 className="text-[28px] font-bold font-poppins text-black dark:text-white">
+                <h4 className="text-[28px] font-bold font-poppins text-text">
                   {sdp1Produksi ?? "N/A"}
                 </h4>
-                <span className="text-[16px] font-medium font-poppins text-black dark:text-white">
+                <span className="text-[16px] font-medium font-poppins text-text">
                   Total
                 </span>
               </div>
@@ -435,8 +436,8 @@ const NVMDP = () => {
             </div>
             <div className="mt-4 flex items-end justify-between">
               <div>
-                <h4 className="text-[28px] font-bold font-poppins text-black dark:text-white">{sdp2Produksi ?? "N/A"}</h4>
-                <span className="text-[16px] font-medium font-poppins text-black dark:text-white">Total</span>
+                <h4 className="text-[28px] font-bold font-poppins text-text">{sdp2Produksi ?? "N/A"}</h4>
+                <span className="text-[16px] font-medium font-poppins text-text">Total</span>
               </div>
             </div>
           </div>
@@ -521,17 +522,14 @@ const NVMDP = () => {
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
             <div className="rounded-md border border-border shadow-buatcard bg-coba p-6 relative w-full">
               <p className="text-text my-2">Ini adalah pop-up dari card Solar Panel 1 - 6.</p>
-              <iframe
-                src={grafanaSP}
+              <ChartDashboard endpoint="http://10.126.15.137:8002/part/GrafanaPower" area="cMT-Gedung-UTY_Inverter1-6_SP_data" title="Inverter Solar Panel 1-6 Data Graph" colors={Colors1}
                 style={{
                   border: 'none', // Removes border
                   position: 'relative',
                   width: '100%', // Full width of parent div
                   aspectRatio: '16 / 6', // Adjust aspect ratio as needed
-                  
-                }}
-                title="Grafana Chart">
-              </iframe>
+                  height: '580px'
+                }}/>
               <button
                 onClick={() => setShowSolarPanel(false)}
                 className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full"
@@ -546,17 +544,14 @@ const NVMDP = () => {
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
             <div className="rounded-md border border-border shadow-buatcard bg-coba p-6 relative w-full">
               <p className="text-text my-2">Ini adalah pop-up dari card Solar Panel 7 - 12.</p>
-              <iframe
-                src={grafanaSP2}
+              <ChartDashboard endpoint="http://10.126.15.137:8002/part/GrafanaPower" area="cMT-Gedung-UTY_Inverter7-12_SP_data" title="Inverter Solar Panel 7-12 Data Graph" colors={Colors1}
                 style={{
                   border: 'none', // Removes border
                   position: 'relative',
                   width: '100%', // Full width of parent div
                   aspectRatio: '16 / 6', // Adjust aspect ratio as needed
                   height: '580px'
-                }}
-                title="Grafana Chart">
-              </iframe>
+                }}/>
               <button
                 onClick={() => setShowSolarPanel2(false)}
                 className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full"
@@ -597,8 +592,8 @@ const NVMDP = () => {
           </div>
           <div className="mt-7 flex items-end justify-between">
             <div>
-              <h4 className="text-[28px] font-bold font-poppins text-black dark:text-white">{lvmdp1 ?? "N/A"}</h4>
-              <span className="text-[16px] font-medium font-poppins text-black dark:text-white">Total</span>
+              <h4 className="text-[28px] font-bold font-poppins text-text">{lvmdp1 ?? "N/A"}</h4>
+              <span className="text-[16px] font-medium font-poppins text-text">Total</span>
             </div>
             <span className="flex items-center gap-1 text-sm font-medium text-meta-3">4.35%
               <svg
@@ -623,17 +618,14 @@ const NVMDP = () => {
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
             <div className="rounded-md border border-border shadow-buatcard bg-coba p-6 relative w-full">
               <p className="text-text my-2">Ini adalah pop-up dari card LVMDP.</p>
-              <iframe
-                src={grafanaLVMDP}
+              <ChartDashboard endpoint="http://10.126.15.137:8002/part/GrafanaPower" area="cMT-Gedung-UTY_LVMDP1_data" title="LVMDP Data Graph" colors={Colors2}
                 style={{
                   border: 'none', // Removes border
                   position: 'relative',
                   width: '100%', // Full width of parent div
                   aspectRatio: '16 / 6', // Adjust aspect ratio as needed
-                  
-                }}
-                title="Grafana Chart">
-              </iframe>
+                  height: '580px'
+                }}/>
               <button
                 onClick={() => setShowPopup(false)}
                 className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full"
@@ -680,16 +672,14 @@ const NVMDP = () => {
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
           <div className="rounded-md border border-border shadow-buatcard bg-coba p-6 relative w-full">
             <p className="text-text my-2">Ini adalah pop-up dari card Chiller.</p>
-            <iframe
-              src={grafanaChiller}
+            <ChartDashboard endpoint="http://10.126.15.137:8002/part/GrafanaPower" area="cMT-Gedung-UTY_PP.1-Chiller_data" title="Chiller Data Graph" colors={Colors2}
               style={{
                 border: 'none', // Removes border
                 position: 'relative',
                 width: '100%', // Full width of parent div
-                aspectRatio: '16 / 5' // Adjust aspect ratio as needed
-              }}
-              title="Grafana Chart">
-            </iframe>
+                aspectRatio: '16 / 6', // Adjust aspect ratio as needed
+                height: '580px'
+              }}/>
             <button
               onClick={() => setShowChillerPopup(false)}
               className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full"
@@ -737,16 +727,14 @@ const NVMDP = () => {
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
           <div className="rounded-md border border-border shadow-buatcard bg-coba p-6 relative w-full">
             <p className="text-text my-2">Ini adalah pop-up dari card Hydrant.</p>
-            <iframe
-              src={grafanaHydrant}
+            <ChartDashboard endpoint="http://10.126.15.137:8002/part/GrafanaPower" area="cMT-Gedung-UTY_PP.2-Hydrant_data" title="Hydrant Data Graph" colors={Colors1}
               style={{
                 border: 'none', // Removes border
                 position: 'relative',
                 width: '100%', // Full width of parent div
-                aspectRatio: '16 / 5' // Adjust aspect ratio as needed
-              }}
-              title="Grafana Chart">
-            </iframe>
+                aspectRatio: '16 / 6', // Adjust aspect ratio as needed
+                height: '580px'
+              }}/>
             <button
               onClick={() => setShowHydrantPopup(false)}
               className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full"
@@ -793,16 +781,14 @@ const NVMDP = () => {
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
             <div className="rounded-md border border-border shadow-buatcard bg-coba p-6 relative w-full">
               <p className="text-text my-2">Ini adalah pop-up dari card Utility.</p>
-              <iframe
-                src={grafanaUtil}
+              <ChartDashboard endpoint="http://10.126.15.137:8002/part/GrafanaPower" area="cMT-Gedung-UTY_SDP.1-Utility_data" title="Utility Data Graph" colors={Colors1}
                 style={{
                   border: 'none', // Removes border
                   position: 'relative',
                   width: '100%', // Full width of parent div
-                  aspectRatio: '16 / 5' // Adjust aspect ratio as needed
-                }}
-                title="Grafana Chart">
-              </iframe>
+                  aspectRatio: '16 / 6', // Adjust aspect ratio as needed
+                  height: '580px'
+                }}/>
               <button
                 onClick={() => setShowUtil(false)}
                 className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full"
@@ -848,16 +834,14 @@ const NVMDP = () => {
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
             <div className="rounded-md border border-border shadow-buatcard bg-coba p-6 relative w-full">
               <p className="text-text my-2">Ini adalah pop-up dari card SDP 1 Production.</p>
-              <iframe
-                src={grafanaProd1}
+              <ChartDashboard endpoint="http://10.126.15.137:8002/part/GrafanaPower" area="cMT-Gedung-UTY_SDP.1-Produksi_data" title="SDP 1 Production Data Graph" colors={Colors3}
                 style={{
                   border: 'none', // Removes border
                   position: 'relative',
                   width: '100%', // Full width of parent div
-                  aspectRatio: '16 / 5' // Adjust aspect ratio as needed
-                }}
-                title="Grafana Chart">
-              </iframe>
+                  aspectRatio: '16 / 6', // Adjust aspect ratio as needed
+                  height: '580px'
+                }}/>
               <button
                 onClick={() => setShowProd(false)}
                 className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full"
@@ -903,16 +887,14 @@ const NVMDP = () => {
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
             <div className="rounded-md border border-border shadow-buatcard bg-coba p-6 relative w-full">
               <p className="text-text mt-2">Ini adalah pop-up dari card SDP 2 Production.</p>
-              <iframe
-                src={grafanaProd2}
+              <ChartDashboard endpoint="http://10.126.15.137:8002/part/GrafanaPower" area="cMT-Gedung-UTY_SDP.2-Produksi_data" title="SDP 2 Production Data Graph" colors={Colors3}
                 style={{
                   border: 'none', // Removes border
                   position: 'relative',
                   width: '100%', // Full width of parent div
-                  aspectRatio: '16 / 5' // Adjust aspect ratio as needed
-                }}
-                title="Grafana Chart">
-              </iframe>
+                  aspectRatio: '16 / 6', // Adjust aspect ratio as needed
+                  height: '580px'
+                }}/>
               <button
                 onClick={() => setShowProd2(false)}
                 className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full"

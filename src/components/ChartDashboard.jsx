@@ -7,13 +7,13 @@ import { useColorMode, useColorModeValue } from "@chakra-ui/react";
 var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
-function HVAChendeling() {
+function ChartDashboard({endpoint, area, title, colors}) {
   const [waterGraph, setWaterGraph] = useState([]);
-  const [waterTamanGraph, setWaterTamanGraph] = useState([]);
+  const [waterOsmoGraph, setWaterOsmoGraph] = useState([]);
 
   const [powerGraph, setPowerGraph] = useState([]);
 
-  const area = 'cMT-DB-WATER-UTY_Met_Taman_data'; // Nama tabel yang ingin digunakan
+  const taman = 'cMT-DB-WATER-UTY_Met_Taman_data'; // Nama tabel yang ingin digunakan
   const domestik = 'cMT-DB-WATER-UTY_Met_Domestik_data'; 
   const inlet = 'cMT-DB-WATER-UTY_Met_Inlet_Pt_data'; 
   const osmo = 'cMT-DB-WATER-UTY_Met_RO_data'; 
@@ -29,8 +29,6 @@ function HVAChendeling() {
   const hydrant = 'cMT-Gedung-UTY_PP.2-Hydrant_data'; 
   const lvmdp = 'cMT-Gedung-UTY_LVMDP1_data'; 
   const power = 'cMT-Gedung-UTY_MVMDP_data'; 
-
-
 
   const [isDarkMode, setIsDarkMode] = useState(
       document.documentElement.getAttribute("data-theme") === "dark"
@@ -51,7 +49,7 @@ function HVAChendeling() {
   const fetchGraphData = async () => {
     try {
       let response = await Axios.get(
-        `http://10.126.15.137:8002/part/GrafanaWater`,
+        endpoint,
         {
           params: 
           { area }
@@ -63,7 +61,8 @@ function HVAChendeling() {
         x: new Date(row.x * 1000), // Konversi timestamp ke objek Date
         y: Math.max(0, Number(row.y))
       }));
-      setWaterTamanGraph(processedData);
+      setWaterGraph(processedData);
+    //   setWaterOsmoGraph(processedData);
     } catch (error) {
       console.error("Error fetching data: ", error);
     }
@@ -71,9 +70,9 @@ function HVAChendeling() {
 
   useEffect(() => {
     fetchGraphData();
-  }, []);
+  }, [endpoint, area]);
 
-  const TamanOptions = {
+  const WaterOptions = {
     theme: isDarkMode ? "dark2" : "light2",
     axisY: {
       prefix: "",
@@ -95,31 +94,67 @@ function HVAChendeling() {
     },
     backgroundColor: isDarkMode ? "#171717" : "#ffffff",
     title: {
-      text: "Water Data Graph",
+      text: title,
       fontColor: isDarkMode ? "white" : "black"
     },
     data: [
       {
         type: "column",
         showInLegend: true,
-        lineColor: isDarkMode ? "#00bfff" : "#1e90ff",
-        color: isDarkMode ? "#00bfff" : "#1e90ff",
-        markerColor: isDarkMode ? "#00bfff" : "#1e90ff",
+        lineColor: isDarkMode ? colors.dark : colors.light,
+        color: isDarkMode ? colors.dark : colors.light,
+        markerColor: isDarkMode ? colors.dark : colors.light,
         markerSize: 2,
-        dataPoints: waterTamanGraph,
+        dataPoints: waterGraph,
       },
     ],
   };
+//   const RejectOsmoOptions = {
+//     theme: isDarkMode ? "dark2" : "light2",
+//     axisY: {
+//       prefix: "",
+//       gridColor: isDarkMode ? "#444" : "#bfbfbf",
+//       labelFontColor: isDarkMode ? "white" : "black",
+//       tickLength: 5,
+//       tickThickness: 2,
+//       tickColor: isDarkMode ? "#d6d6d6" : "#5e5e5e",
+//     },
+//     axisX: {
+//       lineColor: isDarkMode ? "#d6d6d6" : "#474747",
+//       labelFontColor: isDarkMode ? "white" : "black",
+//       tickLength: 5,
+//       tickThickness: 2,
+//       tickColor: isDarkMode ? "#d6d6d6" : "#474747",
+//     },
+//     toolTip: {
+//       shared: true,
+//     },
+//     backgroundColor: isDarkMode ? "#171717" : "#ffffff",
+//     title: {
+//       text: "Reject Osmotron Data Graph",
+//       fontColor: isDarkMode ? "white" : "black"
+//     },
+//     data: [
+//       {
+//         type: "column",
+//         showInLegend: true,
+//         lineColor: isDarkMode ? "#ec1eff" : "#a11eff",
+//         color: isDarkMode ? "#ec1eff" : "#a11eff",
+//         markerColor: isDarkMode ? "#ec1eff" : "#a11eff",
+//         markerSize: 2,
+//         dataPoints: waterOsmoGraph,
+//       },
+//     ],
+//   };
 
   return (
     <>
-      <div>Trial water</div>
-      <br />
-      <div className="block bg-card p-2 rounded-lg shadow-lg mx-6 overflow-x-auto">
-        <CanvasJSChart options={TamanOptions} />
-      </div>
+        <div className="block bg-card p-2 rounded-lg shadow-lg mx-6 overflow-x-auto">
+            <CanvasJSChart options={WaterOptions} />
+            {/* <CanvasJSChart options={RejectOsmoOptions} /> */}
+        </div>
     </>
   );
 }
 
-export default HVAChendeling;
+export default ChartDashboard;

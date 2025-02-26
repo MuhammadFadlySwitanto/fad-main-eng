@@ -4,6 +4,7 @@ import { GrFanOption } from "react-icons/gr";
 import { GiBaseDome } from "react-icons/gi";
 import { PiPlantFill } from "react-icons/pi";
 import { IoLogoElectron } from "react-icons/io5";
+import ChartDashboard from "../components/ChartDashboard";
 
 const PDAM = () => {
     const [inlet, setInlet] = useState(null);
@@ -19,6 +20,9 @@ const PDAM = () => {
     const [showTamanPos, setShowTamanPos] = useState(false); 
     const [showOsmo, setShowOsmo] = useState(false); 
     const [showBoiler, setShowBoiler] = useState(false); 
+
+    const Colors1 = { dark: "#00bfff", light: "#1e90ff" };
+    const Colors2 = { dark: "#ec1eff", light: "#a11eff" };
 
     const [isDarkMode, setIsDarkMode] = useState(
         document.documentElement.getAttribute("data-theme") === "dark"
@@ -141,18 +145,15 @@ const PDAM = () => {
             {showBoiler && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
                     <div className="rounded-md border border-border shadow-buatcard bg-coba p-6 relative w-full">
-                    <p className="text-text my-2">Ini adalah pop-up dari card Reject Osmotron.</p>
-                    <iframe
-                        src={grafanaBoiler}
+                    <p className="text-text my-2">Ini adalah pop-up dari card Boiler.</p>
+                    <ChartDashboard endpoint="http://10.126.15.137:8002/part/GrafanaWater" area="cMT-DB-WATER-UTY_Met_Boiler_data" title="Boiler Data Graph" colors={Colors1}
                         style={{
                         border: 'none', // Removes border
                         position: 'relative',
                         width: '100%', // Full width of parent div
                         aspectRatio: '16 / 6', // Adjust aspect ratio as needed
                         height: '580px'
-                        }}
-                        title="Grafana Chart">
-                    </iframe>
+                        }}/>
                     <button
                         onClick={() => setShowBoiler(false)}
                         className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full"
@@ -198,17 +199,14 @@ const PDAM = () => {
             <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
                 <div className="rounded-md border border-border shadow-buatcard bg-coba p-6 relative w-full">
                 <p className="text-text my-2">Ini adalah pop-up dari card Domestik.</p>
-                <iframe
-                    src={grafanaDomestic}
+                <ChartDashboard endpoint="http://10.126.15.137:8002/part/GrafanaWater" area="cMT-DB-WATER-UTY_Met_Domestik_data" title="Domestik Data Graph" colors={Colors2}
                     style={{
                     border: 'none', // Removes border
                     position: 'relative',
                     width: '100%', // Full width of parent div
                     aspectRatio: '16 / 6', // Adjust aspect ratio as needed
                     height: '580px'
-                    }}
-                    title="Grafana Chart">
-                </iframe>
+                    }}/>
                 <button
                     onClick={() => setShowDomestic(false)}
                     className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full"
@@ -255,17 +253,14 @@ const PDAM = () => {
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
             <div className="rounded-md border border-border shadow-buatcard bg-coba p-6 relative w-full">
               <p className="text-text my-2">Ini adalah pop-up dari card Inlet.</p>
-              <iframe
-                src={grafanaInlet}
-                style={{
-                  border: 'none', // Removes border
-                  position: 'relative',
-                  width: '100%', // Full width of parent div
-                  aspectRatio: '16 / 6', // Adjust aspect ratio as needed
-                  height: '580px'
-                }}
-                title="Grafana Chart">
-              </iframe>
+              <ChartDashboard endpoint="http://10.126.15.137:8002/part/GrafanaWater" area="cMT-DB-WATER-UTY_Met_Inlet_Pt_data" title="Inlet Pre-Treatment Data Graph" colors={Colors1}
+                    style={{
+                    border: 'none', // Removes border
+                    position: 'relative',
+                    width: '100%', // Full width of parent div
+                    aspectRatio: '16 / 6', // Adjust aspect ratio as needed
+                    height: '580px'
+                    }}/>
               <button
                 onClick={() => setShowInlet(false)}
                 className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full"
@@ -316,17 +311,14 @@ const PDAM = () => {
             <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
                 <div className="rounded-md border border-border shadow-buatcard bg-coba p-6 relative w-full">
                 <p className="text-text my-2">Ini adalah pop-up dari card Reject Osmotron.</p>
-                <iframe
-                    src={grafanaOsmo}
+                <ChartDashboard endpoint="http://10.126.15.137:8002/part/GrafanaWater" area="cMT-DB-WATER-UTY_Met_RO_data" title="Reject Osmotron Data Graph" colors={Colors1}
                     style={{
                     border: 'none', // Removes border
                     position: 'relative',
                     width: '100%', // Full width of parent div
                     aspectRatio: '16 / 6', // Adjust aspect ratio as needed
                     height: '580px'
-                    }}
-                    title="Grafana Chart">
-                </iframe>
+                    }}/>
                 <button
                     onClick={() => setShowOsmo(false)}
                     className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full"
@@ -375,7 +367,15 @@ const PDAM = () => {
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
             <div className="rounded-md border border-border shadow-buatcard bg-coba p-6 relative w-full">
               <p className="text-text my-2">Ini adalah pop-up dari card Taman Pos Jaga.</p>
-              <iframe
+              <ChartDashboard endpoint="http://10.126.15.137:8002/part/GrafanaWater" area="cMT-DB-WATER-UTY_Met_Taman_data" title="Taman Pos Jaga Data Graph" colors={Colors2}
+                style={{
+                  border: 'none', // Removes border
+                  position: 'relative',
+                  width: '100%', // Full width of parent div
+                  aspectRatio: '16 / 6', // Adjust aspect ratio as needed
+                  height: '580px'
+                }}/>
+              {/* <iframe
                 src={grafanaTaman}
                 style={{
                   border: 'none', // Removes border
@@ -385,7 +385,7 @@ const PDAM = () => {
                   height: '580px'
                 }}
                 title="Grafana Chart">
-              </iframe>
+              </iframe> */}
               <button
                 onClick={() => setShowTamanPos(false)}
                 className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full"
@@ -414,8 +414,6 @@ const PDAM = () => {
         <br/>
         <iframe
           src={grafanaPDAMYear}
-          // width="540"
-          // height="480"
           style={{
             border: 'none', // Removes border
             position: 'relative',

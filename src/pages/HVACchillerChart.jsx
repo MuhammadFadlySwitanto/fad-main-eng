@@ -889,6 +889,7 @@ export default function HVACchillerChart() {
           </Button>
         </div>
         <div>
+          <br />
           <Button
             className="w-32 mt-1"
             colorScheme="red"
