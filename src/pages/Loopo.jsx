@@ -265,7 +265,7 @@ export default function Loopo() {
         <div>
           <br />
           <Button
-            className="ml-4 mt-[10px]"
+            className="ml-4 mt-2"
             colorScheme="blue"
             onClick={() => fetchLoopo()}
           >
