@@ -196,7 +196,7 @@ function LandingProduction() {
         <div className="container mx-auto px-4 py-6">
           <div className="flex flex-col sm:flex-row justify-center gap-6 mb-8">
             <div>
-              <h2 className="mb-1 text-text">Year Search</h2>
+              <h5 className="mb-1 text-text">Year Search</h5>
               <Select
                 sx={{
                   border: "1px solid",
@@ -216,7 +216,7 @@ function LandingProduction() {
               </Select>
             </div>
             <div>
-              <h2 className="mb-1 text-text">Month Search</h2>
+              <h5 className="mb-1 text-text">Month Search</h5>
               <Select onChange={getDate} value={dateValue}
                 sx={{
                   border: "1px solid",

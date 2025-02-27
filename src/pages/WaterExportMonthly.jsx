@@ -118,7 +118,7 @@ function WaterExportMonthly() {
 
     return (
         <div>
-            <div align="center"><h1 className="text-4xl"><b>Export Monthly Water Data </b></h1></div>
+            <div align="center"><h1 className="text-4xl text-text"><b>Export Monthly Water Data </b></h1></div>
             <br />
             <Stack
                 className="flex flex-row justify-center mb-4  "
@@ -127,7 +127,7 @@ function WaterExportMonthly() {
                 align="center"
             >
             <div>
-                <h2 className="mb-1">Start Time</h2>
+                <h5 className="mb-1">Start Time</h5>
                 <Input
                     onChange={dateStart}
                     placeholder="Select Date"
@@ -152,7 +152,7 @@ function WaterExportMonthly() {
                 />
             </div>
             <div>
-                <h2 className="mb-1">Finish Time</h2>
+                <h5 className="mb-1">Finish Time</h5>
                 <Input
                     onChange={dateFinish}
                     placeholder="Select Date"
@@ -176,7 +176,7 @@ function WaterExportMonthly() {
                     }}
                 />
             </div>
-            <div className="text-text"> Data Type : 
+            <div className="text-text mt-1"> Data Type : 
                 <RadioGroup>
                 <Stack direction='row'>
                     <Radio className="text-text" value='1' onClick={() => fetchWaterConsumption()}>Consumption</Radio>
@@ -196,7 +196,7 @@ function WaterExportMonthly() {
                     <ExportToExcel apiData={dataExport} fileName={fileName} />
                 </div>
             </Stack>
-            <div align="center"><h1 style={{ fontSize: "2rem"}}><b>Preview {fileName} :</b></h1></div>
+            <div align="center"><h1 className=" text-2xl text-text"><b>Preview {fileName} :</b></h1></div>
             <TableContainer className="bg-card rounded-md">
                 <Table key={colorMode} variant="simple">
                     <Thead>

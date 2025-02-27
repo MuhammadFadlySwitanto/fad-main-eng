@@ -117,7 +117,7 @@ function WaterExportYearly() {
     }; 
     return (
         <div>
-            <div align="center"><h1 className="text-4xl"><b>Export Yearly Water Data </b></h1></div>
+            <div align="center"><h1 className="text-4xl text-text"><b>Export Yearly Water Data </b></h1></div>
             <br />
             <Stack
                 className="flex flex-row justify-center mb-4  "
@@ -126,7 +126,7 @@ function WaterExportYearly() {
                 align="center"
             >
             <div>
-                <h2 className="mb-1">Start Time</h2>
+                <h5 className="mb-1">Start Time</h5>
                 <Input
                     onChange={dateStart}
                     placeholder="YYYY"
@@ -136,7 +136,7 @@ function WaterExportYearly() {
                 />
             </div>
             <div>
-                <h2 className="mb-1">Finish Time</h2>
+                <h5 className="mb-1">Finish Time</h5>
                 <Input
                     onChange={dateFinish}
                     placeholder="YYYY"
@@ -144,7 +144,7 @@ function WaterExportYearly() {
                     type="number"
                 />
             </div>
-            <div className="text-text"> Data Type : 
+            <div className="text-text mt-1"> Data Type : 
                 <RadioGroup>
                 <Stack direction='row'>
                     <Radio className="text-text" value='1' onClick={() => fetchWaterConsumption()}>Consumption</Radio>
@@ -164,7 +164,7 @@ function WaterExportYearly() {
                 <ExportToExcel apiData={dataExport} fileName={fileName} />
             </div>
         </Stack>
-        <div align="center"><h1 className="text-2xl"><b>Preview {fileName} :</b></h1></div>
+        <div align="center"><h1 className="text-2xl text-text"><b>Preview {fileName} :</b></h1></div>
         <TableContainer>
           <Table key={colorMode} variant="simple">
             <Thead>

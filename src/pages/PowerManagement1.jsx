@@ -1596,7 +1596,7 @@ export default function PowerManagement() {
           </Select>
         </div>
         <div>
-          <h5 className="mb-1">Start Monthly Search</h5>
+          <h5 className="mb-1">Start Monthly</h5>
           <Input
               onChange={getStartMonth}
               placeholder="Select Month"
@@ -1611,7 +1611,7 @@ export default function PowerManagement() {
             />
         </div>
         <div>
-          <h5 className="mb-1">Finish Monthly search</h5>
+          <h5 className="mb-1">Finish Monthly</h5>
           <Input
             onChange={getFinishMonth}
             placeholder="Select Month"

@@ -394,7 +394,6 @@ function Motor() {
 
           {/* Toggle Table Visibility */}
           <div>
-            <br />
             <Button
               className="w-40 mt-4"
               colorScheme="red"

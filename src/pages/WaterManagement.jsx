@@ -820,7 +820,7 @@ export default function WaterManagement() {
           align="center"
         >
           <div>
-            <h2 className="mb-1">Flow Meter</h2>
+            <h5 className="mb-1">Flow Meter</h5>
             <Select placeholder="Select Flow Meter" onChange={getWaterArea}>
             <option value="cMT-DB-WATER-UTY_PDAM_Sehari_data">PDAM</option>
               <option value="cMT-DB-WATER-UTY_Dom_sehari_data">Domestik</option>
@@ -849,7 +849,7 @@ export default function WaterManagement() {
             </Select>
           </div>
           <div>
-            <h2 className="mb-1">Start Time</h2>
+            <h5 className="mb-1">Start Time</h5>
             <Input
               onChange={dateStart}
               placeholder="Select Date and Time"
@@ -874,7 +874,7 @@ export default function WaterManagement() {
             />
           </div>
           <div>
-            <h2 className="mb-1">Finish Time</h2>
+            <h5 className="mb-1">Finish Time</h5>
             <Input
               onChange={dateFinish}
               placeholder="Select Date and Time"
@@ -902,7 +902,7 @@ export default function WaterManagement() {
           <div>
             <br />
             <Button
-              className="m1-4"
+              className="ml-2 mt-1"
               colorScheme="blue"
               onClick={() => fetchWaterDaily()}
             >
@@ -925,7 +925,7 @@ export default function WaterManagement() {
         spacing={4}
         align="center">
         <div>
-          <h2 className="mb-1">Start Time</h2>
+          <h5 className="mb-1">Start Time</h5>
           <Input
             onChange={sankeyStart}
             placeholder="Select Date and Time"
@@ -950,7 +950,7 @@ export default function WaterManagement() {
           />
         </div>
         <div>
-          <h2 className="mb-1">Finish Time</h2>
+          <h5 className="mb-1">Finish Time</h5>
           <Input
             onChange={sankeyFinish}
             placeholder="Select Date and Time"
@@ -978,7 +978,7 @@ export default function WaterManagement() {
         <div>
           <br />
           <Button
-            className="m1-4"
+            className="ml-2 mt-1"
             colorScheme="blue"
             onClick={() => fetchWaterSankey()}
           >
