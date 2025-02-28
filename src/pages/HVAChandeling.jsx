@@ -30,8 +30,6 @@ function HVAChendeling() {
   const lvmdp = 'cMT-Gedung-UTY_LVMDP1_data'; 
   const power = 'cMT-Gedung-UTY_MVMDP_data'; 
 
-
-
   const [isDarkMode, setIsDarkMode] = useState(
       document.documentElement.getAttribute("data-theme") === "dark"
     );

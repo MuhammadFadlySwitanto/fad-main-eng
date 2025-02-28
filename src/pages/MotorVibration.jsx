@@ -234,8 +234,8 @@ function Motor() {
   return (
     <div>
       {/* Input Form */}
-      <div className="flex flex-row justify-center items-center">
-        <div className="main flex flex-row gap-x-6">
+      <div className="flex flex-row justify-center items-center mt-6 mx-2">
+        <div className="main grid grid-cols-3 justify-items-center gap-6 xl:grid-cols-6 xl:flex xl:flex-row">
           {/* Start Date */}
           <div>
             <label
@@ -384,7 +384,7 @@ function Motor() {
           {/* Submit Button */}
           <div>
             <Button
-              className="w-40 mt-4"
+              className="w-full md:w-40 mt-4"
               colorScheme="blue"
               onClick={submitHandler}
             >
@@ -395,7 +395,7 @@ function Motor() {
           {/* Toggle Table Visibility */}
           <div>
             <Button
-              className="w-40 mt-4"
+              className="w-full md:w-40 mt-4"
               colorScheme="red"
               onClick={() => setIsTableVisible(!isTableVisible)}
             >
@@ -405,7 +405,7 @@ function Motor() {
         </div>
       </div>
       <br />
-      <div className="block rounded-lg bg-card p-1 shadow-lg">
+      <div className="flex flex-row justify-center mx-8 p-1 rounded-md shadow-lg overflow-x-auto">
       {loading ? (
       <div className="flex flex-col items-center">
         <Spinner

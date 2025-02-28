@@ -193,8 +193,8 @@ function LandingProduction() {
     <div className="min-h-screen bg-background">
     <Header />
 
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex flex-col sm:flex-row justify-center gap-6 mb-8">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex flex-col sm:flex-row justify-center gap-6 mb-4">
             <div>
               <h5 className="mb-1 text-text">Year Search</h5>
               <Select

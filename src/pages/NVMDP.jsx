@@ -36,9 +36,9 @@ const NVMDP = () => {
     const [showProd, setShowProd] = useState(false); 
     const [showProd2, setShowProd2] = useState(false); 
 
-    const Colors1 = { dark: "#1e61ff", light: "#1e92ff" };
-    const Colors2 = { dark: "#07f737", light: "#8afc58" };
-    const Colors3 = { dark: "#fadd05", light: "#ffff8f" };
+    const Colors1 = { dark: "#dfa2fc", light: "#e1c2f0" };
+    const Colors2 = { dark: "#b88be8", light: "#efe0ff" };
+    const Colors3 = { dark: "#c692fc", light: "#efe0ff" };
 
     const [isDarkMode, setIsDarkMode] = useState(
         document.documentElement.getAttribute("data-theme") === "dark"
@@ -907,18 +907,14 @@ const NVMDP = () => {
       </div>
       <div className="text-center mt-8 p-2 shadow-buatcard bg-coba rounded-md relative">
         <h1 className="text-center text-text text-4xl antialiased hover:subpixel-antialiased mb-2">MVMDP Chart</h1>
-        <iframe
-          src={grafanaMVMDPMonth}
-          // width="540"
-          // height="480"
+        <ChartDashboard endpoint="http://10.126.15.137:8002/part/GrafanaMVMDPYear" area="cMT-Gedung-UTY_MVMDP_data" title=" " colors={Colors2}
           style={{
-            border: 'none', // Removes border
-            position: 'relative',
-            width: '100%', // Full width of parent div
-            aspectRatio: '16 / 6' // Adjust aspect ratio as needed
-          }}
-          title="Grafana Chart">
-        </iframe>
+          border: 'none', // Removes border
+          position: 'relative',
+          width: '100%', // Full width of parent div
+          aspectRatio: '16 / 6', // Adjust aspect ratio as needed
+          height: '580px'
+        }}/>
         <br/>
         <iframe
           src={grafanaMVMDPYear}

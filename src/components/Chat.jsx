@@ -40,6 +40,25 @@ const Chat = () => {
     return () => observer.disconnect();
   }, []);
 
+  // Fungsi untuk membersihkan tag <think> dan tag lain yang tidak diinginkan
+  const cleanResponse = (text) => {
+    if (!text) return '';
+    
+    // Menghapus tag <think> dan kontennya
+    let cleaned = text.replace(/<think>[\s\S]*?<\/think>/g, '');
+    
+    // Menghapus tag <userStyle> dan kontennya kalau ada
+    // cleaned = cleaned.replace(/<userStyle>[\s\S]*?<\/userStyle>/g, '');
+    
+    // Menghapus tag-tag lain yang mungkin tidak diinginkan.
+    // cleaned = cleaned.replace(/<[^>]*>/g, ''); // Hilangkan semua tag HTML
+    
+    // Menghapus whitespace berlebih
+    cleaned = cleaned.trim();
+    
+    return cleaned;
+  };
+
 
   const toggleChatbot = () => {
     setIsOpen(!isOpen);
@@ -77,13 +96,16 @@ const Chat = () => {
       const token = event.data;
       currentResponseRef.current.push(token);
       
+      //buat bersihin token
+      const cleanedResponse = cleanResponse(currentResponseRef.current.join(''));
+
       // Update messages with current accumulated response
       setMessages(prev => {
         const newMessages = [...prev];
         const lastMessage = newMessages[newMessages.length - 1];
         
         if (lastMessage && lastMessage.sender === 'ai') {
-          lastMessage.text = currentResponseRef.current.join('');
+          lastMessage.text = cleanedResponse;
           return [...newMessages];
         } else {
           return [...newMessages, {
@@ -92,7 +114,9 @@ const Chat = () => {
             sender: 'ai'
           }];
         }
+        
       });
+      console.log(messages);
     };
 
     ws.current.onclose = () => {

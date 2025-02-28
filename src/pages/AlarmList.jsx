@@ -206,21 +206,13 @@ function AlarmList() {
         <TableContainer class="center" marginLeft={"25%"} marginRight={"25%"}>
           <Table key={colorMode} variant="simple">
             <Thead>
-              <Tr backgroundColor="blue.200" border="1px">
-                <Th border="1px" 
-                sx={{
-                  color: tulisanColor,
-                  }}
+              <Tr backgroundColor="blue.200">
+                <Th sx={{color: tulisanColor}}
                   textAlign={"center"}>No</Th>
-                <Th border="1px"
-                sx={{
-                  color: tulisanColor,
-                  }}
+                <Th sx={{
+                  color: tulisanColor}}
                   textAlign={"center"}>Date Time</Th>
-                <Th border="1px"
-                sx={{
-                  color: tulisanColor,
-                  }} 
+                <Th sx={{color: tulisanColor,}} 
                   textAlign={"center"}>Event</Th>
               </Tr>
             </Thead>

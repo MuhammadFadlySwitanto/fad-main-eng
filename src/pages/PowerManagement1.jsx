@@ -1014,6 +1014,8 @@ export default function PowerManagement() {
 // ============================================================== CHART ===========================================================================================
 
   const options = {
+    responsive: true, // Membuat chart bisa menyesuaikan ukuran container
+    maintainAspectRatio: false, // Agar chart tidak terdistorsi saat resize
     theme: isDarkMode ? "dark2" : "light2",
     backgroundColor: isDarkMode ? "#171717" : "#ffffff",
     borderRadius: 12, // Membuat sudut melengkung (mirip rounded-lg)
@@ -1057,6 +1059,8 @@ export default function PowerManagement() {
   };
   
   const options2 = {
+    responsive: true, // Membuat chart bisa menyesuaikan ukuran container
+    maintainAspectRatio: false, // Agar chart tidak terdistorsi saat resize
     theme: isDarkMode ? "dark2" : "light2",
     backgroundColor: isDarkMode ? "#171717" : "#ffffff",
     borderRadius: 12, // Membuat sudut melengkung (mirip rounded-lg)
@@ -1106,6 +1110,8 @@ export default function PowerManagement() {
   };
 
   const options3 = {
+    responsive: true,
+    maintainAspectRatio: false, 
     theme: isDarkMode ? "dark2" : "light2",
     backgroundColor: isDarkMode ? "#171717" : "#ffffff",
     cornerRadius: 8,
@@ -1138,6 +1144,8 @@ export default function PowerManagement() {
   };
 
   const options4 = {
+    responsive: true,
+    maintainAspectRatio: false, 
     theme: isDarkMode ? "dark2" : "light2",
     backgroundColor: isDarkMode ? "#171717" : "#ffffff",
     cornerRadius: 8,
@@ -1170,6 +1178,8 @@ export default function PowerManagement() {
   };
 
   const options5 = {
+    responsive: true,
+    maintainAspectRatio: false, 
     theme: isDarkMode ? "dark2" : "light2",
     backgroundColor: isDarkMode ? "#171717" : "#ffffff",
     cornerRadius: 8,
@@ -1218,11 +1228,13 @@ export default function PowerManagement() {
   };
 
   const options6 = {
+    responsive: true,
+    maintainAspectRatio: false, 
+    responsive: true,
+    maintainAspectRatio: false, 
     theme: isDarkMode ? "dark2" : "light2",
     backgroundColor: isDarkMode ? "#171717" : "#ffffff",
     animationEnabled: true,
-    // width: datawidth,
-    // height: dataheight,
 
     title: {},
     subtitles: [
@@ -1255,6 +1267,8 @@ export default function PowerManagement() {
     ],
   };
   const options7 = {
+    responsive: true,
+    maintainAspectRatio: false, 
     theme: isDarkMode ? "dark2" : "light2",
     backgroundColor: isDarkMode ? "#171717" : "#ffffff",
     animationEnabled: true,
@@ -1292,10 +1306,15 @@ export default function PowerManagement() {
     ],
   };
 
-  const colors = ['#a6cee3', '#b2df8a', '#fb9a99', '#fdbf6f',
-  '#cab2d6', '#ffff99', '#1f78b4', '#33a02c'];
+  const lightModeColors = ['#a6cee3', '#b2df8a', '#fb9a99', '#fdbf6f',
+    '#cab2d6', '#ffff99', '#1f78b4', '#33a02c'];
+  
+  const darkModeColors = ['#2c3e50', '#16a085', '#e74c3c', '#f39c12',
+    '#8e44ad', '#f1c40f', '#2980b9', '#27ae60'];
 
   const options8 = {
+    responsive: true,
+    maintainAspectRatio: false, 
     sankey: {
       node: { nodePadding: 20,
               label: { fontSize: 16,
@@ -1305,15 +1324,15 @@ export default function PowerManagement() {
 
       link: {
         colorMode: 'gradient',
-        colors: colors
+        colors: isDarkMode ? darkModeColors : lightModeColors
       }, 
     }
   };
 
   return (
-    <>
+    <div>
       <Stack
-        className="flex flex-row justify-center mb-4  "
+        className="flex flex-row justify-center my-4  "
         direction="row"
         spacing={4}
         align="center"
@@ -1470,7 +1489,7 @@ export default function PowerManagement() {
           </div>
         </div>
       </Stack>
-      <div className="flex flex-row box-border justify-center mx-10 p-1 bg-card rounded-lg">
+      <div className="flex flex-row box-border justify-center mx-8 p-1 bg-card rounded-lg overflow-x-auto relative">
       {loading ? (
         <Spinner
         thickness="4px"
@@ -1482,7 +1501,7 @@ export default function PowerManagement() {
       ) : error ? (
         <div className="text-red-500 ">No available data</div>
       ) : (
-        <CanvasJSChart className="relative" options={options} />
+        <CanvasJSChart className="w-full" options={options} />
       )}
       </div>
       <br />
@@ -1647,7 +1666,7 @@ export default function PowerManagement() {
           </div>
         </div>
       </Stack>
-      <div className="flex flex-row box-border justify-center p-1 mx-8 bg-card rounded-lg shadow-lg">
+      <div className="flex flex-row box-border justify-center p-1 mx-8 bg-card rounded-lg shadow-lg overflow-x-auto relative">
         {loading2 ? (
           <Spinner
           thickness="4px"
@@ -1659,7 +1678,7 @@ export default function PowerManagement() {
         ) : error2 ? (
           <div className="text-red-500 flex flex-col items-center">No available data</div>
         ) : (
-          <CanvasJSChart align="center" className="" options={options2} />
+          <CanvasJSChart className="w-full" options={options2} />
         )}
       </div>
 
@@ -1742,12 +1761,12 @@ export default function PowerManagement() {
           <div className="text-red-500 flex flex-col items-center">No available data</div>
         ) : (
           <>
-          <div className="flex flex-row mx-50 px-30 mt-3">
+          <div className="flex flex-row mx-20 mt-3 gap-2 overflow-x-auto overflow-y-hidden relative">
             <CanvasJSChart className="" options={options6} />
             <CanvasJSChart className="" options={options7} />
           </div>
 
-          <div className="flex flex-row mt-10 gap-1">
+          <div className="flex flex-row mt-10 mx-2 gap-2 overflow-x-auto overflow-y-hidden relative">
             <CanvasJSChart className="" options={options3} />
             <CanvasJSChart className="" options={options4} />
             <CanvasJSChart className="" options={options5} />
@@ -1823,26 +1842,30 @@ export default function PowerManagement() {
       </Stack>
       <div align="center"><h1 style={{ fontSize: "2rem"}}><b className="text-text">Power Sankey Diagram </b></h1></div>
       <div align="center"><h3 style={{ fontSize: "1rem"}}><b className="text-text">kWh</b></h3></div>
-      <div align="center" className="flex flex-row justify-center mx-12 pb-10">
+      <div align="center" className="flex flex-row justify-center pb-10 overflow-x-auto overflow-y-hidden relative">
         <Chart
           chartType= "Sankey"
-          width= "100%"
+          width="900px" // Ubah dari "100%" ke ukuran lebih besar
           height="1000px"
           data={data}
-          options={options8}>
+          options={options8}
+          overflowX="auto"
+          style={{ minWidth: "1000px" }}>
         </Chart>
       </div>
       <div align="center"><h1 style={{ fontSize: "2rem"}}><b>Power Sankey Diagram (%)</b></h1></div>
       <div align="center"><h3 style={{ fontSize: "1rem"}}><b>Total Supply Listrik : {supplylistrik} Kwh</b></h3></div>
-      <div align="center" className="flex flex-row justify-center mx-12 pb-10">
+      <div align="center" className="flex flex-row justify-center pb-10 relative overflow-x-auto overflow-y-hidden">
         <Chart
           chartType="Sankey"
-          width= "100%"
+          width="900px" // Ubah dari "100%" ke ukuran lebih besar
           height="1000px"
           data={data1}
-          options={options8}>
+          options={options8}
+          overflowX="auto"
+          style={{ minWidth: "1000px" }}>
         </Chart>
       </div>
-    </>
+    </div>
   );
 }

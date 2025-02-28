@@ -21,8 +21,8 @@ const PDAM = () => {
     const [showOsmo, setShowOsmo] = useState(false); 
     const [showBoiler, setShowBoiler] = useState(false); 
 
-    const Colors1 = { dark: "#00bfff", light: "#1e90ff" };
-    const Colors2 = { dark: "#ec1eff", light: "#a11eff" };
+    const Colors1 = { dark: "#81d1fc", light: "#a7defc" };
+    const Colors2 = { dark: "#a2c7eb", light: "#b0e6f5" };
 
     const [isDarkMode, setIsDarkMode] = useState(
         document.documentElement.getAttribute("data-theme") === "dark"
@@ -397,32 +397,27 @@ const PDAM = () => {
         )}
 {/* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------         */}
         <div className="text-center mt-8 p-2 shadow-buatcard bg-coba rounded-md relative">
-        <h1 className="text-center text-text text-4xl antialiased hover:subpixel-antialiased mb-2">PDAM Chart</h1>
-        <iframe
-          src={grafanaPDAMMonth}
-          // width="540"
-          // height="480"
-          style={{
-            border: 'none', // Removes border
-            position: 'relative',
-            width: '100%', // Full width of parent div
-            aspectRatio: '16 / 6', // Adjust aspect ratio as needed
-            height: '800px' // Set a fixed height for the iframe
-          }}
-          title="Grafana Chart">
-        </iframe>
-        <br/>
-        <iframe
-          src={grafanaPDAMYear}
-          style={{
-            border: 'none', // Removes border
-            position: 'relative',
-            width: '100%', // Full width of parent div
-            aspectRatio: '16 / 6', // Adjust aspect ratio to match the desired size
-            height: '800px', // Set a fixed height for the iframe
-          }}
-          title="Grafana Chart">
-        </iframe>
+            <h1 className="text-center text-text text-4xl antialiased hover:subpixel-antialiased mb-2">PDAM Chart</h1>
+            <ChartDashboard endpoint="http://10.126.15.137:8002/part/GrafanaMVMDPYear" area="cMT-DB-WATER-UTY_Met_PDAM_data" title=" " colors={Colors2}
+                style={{
+                border: 'none', // Removes border
+                position: 'relative',
+                width: '100%', // Full width of parent div
+                aspectRatio: '16 / 6', // Adjust aspect ratio as needed
+                height: '580px'
+                }}/>
+            <br/>
+            <iframe
+            src={grafanaPDAMYear}
+            style={{
+                border: 'none', // Removes border
+                position: 'relative',
+                width: '100%', // Full width of parent div
+                aspectRatio: '16 / 6', // Adjust aspect ratio to match the desired size
+                height: '800px', // Set a fixed height for the iframe
+            }}
+            title="Grafana Chart">
+            </iframe>
       </div>
 
     </>

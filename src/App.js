@@ -95,7 +95,7 @@ function App() {
 
   if (levelData === 5) {
     return (
-      <div className="bg-background min-h-full min-w-full grid grid-cols-[auto_1fr] ">
+      <div className="bg-background min-h-screen min-w-full grid grid-cols-[auto_1fr] ">
         <>
           <Sidebar /> 
         </>

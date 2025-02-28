@@ -91,8 +91,8 @@ function Utility() {
   return (
     <div>
       <Header />
-      <div className=" bg-background shadow-md p-5">
-        <div className="tab-content">{renderTabContent()}</div>
+      <div>{renderTabContent()}
+        
       </div>
     </div>
   );

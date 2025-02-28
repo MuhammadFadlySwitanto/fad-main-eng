@@ -27,7 +27,7 @@ function ChartDashboard({endpoint, area, title, colors}) {
   const sdputil = 'cMT-Gedung-UTY_SDP.1-Utility_data'; 
   const chiller = 'cMT-Gedung-UTY_PP.1-Chiller_data'; 
   const hydrant = 'cMT-Gedung-UTY_PP.2-Hydrant_data'; 
-  const lvmdp = 'cMT-Gedung-UTY_LVMDP1_data'; 
+  const lvmdp = ' '; 
   const power = 'cMT-Gedung-UTY_MVMDP_data'; 
 
   const [isDarkMode, setIsDarkMode] = useState(
@@ -73,6 +73,8 @@ function ChartDashboard({endpoint, area, title, colors}) {
   }, [endpoint, area]);
 
   const WaterOptions = {
+    animationEnabled: true, // change to true	
+    zoomEnabled: true,
     theme: isDarkMode ? "dark2" : "light2",
     axisY: {
       prefix: "",

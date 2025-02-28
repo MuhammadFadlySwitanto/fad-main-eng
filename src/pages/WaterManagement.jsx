@@ -902,7 +902,7 @@ export default function WaterManagement() {
           <div>
             <br />
             <Button
-              className="ml-2 mt-1"
+              className="ml-2"
               colorScheme="blue"
               onClick={() => fetchWaterDaily()}
             >
@@ -915,7 +915,7 @@ export default function WaterManagement() {
           <div className="ml-16 text-text">Min = {lowair.toLocaleString()} Meter Cubic</div>
           </div>
       </Stack>
-      <div className="flex flex-row justify-center bg-card rounded-md mx-12 pb-1">
+      <div className="flex flex-row justify-center p-1 mx-8 bg-card rounded-lg shadow-lg overflow-x-auto relative">
         <CanvasJSChart className="" options={options} />
       </div>
       <br />
@@ -978,7 +978,7 @@ export default function WaterManagement() {
         <div>
           <br />
           <Button
-            className="ml-2 mt-1"
+            className="ml-2"
             colorScheme="blue"
             onClick={() => fetchWaterSankey()}
           >
@@ -990,24 +990,26 @@ export default function WaterManagement() {
       <div align="center"><h3 style={{ fontSize: "1rem"}}><b>PDAM : {SumberPDAM} Meter Cubic</b></h3></div>
       <div align="center"><h3 style={{ fontSize: "1rem"}}><b>Reject Osmotron : {OsmoPDAM} Meter Cubic</b></h3></div>
       <div align="center"><h3 style={{ fontSize: "1rem"}}><b>Total Supply Air (PDAM+RO) : {SupplyAir} Meter Cubic</b></h3></div>
-      <div align="center" className="flex flex-row justify-center mx-12 pb-10">
+      <div align="center" className="flex flex-row justify-center pb-10 relative overflow-x-auto overflow-y-hidden">
         <Chart
           chartType="Sankey"
-          width= "1500px"
+          width= "900px"
           height="1000px"
           data={data}
-          options={options1}>
+          options={options1}
+          style={{ minWidth: "1000px" }}>
         </Chart>
       </div>
       <div align="center"><h1 style={{ fontSize: "2rem"}}><b>Water Sankey Diagram </b></h1></div>
       <div align="center"><h3 style={{ fontSize: "1rem"}}><b>Meter Cubic</b></h3></div>
-      <div className="flex flex-row justify-center mx-12 pb-10">
+      <div className="flex flex-row justify-center pb-10 relative overflow-x-auto overflow-y-hidden">
         <Chart
           chartType= "Sankey"
-          width= "1500px"
+          width= "900px"
           height="1000px"
           data={data1}
-          options={options1}>
+          options={options1}
+          style={{ minWidth: "1000px" }}>
         </Chart>
       </div>
     </div>

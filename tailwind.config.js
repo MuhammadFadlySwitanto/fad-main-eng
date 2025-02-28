@@ -7,6 +7,9 @@ module.exports = {
       fontFamily: {
         DMSans: ['DM Sans', 'serif'],
       },
+      minHeight: {
+        'dvh': '100dvh',
+      },
       screens: {
         '2xsm': '375px',
         xsm: '425px',

@@ -811,7 +811,7 @@ export default function HVACchillerChart() {
           </Button>
         </div>
       </Stack>
-      <div className="flex flex-row justify-center mx-12 bg-card rounded-md p-2 "> 
+      <div className="flex flex-row justify-center mx-8 bg-card rounded-md p-1 "> 
       {loading ? (
       <div className="flex flex-col items-center">
         <Spinner

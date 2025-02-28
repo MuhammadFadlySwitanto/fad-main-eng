@@ -145,6 +145,8 @@ export default function Loopo() {
 
     const options = {
       zoomEnabled: true,
+      responsive: true, 
+      maintainAspectRatio: false,
       theme: isDarkMode ? "dark2" : "light2",
       backgroundColor: isDarkMode ? "#171717" : "#ffffff",
       Margin: 8,
@@ -273,12 +275,12 @@ export default function Loopo() {
           </Button>
         </div>
           <div className="mt-3">
-          <div className="ml-16 text-text">Avg = {avg.toLocaleString()} {unit}</div>
-          <div className="ml-16 text-text">Max = {max.toLocaleString()} {unit}</div>
-          <div className="ml-16 text-text">Min = {min.toLocaleString()} {unit}</div>
+          <div className="ml-10 text-text">Avg = {avg.toLocaleString()} {unit}</div>
+          <div className="ml-10 text-text">Max = {max.toLocaleString()} {unit}</div>
+          <div className="ml-10 text-text">Min = {min.toLocaleString()} {unit}</div>
         </div>
       </Stack>
-      <div className="flex flex-row justify-center mx-8 p-1 rounded-md overflow-x-auto "> 
+      <div className="flex flex-row justify-center mx-8 p-1 rounded-md shadow-lg overflow-x-auto "> 
           <CanvasJSChart className="" options={options} />
       </div>
       <br />
