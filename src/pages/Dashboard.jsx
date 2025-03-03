@@ -582,7 +582,7 @@
                   Manage dashboard
                 </button>
                 {userGlobal.level == 5 ? 
-                <button class="inline-flex px-5 py-3 text-text bg-coba border border-meta-2 dark:border-meta-4 hover:bg-gray-100 dark:hover:bg-boxdark focus:bg-purple-700 dark:focus:bg-purple-700 rounded-md ml-6 mb-3 shadow-md"
+                <button class="inline-flex px-5 py-3 text-text bg-coba border border-meta-2 dark:border-meta-4 hover:bg-gray-100 dark:hover:bg-boxdark focus:bg-gray-200 dark:focus:bg-gray-800 rounded-md ml-6 mb-3 shadow-md"
                 onClick={onOpen}>
                   <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="flex-shrink-0 h-6 w-6 text-text -ml-1 mr-2">
                     <path strokeLinecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -701,6 +701,71 @@
               </ModalContent>
             </Modal>
 
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 my-4">
+              {/* TODAY COST / UNIT Card */}
+              <div className="bg-coba rounded-lg shadow-buatcard p-6 flex flex-col">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-lg font-semibold text-text">TODAY COST / UNIT</h3>
+                  <div className="p-2 bg-blue-100 rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                </div>
+                <div className="mt-auto">
+                  <p className="text-3xl font-bold text-text">Rp 15.250.000</p>
+                  <p className="text-sm text-gray-500 mt-2">All Lines Combined</p>
+                </div>
+              </div>
+
+              {/* Line 1 Card */}
+              <div className="bg-coba rounded-lg shadow-buatcard p-6 flex flex-col">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-lg font-semibold text-text">Line 1</h3>
+                  <div className="p-2 bg-green-100 rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                  </div>
+                </div>
+                <div className="mt-auto">
+                  <p className="text-3xl font-bold text-text">Rp 5.675.000</p>
+                  <p className="text-sm text-gray-500 mt-2">Line 1 Cost/Unit</p>
+                </div>
+              </div>
+
+              {/* Line 2 Card */}
+              <div className="bg-coba rounded-lg shadow-buatcard p-6 flex flex-col">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-lg font-semibold text-text">Line 2</h3>
+                  <div className="p-2 bg-purple-100 rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                  </div>
+                </div>
+                <div className="mt-auto">
+                  <p className="text-3xl font-bold text-text">Rp 4.825.000</p>
+                  <p className="text-sm text-gray-500 mt-2">Line 2 Cost/Unit</p>
+                </div>
+              </div>
+
+              {/* Line 3 Card */}
+              <div className="bg-coba rounded-lg shadow-buatcard p-6 flex flex-col">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-lg font-semibold text-text">Line 3</h3>
+                  <div className="p-2 bg-yellow-100 rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                  </div>
+                </div>
+                <div className="mt-auto">
+                  <p className="text-3xl font-bold text-text">Rp 4.750.000</p>
+                  <p className="text-sm text-gray-500 mt-2">Line 3 Cost/Unit</p>
+                </div>
+              </div>
+            </div>
 
             {/* Main Wrapper */}
             <section className="grid md:grid-cols-2 xl:grid-cols-4 gap-6 mt-3">
@@ -965,71 +1030,6 @@
                 </div>
               </div>
             </section>
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 my-4">
-              {/* TODAY COST / UNIT Card */}
-              <div className="bg-coba rounded-lg shadow-buatcard p-6 flex flex-col">
-                <div className="flex justify-between items-center mb-4">
-                  <h3 className="text-lg font-semibold text-text">TODAY COST / UNIT</h3>
-                  <div className="p-2 bg-blue-100 rounded-full">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </div>
-                </div>
-                <div className="mt-auto">
-                  <p className="text-3xl font-bold text-text">Rp 15.250.000</p>
-                  <p className="text-sm text-gray-500 mt-2">All Lines Combined</p>
-                </div>
-              </div>
-
-              {/* Line 1 Card */}
-              <div className="bg-coba rounded-lg shadow-buatcard p-6 flex flex-col">
-                <div className="flex justify-between items-center mb-4">
-                  <h3 className="text-lg font-semibold text-text">Line 1</h3>
-                  <div className="p-2 bg-green-100 rounded-full">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                    </svg>
-                  </div>
-                </div>
-                <div className="mt-auto">
-                  <p className="text-3xl font-bold text-text">Rp 5.675.000</p>
-                  <p className="text-sm text-gray-500 mt-2">Line 1 Cost/Unit</p>
-                </div>
-              </div>
-
-              {/* Line 2 Card */}
-              <div className="bg-coba rounded-lg shadow-buatcard p-6 flex flex-col">
-                <div className="flex justify-between items-center mb-4">
-                  <h3 className="text-lg font-semibold text-text">Line 2</h3>
-                  <div className="p-2 bg-purple-100 rounded-full">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                    </svg>
-                  </div>
-                </div>
-                <div className="mt-auto">
-                  <p className="text-3xl font-bold text-text">Rp 4.825.000</p>
-                  <p className="text-sm text-gray-500 mt-2">Line 2 Cost/Unit</p>
-                </div>
-              </div>
-
-              {/* Line 3 Card */}
-              <div className="bg-coba rounded-lg shadow-buatcard p-6 flex flex-col">
-                <div className="flex justify-between items-center mb-4">
-                  <h3 className="text-lg font-semibold text-text">Line 3</h3>
-                  <div className="p-2 bg-yellow-100 rounded-full">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                    </svg>
-                  </div>
-                </div>
-                <div className="mt-auto">
-                  <p className="text-3xl font-bold text-text">Rp 4.750.000</p>
-                  <p className="text-sm text-gray-500 mt-2">Line 3 Cost/Unit</p>
-                </div>
-              </div>
-            </div>
             
             {/* Conditional Content Section */}
             <section className="mt-8">
