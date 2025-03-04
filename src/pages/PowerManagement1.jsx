@@ -1730,17 +1730,18 @@ export default function PowerManagement() {
           />
         </div>
         <div>
-          <br />
-          <Button
-            sx={{
-              marginTop: "20px"
-            }}
-            className="mt-1"
-            colorScheme="blue"
-            onClick={() => fetchSec()}
-          >
-            Submit
-          </Button>
+          <div className="mt-3">
+            <Button
+              sx={{
+                marginTop: "20px"
+              }}
+              className="mt-1"
+              colorScheme="blue"
+              onClick={() => fetchSec()}
+            >
+              Submit
+            </Button>
+          </div>
         </div>
       </Stack>
       <div className="flex justify-center font-bold text-text text-4xl mt-8">

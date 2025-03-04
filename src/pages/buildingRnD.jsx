@@ -394,14 +394,14 @@ export default function BuildingRnD() {
           />
         </div>
         <div className="w-full flex justify-center xl:w-auto">
-          <div className="ml-0 xl:ml-6 mt-6 truncate">
+          <div className="ml-0 xl:ml-6 mt-[22px] truncate">
             <Button
               colorScheme="blue"
               onClick={() => fetchRNDSuhu()}>
               Submit
             </Button>
           </div>
-          <div className="ml-2 mt-6 truncate">
+          <div className="ml-2 mt-[22px]  truncate">
             <Button
               isDisabled={state}
               colorScheme="green"

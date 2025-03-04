@@ -575,7 +575,7 @@
             </div>
             <div class="flex flex-col space-y-6 md:space-y-0 md:flex-row-reverse justify-between">
               <div class="flex flex-wrap items-start justify-end -mb-3">
-                <button class="inline-flex px-5 py-3 text-text border bg-coba border-meta-2 dark:border-meta-4 hover:bg-gray-100 dark:hover:bg-boxdark focus:bg-purple-700 dark:focus:bg-purple-700 rounded-md mb-3 shadow-md">
+                <button class="inline-flex px-5 py-3 text-text border bg-coba border-meta-2 dark:border-meta-4 hover:bg-gray-100 dark:hover:bg-boxdark focus:bg-gray-200 dark:focus:bg-gray-800 rounded-md mb-3 shadow-md">
                   <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="flex-shrink-0 h-5 w-5 -ml-1 mt-0.5 mr-2">
                     <path strokeLinecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                   </svg>
