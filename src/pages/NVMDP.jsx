@@ -50,31 +50,9 @@ const NVMDP = () => {
     const grafanaMVMDPMonth = isDarkMode 
     ? "https://snapshots.raintank.io/dashboard/snapshot/sxKIJvabjpjQB6qzN01qxrktG81CEd4p?orgId=0&viewPanel=38&kiosk"
     : "https://snapshots.raintank.io/dashboard/snapshot/sxKIJvabjpjQB6qzN01qxrktG81CEd4p?orgId=0&viewPanel=38&kiosk&theme=light";
-    const grafanaSP = isDarkMode 
-    ? "https://snapshots.raintank.io/dashboard/snapshot/154zKTyB2ZXLet4VzOziZYpGLts7FkGI?orgId=0&kiosk"
-    : "https://snapshots.raintank.io/dashboard/snapshot/154zKTyB2ZXLet4VzOziZYpGLts7FkGI?orgId=0&kiosk&theme=light";
-    const grafanaSP2 = isDarkMode 
-    ? "https://snapshots.raintank.io/dashboard/snapshot/X9xTfUnwmijvtngT69lZ2xSQlrFJ02sZ?orgId=0&kiosk"
-    : "https://snapshots.raintank.io/dashboard/snapshot/X9xTfUnwmijvtngT69lZ2xSQlrFJ02sZ?orgId=0&kiosk&theme=light";
     const grafanaMVMDPYear = isDarkMode 
     ? "https://snapshots.raintank.io/dashboard/snapshot/nKXeg5CtNW9M1GfW8MrLSHJlKtifwHze?orgId=0&kiosk"
     : "https://snapshots.raintank.io/dashboard/snapshot/nKXeg5CtNW9M1GfW8MrLSHJlKtifwHze?orgId=0&kiosk&theme=light";
-    const grafanaChiller = isDarkMode 
-    ? "https://snapshots.raintank.io/dashboard/snapshot/tbLnho9XgLzli5nWWKd0NtFScAEXKjSq?orgId=0&kiosk"
-    : "https://snapshots.raintank.io/dashboard/snapshot/tbLnho9XgLzli5nWWKd0NtFScAEXKjSq?orgId=0&kiosk&theme=light";
-    const grafanaHydrant = isDarkMode 
-    ? "https://snapshots.raintank.io/dashboard/snapshot/JhN10xGaL2SoMZ5bIqRJMJWbQ6DxAv4A?orgId=0&viewPanel=43&kiosk"
-    : "https://snapshots.raintank.io/dashboard/snapshot/JhN10xGaL2SoMZ5bIqRJMJWbQ6DxAv4A?orgId=0&viewPanel=43&kiosk&theme=light";
-
-    const grafanaUtil = isDarkMode 
-    ? "https://snapshots.raintank.io/dashboard/snapshot/1JLFrNa85BjHb86IaP0e76KWqg7HFQ4o?orgId=0&kiosk"
-    : "https://snapshots.raintank.io/dashboard/snapshot/1JLFrNa85BjHb86IaP0e76KWqg7HFQ4o?orgId=0&kiosk&theme=light";
-    const grafanaProd1 = isDarkMode 
-    ? "https://snapshots.raintank.io/dashboard/snapshot/DOjYtx3f7gavnfapXkgoHyISTBYL1Vfu?orgId=0&kiosk"
-    : "https://snapshots.raintank.io/dashboard/snapshot/DOjYtx3f7gavnfapXkgoHyISTBYL1Vfu?orgId=0&kiosk&theme=light";
-    const grafanaProd2 = isDarkMode 
-    ? "https://snapshots.raintank.io/dashboard/snapshot/DGARCPDLcEQknBXOmReLJ8Zm8omafpZz?orgId=0&kiosk"
-    : "https://snapshots.raintank.io/dashboard/snapshot/DGARCPDLcEQknBXOmReLJ8Zm8omafpZz?orgId=0&kiosk&theme=light";
   
     useEffect(() => {
       // Buat koneksi WebSocket     

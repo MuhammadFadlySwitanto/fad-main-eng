@@ -1730,7 +1730,7 @@ export default function PowerManagement() {
           />
         </div>
         <div>
-          <div className="mt-3">
+          <div className="mt-[14px]">
             <Button
               sx={{
                 marginTop: "20px"
