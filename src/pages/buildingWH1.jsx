@@ -313,7 +313,7 @@ export default function BuildingRnD() {
           />
         </div>
         <div className="w-full flex justify-center xl:w-auto">
-          <div className="ml-0 xl:ml-8 mt-6  truncate">
+          <div className="ml-0 xl:ml-8 mt-6 truncate">
             <Button
               colorScheme="blue"
               onClick={() => fetchWH1Data()}>

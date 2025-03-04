@@ -1331,15 +1331,10 @@ export default function PowerManagement() {
 
   return (
     <div>
-      <Stack
-        className="flex flex-row justify-center my-4  "
-        direction="row"
-        spacing={4}
-        align="center"
-      >
-        <div>
+      <div className="flex flex-col xl:flex-row justify-center my-4 space-y-4 xl:space-y-0 xl:space-x-4">
+        <div className="flex flex-col xl:w-64">
           <h5 className="mb-1">Panel</h5>
-          <Select placeholder="Select Panel" onChange={getPowerArea}>
+          <Select placeholder="Select Panel" onChange={getPowerArea} className="w-full">
             <option value="cMT-Gedung-UTY_MVMDP_data">MVMDP</option>
             <option value="cMT-Gedung-UTY_LVMDP1_data">LVMDP1</option>
             <option value="cMT-Gedung-UTY_LVMDP2_data">LVMDP2</option>
@@ -1439,13 +1434,14 @@ export default function PowerManagement() {
             <option value="cMT-Gedung-UTY_LP.2-PRO 3.1 RND_data">LP.2-PRO 3.1 RND</option>
           </Select>
         </div>
-        <div>
+        <div className="flex flex-col items-center xl:w-56">
           <h5 className="mb-1">Start Time</h5>
           <Input
             onChange={dateStart}
             placeholder="Select Date and Time"
             size="md"
             type="date"
+            className="w-full"
             css={{
               "&::-webkit-calendar-picker-indicator": {
                 color: isDarkMode ? "white" : "black",
@@ -1454,13 +1450,14 @@ export default function PowerManagement() {
             }}
           />
         </div>
-        <div>
+        <div className="flex flex-col items-center xl:w-56">
           <h5 className="mb-1">Finish Time</h5>
           <Input
             onChange={dateFinish}
             placeholder="Select Date and Time"
             size="md"
             type="date"
+            className="w-full"
             css={{
               "&::-webkit-calendar-picker-indicator": {
                 color: isDarkMode ? "white" : "black",
@@ -1469,13 +1466,9 @@ export default function PowerManagement() {
             }}
           />
         </div>
-        <div>
-          <br />
+        <div className="flex items-center xl:w-24">
           <Button
-            className="ml-2 mt-1"
-            sx={{
-              marginBottom: "4px"
-            }}
+            className="ml-2 w-full xl:w-auto mt-3"
             colorScheme="blue"
             onClick={() => fetchDataDayly()}
           >
@@ -1488,7 +1481,7 @@ export default function PowerManagement() {
             Average = {avarageDaily.toLocaleString()} Kwh
           </div>
         </div>
-      </Stack>
+      </div>
       <div className="flex flex-row box-border justify-center mx-8 p-1 bg-card rounded-lg overflow-x-auto relative">
       {loading ? (
         <Spinner
@@ -1506,13 +1499,8 @@ export default function PowerManagement() {
       </div>
       <br />
 
-      <Stack
-        className="flex flex-row justify-center mb-4  "
-        direction="row"
-        spacing={4}
-        align="center"
-      >
-        <div>
+      <div className="flex flex-col xl:flex-row justify-center my-4 space-y-4 xl:space-y-0 xl:space-x-4">
+        <div className="flex flex-col xl:w-64">
           <h5 className="mb-1">Panel</h5>
           <Select placeholder="Select Panel" onChange={getAreaMonth}>
             <option value="cMT-Gedung-UTY_MVMDP_data">MVMDP</option>
@@ -1614,7 +1602,7 @@ export default function PowerManagement() {
             <option value="cMT-Gedung-UTY_LP.2-PRO 3.1 RND_data">LP.2-PRO 3.1 RND</option>
           </Select>
         </div>
-        <div>
+        <div className="flex flex-col xl:w-56">
           <h5 className="mb-1">Start Monthly</h5>
           <Input
               onChange={getStartMonth}
@@ -1629,7 +1617,7 @@ export default function PowerManagement() {
               }}
             />
         </div>
-        <div>
+        <div className="flex flex-col xl:w-56">
           <h5 className="mb-1">Finish Monthly</h5>
           <Input
             onChange={getFinishMonth}
@@ -1644,14 +1632,10 @@ export default function PowerManagement() {
             }}
           />  
         </div>
-        <div>
-          <br />
+        <div className="flex items-center xl:w-24">
           <Button
-            className="ml-2 mt-1"
+            className="ml-2 w-full xl:w-auto mt-3"
             colorScheme="blue"
-            sx={{
-              marginBottom: "4px"
-            }}
             onClick={() => fetchDataMonthly()}
           >
             Submit
@@ -1665,7 +1649,7 @@ export default function PowerManagement() {
             Average = {avarageMonthly.toLocaleString()} Kwh
           </div>
         </div>
-      </Stack>
+      </div>
       <div className="flex flex-row box-border justify-center p-1 mx-8 bg-card rounded-lg shadow-lg overflow-x-auto relative">
         {loading2 ? (
           <Spinner
@@ -1730,18 +1714,17 @@ export default function PowerManagement() {
           />
         </div>
         <div>
-          <div className="mt-[14px]">
+          <br />
             <Button
-              sx={{
-                marginTop: "20px"
-              }}
-              className="mt-1"
+              className="ml-2 mt-1"
               colorScheme="blue"
+              sx={{
+                marginBottom: "8px"
+              }}
               onClick={() => fetchSec()}
             >
               Submit
             </Button>
-          </div>
         </div>
       </Stack>
       <div className="flex justify-center font-bold text-text text-4xl mt-8">
@@ -1793,12 +1776,8 @@ export default function PowerManagement() {
         </div>
       </div>
       <br />
-      <Stack
-        className="flex flex-row justify-center mb-4  "
-        direction="row"
-        spacing={4}
-        align="center">  
-        <div>
+      <div className="flex flex-col xl:flex-row justify-center my-4 space-y-4 xl:space-y-0 xl:space-x-4">
+        <div className="flex flex-col xl:w-56">
           <h5 className="mb-1">Start Time</h5>
           <Input onChange={sankeyStart}
             placeholder="Select Date and Time"
@@ -1812,7 +1791,7 @@ export default function PowerManagement() {
             }}
           />
         </div>
-        <div>
+        <div className="flex flex-col xl:w-56">
           <h5 className="mb-1">Finish Time</h5>
           <Input
             onChange={sankeyFinish}
@@ -1827,20 +1806,16 @@ export default function PowerManagement() {
             }}
           />
         </div>
-        <div>
-          <br />
+        <div className="flex items-center xl:w-24">
           <Button
-            sx={{
-              marginBottom: "4px"
-            }}
+            className="ml-2 w-full xl:w-auto mt-3"
             colorScheme="blue"
-            className="mt-1"
             onClick={() => fetchPowerSankey()}
             >
             Submit
           </Button>
         </div>
-      </Stack>
+      </div>
       <div align="center"><h1 style={{ fontSize: "2rem"}}><b className="text-text">Power Sankey Diagram </b></h1></div>
       <div align="center"><h3 style={{ fontSize: "1rem"}}><b className="text-text">kWh</b></h3></div>
       <div align="center" className="flex flex-row justify-center pb-10 overflow-x-auto overflow-y-hidden relative">

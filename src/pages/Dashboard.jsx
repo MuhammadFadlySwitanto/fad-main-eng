@@ -1053,7 +1053,9 @@
                       Error occurred
                     </div>
                   ) : (
-                    <NVMDP  /> // Konten utama
+                    <NVMDP
+                    getLimit={getLimit} 
+                    dataTotalUang={dataTotalUang} /> // Konten utama
                   )}
                 </div>
               )}

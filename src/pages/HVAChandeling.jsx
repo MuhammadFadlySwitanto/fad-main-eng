@@ -111,7 +111,7 @@ function HVAChendeling() {
 
   return (
     <>
-      <div>Trial water</div>
+      <div>Trial Air Handling</div>
       <br />
       <div className="block bg-card p-2 rounded-lg shadow-lg mx-6 overflow-x-auto">
         <CanvasJSChart options={TamanOptions} />

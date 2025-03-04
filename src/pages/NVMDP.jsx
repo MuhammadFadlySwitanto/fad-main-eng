@@ -11,7 +11,7 @@ import   {Progress  } from "@chakra-ui/react";
 import ChartDashboard from "../components/ChartDashboard";
 
 
-const NVMDP = () => {
+const NVMDP = ({getLimit, dataTotalUang}) => {
     const [sdp1Produksi, setSdp1Produksi] = useState(null);
     const [sdp2Produksi, setSdp2Produksi] = useState(null);
     const [pp2Hydrant, setPp2Hydrant] = useState(null);
@@ -20,10 +20,6 @@ const NVMDP = () => {
     const [lvmdp1, setLvmdp1] = useState(null);
     const [solarPanel, setSolarPanel] = useState(null);
     const [solarPanel2, setSolarPanel2] = useState(null);
-    const [dataTotalUang, setDataTotalUang] = useState()
-    const [getJam, setGetJam] = useState({})
-    const [getParameter, setGetParameter] = useState({})
-    const [getLimit, setGetLimit] = useState({})
 
     const socketRef = useRef(null);
 
@@ -44,9 +40,6 @@ const NVMDP = () => {
         document.documentElement.getAttribute("data-theme") === "dark"
     );
 
-    const grafanaLVMDP = isDarkMode 
-    ? "https://snapshots.raintank.io/dashboard/snapshot/uHORrfazbB1SNbhktJ03Du8ywyqoabrj?orgId=0&kiosk"
-    : "https://snapshots.raintank.io/dashboard/snapshot/uHORrfazbB1SNbhktJ03Du8ywyqoabrj?orgId=0&kiosk&theme=light";
     const grafanaMVMDPMonth = isDarkMode 
     ? "https://snapshots.raintank.io/dashboard/snapshot/sxKIJvabjpjQB6qzN01qxrktG81CEd4p?orgId=0&viewPanel=38&kiosk"
     : "https://snapshots.raintank.io/dashboard/snapshot/sxKIJvabjpjQB6qzN01qxrktG81CEd4p?orgId=0&viewPanel=38&kiosk&theme=light";
@@ -82,7 +75,6 @@ const NVMDP = () => {
         }
       };
 
-  
       socketRef.current.onerror = (error) => {
         console.error("WebSocket error:", error);
       };
@@ -98,54 +90,6 @@ const NVMDP = () => {
         }
       };
     }, []); // Kosongkan dependency array sehingga useEffect hanya berjalan sekali saat komponen di-mount
-
-    
-    useEffect( () => {
-
-      const fetchData = async () => {
-        try {
-          let response = await axios.get("http://10.126.15.137:8002/part/GetJam");
-          setGetJam (response.data[0]);
-          let response2 = await axios.get("http://10.126.15.137:8002/part/GetParameter")
-          setGetParameter(response2.data[0])
-          let response3 = await axios.get("http://10.126.15.137:8002/part/GetLimit")
-          setGetLimit(response3.data[0])
-
-          const inputValue1 = response2.data[0].Parameter_Listrik
-          const inputValue2 = response2.data[0].Parameter_Listrik_2
-          const startHours1 = response.data[0].Jam_Listrik_1
-          const endHours1 = response.data[0].Jam_Listrik_2
-          const startHours2 = response.data[0].Jam_Listrik_3
-          const endHours2 = response.data[0].Jam_Listrik_4
-  
-          const variableData = getTimeMoney(
-            inputValue1,
-            inputValue2,
-            startHours1,
-            endHours1,
-            startHours2,
-            endHours2
-          )
-           setDataTotalUang(variableData)
-          
-        } catch (error) {
-          console.error("Error fetching data:", error);
-        }
-      };
-      //console.log(getJam);
-      fetchData();         
-      const  getTimeMoney = ( value1, value2,startHour1, endHour1, startHour2, endHour2) => {
-        console.log(value1, value2,startHour1, endHour1, startHour2, endHour2);
-        
-        const now = new Date()
-        const createHour = now.getHours()
-        if (createHour >= startHour1 && createHour <= endHour1){
-          return value1
-        }else if (createHour >= startHour2 || createHour <= endHour2){
-          return value2
-        }
-      };
-    }, []);
 
     const data = useMemo(() => {
       const totalSolar = (solarPanel ?? 0) + (solarPanel2 ?? 0);
