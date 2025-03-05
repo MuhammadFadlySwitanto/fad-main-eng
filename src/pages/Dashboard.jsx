@@ -27,8 +27,6 @@
     Progress,
     InputRightAddon,
     Text} from "@chakra-ui/react";
-  import Chart01 from "./Chart01";
-  import Chart02 from "./chart02";
   import NVMDP from "./NVMDP";
   import PDAM from "./PDAM";
   import { useColorMode, useColorModeValue } from "@chakra-ui/react";
@@ -76,6 +74,14 @@
       const [dataTotalUang, setDataTotalUang] = useState()
       const [dataTotalUangAir, setDataTotalUangAir] = useState()
       const [dataTotalUangGas, setDataTotalUangGas] = useState()
+
+      // State untuk menyimpan biaya per unit dari masing-masing line
+      const [totalCost, setTotalCost] = useState(0);
+      const [totalTablet, setTotalTablet] = useState(0);
+      const [costPerUnitLine1, setCostPerUnitLine1] = useState(0);
+      const [costPerUnitLine2, setCostPerUnitLine2] = useState(0);
+      const [costPerUnitLine3, setCostPerUnitLine3] = useState(0);
+      const [totalCostPerUnit, setTotalCostPerUnit] = useState(0);
 
       const { colorMode } = useColorMode();
       const borderColor = useColorModeValue("rgba(var(--color-border))", "rgba(var(--color-border))");
@@ -136,7 +142,6 @@
         if (activeCard) {
           setLoading(true);
           setError(null); // Reset error saat card baru dipilih
-
           // Simulasi delay untuk loading
           const timer = setTimeout(() => {
             setLoading(false);
@@ -209,15 +214,45 @@
             )
             setDataTotalUangGas(variableDataGas)
             setDataTotalUang(variableData)
-
-
-            
           } catch (error) {
             console.error("Error fetching data:", error);
           }
         };
         //console.log(getJam);
         fetchData();
+
+        // const totalCostValue = (data.MVMDP * dataTotalUang) + (data.PDAM * dataTotalUangAir) + (data.Total_Gas_Boiler * dataTotalUangGas);
+        //   setTotalCost(totalCostValue);
+        //   console.log(totalCost);
+          
+
+        // // Menghitung TotalTablet
+        // const valueLine1 = data.MasterBoxL1 ?? 0;
+        // const valueLine2 = data.MasterBoxL2_2 ?? 0;
+        // const valueLine3_1 = data.MasterBoxL3_1 ?? 0;
+        // const valueLine3_2 = data.MasterBoxL3_2 ?? 0;
+        // const totalTabletValue = (valueLine1 * 64 * 25 * 4) + (valueLine2 * 60 * 30) + ((valueLine3_1 + valueLine3_2) * 48 * 25 * 4);
+        // setTotalTablet(totalTabletValue);
+
+        // if (totalTabletValue !== 0) {
+        //   // Menghitung TODAY COST / UNIT
+        //   const totalCostPerUnitValue = totalCostValue / (3 * totalTabletValue);
+        //   setTotalCostPerUnit(totalCostPerUnitValue);
+
+        //   // Menghitung biaya per unit untuk masing-masing line
+        //   const costPerUnitLine1Value = (totalCostValue / 3) / (valueLine1 * 64 * 25 * 4);
+        //   const costPerUnitLine2Value = (totalCostValue / 3) / (valueLine2 * 60 * 30);
+        //   const costPerUnitLine3Value = (totalCostValue / 3) / ((valueLine3_1 + valueLine3_2) * 48 * 25 * 4);
+
+        //   setCostPerUnitLine1(costPerUnitLine1Value);
+        //   setCostPerUnitLine2(costPerUnitLine2Value);
+        //   setCostPerUnitLine3(costPerUnitLine3Value);
+        // } else {
+        //   setTotalCostPerUnit(0);
+        //   setCostPerUnitLine1(0);
+        //   setCostPerUnitLine2(0);
+        //   setCostPerUnitLine3(0);
+        // };
 
         const  getTimeMoney = ( value1, value2,startHour1, endHour1, startHour2, endHour2) => {
           console.log(value1, value2,startHour1, endHour1, startHour2, endHour2);
@@ -230,10 +265,7 @@
             return value2
           }
         };
-  
-   
-         console.log(dataTotalUang);
-        
+         console.log(dataTotalUang);      
       }, []);
 
       // Handle Option
@@ -497,6 +529,7 @@
        createJamPost();
        createParameterPost();
        createLimit();
+       toast.success("Data Saved!");
     };
   
     const createJamPost = async () => {
@@ -550,17 +583,57 @@
       }
     };
 
-      useEffect(() => {
-        const handleThemeChange = () => {
-          const currentTheme = document.documentElement.getAttribute('data-theme');
-          setIsDarkMode(currentTheme === 'dark');
-        };
-        // Observe attribute changes
-        const observer = new MutationObserver(handleThemeChange);
-        observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
-    
-        return () => observer.disconnect();
-      }, []);
+    useEffect(() => {
+      console.log("MVMDP:", data.MVMDP);
+      console.log("dataTotalUang:", dataTotalUang);
+      console.log("PDAM:", data.PDAM);
+      console.log("dataTotalUangAir:", dataTotalUangAir);
+      console.log("Total_Gas_Boiler:", data.Total_Gas_Boiler);
+      console.log("dataTotalUangGas:", dataTotalUangGas);
+      // Menghitung TotalCost
+      const totalCostValue = (data.MVMDP * dataTotalUang) + (data.PDAM * dataTotalUangAir) + (data.Total_Gas_Boiler * dataTotalUangGas);
+      setTotalCost(totalCostValue);
+  
+      // Menghitung TotalTablet
+      const valueLine1 = data.MasterBoxL1 ?? 0;
+      const valueLine2 = data.MasterBoxL2_2 ?? 0;
+      const valueLine3_1 = data.MasterBoxL3_1 ?? 0;
+      const valueLine3_2 = data.MasterBoxL3_2 ?? 0;
+      const totalTabletValue = (valueLine1 * 64 * 25 * 4) + (valueLine2 * 60 * 30) + ((valueLine3_1 + valueLine3_2) * 48 * 25 * 4);
+      setTotalTablet(totalTabletValue);
+  
+      if (totalTabletValue !== 0) {
+        // Menghitung TODAY COST / UNIT
+        const totalCostPerUnitValue = totalCostValue / (3 * totalTabletValue);
+        setTotalCostPerUnit(totalCostPerUnitValue);
+  
+        // Menghitung biaya per unit untuk masing-masing line
+        const costPerUnitLine1Value = (totalCostValue / 3) / (valueLine1 * 64 * 25 * 4);
+        const costPerUnitLine2Value = (totalCostValue / 3) / (valueLine2 * 60 * 30);
+        const costPerUnitLine3Value = (totalCostValue / 3) / ((valueLine3_1 + valueLine3_2) * 48 * 25 * 4);
+  
+        setCostPerUnitLine1(costPerUnitLine1Value);
+        setCostPerUnitLine2(costPerUnitLine2Value);
+        setCostPerUnitLine3(costPerUnitLine3Value);
+      } else {
+        setTotalCostPerUnit(0);
+        setCostPerUnitLine1(0);
+        setCostPerUnitLine2(0);
+        setCostPerUnitLine3(0);
+      }
+    }, []);
+
+    useEffect(() => {
+      const handleThemeChange = () => {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        setIsDarkMode(currentTheme === 'dark');
+      };
+      // Observe attribute changes
+      const observer = new MutationObserver(handleThemeChange);
+      observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+  
+      return () => observer.disconnect();
+    }, []);
       
       return (
         <div>
@@ -713,7 +786,7 @@
                   </div>
                 </div>
                 <div className="mt-auto">
-                  <p className="text-3xl font-bold text-text">Rp 15.250.000</p>
+                  <p className="text-3xl font-bold text-text">Rp {(totalCostPerUnit).toFixed(2)}</p>
                   <p className="text-sm text-gray-500 mt-2">All Lines Combined</p>
                 </div>
               </div>
@@ -729,7 +802,7 @@
                   </div>
                 </div>
                 <div className="mt-auto">
-                  <p className="text-3xl font-bold text-text">Rp 5.675.000</p>
+                  <p className="text-3xl font-bold text-text">Rp {(costPerUnitLine1).toFixed(2)}</p>
                   <p className="text-sm text-gray-500 mt-2">Line 1 Cost/Unit</p>
                 </div>
               </div>
@@ -745,7 +818,7 @@
                   </div>
                 </div>
                 <div className="mt-auto">
-                  <p className="text-3xl font-bold text-text">Rp 4.825.000</p>
+                  <p className="text-3xl font-bold text-text">Rp {(costPerUnitLine2).toFixed(2)}</p>
                   <p className="text-sm text-gray-500 mt-2">Line 2 Cost/Unit</p>
                 </div>
               </div>
@@ -761,7 +834,7 @@
                   </div>
                 </div>
                 <div className="mt-auto">
-                  <p className="text-3xl font-bold text-text">Rp 4.750.000</p>
+                  <p className="text-3xl font-bold text-text">Rp {(costPerUnitLine3).toFixed(2)}</p>
                   <p className="text-sm text-gray-500 mt-2">Line 3 Cost/Unit</p>
                 </div>
               </div>

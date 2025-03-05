@@ -813,13 +813,8 @@ export default function WaterManagement() {
     
     return(
       <div>
-        <Stack
-          className="flex flex-row justify-center mb-4  "
-          direction="row"
-          spacing={4}
-          align="center"
-        >
-          <div>
+        <div className="flex flex-col xl:flex-row justify-center my-4 space-y-4 xl:space-y-0 xl:space-x-4">
+          <div className="flex flex-col xl:w-64">
             <h5 className="mb-1">Flow Meter</h5>
             <Select placeholder="Select Flow Meter" onChange={getWaterArea}>
             <option value="cMT-DB-WATER-UTY_PDAM_Sehari_data">PDAM</option>
@@ -848,7 +843,7 @@ export default function WaterManagement() {
               <option value="cMT-DB-WATER-UTY_Lantai1_Sehari_data">Lantai 1</option>
             </Select>
           </div>
-          <div>
+          <div className="flex flex-col items-center xl:w-56">
             <h5 className="mb-1">Start Time</h5>
             <Input
               onChange={dateStart}
@@ -873,7 +868,7 @@ export default function WaterManagement() {
               }}
             />
           </div>
-          <div>
+          <div className="flex flex-col items-center xl:w-56">
             <h5 className="mb-1">Finish Time</h5>
             <Input
               onChange={dateFinish}
@@ -899,10 +894,9 @@ export default function WaterManagement() {
               }}
             />
           </div>
-          <div>
-            <br />
+          <div className="flex items-center xl:w-24">
             <Button
-              className="ml-2"
+              className="ml-2 w-full xl:w-auto mt-3"
               colorScheme="blue"
               onClick={() => fetchWaterDaily()}
             >
@@ -910,21 +904,17 @@ export default function WaterManagement() {
             </Button>
           </div>
           <div className="mt-3">
-          <div className="ml-16 text-text">Total = {totalair.toLocaleString()} Meter Cubic</div>
-          <div className="ml-16 text-text">Max = {highair.toLocaleString()} Meter Cubic</div>
-          <div className="ml-16 text-text">Min = {lowair.toLocaleString()} Meter Cubic</div>
+            <div className="ml-16 text-text">Total = {totalair.toLocaleString()} Meter Cubic</div>
+            <div className="ml-16 text-text">Max = {highair.toLocaleString()} Meter Cubic</div>
+            <div className="ml-16 text-text">Min = {lowair.toLocaleString()} Meter Cubic</div>
           </div>
-      </Stack>
+      </div>
       <div className="flex flex-row justify-center p-1 mx-8 bg-card rounded-lg shadow-lg overflow-x-auto relative">
         <CanvasJSChart className="" options={options} />
       </div>
       <br />
-      <Stack
-        className="flex flex-row justify-center mb-4  "
-        direction="row"
-        spacing={4}
-        align="center">
-        <div>
+      <div className="flex flex-col xl:flex-row justify-center my-4 space-y-4 xl:space-y-0 xl:space-x-4">
+        <div className="flex flex-col xl:w-56">
           <h5 className="mb-1">Start Time</h5>
           <Input
             onChange={sankeyStart}
@@ -949,7 +939,7 @@ export default function WaterManagement() {
             }}
           />
         </div>
-        <div>
+        <div className="flex flex-col xl:w-56">
           <h5 className="mb-1">Finish Time</h5>
           <Input
             onChange={sankeyFinish}
@@ -975,17 +965,16 @@ export default function WaterManagement() {
             }}
           />
         </div>
-        <div>
-          <br />
+        <div className="flex items-center xl:w-24">
           <Button
-            className="ml-2"
+            className="ml-2 w-full xl:w-auto mt-3"
             colorScheme="blue"
             onClick={() => fetchWaterSankey()}
           >
             Submit
           </Button>
         </div>
-      </Stack>
+      </div>
       <div align="center"><h1 style={{ fontSize: "2rem"}}><b>Water Sankey Diagram (%)</b></h1></div>
       <div align="center"><h3 style={{ fontSize: "1rem"}}><b>PDAM : {SumberPDAM} Meter Cubic</b></h3></div>
       <div align="center"><h3 style={{ fontSize: "1rem"}}><b>Reject Osmotron : {OsmoPDAM} Meter Cubic</b></h3></div>

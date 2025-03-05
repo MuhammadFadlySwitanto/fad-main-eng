@@ -6,7 +6,6 @@ import BallotIcon from '@mui/icons-material/Ballot';
 import { FaLandmark } from "react-icons/fa";
 import { GiPowerGenerator } from "react-icons/gi";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
-import axios from "axios";
 import   {Progress  } from "@chakra-ui/react";
 import ChartDashboard from "../components/ChartDashboard";
 
