@@ -593,6 +593,7 @@
       // Menghitung TotalCost
       const totalCostValue = (data.MVMDP * dataTotalUang) + (data.PDAM * dataTotalUangAir) + (data.Total_Gas_Boiler * dataTotalUangGas);
       setTotalCost(totalCostValue);
+      console.log("total cost =", totalCost)
   
       // Menghitung TotalTablet
       const valueLine1 = data.MasterBoxL1 ?? 0;
@@ -604,13 +605,13 @@
   
       if (totalTabletValue !== 0) {
         // Menghitung TODAY COST / UNIT
-        const totalCostPerUnitValue = totalCostValue / (3 * totalTabletValue);
+        const totalCostPerUnitValue = totalCostValue / totalTabletValue;
         setTotalCostPerUnit(totalCostPerUnitValue);
   
         // Menghitung biaya per unit untuk masing-masing line
-        const costPerUnitLine1Value = (totalCostValue / 3) / (valueLine1 * 64 * 25 * 4);
-        const costPerUnitLine2Value = (totalCostValue / 3) / (valueLine2 * 60 * 30);
-        const costPerUnitLine3Value = (totalCostValue / 3) / ((valueLine3_1 + valueLine3_2) * 48 * 25 * 4);
+        const costPerUnitLine1Value = (totalCost / 3) / (valueLine1 * 64 * 25 * 4);
+        const costPerUnitLine2Value = (totalCost / 3) / (valueLine2 * 60 * 30);
+        const costPerUnitLine3Value = (totalCost / 3) / ((valueLine3_1 + valueLine3_2) * 48 * 25 * 4);
   
         setCostPerUnitLine1(costPerUnitLine1Value);
         setCostPerUnitLine2(costPerUnitLine2Value);
@@ -635,7 +636,7 @@
       return () => observer.disconnect();
     }, []);
 
-    console.log("MVMDP coba:", data.MVMDP);
+    // console.log("MVMDP coba:", data.MVMDP);
       
       return (
         <div>
