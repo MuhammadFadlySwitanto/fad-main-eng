@@ -621,7 +621,7 @@
         setCostPerUnitLine2(0);
         setCostPerUnitLine3(0);
       }
-    }, []);
+    });
 
     useEffect(() => {
       const handleThemeChange = () => {
@@ -634,6 +634,8 @@
   
       return () => observer.disconnect();
     }, []);
+
+    console.log("MVMDP coba:", data.MVMDP);
       
       return (
         <div>
