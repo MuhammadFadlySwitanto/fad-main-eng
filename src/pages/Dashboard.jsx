@@ -29,10 +29,14 @@
     Text} from "@chakra-ui/react";
   import NVMDP from "./NVMDP";
   import PDAM from "./PDAM";
+  import Gambarpdam from "../assets/Gambarpdam";
+  import GambarNvmdp from "../assets/GambarNvmdp";
+  import Gambarkotak from "../assets/Gambarkotak";
+  import Gambarboiler from "../assets/Gambarboiler";
   import { useColorMode, useColorModeValue } from "@chakra-ui/react";
   import { toast, ToastContainer } from "react-toastify";
   import "react-toastify/dist/ReactToastify.css";
-
+  
     function Dashboard() {
       const [data, setData] = useState({});
       const userGlobal = useSelector((state) => state.user.user);
@@ -83,10 +87,6 @@
       const [costPerUnitLine3, setCostPerUnitLine3] = useState(0);
       const [totalCostPerUnit, setTotalCostPerUnit] = useState(0);
 
-      const { colorMode } = useColorMode();
-      const borderColor = useColorModeValue("rgba(var(--color-border))", "rgba(var(--color-border))");
-      const tulisanColor = useColorModeValue("rgba(var(--color-text))", "rgba(var(--color-text))");
-      const hoverBorderColor = useColorModeValue("rgba(var(--color-border2))", "rgba(var(--color-border2))");
       const kartuColor = useColorModeValue("rgba(var(--color-coba))", "rgba(var(--color-coba))");
 
       const [isDarkMode, setIsDarkMode] = useState(
@@ -220,39 +220,6 @@
         };
         //console.log(getJam);
         fetchData();
-
-        // const totalCostValue = (data.MVMDP * dataTotalUang) + (data.PDAM * dataTotalUangAir) + (data.Total_Gas_Boiler * dataTotalUangGas);
-        //   setTotalCost(totalCostValue);
-        //   console.log(totalCost);
-          
-
-        // // Menghitung TotalTablet
-        // const valueLine1 = data.MasterBoxL1 ?? 0;
-        // const valueLine2 = data.MasterBoxL2_2 ?? 0;
-        // const valueLine3_1 = data.MasterBoxL3_1 ?? 0;
-        // const valueLine3_2 = data.MasterBoxL3_2 ?? 0;
-        // const totalTabletValue = (valueLine1 * 64 * 25 * 4) + (valueLine2 * 60 * 30) + ((valueLine3_1 + valueLine3_2) * 48 * 25 * 4);
-        // setTotalTablet(totalTabletValue);
-
-        // if (totalTabletValue !== 0) {
-        //   // Menghitung TODAY COST / UNIT
-        //   const totalCostPerUnitValue = totalCostValue / (3 * totalTabletValue);
-        //   setTotalCostPerUnit(totalCostPerUnitValue);
-
-        //   // Menghitung biaya per unit untuk masing-masing line
-        //   const costPerUnitLine1Value = (totalCostValue / 3) / (valueLine1 * 64 * 25 * 4);
-        //   const costPerUnitLine2Value = (totalCostValue / 3) / (valueLine2 * 60 * 30);
-        //   const costPerUnitLine3Value = (totalCostValue / 3) / ((valueLine3_1 + valueLine3_2) * 48 * 25 * 4);
-
-        //   setCostPerUnitLine1(costPerUnitLine1Value);
-        //   setCostPerUnitLine2(costPerUnitLine2Value);
-        //   setCostPerUnitLine3(costPerUnitLine3Value);
-        // } else {
-        //   setTotalCostPerUnit(0);
-        //   setCostPerUnitLine1(0);
-        //   setCostPerUnitLine2(0);
-        //   setCostPerUnitLine3(0);
-        // };
 
         const  getTimeMoney = ( value1, value2,startHour1, endHour1, startHour2, endHour2) => {
           console.log(value1, value2,startHour1, endHour1, startHour2, endHour2);
@@ -584,16 +551,16 @@
     };
 
     useEffect(() => {
-      console.log("MVMDP:", data.MVMDP);
-      console.log("dataTotalUang:", dataTotalUang);
-      console.log("PDAM:", data.PDAM);
-      console.log("dataTotalUangAir:", dataTotalUangAir);
-      console.log("Total_Gas_Boiler:", data.Total_Gas_Boiler);
-      console.log("dataTotalUangGas:", dataTotalUangGas);
+      // console.log("MVMDP:", data.MVMDP);
+      // console.log("dataTotalUang:", dataTotalUang);
+      // console.log("PDAM:", data.PDAM);
+      // console.log("dataTotalUangAir:", dataTotalUangAir);
+      // console.log("Total_Gas_Boiler:", data.Total_Gas_Boiler);
+      // console.log("dataTotalUangGas:", dataTotalUangGas);
       // Menghitung TotalCost
       const totalCostValue = (data.MVMDP * dataTotalUang) + (data.PDAM * dataTotalUangAir) + (data.Total_Gas_Boiler * dataTotalUangGas);
       setTotalCost(totalCostValue);
-      console.log("total cost =", totalCost)
+      // console.log("total cost =", totalCost)
   
       // Menghitung TotalTablet
       const valueLine1 = data.MasterBoxL1 ?? 0;
@@ -622,7 +589,7 @@
         setCostPerUnitLine2(0);
         setCostPerUnitLine3(0);
       }
-    });
+    }, [data.MVMDP, data.PDAM, data.Total_Gas_Boiler, data.MasterBoxL1, data.MasterBoxL2_2, data.MasterBoxL3_1, data.MasterBoxL3_2, dataTotalUang, dataTotalUangAir, dataTotalUangGas]);
 
     useEffect(() => {
       const handleThemeChange = () => {
@@ -851,9 +818,7 @@
                 onClick={() => handleCardClick("NVMDP")}>
                 <div className="flex items-center mb-1">
                   <div className="inline-flex flex-shrink-0 items-center justify-center h-16 w-16 text-purple-600 bg-purple-100 rounded-full mr-6">
-                    <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6">
-                      <path strokeLinecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                    </svg>
+                    <GambarNvmdp width="70%" height="80%"/>
                   </div>
                   <div>
                     <h1 className="text-2xl text-text font-bold font-DMSans mb-0">MVMDP</h1>
@@ -927,9 +892,7 @@
                 onClick={() => handleCardClick("PDAM")}>
                 <div className="flex items-center mb-1">
                   <div className="inline-flex flex-shrink-0 items-center justify-center h-16 w-16 text-green-600 bg-green-100 rounded-full mr-6">
-                    <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6">
-                      <path strokeLinecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                    </svg>
+                    <Gambarpdam width="80%" height="80%"/>
                   </div>
                   <div>
                     <h1 className="text-2xl text-text font-bold font-DMSans mb-0">PDAM</h1>
@@ -1003,9 +966,7 @@
               <div className="p-8 shadow-buatcard bg-coba rounded-lg dark:border-strokedark cursor-pointer transform transition duration-300 hover:scale-105 active:scale-65">
                 <div className="flex items-center mb-1">
                   <div className="inline-flex flex-shrink-0 items-center justify-center h-16 w-16 text-red-600 bg-red-100 rounded-full mr-6">
-                    <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6">
-                      <path strokeLinecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" />
-                    </svg>
+                  <Gambarboiler width="80%" height="80%"/>
                   </div>
                   <div>
                     <h1 className="text-2xl text-text font-bold font-DMSans mb-0">Boiler</h1>
@@ -1042,9 +1003,7 @@
 
               <div className="flex items-center p-6 shadow-buatcard bg-coba rounded-lg dark:border-strokedark">
                 <div className="inline-flex flex-shrink-0 items-center justify-center h-16 w-16 text-blue-600 bg-blue-100 rounded-full mr-6">
-                  <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6">
-                    <path strokeLinecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                  </svg>
+                  <Gambarkotak width="80%" height="80%"/>
                 </div>
                 <div className="md:flex-1">
                   <h1 className="text-2xl text-text font-bold font-DMSans text-center mb-0">Output Master Box</h1>
