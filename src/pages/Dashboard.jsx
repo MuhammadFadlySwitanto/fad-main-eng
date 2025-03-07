@@ -817,7 +817,7 @@
                 }`}
                 onClick={() => handleCardClick("NVMDP")}>
                 <div className="flex items-center mb-1">
-                  <div className="inline-flex flex-shrink-0 items-center justify-center h-16 w-16 text-purple-600 bg-purple-100 rounded-full mr-6">
+                  <div className="inline-flex flex-shrink-0 items-center justify-center h-16 w-16 text-purple-600 bg-purple-200 rounded-full mr-6">
                     <GambarNvmdp width="70%" height="80%"/>
                   </div>
                   <div>
@@ -829,7 +829,7 @@
                 </div>
                 <div className="space-y-1 pl-[88px]">
                     <Progress hasStripe value={data.MVMDP} max={getLimit.Limit_Listrik} className="rounded-full" sx={{
-                    '& > div': { backgroundColor: '#F3E8FF' }, // Warna kustom untuk bar
+                    '& > div': { backgroundColor: '#eddefc' }, // Warna kustom untuk bar
                     backgroundColor: isDarkMode ? '#282828' : '#ededed' // Warna kustom untuk track
                   }} />
                     <div className="flex justify-end">
