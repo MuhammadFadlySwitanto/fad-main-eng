@@ -419,656 +419,528 @@ function HandoverMaintenance() {
   };
 
   return (
-    <div className=" px-6 py-4 max-w-full">
-      <div className=" space-y-auto">
-        <div className="flex flex-row">
-          <div>
-            <p className="text-text">Catch Master Report</p>
-            <div className="pb-12 border-solid border-4 mt-2 w-full ">
-              <div className="flex flex-auto mt-2 gap-x-6 gap-y-8 p-4  sm:grid-cols-6   ">
-                <div className="sm:col-span-4">
-                  <label
-                    htmlFor="username"
-                    className="block text-sm font-medium leading-6 text-text min-w-[125px]"
-                  >
-                    Line Area
-                  </label>
-                  <div className="mt-2 ">
-                    <Select
-                      placeholder="Select Line"
-                      id="line"
-                      onChange={lineHendeler}
-                    >
-                      {renderLine()}
-                    </Select>
-                  </div>
-                </div>
-                <div className="sm:col-span-4 ">
-                  <label
-                    htmlFor="username"
-                    className="block text-sm font-medium leading-6 text-text min-w-[156px]"
-                  >
-                    Proces
-                  </label>
-                  <div className="mt-2 ">
-                    <Select
-                      placeholder="Select Machine"
-                      onChange={procesHendeler}
-                    >
-                      {renderProces()}
-                    </Select>
-                  </div>
-                </div>
-
-                <div className="sm:col-span-4">
-                  <label
-                    htmlFor="username"
-                    className="block text-sm font-medium leading-6 text-text min-w-[156px]"
-                  >
-                    Machine
-                  </label>
-                  <div className="mt-2 ">
-                    <Select
-                      placeholder="Select Machine"
-                      onChange={machineHendeler}
-                    >
-                      {renderMachine()}
-                    </Select>
-                  </div>
-                </div>
-
-                <div className="sm:col-span-4">
-                  <label
-                    htmlFor="username"
-                    className="block text-sm font-medium leading-6 text-text min-w-[156px]"
-                  >
-                    Location
-                  </label>
-                  <div className="mt-2 ">
-                    <Select
-                      placeholder="Select Machine"
-                      onChange={locationHendeler}
-                    >
-                      {renderLocation()}
-                    </Select>
-                  </div>
-                </div>
-
-                <div className="sm:col-span-4">
-                  <label
-                    htmlFor="username"
-                    className="block text-sm font-medium leading-6 text-text min-w-[120px]"
-                  >
-                    PIC
-                  </label>
-                  <div className="mt-2 ">
-                    <Select onChange={PICHendeler} placeholder="Select PIC">
-                      <option value="SGO">Sugino</option>
-                      <option value="MKF">Khaerul</option>
-                      <option value="RDP">Ricy</option>
-                      <option value="ARF">Arief</option>
-                      <option value="RMR">Rieco</option>
-                      <option value="EGS">Ezra</option>
-                  
-                    </Select>
-                  </div>
-                </div>
-
-                <div className="sm:col-span-4">
-                  <label
-                    htmlFor="username"
-                    className="block text-sm font-medium leading-6 text-text min-w-[82px]"
-                  >
-                    Breakdown
-                  </label>
-                  <div className="mt-2 ">
-                    <Select placeholder="Type" onChange={breakdownTypeHendeler}>
-                      <option value="Pland">Pland</option>
-                      <option value="Unplan">Unplan</option>
-                      <option value="Minor">Minor</option>
-                    </Select>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex flex-auto gap-x-6 gap-y-8 sm:grid-cols-6 p-4 ">
-                <div className="sm:col-span-4 w-[170px]">
-                  <label
-                    htmlFor="photo"
-                    className="block text-sm font-medium leading-6 text-text"
-                  >
-                    Tanggal
-                  </label>
-                  <div className="mt-2 flex items-center gap-x-3 ">
-                    <Input
-                      onChange={dateHendeler}
-                      placeholder="Select Date and Time"
-                      size="md"
-                      type="date"
-                      css={{
-                        "&::-webkit-calendar-picker-indicator": {
-                          color: isDarkMode ? "white" : "black",
-                          filter: isDarkMode ? "invert(1)" : "none",
-                        },
-                      }}
-                    />
-                  </div>
-                </div>
-
-                <div className="sm:col-span-4">
-                  <label
-                    htmlFor="photo"
-                    className="block text-sm font-medium leading-6 text-text"
-                  >
-                    Start Time
-                  </label>
-                  <div className="mt-2 flex items-center gap-x-3">
-                    <Input
-                      onChange={startTimeHendeler}
-                      placeholder="Select Date and Time"
-                      size="md"
-                      type="time"
-                      css={{
-                        "&::-webkit-calendar-picker-indicator": {
-                          color: isDarkMode ? "white" : "black",
-                          filter: isDarkMode ? "invert(1)" : "none",
-                        },
-                      }}
-                    />
-                  </div>
-                </div>
-                <div className="sm:col-span-4">
-                  <label
-                    htmlFor="photo"
-                    className="block text-sm font-medium leading-6 text-text"
-                  >
-                    Finish Time
-                  </label>
-                  <div className="mt-2 flex items-center gap-x-3">
-                    <Input
-                      onChange={finishTimeHendeler}
-                      placeholder="Select Date and Time"
-                      size="md"
-                      type="time"
-                      css={{
-                        "&::-webkit-calendar-picker-indicator": {
-                          color: isDarkMode ? "white" : "black",
-                          filter: isDarkMode ? "invert(1)" : "none",
-                        },
-                      }}
-                    />
-                  </div>
-                </div>
-                <div className="sm:col-span-4 w-[68px]">
-                  <label
-                    htmlFor="Pekerjaan"
-                    className="block text-sm font-medium leading-6 text-text"
-                  >
-                    Total Time
-                  </label>
-                  <div className="mt-2">
-                    <input
-                      value={totalMinuites}
-                      type="number"
-                      autoComplete="Pekerjaan"
-                      className=" text-center justify-self-center block w-10 rounded-md pl-1 bg-background border border-border hover:border-border2 text-text py-1.5 focus:ring-2 focus:ring-blue-500 focus:outline-none placeholder:text-gray-400 sm:text-sm sm:leading-6 cursor-pointer"
-                    />
-                  </div>
-                </div>
-
-                <div className="sm:col-span-4 ">
-                  <label
-                    htmlFor="Pekerjaan"
-                    className="block text-sm font-medium leading-6 text-text"
-                  >
-                    Sparepart Name
-                  </label>
-                  <div className="mt-2">
-                    <input
-                      onChange={sparepartHendeler}
-                      id="Pekerjaan"
-                      name="Pekerjaan"
-                      type="Pekerjaan"
-                      autoComplete="Pekerjaan"
-                      className="block w-auto rounded-md pl-1 bg-background border border-border hover:border-border2 text-text py-1.5 focus:ring-2 focus:ring-blue-500 focus:outline-none placeholder:text-gray-400 sm:text-sm sm:leading-6 cursor-pointer"
-                    />
-                  </div>
-                </div>
-
-                <div className="sm:col-span-4 ">
-                  <label
-                    htmlFor="Pekerjaan"
-                    className="block text-sm font-medium leading-6 text-text"
-                  >
-                    Quantity
-                  </label>
-                  <div className="mt-2">
-                    <input
-                      onChange={quantityHendeler}
-                      id="Quantity"
-                      name="Quantity"
-                      type="number"
-                      className="block text-center w-16 rounded-md pl-1 bg-background border border-border hover:border-border2 text-text py-1.5 focus:ring-2 focus:ring-blue-500 focus:outline-none placeholder:text-gray-400 sm:text-sm sm:leading-6 cursor-pointer"
-                    />
-                  </div>
-                </div>
-                <div className="sm:col-span-4">
-                  <label
-                    htmlFor="username"
-                    className="block text-sm font-medium leading-6 text-text"
-                  >
-                    Unit
-                  </label>
-                  <div className="mt-2 w-auto">
-                    <Select onClick={unitHendeler} placeholder="Select">
-                      <option value="Pcs">Pcs</option>
-                      <option value="Rol">Rol</option>
-                      <option value="Meter">Meter</option>
-                      <option value="Cm">Cm</option>
-                      <option value="Box">Box</option>
-                      <option value="Lot">Lot</option>
-                      <option value="Pack">Pack</option>
-                    </Select>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex flex-auto mt-2 gap-x-6 gap-y-8 p-4  sm:grid-cols-6 ">
-                <div className="sm:col-span-4 ">
-                  <label
-                    htmlFor="Pekerjaan"
-                    className="block text-sm font-medium leading-6 text-text"
-                  >
-                    PM Job
-                  </label>
-                  <div className="mt-2">
-                    <input
-                      onChange={PMjobHendeler}
-                      id="Pekerjaan"
-                      name="Pekerjaan"
-                      type="Pekerjaan"
-                      autoComplete="Pekerjaan"
-                      className="block rounded-md pl-1 bg-background border border-border hover:border-border2 text-text py-1.5 focus:ring-2 focus:ring-blue-500 focus:outline-none placeholder:text-gray-400 sm:text-sm sm:leading-6 cursor-pointer"
-                    />
-                  </div>
-                </div>
-
-                <div className="sm:col-span-4 ">
-                  <label
-                    htmlFor="Pekerjaan"
-                    className="block text-sm font-medium leading-6 text-text"
-                  >
-                    PM Actual
-                  </label>
-                  <div className="mt-2">
-                    <input
-                      onChange={PMactualHendeler}
-                      id="Pekerjaan"
-                      name="Pekerjaan"
-                      type="Pekerjaan"
-                      autoComplete="Pekerjaan"
-                      className="block rounded-md pl-1 bg-background border border-border hover:border-border2 text-text py-1.5 focus:ring-2 focus:ring-blue-500 focus:outline-none placeholder:text-gray-400 sm:text-sm sm:leading-6 cursor-pointer"
-                    />
-                  </div>
-                </div>
-                <div className="sm:col-span-4">
-                  <label
-                    htmlFor="username"
-                    className="block text-sm font-medium leading-6 text-text"
-                  >
-                    Safety
-                  </label>
-                  <div className="mt-3  flex flex-row">
-                    <CheckboxGroup
-                      onChange={safetyHendeler}
-                      spacing={2}
-                      placeholder="Select"
-                    >
-                      <Checkbox
-                        value="OK"
-                        colorScheme="green"
-                        defaultChecked
-                        className="mr-2"
-                      >
-                        OK
-                      </Checkbox>
-                      <Checkbox value="NOK" colorScheme="red" defaultChecked>
-                        NOK
-                      </Checkbox>
-                    </CheckboxGroup>
-                  </div>
-                </div>
-                <div className="sm:col-span-4">
-                  <label
-                    htmlFor="username"
-                    className="block text-sm font-medium leading-6 text-text"
-                  >
-                    Quality
-                  </label>
-                  <div className="mt-3  flex flex-row">
-                    <CheckboxGroup
-                      onChange={qualityHendeler}
-                      spacing={2}
-                      placeholder="Select"
-                    >
-                      <Checkbox
-                        value="OK"
-                        colorScheme="green"
-                        defaultChecked
-                        className="mr-2"
-                      >
-                        OK
-                      </Checkbox>
-                      <Checkbox value="NOK" colorScheme="red" defaultChecked>
-                        NOK
-                      </Checkbox>
-                    </CheckboxGroup>
-                  </div>
-                </div>
-
-                <div className="sm:col-span-4">
-                  <label
-                    htmlFor="username"
-                    className="block text-sm font-medium leading-6 text-text"
-                  >
-                    Status
-                  </label>
-                  <div className="mt-2 ">
-                    <Select onClick={statusHendeler} placeholder="Select">
-                      <option value="OK">OK</option>
-                      <option value="Overtime">Overtime</option>
-                      <option value="Next">Next Shift</option>
-                      <option value="Followup">Need to followup</option>
-                    </Select>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex flex-col  gap-x-6 gap-y-8 sm:grid-cols-6 p-4 ">
-                <div className="sm:col-span-4">
-                  <label
-                    htmlFor="about"
-                    className="block text-sm font-medium leading-6 text-text"
-                  >
-                    Detail Pekerjaan
-                  </label>
-                  <div className="mt-2">
-                    <textarea
-                      onChange={jobDetailHendeler}
-                      id="about"
-                      name="about"
-                      rows={3}
-                      className=" block w-full rounded-md pl-1 bg-background border border-border hover:border-border2 text-text py-1.5 focus:ring-2 focus:ring-blue-500 focus:outline-none placeholder:text-gray-400 sm:text-sm sm:leading-6 cursor-pointer"
-                      defaultValue={""}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="mt-6 flex items-center justify-end gap-x-6">
-                {/* <button
-                type="button"
-                className="text-sm font-semibold leading-6 text-gray-900"
-                onClick={() => navigate("/Maintenance")}
-              >
-                Cancel
-              </button> */}
-                <button
-                  onClick={() => addDataMTC()}
-                  className="mr-5 rounded-md bg-cta hover:bg-ctactive py-2 px-3 text-sm font-semibold text-white shadow-sm"
+    <div className="container mx-auto px-4 py-6">
+      <div className="flex flex-col lg:flex-row gap-6">
+        {/* Maintenance Report Section */}
+        <div className="flex-1 min-w-0">
+          <p className="text-text text-lg font-semibold mb-2">Catch Master Report</p>
+          <div className="border-4 rounded-lg shadow-sm p-4 bg-white dark:bg-gray-800">
+            {/* Form Grid Layout */}
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+              <div>
+                <label htmlFor="line" className="block text-sm font-medium mb-1">
+                  Line Area
+                </label>
+                <Select
+                  placeholder="Select Line"
+                  id="line"
+                  onChange={lineHendeler}
                 >
-                  Save
-                </button>
+                  {renderLine()}
+                </Select>
+              </div>
+              {/* Process */}
+              <div>
+                <label htmlFor="process" className="block text-sm font-medium mb-1">
+                  Process
+                </label>
+                <Select
+                  placeholder="Select Process"
+                  id="process"
+                  onChange={procesHendeler}
+                >
+                  {renderProces()}
+                </Select>
+              </div>
+              {/* Machine */}
+              <div>
+                <label htmlFor="machine" className="block text-sm font-medium mb-1">
+                  Machine
+                </label>
+                <Select
+                  placeholder="Select Machine"
+                  id="machine"
+                  onChange={machineHendeler}
+                >
+                  {renderMachine()}
+                </Select>
+              </div>
+
+              {/* Location */}
+              <div>
+                <label htmlFor="location" className="block text-sm font-medium mb-1">
+                  Location
+                </label>
+                <Select
+                  placeholder="Select Location"
+                  id="location"
+                  onChange={locationHendeler}
+                >
+                  {renderLocation()}
+                </Select>
+              </div>
+              {/* PIC */}
+              <div>
+                <label htmlFor="pic" className="block text-sm font-medium mb-1">
+                  PIC
+                </label>
+                <Select
+                  placeholder="Select PIC"
+                  id="pic"
+                  onChange={PICHendeler}
+                >
+                  <option value="SGO">Sugino</option>
+                  <option value="MKF">Khaerul</option>
+                  <option value="RDP">Ricy</option>
+                  <option value="ARF">Arief</option>
+                  <option value="RMR">Rieco</option>
+                  <option value="EGS">Ezra</option>
+                </Select>
+              </div>
+              {/* Breakdown */}
+              <div>
+                <label htmlFor="breakdown" className="block text-sm font-medium mb-1">
+                  Breakdown
+                </label>
+                <Select
+                  placeholder="Type"
+                  id="breakdown"
+                  onChange={breakdownTypeHendeler}
+                >
+                  <option value="Pland">Planned</option>
+                  <option value="Unplan">Unplanned</option>
+                  <option value="Minor">Minor</option>
+                </Select>
+              </div>
+
+              {/* Date */}
+              <div>
+                <label htmlFor="date" className="block text-sm font-medium mb-1">
+                  Date
+                </label>
+                <Input
+                  id="date"
+                  onChange={dateHendeler}
+                  placeholder="Select Date"
+                  size="md"
+                  type="date"
+                  className="w-full"
+                  css={{
+                    "&::-webkit-calendar-picker-indicator": {
+                      color: isDarkMode ? "white" : "black",
+                      filter: isDarkMode ? "invert(1)" : "none",
+                    },
+                  }}
+                />
+              </div>
+
+              {/* Start Time */}
+              <div>
+                <label htmlFor="startTime" className="block text-sm font-medium mb-1">
+                  Start Time
+                </label>
+                <Input
+                  id="startTime"
+                  onChange={startTimeHendeler}
+                  placeholder="Start Time"
+                  size="md"
+                  type="time"
+                  className="w-full"
+                  css={{
+                    "&::-webkit-calendar-picker-indicator": {
+                      color: isDarkMode ? "white" : "black",
+                      filter: isDarkMode ? "invert(1)" : "none",
+                    },
+                  }}
+                />
+              </div>
+
+              {/* Finish Time */}
+              <div>
+                <label htmlFor="finishTime" className="block text-sm font-medium mb-1">
+                  Finish Time
+                </label>
+                <Input
+                  id="finishTime"
+                  onChange={finishTimeHendeler}
+                  placeholder="Finish Time"
+                  size="md"
+                  type="time"
+                  className="w-full"
+                  css={{
+                    "&::-webkit-calendar-picker-indicator": {
+                      color: isDarkMode ? "white" : "black",
+                      filter: isDarkMode ? "invert(1)" : "none",
+                    },
+                  }}
+                />
+              </div>
+               {/* Total Time */}
+               <div>
+                <label htmlFor="totalTime" className="block text-sm font-medium mb-1">
+                  Total Time
+                </label>
+                <input
+                  id="totalTime"
+                  value={totalMinuites}
+                  type="number"
+                  className="text-center w-20 rounded-md border bg-white dark:bg-gray-700 border-gray-300 py-1.5 px-2"
+                  readOnly
+                />
+              </div>
+
+              {/* Sparepart Name */}
+              <div>
+                <label htmlFor="sparepart" className="block text-sm font-medium mb-1">
+                  Sparepart Name
+                </label>
+                <input
+                  id="sparepart"
+                  onChange={sparepartHendeler}
+                  type="text"
+                  className="w-full rounded-md border bg-white dark:bg-gray-700 border-gray-300 py-1.5 px-2"
+                />
+              </div>
+
+              {/* Quantity */}
+              <div>
+                <label htmlFor="quantity" className="block text-sm font-medium mb-1">
+                  Quantity
+                </label>
+                <input
+                  id="quantity"
+                  onChange={quantityHendeler}
+                  type="number"
+                  className="text-center w-20 rounded-md border bg-white dark:bg-gray-700 border-gray-300 py-1.5 px-2"
+                />
+              </div>
+
+              {/* Unit */}
+              <div>
+                <label htmlFor="unit" className="block text-sm font-medium mb-1">
+                  Unit
+                </label>
+                <Select
+                  id="unit"
+                  onClick={unitHendeler}
+                  placeholder="Select"
+                >
+                  <option value="Pcs">Pcs</option>
+                  <option value="Rol">Rol</option>
+                  <option value="Meter">Meter</option>
+                  <option value="Cm">Cm</option>
+                  <option value="Box">Box</option>
+                  <option value="Lot">Lot</option>
+                  <option value="Pack">Pack</option>
+                </Select>
+              </div>
+               {/* PM Job */}
+               <div>
+                <label htmlFor="pmJob" className="block text-sm font-medium mb-1">
+                  PM Job
+                </label>
+                <input
+                  id="pmJob"
+                  onChange={PMjobHendeler}
+                  type="text"
+                  className="w-full rounded-md border bg-white dark:bg-gray-700 border-gray-300 py-1.5 px-2"
+                />
+              </div>
+
+              {/* PM Actual */}
+              <div>
+                <label htmlFor="pmActual" className="block text-sm font-medium mb-1">
+                  PM Actual
+                </label>
+                <input
+                  id="pmActual"
+                  onChange={PMactualHendeler}
+                  type="text"
+                  className="w-full rounded-md border bg-white dark:bg-gray-700 border-gray-300 py-1.5 px-2"
+                />
+              </div>
+
+              {/* Safety */}
+              <div>
+                <label className="block text-sm font-medium mb-1">
+                  Safety
+                </label>
+                <CheckboxGroup
+                  onChange={safetyHendeler}
+                  spacing={2}
+                  className="flex flex-row gap-4"
+                >
+                  <Checkbox
+                    value="OK"
+                    colorScheme="green"
+                    defaultChecked
+                  >
+                    OK
+                  </Checkbox>
+                  <Checkbox 
+                    value="NOK" 
+                    colorScheme="red" 
+                    defaultChecked
+                  >
+                    NOK
+                  </Checkbox>
+                </CheckboxGroup>
+              </div>
+
+              {/* Quality */}
+              <div>
+                <label className="block text-sm font-medium mb-1">
+                  Quality
+                </label>
+                <CheckboxGroup
+                  onChange={qualityHendeler}
+                  spacing={2}
+                  className="flex flex-row gap-4"
+                >
+                  <Checkbox
+                    value="OK"
+                    colorScheme="green"
+                    defaultChecked
+                  >
+                    OK
+                  </Checkbox>
+                  <Checkbox 
+                    value="NOK" 
+                    colorScheme="red" 
+                    defaultChecked
+                  >
+                    NOK
+                  </Checkbox>
+                </CheckboxGroup>
+              </div>
+
+              {/* Status */}
+              <div>
+                <label htmlFor="status" className="block text-sm font-medium mb-1">
+                  Status
+                </label>
+                <Select
+                  id="status"
+                  onClick={statusHendeler}
+                  placeholder="Select"
+                >
+                  <option value="OK">OK</option>
+                  <option value="Overtime">Overtime</option>
+                  <option value="Next">Next Shift</option>
+                  <option value="Followup">Need to followup</option>
+                </Select>
               </div>
             </div>
-            <p className="ml-2">Data Last Update at ({lastMTC})</p>
+
+            {/* Job Details */}
+            <div className="mt-6">
+              <label htmlFor="jobDetail" className="block text-sm font-medium mb-1">
+                Detail Pekerjaan
+              </label>
+              <textarea
+                id="jobDetail"
+                onChange={jobDetailHendeler}
+                rows={3}
+                className="w-full rounded-md border bg-white dark:bg-gray-700 border-gray-300 py-1.5 px-2"
+              />
+            </div>
+
+            {/* Save Button */}
+            <div className="mt-6 flex justify-end">
+              <button
+                onClick={addDataMTC}
+                className="rounded-md bg-blue-600 hover:bg-blue-700 py-2 px-4 text-sm font-semibold text-white shadow-sm"
+              >
+                Save
+              </button>
+            </div>
           </div>
-          {/* ------------------------------------------------------------------------------------------------------------------*/}
-          <div className=" space-y-auto ml-4">
-            <p className="text-text">Catch Master Report</p>
-            <div className="pb-12 border-solid border-4 mt-2 ">
-              <div className="sm:col-span-4 flex flex-row px-4 mt-8 ">
-                <h1 className="mt-8  text-2xl font-bold">CM1</h1>
-                <div className="ml-4">
-                  <label
-                    htmlFor="Pekerjaan"
-                    className="block text-sm font-medium leading-6 text-text"
-                  >
-                    Afkir
-                  </label>
-                  <div className="mt-2">
-                    <input
-                      onChange={cm1AfkirHendeler}
-                      type="number"
-                      autoComplete="Pekerjaan"
-                      className=" w-36 text-center block rounded-md pl-1 bg-background border border-border hover:border-border2 text-text py-1.5 focus:ring-2 focus:ring-blue-500 focus:outline-none placeholder:text-gray-400 sm:text-sm sm:leading-6 cursor-pointer"
-                    />
-                  </div>
-                </div>
-                <div className="ml-4">
-                  <label
-                    htmlFor="Pekerjaan"
-                    className="block text-sm font-medium leading-6 text-text"
-                  >
-                    Output
-                  </label>
-                  <div className="mt-2">
-                    <input
-                      onChange={cm1OutputHendeler}
-                      type="number"
-                      autoComplete="Pekerjaan"
-                      className=" w-36 text-center block rounded-md pl-1 bg-background border border-border hover:border-border2 text-text py-1.5 focus:ring-2 focus:ring-blue-500 focus:outline-none placeholder:text-gray-400 sm:text-sm sm:leading-6 cursor-pointer"
-                    />
-                  </div>
-                </div>
+          <p className="text-xs mt-1 text-gray-500">Data Last Update at ({lastMTC})</p>
+        </div>
+
+        {/* Production Report Section */}
+        <div className="flex-1 min-w-0">
+          <h2 className="text-lg font-semibold mb-2">Production Report</h2>
+          <div className="border-4 rounded-lg shadow-sm p-4 bg-white dark:bg-gray-800">
+            {/* CM1 */}
+            <div className="flex flex-wrap items-center gap-4 mb-4">
+              <h3 className="text-xl font-bold">CM1</h3>
+              <div>
+                <label htmlFor="cm1Afkir" className="block text-sm font-medium mb-1">
+                  Afkir
+                </label>
+                <input
+                  id="cm1Afkir"
+                  onChange={cm1AfkirHendeler}
+                  type="number"
+                  className="w-24 text-center rounded-md border bg-white dark:bg-gray-700 border-gray-300 py-1.5 px-2"
+                />
               </div>
-              <div className="sm:col-span-4 flex flex-row px-4">
-                <h1 className="m-auto text-2xl font-bold">CM2</h1>
-                <div className="mx-4">
-                  {/* <label
-                    htmlFor="Pekerjaan"
-                    className="block text-sm font-medium leading-6 text-gray-900"
-                  >
-                    Output
-                  </label> */}
-                  <div className="mt-2">
-                    <input
-                      onChange={cm2AfkirHendeler}
-                      type="number"
-                      autoComplete="Pekerjaan"
-                      className=" w-36 text-center block rounded-md pl-1 bg-background border border-border hover:border-border2 text-text py-1.5 focus:ring-2 focus:ring-blue-500 focus:outline-none placeholder:text-gray-400 sm:text-sm sm:leading-6 cursor-pointer"
-                    />
-                  </div>
-                </div>
-                <div>
-                  {/* <label
-                    htmlFor="Pekerjaan"
-                    className="block text-sm font-medium leading-6 text-gray-900"
-                  >
-                    Afkir
-                  </label> */}
-                  <div className="mt-2">
-                    <input
-                      onChange={cm2OutputHendeler}
-                      type="number"
-                      autoComplete="Pekerjaan"
-                      className=" w-36 text-center block rounded-md pl-1 bg-background border border-border hover:border-border2 text-text py-1.5 focus:ring-2 focus:ring-blue-500 focus:outline-none placeholder:text-gray-400 sm:text-sm sm:leading-6 cursor-pointer"
-                    />
-                  </div>
-                </div>
+              <div>
+                <label htmlFor="cm1Output" className="block text-sm font-medium mb-1">
+                  Output
+                </label>
+                <input
+                  id="cm1Output"
+                  onChange={cm1OutputHendeler}
+                  type="number"
+                  className="w-24 text-center rounded-md border bg-white dark:bg-gray-700 border-gray-300 py-1.5 px-2"
+                />
               </div>
-              <div className="sm:col-span-4 flex flex-row px-4">
-                <h1 className="m-auto text-2xl font-bold">CM3</h1>
-                <div className="mx-4">
-                  {/* <label
-                    htmlFor="Pekerjaan"
-                    className="block text-sm font-medium leading-6 text-gray-900"
-                  >
-                    Output
-                  </label> */}
-                  <div className="mt-2">
-                    <input
-                      onChange={cm3AfkirHendeler}
-                      type="number"
-                      autoComplete="Pekerjaan"
-                      className=" w-36 text-center block rounded-md pl-1 bg-background border border-border hover:border-border2 text-text py-1.5 focus:ring-2 focus:ring-blue-500 focus:outline-none placeholder:text-gray-400 sm:text-sm sm:leading-6 cursor-pointer"
-                    />
-                  </div>
-                </div>
-                <div>
-                  {/* <label
-                    htmlFor="Pekerjaan"
-                    className="block text-sm font-medium leading-6 text-gray-900"
-                  >
-                    Afkir
-                  </label> */}
-                  <div className="mt-2">
-                    <input
-                      onChange={cm3OutputHendeler}
-                      type="number"
-                      autoComplete="Pekerjaan"
-                      className=" w-36 text-center block rounded-md pl-1 bg-background border border-border hover:border-border2 text-text py-1.5 focus:ring-2 focus:ring-blue-500 focus:outline-none placeholder:text-gray-400 sm:text-sm sm:leading-6 cursor-pointer"
-                    />
-                  </div>
-                </div>
+            </div>
+            <div className="flex flex-wrap items-center gap-4 mb-4">
+              <h3 className="text-xl font-bold">CM2</h3>
+              <div>
+                <label htmlFor="cm1Afkir" className="block text-sm font-medium mb-1">
+                  Afkir
+                </label>
+                <input
+                  id="cm1Afkir"
+                  onChange={cm2AfkirHendeler}
+                  type="number"
+                  className="w-24 text-center rounded-md border bg-white dark:bg-gray-700 border-gray-300 py-1.5 px-2"
+                />
               </div>
-              <div className="sm:col-span-4 flex flex-row px-4">
-                <h1 className="m-auto text-2xl font-bold">CM4</h1>
-                <div className="mx-4">
-                  {/* <label
-                    htmlFor="Pekerjaan"
-                    className="block text-sm font-medium leading-6 text-gray-900"
-                  >
-                    Output
-                  </label> */}
-                  <div className="mt-2">
-                    <input
-                      onChange={cm4AfkirHendeler}
-                      type="number"
-                      autoComplete="Pekerjaan"
-                      className=" w-36 text-center block rounded-md pl-1 bg-background border border-border hover:border-border2 text-text py-1.5 focus:ring-2 focus:ring-blue-500 focus:outline-none placeholder:text-gray-400 sm:text-sm sm:leading-6 cursor-pointer"
-                    />
-                  </div>
-                </div>
-                <div>
-                  {/* <label
-                    htmlFor="Pekerjaan"
-                    className="block text-sm font-medium leading-6 text-gray-900"
-                  >
-                    Afkir
-                  </label> */}
-                  <div className="mt-2">
-                    <input
-                      onChange={cm4OutputHendeler}
-                      type="number"
-                      autoComplete="Pekerjaan"
-                      className=" w-36 text-center block rounded-md pl-1 bg-background border border-border hover:border-border2 text-text py-1.5 focus:ring-2 focus:ring-blue-500 focus:outline-none placeholder:text-gray-400 sm:text-sm sm:leading-6 cursor-pointer"
-                    />
-                  </div>
-                </div>
+              <div>
+                <label htmlFor="cm1Output" className="block text-sm font-medium mb-1">
+                  Output
+                </label>
+                <input
+                  id="cm1Output"
+                  onChange={cm2OutputHendeler}
+                  type="number"
+                  className="w-24 text-center rounded-md border bg-white dark:bg-gray-700 border-gray-300 py-1.5 px-2"
+                />
               </div>
-              <div className="sm:col-span-4 flex flex-row px-4">
-                <h1 className="m-auto text-2xl font-bold">CM5</h1>
-                <div className="mx-4">
-                  {/* <label
-                    htmlFor="Pekerjaan"
-                    className="block text-sm font-medium leading-6 text-gray-900"
-                  >
-                    Output
-                  </label> */}
-                  <div className="mt-2">
-                    <input
-                      onChange={cm5AfkirHendeler}
-                      type="number"
-                      autoComplete="Pekerjaan"
-                      className=" w-36 text-center block rounded-md pl-1 bg-background border border-border hover:border-border2 text-text py-1.5 focus:ring-2 focus:ring-blue-500 focus:outline-none placeholder:text-gray-400 sm:text-sm sm:leading-6 cursor-pointer"
-                    />
-                  </div>
-                </div>
-                <div>
-                  {/* <label
-                    htmlFor="Pekerjaan"
-                    className="block text-sm font-medium leading-6 text-gray-900"
-                  >
-                    Afkir
-                  </label> */}
-                  <div className="mt-2">
-                    <input
-                      onChange={cm5OutputHendeler}
-                      type="number"
-                      autoComplete="Pekerjaan"
-                      className=" w-36 text-center block rounded-md pl-1 bg-background border border-border hover:border-border2 text-text py-1.5 focus:ring-2 focus:ring-blue-500 focus:outline-none placeholder:text-gray-400 sm:text-sm sm:leading-6 cursor-pointer"
-                    />
-                  </div>
-                </div>
+            </div>
+            <div className="flex flex-wrap items-center gap-4 mb-4">
+              <h3 className="text-xl font-bold">CM3</h3>
+              <div>
+                <label htmlFor="cm1Afkir" className="block text-sm font-medium mb-1">
+                  Afkir
+                </label>
+                <input
+                  id="cm1Afkir"
+                  onChange={cm3AfkirHendeler}
+                  type="number"
+                  className="w-24 text-center rounded-md border bg-white dark:bg-gray-700 border-gray-300 py-1.5 px-2"
+                />
               </div>
-              <div className="mx-4 flex flex-row mt-4 ">
-                <label
-                  htmlFor="Pekerjaan"
-                  className="block m-auto text-sm font-medium leading-6 text-text"
-                >
+              <div>
+                <label htmlFor="cm1Output" className="block text-sm font-medium mb-1">
+                  Output
+                </label>
+                <input
+                  id="cm1Output"
+                  onChange={cm3OutputHendeler}
+                  type="number"
+                  className="w-24 text-center rounded-md border bg-white dark:bg-gray-700 border-gray-300 py-1.5 px-2"
+                />
+              </div>
+            </div>
+            <div className="flex flex-wrap items-center gap-4 mb-4">
+              <h3 className="text-xl font-bold">CM4</h3>
+              <div>
+                <label htmlFor="cm1Afkir" className="block text-sm font-medium mb-1">
+                  Afkir
+                </label>
+                <input
+                  id="cm1Afkir"
+                  onChange={cm4AfkirHendeler}
+                  type="number"
+                  className="w-24 text-center rounded-md border bg-white dark:bg-gray-700 border-gray-300 py-1.5 px-2"
+                />
+              </div>
+              <div>
+                <label htmlFor="cm1Output" className="block text-sm font-medium mb-1">
+                  Output
+                </label>
+                <input
+                  id="cm1Output"
+                  onChange={cm4OutputHendeler}
+                  type="number"
+                  className="w-24 text-center rounded-md border bg-white dark:bg-gray-700 border-gray-300 py-1.5 px-2"
+                />
+              </div>
+            </div>
+            <div className="flex flex-wrap items-center gap-4 mb-4">
+              <h3 className="text-xl font-bold">CM5</h3>
+              <div>
+                <label htmlFor="cm1Afkir" className="block text-sm font-medium mb-1">
+                  Afkir
+                </label>
+                <input
+                  id="cm1Afkir"
+                  onChange={cm5AfkirHendeler}
+                  type="number"
+                  className="w-24 text-center rounded-md border bg-white dark:bg-gray-700 border-gray-300 py-1.5 px-2"
+                />
+              </div>
+              <div>
+                <label htmlFor="cm1Output" className="block text-sm font-medium mb-1">
+                  Output
+                </label>
+                <input
+                  id="cm1Output"
+                  onChange={cm5OutputHendeler}
+                  type="number"
+                  className="w-24 text-center rounded-md border bg-white dark:bg-gray-700 border-gray-300 py-1.5 px-2"
+                />
+              </div>
+            </div>
+            {/* Totals */}
+            <div className="mt-6 space-y-3">
+              <div className="flex items-center justify-between">
+                <label htmlFor="totalOutput" className="text-sm font-medium">
                   Total Output
                 </label>
-                <div className="mt-2">
-                  <input
-                    value={totalOutputCal}
-                    type="number"
-                    autoComplete="Pekerjaan"
-                    className=" w-36 text-center block rounded-md pl-1 bg-background border border-border hover:border-border2 text-text py-1.5 focus:ring-2 focus:ring-blue-500 focus:outline-none placeholder:text-gray-400 sm:text-sm sm:leading-6 cursor-pointer"
-                  />
-                </div>
+                <input
+                  id="totalOutput"
+                  value={totalOutputCal}
+                  type="number"
+                  className="w-24 text-center rounded-md border bg-white dark:bg-gray-700 border-gray-300 py-1.5 px-2"
+                  readOnly
+                />
               </div>
-              <div className="mx-4 flex flex-row mt-2 ">
-                <label
-                  htmlFor="Pekerjaan"
-                  className="block m-auto text-sm font-medium leading-6 text-text"
-                >
+              
+              <div className="flex items-center justify-between">
+                <label htmlFor="totalMasterBox" className="text-sm font-medium">
                   Total MasterBOX
                 </label>
-                <div className="mt-2">
-                  <input
-                    value={totalMasterBoxCal}
-                    type="number"
-                    autoComplete="Pekerjaan"
-                    className=" w-36 text-center block rounded-md pl-1 bg-background border border-border hover:border-border2 text-text py-1.5 focus:ring-2 focus:ring-blue-500 focus:outline-none placeholder:text-gray-400 sm:text-sm sm:leading-6 cursor-pointer"
-                  />
-                </div>
-              </div>
-              <div className="sm:col-span-4 mx-4">
-                <label
-                  htmlFor="about"
-                  className="block text-sm font-medium leading-6 text-text"
-                >
-                  Information
-                </label>
-                <div className="mt-2">
-                  <textarea
-                    onChange={informationHendeler}
-                    id="about"
-                    name="about"
-                    rows={3}
-                    className=" block w-full rounded-md pl-1 bg-background border border-border hover:border-border2 text-text py-1.5 focus:ring-2 focus:ring-blue-500 focus:outline-none placeholder:text-gray-400 sm:text-sm sm:leading-6 cursor-pointer"
-                    defaultValue={""}
-                  />
-                </div>
-              </div>
-              <div className="mt-14 flex items-center justify-end gap-x-6">
-                {/* <button
-                type="button"
-                className="text-sm font-semibold leading-6 text-gray-900"
-                onClick={() => navigate("/Maintenance")}
-              >
-                Cancel
-              </button> */}
-                <button
-                  onClick={() => addDataProd()}
-                  className="mr-5 rounded-md bg-cta hover:bg-ctactive py-2 px-3 text-sm font-semibold text-white shadow-sm"
-                >
-                  Save
-                </button>
+                <input
+                  id="totalMasterBox"
+                  value={totalMasterBoxCal}
+                  type="number"
+                  className="w-24 text-center rounded-md border bg-white dark:bg-gray-700 border-gray-300 py-1.5 px-2"
+                  readOnly
+                />
               </div>
             </div>
-            <p className="ml-2">Data Last Update at ({lastPRD})</p>
+
+            {/* Information */}
+            <div className="mt-6">
+              <label htmlFor="information" className="block text-sm font-medium mb-1">
+                Information
+              </label>
+              <textarea
+                id="information"
+                onChange={informationHendeler}
+                rows={3}
+                className="w-full rounded-md border bg-white dark:bg-gray-700 border-gray-300 py-1.5 px-2"
+              />
+            </div>
+
+            {/* Save Button */}
+            <div className="mt-6 flex justify-end">
+              <button
+                onClick={addDataProd}
+                className="rounded-md bg-blue-600 hover:bg-blue-700 py-2 px-4 text-sm font-semibold text-white shadow-sm"
+              >
+                Save
+              </button>
+            </div>
           </div>
+          <p className="text-xs mt-1 text-gray-500">Data Last Update at ({lastPRD})</p>
         </div>
       </div>
     </div>
