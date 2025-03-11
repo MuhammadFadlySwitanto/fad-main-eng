@@ -5,6 +5,7 @@ import { GiBaseDome } from "react-icons/gi";
 import { PiPlantFill } from "react-icons/pi";
 import { IoLogoElectron } from "react-icons/io5";
 import ChartDashboard from "../components/ChartDashboard";
+import ChartYearly from "../components/ChartYearly";
 
 const PDAM = () => {
     const [inlet, setInlet] = useState(null);
@@ -398,7 +399,7 @@ const PDAM = () => {
 {/* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------         */}
         <div className="text-center mt-8 p-2 shadow-buatcard bg-coba rounded-md relative">
             <h1 className="text-center text-text text-4xl antialiased hover:subpixel-antialiased mb-2">PDAM Chart</h1>
-            <ChartDashboard endpoint="http://10.126.15.137:8002/part/GrafanaMVMDPYear" area="cMT-DB-WATER-UTY_Met_PDAM_data" title=" " colors={Colors2}
+            <ChartYearly endpoint="http://10.126.15.137:8002/part/GrafanaMVMDPYear" area="cMT-DB-WATER-UTY_Met_PDAM_data" title=" " colors={Colors2}
                 style={{
                 border: 'none', // Removes border
                 position: 'relative',
