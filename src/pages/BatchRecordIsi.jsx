@@ -65,11 +65,7 @@ const BatchRecordIsi = () => {
 
   useEffect(() => {
     if (newLine && newProces) {
-      if (newMachine === "HM" || newMachine === "Ink Jet Printer") {
-        fetchStripingRecord(startDate, finishDate);
-      } else {
-        fetchBatch(newLine, newMachine, startDate, finishDate);
-      }
+      fetchMachine(newLine, newProces);
     }
   }, [newProces]);
 
@@ -114,24 +110,25 @@ const BatchRecordIsi = () => {
     };
   
     const fetchBatch = async (line, machine, start, finish) => {
-      let area = determineArea(line, machine);
-      if (!area) {
-        console.error("Invalid line or machine selected.");
-        return;
-      }
-      setDbMachine(area);
-      
+    // Validate line and machine values
+    if (!line || !machine || typeof line !== 'string' || typeof machine !== 'string') {
+      console.error(`Invalid line or machine value. Line: ${line}, Machine: ${machine}`);
+      return;
+    }
+
       const endpoint = determineEndpoint(line, machine);
       if (!endpoint) {
-        console.error("Invalid endpoint determined.");
+        console.error(`Invalid endpoint determined for line: ${line}, machine: ${machine}`);
         return;
       }
   
       try {
-        const response = await axios.get(endpoint, { params: { area, start, finish } });
+        const response = await axios.get(endpoint, { params: { start, finish } });
+        // console.log("ini", response);
         if (response.data && Array.isArray(response.data)) {
           const batchData = response.data.map(item => item.BATCH || "Unknown Batch");
           setFetchBatchData(batchData);
+          // console.log("ini", batchData);
         } else {
           setFetchBatchData([]);
         }
@@ -140,83 +137,70 @@ const BatchRecordIsi = () => {
         alert("Failed to fetch batch data. Please check your input and try again.");
       }
     };
-
-    const fetchStripingRecord = async (start, finish) => {
-      try {
-        const response = await axios.get("http://10.126.15.137:8002/part/StripingRecord", { params: { start, finish } });
-        if (response.data && Array.isArray(response.data)) {
-          const batchData = response.data.map(item => item.BATCH || "Unknown Batch");
-          setFetchBatchData(batchData);
-        } else {
-          setFetchBatchData([]);
-        }
-      } catch (error) {
-        console.error("Error fetching striping record data:", error);
-        alert("Failed to fetch striping record data. Please check your input and try again.");
-      }
-    };
-
-    const determineArea = (line, machine) => {
-      const areas = {
+  
+    const determineEndpoint = (line, machine) => {
+      const endpoints = {
         line1: {
-          PMA: "cMT-FHDGEA1_EBR_PMA_data",
-          Wetmill: "cMT-FHDGEA1_EBR_Wetmill_data",
-          EPH: "cMT-FHDGEA1_EBR_EPH_data",
-          FBD: "cMT-FHDGEA1_EBR_FBD_data",
-          Binder1: "mezanine.tengah_Ebr_Binder1_data",
+          PMA: "/PMARecord1",
+          Binder: "/BinderRecord1",
+          Wetmill: "/WetmillRecord1",
+          FBD: "/FBDRecord1",
+          EPH: "/EPHRecord1",
+          Tumbler: "/TumblerRecord1",
+          Fette: "/FetteRecord1",
+          Deduster: "/DedusterRecord1",
+          Lifter: "/LifterRecord1",
+          MetalDetector: "/MetalDetectorRecord1",
+          HM: "/HMRecord1",
+          IJP: "/IJPRecord1",
+          CM1: "/CM1Record1",
         },
         line3: {
-          PMA: "cMT-GEA-L3_EBR_PMA_L3_data",
-          Wetmill: "cMT-GEA-L3_EBR_WETMILL_L3_data",
-          EPH: "cMT-GEA-L3_EBR_EPH_L3_data",
-          FBD: "cMT-GEA-L3_EBR_FBD_L3_data"
+          PMA: "/PMARecord3",
+          Binder: "/BinderRecord3",
+          Wetmill: "/WetmillRecord3",
+          FBD: "/FBDRecord3",
+          EPH: "/EPHRecord3",
+          Tumbler: "/TumblerRecord3",
+          Fette: "/FetteRecord3",
+          Deduster: "/DedusterRecord3",
+          Lifter: "/LifterRecord3",
+          MetalDetector: "/MetalDetectorRecord3",
+          HM: "/HMRecord3",
+          IJP: "/IJPRecord3",
+          CM1: "/CM1Record3",
         }
       };
-      return areas[line]?.[machine];
-    };
-
-    const determineEndpoint = (line, machine) => {
-      if (line === "line1") {
-        if (machine === "FBD" || machine === "Binder1") {
-          return "http://10.126.15.137:8002/part/BatchRecord1";
-        } else {
-          return "http://10.126.15.137:8002/part/BatchRecord1_DB2";
-        }
-      } else {
-        return "http://10.126.15.137:8002/part/BatchRecord3";
+      const endpoint = endpoints[line]?.[machine];
+      if (!endpoint) {
+        console.error(`Endpoint not found for line: ${line}, machine: ${machine}`);
+        return null;
       }
+      return `http://10.126.15.137:8002/part${endpoint}`;
     };
-
+  
     const getDataEbrData = async () => {
-      if (!dbMachine || !selectedBatch) {
-        alert("Please select a valid machine and batch before fetching data.");
+      // console.log(selectedBatch);
+      if (!selectedBatch) {
+        alert("Please select a valid batch before fetching data.");
         return;
       }
       try {
         const response = await axios.get("http://10.126.15.137:8002/part/SearchBatchRecord", {
-          params: { area: dbMachine, data: selectedBatch }
+          params: { data: selectedBatch }
         });
         setAllDataEBR(response.data);
+       
+        
       } catch (error) {
         console.error("Error fetching EBR data:", error);
         alert("Failed to fetch EBR data.");
       }
     };
 
-    // const handleSubmit = async () => {
-    //   if (newMachine === "HM" || newMachine === "Ink Jet Printer") {
-    //     await fetchStripingRecord(startDate, finishDate);
-    //   } else {
-    //     await fetchBatch(newLine, newMachine, startDate, finishDate);
-    //   }
-    //   await getDataEbrData();
-    // };
     const handleSubmit = async () => {
-      if (newMachine === "HM" || newMachine === "Ink Jet Printer") {
-        await fetchStripingRecord(startDate, finishDate);
-      } else {
-        await fetchBatch(newLine, newMachine, startDate, finishDate);
-      }
+      // e.preventDefault();
+      // await fetchBatch(newLine, newMachine, startDate, finishDate);
       await getDataEbrData();
     };
     
@@ -248,9 +232,8 @@ const BatchRecordIsi = () => {
       setFinishDate(finishValue);
 
       // Check if all necessary inputs are filled
-      if (newMachine && startDate && finishValue && newLine) {
-        fetchBatch(newMachine, startDate, finishValue, newLine);
-        fetchStripingRecord(newMachine, startDate, finishValue, newLine);
+      if (newLine && newMachine && startDate && finishValue) {
+        fetchBatch(newLine, newMachine, startDate, finishValue);
       }
     };
 
@@ -270,7 +253,7 @@ const BatchRecordIsi = () => {
     useEffect(() => {
       console.log("Current line:", newLine);
       console.log("Current process:", newProces);
-      console.log("Current machine:", dbMachine);
+      console.log("Current machine:", newMachine);
       console.log("Selected batch:", selectedBatch);
     }, [newLine, newProces, newMachine, selectedBatch]);
   
@@ -593,7 +576,6 @@ const BatchRecordIsi = () => {
                     Finish Date
                   </label>
                   <Input
-                    //onChange={dateFinish}
                     placeholder="Select Date and Time"
                     size="md"
                     type="date"
