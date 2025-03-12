@@ -185,7 +185,7 @@ const BatchRecordIsi = () => {
     };
     const handleSubmit = async () => {
       
-      await fetchBatch();
+      await fetchBatch(newLine, newMachine, startDate, finishDate);
       await getDataEbrData();
     };
     
