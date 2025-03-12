@@ -65,7 +65,11 @@ const BatchRecordIsi = () => {
 
   useEffect(() => {
     if (newLine && newProces) {
-      fetchMachine(newLine, newProces);
+      if (newMachine === "HM" || newMachine === "Ink Jet Printer") {
+        fetchStripingRecord(startDate, finishDate);
+      } else {
+        fetchBatch(newLine, newMachine, startDate, finishDate);
+      }
     }
   }, [newProces]);
 
@@ -137,6 +141,21 @@ const BatchRecordIsi = () => {
       }
     };
 
+    const fetchStripingRecord = async (start, finish) => {
+      try {
+        const response = await axios.get("http://10.126.15.137:8002/part/StripingRecord", { params: { start, finish } });
+        if (response.data && Array.isArray(response.data)) {
+          const batchData = response.data.map(item => item.BATCH || "Unknown Batch");
+          setFetchBatchData(batchData);
+        } else {
+          setFetchBatchData([]);
+        }
+      } catch (error) {
+        console.error("Error fetching striping record data:", error);
+        alert("Failed to fetch striping record data. Please check your input and try again.");
+      }
+    };
+
     const determineArea = (line, machine) => {
       const areas = {
         line1: {
@@ -183,9 +202,21 @@ const BatchRecordIsi = () => {
         alert("Failed to fetch EBR data.");
       }
     };
+
+    // const handleSubmit = async () => {
+    //   if (newMachine === "HM" || newMachine === "Ink Jet Printer") {
+    //     await fetchStripingRecord(startDate, finishDate);
+    //   } else {
+    //     await fetchBatch(newLine, newMachine, startDate, finishDate);
+    //   }
+    //   await getDataEbrData();
+    // };
     const handleSubmit = async () => {
-      
-      await fetchBatch(newLine, newMachine, startDate, finishDate);
+      if (newMachine === "HM" || newMachine === "Ink Jet Printer") {
+        await fetchStripingRecord(startDate, finishDate);
+      } else {
+        await fetchBatch(newLine, newMachine, startDate, finishDate);
+      }
       await getDataEbrData();
     };
     
@@ -219,6 +250,7 @@ const BatchRecordIsi = () => {
       // Check if all necessary inputs are filled
       if (newMachine && startDate && finishValue && newLine) {
         fetchBatch(newMachine, startDate, finishValue, newLine);
+        fetchStripingRecord(newMachine, startDate, finishValue, newLine);
       }
     };
 
