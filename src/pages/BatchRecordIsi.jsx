@@ -33,7 +33,7 @@ const BatchRecordIsi = () => {
   const [newLine, setNewLine] = useState("");
   const [newProces, setNewProces] = useState("");
   const [newMachine, setNewMachine] = useState("");
-  const [dbMacchinem, setDbMachine] = useState("");
+  const [dbMachine, setDbMachine] = useState("");
   const [selectedBatch, setSelectedBatch] = useState("");
   const [allDataEBR, setAllDataEBR] = useState([])
 
@@ -52,6 +52,28 @@ const BatchRecordIsi = () => {
   const [isDarkMode, setIsDarkMode] = useState(
     document.documentElement.getAttribute("data-theme") === "dark"
   );
+
+  useEffect(() => {
+    fetchLine(); // Fetch line data on component mount
+  }, []);
+
+  useEffect(() => {
+    if (newLine) {
+      fetchProces(newLine);
+    }
+  }, [newLine]);
+
+  useEffect(() => {
+    if (newLine && newProces) {
+      fetchMachine(newLine, newProces);
+    }
+  }, [newProces]);
+
+  useEffect(() => {
+    if (newLine && newMachine && startDate && finishDate) {
+      fetchBatch(newLine, newMachine, startDate, finishDate);
+    }
+  }, [newMachine, startDate, finishDate]);
 
   const formatTimestamp = (uniqueTimestamp) => {
     const [seconds] = uniqueTimestamp.toString().split(".");
@@ -87,126 +109,84 @@ const BatchRecordIsi = () => {
       setFetchMachineData(response.data);
     };
   
-    const fetchBatch = async (machine, start, finish, line, setMainData) => {
-      let area = "";
-      //console.log("Params sent to backend:", { area, start, finish });        
-      if (line === "line1") {
-        switch (machine) {
-          case "PMA":
-            area = "cMT-FHDGEA1_EBR_PMA_data";
-            break;
-          case "Wetmill":
-            area = "cMT-FHDGEA1_EBR_Wetmill_data";
-            break;
-          case "EPH":
-            area = "cMT-FHDGEA1_EBR_EPH_data";
-            break;
-          case "FBD":
-            area = "cMT-FHDGEA1_EBR_FBD_data";
-            break;
-          default:
-            //console.error("Invalid machine selected for line1.");
-            return; // Exit early
-        }
-      } else if (line === "line3") {
-        switch (machine) {
-          case "PMA":
-            area = "cMT-GEA-L3_EBR_PMA_L3_data";
-            break;
-          case "Wetmill":
-            area = "cMT-GEA-L3_EBR_WETMILL_L3_data";
-            break;
-          case "EPH":
-            area = "cMT-GEA-L3_EBR_EPH_L3_data";
-            break;
-          case "FBD":
-            area = "cMT-GEA-L3_EBR_FBD_L3_data";
-            break;
-          default:
-            console.error("Invalid machine selected for line3.");
-            return; // Exit early
-        }
-      } else {
-        console.error("Invalid line selected.");
-        return; // Exit early
-      }
-      const area1 =
-          newLine === "line1"
-            ? {
-                PMA: "cMT-FHDGEA1_EBR_PMA_data",
-                Wetmill: "cMT-FHDGEA1_EBR_Wetmill_data",
-                EPH: "cMT-FHDGEA1_EBR_EPH_data",
-                FBD: "cMT-FHDGEA1_EBR_FBD_data",
-              }[newMachine]
-            : {
-                PMA: "cMT-GEA-L3_EBR_PMA_L3_data",
-                Wetmill: "cMT-GEA-L3_EBR_WETMILL_L3_data",
-                EPH: "cMT-GEA-L3_EBR_EPH_L3_data",
-                FBD: "cMT-GEA-L3_EBR_FBD_L3_data",
-              }[newMachine];
-              setDbMachine(area1)
-              console.log("Current machine:", dbMacchinem);
-              console.log("Selected batch:", selectedBatch);
-    
+    const fetchBatch = async (line, machine, start, finish) => {
+      let area = determineArea(line, machine);
       if (!area) {
-        console.error("Area mapping failed.");
+        console.error("Invalid line or machine selected.");
         return;
       }
-    
-      // Define endpoint
-      const endpoint =
-        line === "line1"
-          ? "http://10.126.15.137:8002/part/BatchRecord1"
-          : "http://10.126.15.137:8002/part/BatchRecord3";
-    
+      setDbMachine(area);
+      
+      const endpoint = determineEndpoint(line, machine);
+      if (!endpoint) {
+        console.error("Invalid endpoint determined.");
+        return;
+      }
+  
       try {
-        const response = await axios.get(endpoint, {
-          params: { area, start, finish },
-        });
-    
+        const response = await axios.get(endpoint, { params: { area, start, finish } });
         if (response.data && Array.isArray(response.data)) {
-          const batchData = response.data.map((item) => item.BATCH || "Unknown Batch"); // Extract BATCH
-          //console.log("Batch data fetched:", batchData);
-          setFetchBatchData(batchData); // Update dropdown
+          const batchData = response.data.map(item => item.BATCH || "Unknown Batch");
+          setFetchBatchData(batchData);
         } else {
-          //console.warn("No data received or data is not in array format.");
-          setFetchBatchData([]); // Clear dropdown
+          setFetchBatchData([]);
         }
       } catch (error) {
-        //console.error("Error fetching batch data:", error);
+        console.error("Error fetching batch data:", error);
         alert("Failed to fetch batch data. Please check your input and try again.");
       }
     };
 
-    const getDataEbrData = async () => {
-      let response = await axios.get(
-        "http://10.126.15.137:8002/part/SearchBatchRecord",{
-          params:{
-            area : dbMacchinem,
-            data : selectedBatch
-          }
+    const determineArea = (line, machine) => {
+      const areas = {
+        line1: {
+          PMA: "cMT-FHDGEA1_EBR_PMA_data",
+          Wetmill: "cMT-FHDGEA1_EBR_Wetmill_data",
+          EPH: "cMT-FHDGEA1_EBR_EPH_data",
+          FBD: "cMT-FHDGEA1_EBR_FBD_data",
+          Binder1: "mezanine.tengah_Ebr_Binder1_data",
+        },
+        line3: {
+          PMA: "cMT-GEA-L3_EBR_PMA_L3_data",
+          Wetmill: "cMT-GEA-L3_EBR_WETMILL_L3_data",
+          EPH: "cMT-GEA-L3_EBR_EPH_L3_data",
+          FBD: "cMT-GEA-L3_EBR_FBD_L3_data"
         }
-      )
-      setAllDataEBR(response.data)     
-    }
-    
-    const handleSubmit = async (e) => {
-      fetchBatch()
-      //e.preventDefault();
-      getDataEbrData()    
-    
-      // Ensure all necessary fields are filled
-      if (!newMachine || !startDate || !finishDate || !newLine) {
-        alert("Please fill in all required fields.");
+      };
+      return areas[line]?.[machine];
+    };
+
+    const determineEndpoint = (line, machine) => {
+      if (line === "line1") {
+        if (machine === "FBD" || machine === "Binder1") {
+          return "http://10.126.15.137:8002/part/BatchRecord1";
+        } else {
+          return "http://10.126.15.137:8002/part/BatchRecord1_DB2";
+        }
+      } else {
+        return "http://10.126.15.137:8002/part/BatchRecord3";
+      }
+    };
+
+    const getDataEbrData = async () => {
+      if (!dbMachine || !selectedBatch) {
+        alert("Please select a valid machine and batch before fetching data.");
         return;
       }
-    
       try {
-        setMainData([]); // Reset main data before fetching
+        const response = await axios.get("http://10.126.15.137:8002/part/SearchBatchRecord", {
+          params: { area: dbMachine, data: selectedBatch }
+        });
+        setAllDataEBR(response.data);
       } catch (error) {
-        //console.error("Error fetching batch record:", error);
-        alert("An error occurred while fetching the batch record.");
+        console.error("Error fetching EBR data:", error);
+        alert("Failed to fetch EBR data.");
       }
+    };
+    const handleSubmit = async () => {
+      
+      await fetchBatch();
+      await getDataEbrData();
     };
     
     // Handlers for input changes
@@ -254,23 +234,13 @@ const BatchRecordIsi = () => {
       return match ? match[0] : cleaned;
     });
     //console.log("Cleaned Batch Data:", cleanBatchData);
-  
-    useEffect(() => {
-      fetchLine(); // Fetch line data on component mount
-    }, []);
 
     useEffect(() => {
       console.log("Current line:", newLine);
       console.log("Current process:", newProces);
-      console.log("Current machine:", dbMacchinem);
+      console.log("Current machine:", dbMachine);
       console.log("Selected batch:", selectedBatch);
     }, [newLine, newProces, newMachine, selectedBatch]);
-
-    useEffect(() => {
-      if (newMachine && startDate && finishDate && newLine) {
-        fetchBatch(newMachine, startDate, finishDate, newLine);
-      }
-    }, [newMachine, startDate, finishDate, newLine]);
   
     // Rendering the fetched data into options
     const renderLine = () => {
@@ -361,12 +331,12 @@ const BatchRecordIsi = () => {
               <th className="text-center px-4 py-2 whitespace-normal" key={index} onClick={() => handleSort(dataKey)}>
                 <div className="flex items-center justify-between cursor-pointer">
                   {dataKey}
-                  {dataKey === 'time@timestamp' && (
+                  {dataKey === 'data_index' && (
                     <SortIcon active={sortConfig.key === dataKey} direction={sortConfig.direction} />
                   )}
                 </div>
                 <div className="flex items-center justify-between cursor-pointer">
-                  {dataKey === 'data_index' && (
+                  {dataKey === 'time@timestamp' && (
                     <SortIcon active={sortConfig.key === dataKey} direction={sortConfig.direction} />
                   )}
                 </div>
@@ -629,6 +599,16 @@ const BatchRecordIsi = () => {
                     <Select
                       placeholder="Select Batch"
                       value={selectedBatch}
+                      sx={{
+                        border: "1px solid",
+                        borderColor: borderColor,
+                        borderRadius: "0.395rem",
+                        background: "var(--color-background)", // background color from Tailwind config
+              
+                        _hover: {
+                          borderColor: hoverBorderColor,
+                        },
+                      }}
                       onChange={(e) => setSelectedBatch(e.target.value)}
                     >
                     {/* <option value="">Select Batch</option> */}
@@ -675,7 +655,7 @@ const BatchRecordIsi = () => {
               </Select>
             </div>
             <div className="flex justify-center">
-            <TableContainer className="bg-card rounded-md mt-4 mx-6" sx={{ overflowX: "auto", maxWidth: "90%" }}>
+            <TableContainer className="bg-card rounded-md mt-4" sx={{ overflowX: "auto", maxWidth: "90%" }}>
                 <Table key={colorMode} variant="simple" sx={{ minWidth: "1200px"}} >
                   <TableCaption sx={{color: tulisanColor}}>Batch Record</TableCaption>
                   {renderTableHeader()}

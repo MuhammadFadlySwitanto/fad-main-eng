@@ -576,8 +576,8 @@
         setTotalCostPerUnit(totalCostPerUnitValue);
   
         // Menghitung biaya per unit untuk masing-masing line
-        const costPerUnitLine1Value = (totalCost / 3) / (valueLine1 * 64 * 25 * 4);
-        const costPerUnitLine2Value = (totalCost / 3) / (valueLine2 * 60 * 30);
+        const costPerUnitLine1Value = valueLine1 !== 0 ? (totalCost / 3) / (valueLine1 * 64 * 25 * 4): 0;
+        const costPerUnitLine2Value = valueLine2 !== 0 ? (totalCost / 3) / (valueLine2 * 60 * 30) : 0;
         const costPerUnitLine3Value = (totalCost / 3) / ((valueLine3_1 + valueLine3_2) * 48 * 25 * 4);
   
         setCostPerUnitLine1(costPerUnitLine1Value);
