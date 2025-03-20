@@ -119,104 +119,103 @@ function WaterExportDaily() {
         });
     };
     return (
+    <div>
+      <div align="center"><h1 className="text-4xl text-text"><b>Export Daily Water Data </b></h1></div>
+      <br />
+      <Stack
+        className="flex flex-row justify-center mb-4  "
+        direction="row"
+        spacing={4}
+        align="center"
+      >
         <div>
-            <div align="center"><h1 className="text-4xl text-text"><b>Export Daily Water Data </b></h1></div>
-            <br />
-            <Stack
-                className="flex flex-row justify-center mb-4  "
-                direction="row"
-                spacing={4}
-                align="center"
-            >
-            <div>
-                <h5 className="mb-1">Start Time</h5>
-                <Input
-                    onChange={dateStart} 
-                    placeholder="Select Date"
-                    size="md"
-                    type="date"
-                    css={{
-                        "&::-webkit-calendar-picker-indicator": {
-                          color: isDarkMode ? "white" : "black",
-                          filter: isDarkMode ? "invert(1)" : "none",
-                        },
-                    }}
-                    sx={{
-                        border: "1px solid",
-                        borderColor: borderColor,
-                        borderRadius: "0.395rem",
-                        background: "var(--color-background)", // background color from Tailwind config
-                
-                        _hover: {
-                            borderColor: hoverBorderColor,
-                        },
-                    }}
-                />
-                </div>
-                <div>
-                    <h5 className="mb-1">Finish Time</h5>
-                    <Input
-                        onChange={dateFinish}
-                        placeholder="Select Date"
-                        size="md"
-                        type="date"
-                    />
-                </div>
-                <div className="text-text mt-1"> Data Type : 
-                  <RadioGroup>
-                  <Stack direction='row'>
-                      <Radio className="text-text" value='1' onClick={() => fetchWaterConsumption()}>Consumption</Radio>
-                      <Radio className="text-text" value='2' onClick={() => fetchWaterTotalizer()}>Totalizer</Radio>
-                  </Stack>
-                  </RadioGroup>
-                </div>
- 
+          <h5 className="mb-1">Start Time</h5>
+          <Input
+            onChange={dateStart} 
+            placeholder="Select Date"
+            size="md"
+            type="date"
+            sx={{
+              border: "1px solid",
+              borderColor: borderColor,
+              borderRadius: "0.395rem",
+              background: "var(--color-background)", // background color from Tailwind config
+      
+              _hover: {
+                  borderColor: hoverBorderColor,
+              },
+            }}            
+            css={{
+              "&::-webkit-calendar-picker-indicator": {
+                color: isDarkMode ? "white" : "black",
+                filter: isDarkMode ? "invert(1)" : "none",
+              },
+            }}
+          />
+        </div>
+        <div>
+          <h5 className="mb-1">Finish Time</h5>
+          <Input
+            onChange={dateFinish}
+            placeholder="Select Date"
+            size="md"
+            type="date"
+          />
+        </div>
+        <div className="text-text mt-1"> Data Type : 
+          <RadioGroup>
+            <Stack direction='row'>
+              <Radio className="text-text" value='1' onClick={() => fetchWaterConsumption()}>Consumption</Radio>
+              <Radio className="text-text" value='2' onClick={() => fetchWaterTotalizer()}>Totalizer</Radio>
             </Stack>
-            <Stack
-                className="flex flex-row justify-center mb-4  "
-                direction="row"
-                spacing={4}
-                align="center"
-            >
-                <div>
-                    <ExportToExcel apiData={dataExport} fileName={fileName} />
-                </div>
-            </Stack>
-            <div align="center"><h1 className="text-2xl text-text"><b>Preview {fileName}:</b></h1></div>
-            <TableContainer className="bg-card rounded-md">
-              <Table key={colorMode} variant="simple">
-                <Thead>
-                  <Tr backgroundColor="lightblue">
-                    <Th sx={{color: tulisanColor,}}>Date Time</Th>
-                    <Th sx={{color: tulisanColor,}}>PDAM</Th>
-                    <Th sx={{color: tulisanColor,}}>Domestik</Th>
-                    <Th sx={{color: tulisanColor,}}>Chiller</Th>
-                    <Th sx={{color: tulisanColor,}}>Softwater</Th>
-                    <Th sx={{color: tulisanColor,}}>Boiler</Th>
-                    <Th sx={{color: tulisanColor,}}>Inlet Pretreatment</Th>
-                    <Th sx={{color: tulisanColor,}}>Outlet Pretreatment</Th>
-                    <Th sx={{color: tulisanColor,}}>Reject Osmotron</Th>
-                    <Th sx={{color: tulisanColor,}}>Taman</Th>
-                    <Th sx={{color: tulisanColor,}}>Inlet WWTP Kimia</Th>
-                    <Th sx={{color: tulisanColor,}}>Inlet WWTP Biologi</Th>
-                    <Th sx={{color: tulisanColor,}}>Outlet WWTP</Th>
-                    <Th sx={{color: tulisanColor,}}>CIP</Th>
-                    <Th sx={{color: tulisanColor,}}>Hotwater</Th>
-                    <Th sx={{color: tulisanColor,}}>Lab</Th>
-                    <Th sx={{color: tulisanColor,}}>Atas Toilet Lt2</Th>
-                    <Th sx={{color: tulisanColor,}}>Atas Lab QC</Th>
-                    <Th sx={{color: tulisanColor,}}>Workshop</Th>
-                    <Th sx={{color: tulisanColor,}}>Air Mancur</Th>
-                    <Th sx={{color: tulisanColor,}}>Osmotron</Th>
-                    <Th sx={{color: tulisanColor,}}>Loopo</Th>
-                    <Th sx={{color: tulisanColor,}}>Produksi</Th>
-                    <Th sx={{color: tulisanColor,}}>Washing</Th>
-                    <Th sx={{color: tulisanColor,}}>Lantai 1</Th>
-                  </Tr>
-                </Thead>
-                <Tbody>{previewTable()}</Tbody>
-              </Table>
-            </TableContainer>
+          </RadioGroup>
+        </div>
+      </Stack>
+      <Stack
+          className="flex flex-row justify-center mb-4  "
+          direction="row"
+          spacing={4}
+          align="center"
+      >
+          <div>
+              <ExportToExcel apiData={dataExport} fileName={fileName} />
+          </div>
+      </Stack>
+      <div align="center"><h1 className="text-2xl text-text"><b>Preview {fileName}:</b></h1></div>
+      <TableContainer className="bg-card rounded-md">
+        <Table key={colorMode} variant="simple">
+          <Thead>
+            <Tr backgroundColor="lightblue">
+              <Th sx={{color: tulisanColor,}}>Date Time</Th>
+              <Th sx={{color: tulisanColor,}}>PDAM</Th>
+              <Th sx={{color: tulisanColor,}}>Domestik</Th>
+              <Th sx={{color: tulisanColor,}}>Chiller</Th>
+              <Th sx={{color: tulisanColor,}}>Softwater</Th>
+              <Th sx={{color: tulisanColor,}}>Boiler</Th>
+              <Th sx={{color: tulisanColor,}}>Inlet Pretreatment</Th>
+              <Th sx={{color: tulisanColor,}}>Outlet Pretreatment</Th>
+              <Th sx={{color: tulisanColor,}}>Reject Osmotron</Th>
+              <Th sx={{color: tulisanColor,}}>Taman</Th>
+              <Th sx={{color: tulisanColor,}}>Inlet WWTP Kimia</Th>
+              <Th sx={{color: tulisanColor,}}>Inlet WWTP Biologi</Th>
+              <Th sx={{color: tulisanColor,}}>Outlet WWTP</Th>
+              <Th sx={{color: tulisanColor,}}>CIP</Th>
+              <Th sx={{color: tulisanColor,}}>Hotwater</Th>
+              <Th sx={{color: tulisanColor,}}>Lab</Th>
+              <Th sx={{color: tulisanColor,}}>Atas Toilet Lt2</Th>
+              <Th sx={{color: tulisanColor,}}>Atas Lab QC</Th>
+              <Th sx={{color: tulisanColor,}}>Workshop</Th>
+              <Th sx={{color: tulisanColor,}}>Air Mancur</Th>
+              <Th sx={{color: tulisanColor,}}>Osmotron</Th>
+              <Th sx={{color: tulisanColor,}}>Loopo</Th>
+              <Th sx={{color: tulisanColor,}}>Produksi</Th>
+              <Th sx={{color: tulisanColor,}}>Washing</Th>
+              <Th sx={{color: tulisanColor,}}>Lantai 1</Th>
+            </Tr>
+          </Thead>
+          <Tbody>{previewTable()}</Tbody>
+        </Table>
+      </TableContainer>
     </div>
   );    
 }

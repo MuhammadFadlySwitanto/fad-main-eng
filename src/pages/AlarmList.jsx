@@ -77,7 +77,7 @@ function AlarmList() {
       if (AlarmData.length === 0) {
         return (
           <Tr>
-            <Td colSpan={3} margin="20px" className="text-center text-text">
+            <Td colSpan={3} textAlign="center" display="table-cell" className="text-red-500">
               No data available
             </Td>
           </Tr>
@@ -108,17 +108,15 @@ function AlarmList() {
   return (
     <div>
       <div align="center" className="text-text">
-        <h1 style={{ fontSize: "2rem"}}><b>Alarm Event List </b></h1>
+        <h1 style={{ fontSize: "1.5rem", '@media (min-width: 1024px)': { fontSize: "2rem" }}}><b>Alarm Event List </b></h1>
       </div>
       <br />
-      <Stack
-        className="flex flex-row justify-center mb-4  "
-        direction="row"
-        spacing={4}
-        align="center">
-        <div>
+      {/* Layout Responsif */}
+      <div className="grid grid-cols-1 md:grid-cols-3 xl:flex xl:flex-row xl:justify-center xl:items-end xl:space-x-4 gap-4 mb-6">
+      {/* Kolom 1 - Input Parameter dan Start Time */}
+        <div className="mb-2 xl:mb-0">
           <h5 className="mb-1">Parameter</h5>
-          <Select placeholder="Select Alarm" onChange={getAlarmType}>
+          <Select placeholder="Select Alarm" onChange={getAlarmType} className="w-full">
             <option value="Alarm_Air_Event_Log">Pemakaian Air</option>
             <option value="Alarm_Loopo_Event_Log">Loopo</option>
             <option value="Alarm_Osmotron_Event_Log">Osmotron</option>
@@ -127,13 +125,14 @@ function AlarmList() {
             <option value="Alarm_DP_Event_Log">DP</option>
           </Select>
         </div>
-        <div>
+        <div className="mb-2 xl:mb-0">
           <h5 className="mb-1">Start Time</h5>
           <Input
             onChange={dateStart} 
             placeholder="Select Date"
             size="md"
             type="date"
+            className="w-full"
             css={{
               "&::-webkit-calendar-picker-indicator": {
                 color: isDarkMode ? "white" : "black",
@@ -152,13 +151,14 @@ function AlarmList() {
             }}
           />
         </div>
-        <div>
+        <div className="mb-2 xl:mb-0">
           <h5 className="mb-1">Finish Time</h5>
           <Input
             onChange={dateFinish}
             placeholder="Select Date"
             size="md"
             type="date"
+            className="w-full"
             css={{
               "&::-webkit-calendar-picker-indicator": {
                 color: isDarkMode ? "white" : "black",
@@ -177,11 +177,12 @@ function AlarmList() {
             }}
           />
         </div>
-        <div className="mt-4">
+        <div className="mb-2 xl:mb-0">
+          <h5 className="mb-1 xl:whitespace-nowrap">Rows Table</h5>
           <Select
             value={rowsPerPage}
             onChange={(e) => setRowsPerPage(Number(e.target.value))}
-            width="80px">
+            className="w-full xl:w-20">
             <option value={5}>5</option>
             <option value={10}>10</option>
             <option value={20}>20</option>
@@ -190,20 +191,21 @@ function AlarmList() {
             <option value={100}>100</option>
           </Select>
         </div>
+        {/* Submit Button */}
         <div>
-          <br />
+          <h5 className="mb-1 invisible">Parameter</h5>
           <Button
-            className="ml-2"
             colorScheme="blue"
             onClick={() => fetchAlarm()}
+            className="w-full xl:w-auto"
           >
             Submit
           </Button>
         </div>
-      </Stack>
+      </div>
       <br />
-      <div className="bg-card rounded-md">
-        <TableContainer class="center" marginLeft={"25%"} marginRight={"25%"}>
+      <div className="w-full mx-auto">
+        <TableContainer className="bg-card rounded-md overflow-x-auto">
           <Table key={colorMode} variant="simple">
             <Thead>
               <Tr backgroundColor="blue.200">
@@ -221,7 +223,7 @@ function AlarmList() {
         </TableContainer>
       </div>
       {/* Pagination Controls */}
-      <div className="flex justify-center items-center mt-4 gap-4">
+      <div className="flex justify-center items-center mr-6 mt-4 gap-4">
         <Button
           onClick={handlePrevPage}
           isDisabled={currentPage === 1}

@@ -295,29 +295,31 @@ function Sartorius () {
                 className="block text-sm font-medium leading-6 text-text">
                 Start Date
               </label>
-              <Input
-                type="date"
-                placeholder="Select Start Date"
-                size="md"
-                value={startDate}
-                onChange={handleStartDateChange}
-                css={{
-                  "&::-webkit-calendar-picker-indicator": {
-                    color: isDarkMode ? "white" : "black",
-                    filter: isDarkMode ? "invert(1)" : "none",
-                  },
-                }}
-                sx={{
-                  border: "1px solid",
-                  borderColor: borderColor,
-                  borderRadius: "0.395rem",
-                  background: "var(--color-background)", // background color from Tailwind config
-        
-                  _hover: {
-                    borderColor: hoverBorderColor,
-                  },
-                }}
-              />
+              <div className="search mt-1">
+                <Input
+                  type="date"
+                  placeholder="Select Start Date"
+                  size="md"
+                  value={startDate}
+                  onChange={handleStartDateChange}
+                  css={{
+                    "&::-webkit-calendar-picker-indicator": {
+                      color: isDarkMode ? "white" : "black",
+                      filter: isDarkMode ? "invert(1)" : "none",
+                    },
+                  }}
+                  sx={{
+                    border: "1px solid",
+                    borderColor: borderColor,
+                    borderRadius: "0.395rem",
+                    background: "var(--color-background)", // background color from Tailwind config
+          
+                    _hover: {
+                      borderColor: hoverBorderColor,
+                    },
+                  }}
+                />
+              </div>
             </div>
             <div>
               <label
@@ -325,35 +327,35 @@ function Sartorius () {
                 className="block text-sm font-medium leading-6 text-text">
                 Finish Date
               </label>
-              <Input
-                type="date"
-                placeholder="Select Finish Date"
-                size="md"
-                value={finishDate}
-                onChange={handleFinishDateChange}
-                css={{
-                  "&::-webkit-calendar-picker-indicator": {
-                    color: isDarkMode ? "white" : "black",
-                    filter: isDarkMode ? "invert(1)" : "none",
-                  },
-                }}
-                sx={{
-                  border: "1px solid",
-                  borderColor: borderColor,
-                  borderRadius: "0.395rem",
-                  background: "var(--color-background)", // background color from Tailwind config
-        
-                  _hover: {
-                    borderColor: hoverBorderColor,
-                  },
-                }}
-              />
+              <div className="search mt-1">
+                <Input
+                  type="date"
+                  placeholder="Select Finish Date"
+                  size="md"
+                  value={finishDate}
+                  onChange={handleFinishDateChange}
+                  css={{
+                    "&::-webkit-calendar-picker-indicator": {
+                      color: isDarkMode ? "white" : "black",
+                      filter: isDarkMode ? "invert(1)" : "none",
+                    },
+                  }}
+                  sx={{
+                    border: "1px solid",
+                    borderColor: borderColor,
+                    borderRadius: "0.395rem",
+                    background: "var(--color-background)", // background color from Tailwind config
+          
+                    _hover: {
+                      borderColor: hoverBorderColor,
+                    },
+                  }}
+                />
+              </div>
             </div>
-            <div className="xl:mt-8 sm:mt-2">
-              <Button
-              colorScheme="blue"
-              onClick={() => handleSubmit()}
-              >
+            <div>
+              <div className="mb-1 invisible">ini test </div>
+              <Button colorScheme="blue" onClick={() => handleSubmit()}>
                 Submit
               </Button>
             </div>

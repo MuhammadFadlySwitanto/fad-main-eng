@@ -206,6 +206,7 @@ function Motor() {
 // ============================================================ CHART ===============================================================================
   const chartOptions = {
     zoomEnabled: true,
+    responsive: true,
     theme: isDarkMode ? "dark2" : "light2",
     backgroundColor: isDarkMode ? "#171717" : "#ffffff",
     Margin: 8,
@@ -224,6 +225,7 @@ function Motor() {
         type: "spline",
         name: "Vibration Data",
         showInLegend: true,
+        markerType: "circle",
         xValueFormatString: "YYYY-MM-DD HH:mm:ss", // Format for X-axis (timestamps)
         yValueFormatString: "##0.00", // Format for Y-axis (the vibration data)
         dataPoints: chartData,
@@ -235,12 +237,12 @@ function Motor() {
     <div>
       {/* Input Form */}
       <div className="flex flex-row justify-center items-center mt-6 mx-2">
-        <div className="main grid grid-cols-3 justify-items-center gap-6 xl:grid-cols-6 xl:flex xl:flex-row">
+        <div className="grid grid-cols-3 justify-items-center gap-6 xl:grid-cols-6 xl:flex xl:flex-row">
           {/* Start Date */}
-          <div>
+          <div className="col-span-3 xl:col-span-2 w-full">
             <label
               htmlFor="start-date"
-              className="block text-lg font-medium leading-4 text-text"
+              className="block text-md font-medium leading-4 mb-1 text-text"
             >
               Start Date
             </label>
@@ -270,10 +272,10 @@ function Motor() {
           </div>
 
           {/* Finish Date */}
-          <div>
+          <div className="col-span-3 xl:col-span-2 w-full">
             <label
               htmlFor="finish-date"
-              className="block text-lg font-medium leading-4 text-text"
+              className="block text-md font-medium leading-4 mb-1 text-text"
             >
               Finish Date
             </label>
@@ -303,10 +305,10 @@ function Motor() {
           </div>
 
           {/* Machine Picker */}
-          <div>
+          <div className="col-span-3 xl:col-span-2 w-full">
             <label
               htmlFor="machine"
-              className="block text-lg font-medium leading-4 text-text"
+              className="block text-md font-medium leading-4 mb-1 text-text"
             >
               Machine
             </label>
@@ -366,7 +368,7 @@ function Motor() {
             </Select>
           </div>
 
-          <div className="mt-4">
+          <div className="mt-5">
             <Select
               value={rowsPerPage}
               onChange={(e) => setRowsPerPage(Number(e.target.value))}
@@ -384,7 +386,7 @@ function Motor() {
           {/* Submit Button */}
           <div>
             <Button
-              className="w-full md:w-40 mt-4"
+              className="w-full md:w-36 mt-5"
               colorScheme="blue"
               onClick={submitHandler}
             >
@@ -395,7 +397,7 @@ function Motor() {
           {/* Toggle Table Visibility */}
           <div>
             <Button
-              className="w-full md:w-40 mt-4"
+              className="w-full md:w-40 mt-5"
               colorScheme="red"
               onClick={() => setIsTableVisible(!isTableVisible)}
             >

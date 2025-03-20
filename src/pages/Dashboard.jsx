@@ -607,9 +607,6 @@
       
       return (
         <div>
-          <>
-          <Header />
-          </>
           
           <div className="min-h-screen bg-cobabg mx-auto p-4 md:p-6 2xl:p-10 relative">
             {/* Section Title */}

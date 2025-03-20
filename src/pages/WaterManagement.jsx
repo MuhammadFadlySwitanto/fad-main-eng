@@ -894,9 +894,10 @@ export default function WaterManagement() {
               }}
             />
           </div>
-          <div className="flex items-center xl:w-24">
+          <div className="flex flex-col">
+            <div className="mb-1 invisible">jan diapus</div>
             <Button
-              className="ml-2 w-full xl:w-auto mt-3"
+              className="ml-2"
               colorScheme="blue"
               onClick={() => fetchWaterDaily()}
             >
@@ -965,9 +966,10 @@ export default function WaterManagement() {
             }}
           />
         </div>
-        <div className="flex items-center xl:w-24">
+        <div className="flex flex-col">
+          <div className="mb-1 invisible">jan diapus</div>
           <Button
-            className="ml-2 w-full xl:w-auto mt-3"
+            className="ml-1"
             colorScheme="blue"
             onClick={() => fetchWaterSankey()}
           >

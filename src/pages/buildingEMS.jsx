@@ -225,7 +225,7 @@ function BuildingEMS() {
     if (allDataTable.length === 0) {
       return (
         <Tr>
-          <Td colSpan={10} className="text-center">
+          <Td colSpan={5} textAlign="center" display="table-cell">
             No data available
           </Td>
         </Tr>
@@ -433,7 +433,7 @@ function BuildingEMS() {
           </div>
         </div>
       </div>
-      <div className="block bg-card rounded-lg shadow-lg p-1 aspect-ratio-container">
+      <div className="block bg-card rounded-lg p-1 shadow-lg mx-auto">
       {loading ? (
       <div className="flex flex-col items-center">
         <Spinner
@@ -505,7 +505,7 @@ function BuildingEMS() {
           <Table key={colorMode} variant="simple">
             <TableCaption sx={{
                 color: tulisanColor,
-                }}>Machine Performance</TableCaption>
+                }}>EMSe</TableCaption>
             <Thead>
               <Tr>
                 <Th sx={{
@@ -531,7 +531,7 @@ function BuildingEMS() {
       </div>
       )}
       {/* Pagination Controls */}
-      <div className="flex justify-center items-center mt-4 gap-4">
+      <div className="flex justify-center items-center my-4 gap-4">
         <Button
           onClick={handlePrevPage}
           isDisabled={currentPage === 1}

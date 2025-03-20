@@ -213,22 +213,23 @@ function CreateNew() {
   };
 
   return (
-    <div className="px-14">
-      <div className=" space-y-20 ">
-        <div className=" border-border pb-12 border-solid border-8 mt-8 ">
-          <h2 className="text-lg text-center font-bold leading-7 ml-4 text-text mt-10">
+    <div className="px-4 md:px-8 lg:px-14 w-full">
+      <div className="space-y-10 md:space-y-20">
+        <div className="border-border pb-6 md:pb-12 border-solid border-4 md:border-8 mt-4 md:mt-8 rounded-lg overflow-hidden">
+          <h2 className="text-base md:text-lg text-center font-bold leading-7 text-text mt-6 md:mt-10">
             INPUT DATA MAINTENANCE
           </h2>
 
-          <div className="flex flex-auto mt-2 gap-x-6 gap-y-8 p-4  sm:grid-cols-6   ">
-            <div className="sm:col-span-4">
+          {/* Form Fields - Bagian Pertama */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-4">
+            <div className="w-full">
               <label
-                htmlFor="username"
+                htmlFor="line"
                 className="block text-sm font-medium leading-6 text-text"
               >
                 Line Area
               </label>
-              <div className="mt-2 w-48">
+              <div className="mt-2 w-full">
                 <Select
                   placeholder="Select Line"
                   id="line"
@@ -238,42 +239,42 @@ function CreateNew() {
                 </Select>
               </div>
             </div>
-            <div className="sm:col-span-4 ">
+            <div className="w-full">
               <label
-                htmlFor="username"
+                htmlFor="process"
                 className="block text-sm font-medium leading-6 text-text"
               >
                 Proces
               </label>
-              <div className="mt-2 w-48">
+              <div className="mt-2 w-full">
                 <Select placeholder="Select Machine" onChange={procesHendeler}>
                   {renderProces()}
                 </Select>
               </div>
             </div>
 
-            <div className="sm:col-span-4">
+            <div className="w-full">
               <label
-                htmlFor="username"
+                htmlFor="machine"
                 className="block text-sm font-medium leading-6 text-text"
               >
                 Machine
               </label>
-              <div className="mt-2 w-48">
+              <div className="mt-2 w-full">
                 <Select placeholder="Select Machine" onChange={machineHendeler}>
                   {renderMachine()}
                 </Select>
               </div>
             </div>
 
-            <div className="sm:col-span-4">
+            <div className="w-full">
               <label
-                htmlFor="username"
+                htmlFor="location"
                 className="block text-sm font-medium leading-6 text-text"
               >
                 Location
               </label>
-              <div className="mt-2 w-48">
+              <div className="mt-2 w-full">
                 <Select
                   placeholder="Select Machine"
                   onChange={locationHendeler}
@@ -283,7 +284,8 @@ function CreateNew() {
               </div>
             </div>
           </div>
-          <div className="flex flex-auto  gap-x-6 gap-y-8 sm:grid-cols-6 p-4 ">
+          {/* Form Fields - Bagian Kedua */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-4">
             {/* <div className="sm:col-span-4 ">
               <label
                 htmlFor="Pekerjaan"
@@ -334,14 +336,14 @@ function CreateNew() {
               </div>
             </div> */}
 
-            <div className="sm:col-span-4">
+            <div className="w-full">
               <label
-                htmlFor="username"
+                htmlFor="pic"
                 className="block text-sm font-medium leading-6 text-text"
               >
                 PIC
               </label>
-              <div className="mt-2 w-48">
+              <div className="mt-2 w-full">
                 <Select onChange={PICHendeler} placeholder="Select PIC">
                   <option value="SGO">Sugino</option>
                   <option value="MKF">Khaerul</option>
@@ -353,124 +355,135 @@ function CreateNew() {
               </div>
             </div>
 
-            <div className="sm:col-span-4">
-              <label
-                htmlFor="photo"
-                className="block text-sm font-medium leading-6 text-text"
-              >
-                Tanggal
-              </label>
-              <div className="mt-2 flex items-center gap-x-3 w-48">
-                <Input
-                  onChange={dateHendeler}
-                  placeholder="Select Date and Time"
-                  size="md"
-                  type="date"
-                />
-              </div>
-            </div>
-
-            <div className="sm:col-span-4">
-              <label
-                htmlFor="photo"
-                className="block text-sm font-medium leading-6 text-text"
-              >
-                Start Time
-              </label>
-              <div className="mt-2 flex items-center gap-x-3">
-                <Input
-                  onChange={startTimeHendeler}
-                  placeholder="Select Date and Time"
-                  size="md"
-                  type="time"
-                  css={{
-                    "&::-webkit-calendar-picker-indicator": {
-                      color: isDarkMode ? "white" : "black",
-                      filter: isDarkMode ? "invert(1)" : "none",
-                    },
-                  }}
-                />
-              </div>
-            </div>
-            <div className="sm:col-span-4">
-              <label
-                htmlFor="photo"
-                className="block text-sm font-medium leading-6 text-text"
-              >
-                Finish Time
-              </label>
-              <div className="mt-2 flex items-center gap-x-3">
-                <Input
-                  onChange={finishTimeHendeler}
-                  placeholder="Select Date and Time"
-                  size="md"
-                  type="time"
-                  css={{
-                    "&::-webkit-calendar-picker-indicator": {
-                      color: isDarkMode ? "white" : "black",
-                      filter: isDarkMode ? "invert(1)" : "none",
-                    },
-                  }}
-                />
-              </div>
-            </div>
-            <div className="sm:col-span-4">
-              <label
-                htmlFor="Pekerjaan"
-                className="block text-sm font-medium leading-6 text-text"
-              >
-                Pekerjaan
-              </label>
-              <div className="mt-2">
-                <input
-                  onChange={jobHendeler}
-                  id="Pekerjaan"
-                  name="Pekerjaan"
-                  type="Pekerjaan"
-                  autoComplete="Pekerjaan"
-                  className=" w-48 block rounded-md pl-1 bg-background border border-border hover:border-border2 text-text py-1.5 focus:ring-2 focus:ring-blue-500 focus:outline-none placeholder:text-gray-400 sm:text-sm sm:leading-6 cursor-pointer"
-                />
-              </div>
+            <div className="w-full">
+            <label
+              htmlFor="date"
+              className="block text-sm font-medium leading-6 text-text"
+            >
+              Tanggal
+            </label>
+            <div className="mt-2 w-full">
+              <Input
+                onChange={dateHendeler}
+                placeholder="Select Date and Time"
+                size="md"
+                type="date"
+                css={{
+                  "&::-webkit-calendar-picker-indicator": {
+                    color: isDarkMode ? "white" : "black",
+                    filter: isDarkMode ? "invert(1)" : "none",
+                  },
+                }}
+              />
             </div>
           </div>
-          <div className="flex flex-auto  gap-x-6 gap-y-8 sm:grid-cols-6 p-4 ">
-            <div className="sm:col-span-4">
-              <label
-                htmlFor="about"
-                className="block text-sm font-medium leading-6 text-text"
-              >
-                Detail Pekerjaan
-              </label>
-              <div className="mt-2 ">
-                <textarea
-                  onChange={jobDetailHendeler}
-                  id="about"
-                  name="about"
-                  rows={3}
-                  className="block w-96 rounded-md pl-1 bg-background border border-border hover:border-border2 text-text py-1.5 focus:ring-2 focus:ring-blue-500 focus:outline-none placeholder:text-gray-400 sm:text-sm sm:leading-6 cursor-pointer"
-                  defaultValue={""}
-                />
-              </div>
+
+          <div className="w-full">
+            <label
+              htmlFor="startTime"
+              className="block text-sm font-medium leading-6 text-text"
+            >
+              Start Time
+            </label>
+            <div className="mt-2 w-full">
+              <Input
+                onChange={startTimeHendeler}
+                placeholder="Select Date and Time"
+                size="md"
+                type="time"
+                css={{
+                  "&::-webkit-calendar-picker-indicator": {
+                    color: isDarkMode ? "white" : "black",
+                    filter: isDarkMode ? "invert(1)" : "none",
+                  },
+                }}
+              />
+            </div>
+          </div>
+          
+          <div className="w-full">
+            <label
+              htmlFor="finishTime"
+              className="block text-sm font-medium leading-6 text-text"
+            >
+              Finish Time
+            </label>
+            <div className="mt-2 w-full">
+              <Input
+                onChange={finishTimeHendeler}
+                placeholder="Select Date and Time"
+                size="md"
+                type="time"
+                css={{
+                  "&::-webkit-calendar-picker-indicator": {
+                    color: isDarkMode ? "white" : "black",
+                    filter: isDarkMode ? "invert(1)" : "none",
+                  },
+                }}
+              />
+            </div>
+          </div>
+        </div>
+        
+        {/* Pekerjaan & Detail Pekerjaan */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
+          <div className="w-full">
+            <label
+              htmlFor="Pekerjaan"
+              className="block text-sm font-medium leading-6 text-text"
+            >
+              Pekerjaan
+            </label>
+            <div className="mt-2 w-full">
+              <input
+                onChange={jobHendeler}
+                id="Pekerjaan"
+                name="Pekerjaan"
+                type="Pekerjaan"
+                autoComplete="Pekerjaan"
+                className="w-full block rounded-md pl-1 bg-background border border-border hover:border-border2 text-text py-1.5 focus:ring-2 focus:ring-blue-500 focus:outline-none placeholder:text-gray-400 sm:text-sm sm:leading-6 cursor-pointer"
+              />
+            </div>
+          </div>
+        
+          <div className="w-full md:col-span-2">
+            <label
+              htmlFor="about"
+              className="block text-sm font-medium leading-6 text-text"
+            >
+              Detail Pekerjaan
+            </label>
+            <div className="mt-2 w-full">
+              <textarea
+                onChange={jobDetailHendeler}
+                id="about"
+                name="about"
+                rows={3}
+                className="block w-full rounded-md pl-1 bg-background border border-border hover:border-border2 text-text py-1.5 focus:ring-2 focus:ring-blue-500 focus:outline-none placeholder:text-gray-400 sm:text-sm sm:leading-6 cursor-pointer"
+                defaultValue={""}
+              />
             </div>
           </div>
         </div>
       </div>
-      <div className="mt-6 flex items-center justify-end gap-x-6">
-        <button
-          type="button"
-          className="text-sm font-semibold leading-6 text-text"
-          onClick={() => navigate("/Maintenance")}
-        >
-          Cancel
-        </button>
-        <button
-          onClick={() => addData()}
-          className="rounded-md bg-cta hover:bg-ctactive py-2 px-3 text-sm font-semibold text-white shadow-sm"
-        >
-          Save
-        </button>
-      </div>
     </div>
+    
+    <div className="mt-6 flex items-center justify-end gap-x-6 pb-8 mr-8">
+      <button
+        type="button"
+        className="text-sm font-semibold leading-6 text-text hover:text-gray-300"
+        onClick={() => navigate("/Maintenance")}
+      >
+        Cancel
+      </button>
+      <button
+        onClick={() => addData()}
+        className="rounded-md bg-cta hover:bg-ctactive py-2 px-3 text-sm font-semibold text-white shadow-sm"
+      >
+        Save
+      </button>
+    </div>
+  </div>
   );
 }
 

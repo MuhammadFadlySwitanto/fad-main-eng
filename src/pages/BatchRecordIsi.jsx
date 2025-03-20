@@ -332,7 +332,6 @@ const BatchRecordIsi = () => {
     }
   });
 
-
   const renderTableHeader= () => {
     // Pastikan visibleData tidak kosong
     if (allDataEBR.length > 0) {
@@ -350,7 +349,7 @@ const BatchRecordIsi = () => {
                     <SortIcon active={sortConfig.key === dataKey} direction={sortConfig.direction} />
                   )}
                 </div>
-                <div className="flex items-center justify-between cursor-pointer">
+                <div className="flex items-center justify-between cursor-pointer gap-x-1">
                   {dataKey === 'time@timestamp' && (
                     <SortIcon active={sortConfig.key === dataKey} direction={sortConfig.direction} />
                   )}

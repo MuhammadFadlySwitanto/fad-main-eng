@@ -170,7 +170,7 @@ function AvabilityMachine() {
     if (filterData.length === 0) {
       return (
         <Tr>
-          <Td colSpan={10} className="text-center text-red-500">
+          <Td colSpan={10} textAlign="center" className="text-red-500" display="table-cell">
             No data available
           </Td>
         </Tr>
@@ -278,9 +278,7 @@ function AvabilityMachine() {
 
   return (
     <div>
-      <Header />
-      <br />
-      <div className="block bg-card rounded-md justify-center mx-12 p-1 lg:overflow-y-hidden ">
+      <div className="block bg-card rounded-md justify-center my-2 mx-12 p-1 lg:overflow-y-hidden ">
         <CanvasJSChart
           options={options}
           overflow="hidden"
@@ -394,7 +392,7 @@ function AvabilityMachine() {
         </TableContainer>
       </div>
       {/* Pagination Controls */}
-      <div className="flex justify-center items-center mt-4 mb-2 gap-4">
+      <div className="flex justify-center items-center my-4 gap-4">
         <Button
           onClick={handlePrevPage}
           isDisabled={currentPage === 1}

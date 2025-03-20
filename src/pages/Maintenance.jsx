@@ -60,9 +60,8 @@ function Maintenance() {
 
   return (
     <div>
-      <Header />
       <>
-        <>{renderTabContent()}</>
+        {renderTabContent()} {/* Tabel sekarang hanya scrollable tanpa mengganggu Header */}
       </>
     </div>
       

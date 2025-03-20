@@ -134,6 +134,8 @@ export default function Osmotron() {
       
           const options = {
             zoomEnabled: true,
+            animationEnabled: true,
+            responsive: true,
             theme: isDarkMode ? "dark2" : "light2",
             backgroundColor: isDarkMode ? "#171717" : "#ffffff",
             title: {
@@ -169,7 +171,6 @@ export default function Osmotron() {
                 yValueFormatString: "",
                 xValueType: "dateTime",
                 dataPoints: OsmoData,
-                markerType: "none",
                 color: "green"
               },
             ],
@@ -188,109 +189,106 @@ export default function Osmotron() {
         }, []);
 
   return(
-    <div>
-      <Stack className="flex flex-row justify-center mb-4  "
-        direction="row"
-        spacing={4}
-        align="center"
-        >
-        <div>
-          <h5 className="mb-1">Parameter</h5>
-          <Select placeholder="Select Parameter" onChange={getOsmoArea}>
-            <option value="osmo_B270A_6.1">B270A_6.1 (Unit EDI)</option>
-            <option value="osmo_ET270A_6.11">ET270A_6.11 (Voltase EDI)</option>
-            <option value="osmo_ET270A_6.12">ET270A_6.12 (Ampere EDI)</option>
-            <option value="osmo_FIT270_5.50">FIT270A_5.50 (Flow reject membrane fase 2)</option>
-            <option value="osmo_FIT270A_5.2">FIT270A_5.2 (Flow meter reject membrane fase 1)</option>
-            <option value="osmo_FT270A_5.1">FT270A_5.1 (Flow transmitter)</option>
-            <option value="osmo_FT270A_5.51">FIT270A_5.51 (low meter recycle membrane fase 2)</option>
-            <option value="osmo_FT270A_6.1">FT270A_6.1 (Flow product RO fase 2)</option>
-            <option value="osmo_FT270A_6.2">FT270A_6.2 (Flow meter before EDI)</option>
-            <option value="osmo_P270A_1.1">P270A_1.1 (Feed Pump)</option>
-            <option value="osmo_P270A_11.1">P270A_11.1 (NaHSO3 Dosing Pump)</option>
-            <option value="osmo_P270A_12.1">P270A_12.1 (NaOH Dosing Pump)</option>
-            <option value="osmo_P270A_13.1">P270A_13.1 (NaHCO3 Dosing Pump)</option>
-            <option value="osmo_P270A_5.1">P270A_5.1 (High pressure pump fase 1)</option>
-            <option value="osmo_P270A_5.2">P270A_5.2 (High pressure pump fase 2)</option>
-            <option value="osmo_P270A_6.1">P270A_6.1 (EDI Pump)</option>
-            <option value="osmo_P270A_7.1">P270A_7.1 (DIP DOsing Pump)</option>
-            <option value="osmo_PDY270A_5.4">PDY270A_5.4 (∆T pressure membrane fase 1)</option>
-            <option value="osmo_PDY270A_5.7">PDY270A_5.7 (∆T Pressure membrane fase 2)</option>
-            <option value="osmo_PT270A_1.1">PT270A_1.1 (Feed pump)</option>
-            <option value="osmo_PT270A_5.1">PT270A_5.1 (Pressure before PHE)</option>
-            <option value="osmo_PT270A_5.4">PT270A_5.4 (Inlet membrane fase 1)</option>
-            <option value="osmo_PT270A_5.5">PT270A_5.5 (Reject membrane fase 1)</option>
-            <option value="osmo_PT270A_5.6">PT270A_5.6 (Before HPP fase 2)</option>
-            <option value="osmo_PT270A_5.7">PT270A_5.7 (Inlet membrane fase 2)</option>
-            <option value="osmo_PT270A_5.8">PT270A_5.8 (Reject membrane fase 2)</option>
-            <option value="osmo_PT270A_6.1">PT270A_6.1 (Presssure product RO fase 2)</option>
-            <option value="osmo_PT270A_6.2">PT270A_6.2 (Pressure before EDI)</option>
-            <option value="osmo_PT270A_6.3">PT270A_6.3 (Pressure after EDI)</option>
-            <option value="osmo_QE270A_11.1">QE270A_11.1 (ORP sensor)</option>
-            <option value="osmo_QE270A_12.1">QE270A_12.1 (pH sensor)</option>
-            <option value="osmo_QE270A_5.1">QE270A_5.1 (Conductivity RO fase 2)</option>
-            <option value="osmo_QE270A_6.1">QE270A_6.1 (Conductivity product EDI)</option>
-            <option value="osmo_QE270A_6.2">QE270A_6.2 (Conductivity inlet EDI)</option>
-            <option value="osmo_TE270A_5.1">TE270A_5.1 (Suhu RO fase 2)</option>
-            <option value="osmo_TE270A_6.1">TE270A_6.1 (Temperature product EDI)</option>
-            <option value="osmo_TT270A_5.2">TT270A_5.2 (Suhu after PHE)</option>
-            <option value="osmo_V270A_5.10">V270A_5.10 (Valve Bypass RO2 To EDI)</option>
-            <option value="osmo_V270A_5.50">V270A_5.50 (Valve Drain RO1)</option>
-            <option value="osmo_V270A_5.51">V270A_5.51 (Valve Bypass RO1 - RO2)</option>
-            <option value="osmo_V270A_6.2">V270A_6.2 (Outlet To Loopo)</option>
-            <option value="osmo_V270A_6.5">V270A_6.5 (Valve Brine Tank EDI)</option>
-            <option value="osmo_W270A_5.1">W270A_5.1 (Plat Heat Exchanger)</option>
-            <option value="osmo_WCF_Factor">WCF_Factor (Water Conversion Factor)</option>
-            <option value="FT270A_6.1">FT270A_6.1 (Output Osmotron)</option>
-          </Select>
+    <div className="my-4">
+      <div className="flex justify-center items-center my-6 mx-auto w-full">
+        <div className="grid lg:grid-cols-4 gap-4 w-full max-w-screen-xl xl:flex xl:flex-row xl:justify-center">
+          {/* Column 1: Select Parameter */}
+          <div className="w-full flex flex-col items-center">
+            <h5 className="mb-1">Parameter</h5>
+            <Select placeholder="Select Parameter" onChange={getOsmoArea}>
+              <option value="osmo_B270A_6.1">B270A_6.1 (Unit EDI)</option>
+              <option value="osmo_ET270A_6.11">ET270A_6.11 (Voltase EDI)</option>
+              <option value="osmo_ET270A_6.12">ET270A_6.12 (Ampere EDI)</option>
+              <option value="osmo_FIT270_5.50">FIT270A_5.50 (Flow reject membrane fase 2)</option>
+              <option value="osmo_FIT270A_5.2">FIT270A_5.2 (Flow meter reject membrane fase 1)</option>
+              <option value="osmo_FT270A_5.1">FT270A_5.1 (Flow transmitter)</option>
+              <option value="osmo_FT270A_5.51">FIT270A_5.51 (low meter recycle membrane fase 2)</option>
+              <option value="osmo_FT270A_6.1">FT270A_6.1 (Flow product RO fase 2)</option>
+              <option value="osmo_FT270A_6.2">FT270A_6.2 (Flow meter before EDI)</option>
+              <option value="osmo_P270A_1.1">P270A_1.1 (Feed Pump)</option>
+              <option value="osmo_P270A_11.1">P270A_11.1 (NaHSO3 Dosing Pump)</option>
+              <option value="osmo_P270A_12.1">P270A_12.1 (NaOH Dosing Pump)</option>
+              <option value="osmo_P270A_13.1">P270A_13.1 (NaHCO3 Dosing Pump)</option>
+              <option value="osmo_P270A_5.1">P270A_5.1 (High pressure pump fase 1)</option>
+              <option value="osmo_P270A_5.2">P270A_5.2 (High pressure pump fase 2)</option>
+              <option value="osmo_P270A_6.1">P270A_6.1 (EDI Pump)</option>
+              <option value="osmo_P270A_7.1">P270A_7.1 (DIP DOsing Pump)</option>
+              <option value="osmo_PDY270A_5.4">PDY270A_5.4 (∆T pressure membrane fase 1)</option>
+              <option value="osmo_PDY270A_5.7">PDY270A_5.7 (∆T Pressure membrane fase 2)</option>
+              <option value="osmo_PT270A_1.1">PT270A_1.1 (Feed pump)</option>
+              <option value="osmo_PT270A_5.1">PT270A_5.1 (Pressure before PHE)</option>
+              <option value="osmo_PT270A_5.4">PT270A_5.4 (Inlet membrane fase 1)</option>
+              <option value="osmo_PT270A_5.5">PT270A_5.5 (Reject membrane fase 1)</option>
+              <option value="osmo_PT270A_5.6">PT270A_5.6 (Before HPP fase 2)</option>
+              <option value="osmo_PT270A_5.7">PT270A_5.7 (Inlet membrane fase 2)</option>
+              <option value="osmo_PT270A_5.8">PT270A_5.8 (Reject membrane fase 2)</option>
+              <option value="osmo_PT270A_6.1">PT270A_6.1 (Presssure product RO fase 2)</option>
+              <option value="osmo_PT270A_6.2">PT270A_6.2 (Pressure before EDI)</option>
+              <option value="osmo_PT270A_6.3">PT270A_6.3 (Pressure after EDI)</option>
+              <option value="osmo_QE270A_11.1">QE270A_11.1 (ORP sensor)</option>
+              <option value="osmo_QE270A_12.1">QE270A_12.1 (pH sensor)</option>
+              <option value="osmo_QE270A_5.1">QE270A_5.1 (Conductivity RO fase 2)</option>
+              <option value="osmo_QE270A_6.1">QE270A_6.1 (Conductivity product EDI)</option>
+              <option value="osmo_QE270A_6.2">QE270A_6.2 (Conductivity inlet EDI)</option>
+              <option value="osmo_TE270A_5.1">TE270A_5.1 (Suhu RO fase 2)</option>
+              <option value="osmo_TE270A_6.1">TE270A_6.1 (Temperature product EDI)</option>
+              <option value="osmo_TT270A_5.2">TT270A_5.2 (Suhu after PHE)</option>
+              <option value="osmo_V270A_5.10">V270A_5.10 (Valve Bypass RO2 To EDI)</option>
+              <option value="osmo_V270A_5.50">V270A_5.50 (Valve Drain RO1)</option>
+              <option value="osmo_V270A_5.51">V270A_5.51 (Valve Bypass RO1 - RO2)</option>
+              <option value="osmo_V270A_6.2">V270A_6.2 (Outlet To Loopo)</option>
+              <option value="osmo_V270A_6.5">V270A_6.5 (Valve Brine Tank EDI)</option>
+              <option value="osmo_W270A_5.1">W270A_5.1 (Plat Heat Exchanger)</option>
+              <option value="osmo_WCF_Factor">WCF_Factor (Water Conversion Factor)</option>
+              <option value="FT270A_6.1">FT270A_6.1 (Output Osmotron)</option>
+            </Select>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 w-full">
+            <div className="flex flex-col items-center">
+              <h5 className="mb-1">Start Time</h5>
+              <Input
+                onChange={dateStart}
+                placeholder="Select Date and Time"
+                size="md"
+                type="date"
+                css={{
+                  "&::-webkit-calendar-picker-indicator": {
+                    color: isDarkMode ? "white" : "black",
+                    filter: isDarkMode ? "invert(1)" : "none",
+                  },
+                }}
+              /> 
+            </div>
+            <div className="flex flex-col items-center">
+              <h5 className="mb-1">Finish Time</h5>
+              <Input
+                onChange={dateFinish}
+                placeholder="Select Date and Time"
+                size="md"
+                type="date"
+                css={{
+                  "&::-webkit-calendar-picker-indicator": {
+                    color: isDarkMode ? "white" : "black",
+                    filter: isDarkMode ? "invert(1)" : "none",
+                  },
+                }}
+              />
+            </div>
+          </div>
+          <div className="w-full flex flex-col items-center">
+            <h5 className="mb-1 invisible">Placeholder</h5>
+            <Button className="w-full" colorScheme="blue" onClick={() => fetchOsmo()}>
+              Submit
+            </Button>
+          </div>
+        <div className="flex flex-col justify-center items-center text-center w-full">
+          <div className="text-text">Avg = {avg.toLocaleString()} {unit}</div>
+          <div className="text-text">Max = {max.toLocaleString()} {unit}</div>
+          <div className="text-text">Min = {min.toLocaleString()} {unit}</div>
         </div>
-        <div>
-          <h5 className="mb-1">Start Time</h5>
-          <Input
-            onChange={dateStart}
-            placeholder="Select Date and Time"
-            size="md"
-            type="date"
-            css={{
-              "&::-webkit-calendar-picker-indicator": {
-                color: isDarkMode ? "white" : "black",
-                filter: isDarkMode ? "invert(1)" : "none",
-              },
-            }}
-          /> 
         </div>
-        <div>
-          <h5 className="mb-1">Finish Time</h5>
-          <Input
-            onChange={dateFinish}
-            placeholder="Select Date and Time"
-            size="md"
-            type="date"
-            css={{
-              "&::-webkit-calendar-picker-indicator": {
-                color: isDarkMode ? "white" : "black",
-                filter: isDarkMode ? "invert(1)" : "none",
-              },
-            }}
-          />
-        </div>
-        <div>
-          <br />
-          <Button
-            className="mt-1"
-            colorScheme="blue"
-            onClick={() => fetchOsmo()}
-          >
-          Submit</Button>
-        </div>
-        <div className="mt-3">
-          <div className="ml-12 text-text">Avg = {avg.toLocaleString()} {unit}</div>
-          <div className="ml-12 text-text">Max = {max.toLocaleString()} {unit}</div>
-          <div className="ml-12 text-text">Min = {min.toLocaleString()} {unit}</div>
-        </div>
-
-      </Stack>
-      <div className="flex flex-row justify-center p-1 rounded-md overflow-x-auto"> 
+      </div>
+      <div className="flex flex-row justify-center mx-8 p-1 rounded-md overflow-x-auto"> 
           <CanvasJSChart className="" options={options} />
       </div>
     </div>

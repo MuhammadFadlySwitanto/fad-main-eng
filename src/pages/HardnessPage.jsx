@@ -562,20 +562,22 @@ function HardnessPage() {
               >
                 Start Date
               </label>
-              <Input
-                id="start-date"
-                type="date"
-                placeholder="Select Start Date"
-                size="md"
-                value={startDate}
-                onChange={handleStartDateChange}
-                css={{
-                  "&::-webkit-calendar-picker-indicator": {
-                    color: isDarkMode ? "white" : "black",
-                    filter: isDarkMode ? "invert(1)" : "none",
-                  },
-                }}
-              />
+              <div className="search mt-1">
+                <Input
+                  id="start-date"
+                  type="date"
+                  placeholder="Select Start Date"
+                  size="md"
+                  value={startDate}
+                  onChange={handleStartDateChange}
+                  css={{
+                    "&::-webkit-calendar-picker-indicator": {
+                      color: isDarkMode ? "white" : "black",
+                      filter: isDarkMode ? "invert(1)" : "none",
+                    },
+                  }}
+                />
+              </div>
             </div>
             <div>
               <label
@@ -584,22 +586,25 @@ function HardnessPage() {
               >
                 Finish Date
               </label>
-              <Input
-                id="finish-date"
-                type="date"
-                placeholder="Select Finish Date"
-                size="md"
-                value={finishDate}
-                onChange={handleFinishDateChange}
-                css={{
-                  "&::-webkit-calendar-picker-indicator": {
-                    color: isDarkMode ? "white" : "black",
-                    filter: isDarkMode ? "invert(1)" : "none",
-                  },
-                }}
-              />
+              <div className="search mt-1">
+                <Input
+                  id="finish-date"
+                  type="date"
+                  placeholder="Select Finish Date"
+                  size="md"
+                  value={finishDate}
+                  onChange={handleFinishDateChange}
+                  css={{
+                    "&::-webkit-calendar-picker-indicator": {
+                      color: isDarkMode ? "white" : "black",
+                      filter: isDarkMode ? "invert(1)" : "none",
+                    },
+                  }}
+                />
+              </div>
             </div>
-            <div className="xl:mt-8 sm:mt-2">
+            <div> 
+              <div className="mb-1 invisible">ini jan diapus </div>
               <Button colorScheme="blue" type="submit">
                 Submit
               </Button>

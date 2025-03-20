@@ -306,6 +306,7 @@ const Moisture = () => {
                   className="block text-sm font-medium leading-6 text-text">
                   Start Date
                 </label>
+                <div className="search mt-1"></div>
                 <Input
                   type="date"
                   placeholder="Select Start Date"
@@ -336,6 +337,7 @@ const Moisture = () => {
                   className="block text-sm font-medium leading-6 text-text">
                   Finish Date
                 </label>
+                <div className="search mt-1"></div>
                 <Input
                   type="date"
                   placeholder="Select Finish Date"
@@ -360,11 +362,9 @@ const Moisture = () => {
                   }}
                 />
               </div>
-              <div className="xl:mt-8 sm:mt-2">
-                <Button
-                  colorScheme="blue"
-                  type="submit"
-                >
+              <div>
+                <div className="mb-1 invisible">ini test </div>
+                <Button colorScheme="blue" type="submit">
                   Submit
                 </Button>
               </div>

@@ -127,9 +127,6 @@ function AvabilityOPE() {
 
   return (
     <div>
-      <div>
-      <Header />
-      </div>
       <br />
       <div className="flex flex-row flex-shrink-0 z-99 bg-card overflow-y-hidden relative rounded-md justify-center shadow-md mx-12 ">
       {/* <div className="relative w-full max-w-full"> */}

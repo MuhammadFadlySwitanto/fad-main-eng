@@ -4,7 +4,6 @@ import {
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Td,
@@ -23,8 +22,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchPart } from "../features/part/partSlice";
 import { deletePartListData } from "../features/part/partSlice";
 import { getDateMaintenance } from "../features/part/partSlice";
-import { dropdown } from "bootstrap-css";
-import axios from "axios";
 import { useColorMode, useColorModeValue, Box } from "@chakra-ui/react";
 import { useReactToPrint } from "react-to-print";
 
@@ -42,11 +39,19 @@ function MaintenanceBreakdown() {
   const [Name, setName] = useState();
   const ComponentPDF= useRef();
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [sortConfig, setSortConfig] = useState({ key: "Total", direction: "desc" });
+
   const [isTableVisible, setIsTableVisible] = useState(true);
   const { colorMode } = useColorMode();
   const borderColor = useColorModeValue("rgba(var(--color-border))", "rgba(var(--color-border))");
   const tulisanColor = useColorModeValue("rgba(var(--color-text))", "rgba(var(--color-text))");
   const hoverBorderColor = useColorModeValue("rgba(var(--color-border2))", "rgba(var(--color-border2))");
+
+  const [isDarkMode, setIsDarkMode] = useState(
+    document.documentElement.getAttribute("data-theme") === "dark"
+  );
 
   // const fetchDataPLC = async () => {
   //   let response = await axios.get("http://10.126.15.137:8002/plc");
@@ -58,6 +63,18 @@ function MaintenanceBreakdown() {
 
   //   console.log(ava);
   // };
+
+  useEffect(() => {
+    const handleThemeChange = () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      setIsDarkMode(currentTheme === 'dark');
+    };
+    // Observe attribute changes
+    const observer = new MutationObserver(handleThemeChange);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+  
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     // fetchDataPLC();
@@ -77,8 +94,6 @@ function MaintenanceBreakdown() {
   const inputHandler = (e) => {
     var variableInputData =  e.target.value;
     setInputText(variableInputData.toUpperCase())
-   
-    
   };
 
   let doprDown = (e) => {
@@ -86,95 +101,164 @@ function MaintenanceBreakdown() {
     UseDropDown(dataInput1);
   };
 
-  const filteredData = partValue.filter((obj) => {
-    const month = new Date(obj.Tanggal).getUTCMonth();
-    return month === 1;
-  });
+  // const filteredData = partValue.filter((obj) => {
+  //   const month = new Date(obj.Tanggal).getUTCMonth();
+  //   return month === 1;
+  // });
 
   //console.log(filteredData);
 
-  const renderPartList = () => {
-    const filterData = partValue.filter((el) => {
-      if (inputText == "" && dropDown == "") {
-        return el;
-      }
-      if (!dropDown == "" && inputText == "") {
-        return el.Line.includes(dropDown);
-      }
-      if (!inputText == "" && dropDown == "") {
-        return el.Mesin.toUpperCase().includes(inputText);
-      }
-      if (!dropDown == "" && !inputText == "") {
-        return el.Mesin.toUpperCase().includes(inputText) && el.Line.includes(dropDown);
-      }
-      // if (inputText !== "" && dropDown === "") {
-      //   return el.Mesin.toUpperCase().includes(inputText.toUpperCase());
-      // }
-      // // Filter by both Mesin and Line (case-insensitive)
-      // if (dropDown !== "" && inputText !== "") {
-      //   return (
-      //     el.Mesin.toUpperCase().includes(inputText.toUpperCase()) &&
-      //     el.Line.includes(dropDown)
-      //   );
-      // }
-    });
+  // const renderPartList = () => {
+  //   const filterData = partValue.filter((el) => {
+  //     if (inputText == "" && dropDown == "") {
+  //       return el;
+  //     }
+  //     if (!dropDown == "" && inputText == "") {
+  //       return el.Line.includes(dropDown);
+  //     }
+  //     if (!inputText == "" && dropDown == "") {
+  //       return el.Mesin.toUpperCase().includes(inputText);
+  //     }
+  //     if (!dropDown == "" && !inputText == "") {
+  //       return el.Mesin.toUpperCase().includes(inputText) && el.Line.includes(dropDown);
+  //     }
+  //     if (inputText !== "" && dropDown === "") {
+  //     return el.Mesin.toUpperCase().includes(inputText.toUpperCase());
+  //     }
+  //     // Filter by both Mesin and Line (case-insensitive)
+  //     if (dropDown !== "" && inputText !== "") {
+  //       return (
+  //         el.Mesin.toUpperCase().includes(inputText.toUpperCase()) &&
+  //         el.Line.includes(dropDown)
+  //     );
+  //   }
+  // });
+  
+  const filteredData = partValue.filter((el) => {
+    if (inputText === "" && dropDown === "") return true;
+    if (dropDown !== "" && inputText === "") return el.Line.includes(dropDown);
+    if (inputText !== "" && dropDown === "") return el.Mesin.toUpperCase().includes(inputText);
+    return el.Mesin.toUpperCase().includes(inputText) && el.Line.includes(dropDown);
+  });
 
-    return filterData
-      .sort((a, b) => b.Total - a.Total)
-      .map((partdata) => (
-          <Tr>
-            <Td>{partdata.Mesin}</Td>
-            <Td>{partdata.Line}</Td>
-            <Td>{partdata.Pekerjaan}</Td>
-            <Td>{moment(partdata.Tanggal).format("DD/MM/YYYY")}</Td>
-            <Td>{partdata.Quantity}</Td>
-            <Td>{partdata.Unit}</Td>
-            <Td>{partdata.Pic}</Td>
-            <Td>{partdata.Tawal}</Td>
-            <Td>{partdata.Tahir}</Td>
-            <Td>{partdata.Total}</Td>
-            <Td>
-              {userGlobal.level > 2 ? (
-                <Button
-                  colorScheme="green"
-                  onClick={() => {
-                    navigate(`/createedite/${partdata.id}`);
-                  }}
-                >
-                  Edit
-                </Button>
-              ) : (
-                <></>
-              )}
+  const sortedData = [...filteredData].sort((a, b) => {
+    if (!sortConfig.key) {
+      // Jika sortConfig belum dipilih, default ke Total (descending)
+      return b.Total - a.Total;
+    }
+    
+    if (sortConfig.key === "Tanggal") {
+      return sortConfig.direction === "asc"
+        ? new Date(a.Tanggal) - new Date(b.Tanggal)
+        : new Date(b.Tanggal) - new Date(a.Tanggal);
+    }
+    return sortConfig.direction === "asc" ? a[sortConfig.key] - b[sortConfig.key] : b[sortConfig.key] - a[sortConfig.key];
+  });
+  
+  const totalPages = Math.ceil(filteredData.length / rowsPerPage);
 
-              <Button colorScheme="red" onClick={() => deleteData(partdata.id)}>
-                Delete
-              </Button>
-            </Td>
-          </Tr>
-        ));
+  // 3. Ambil data yang sesuai dengan halaman saat ini
+  const paginatedData = sortedData.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
+
+  // 4. Fungsi untuk menangani tombol navigasi pagination
+  const handlePrevPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+
+  // 5. Saat jumlah rows berubah, reset ke halaman pertama
+  const handleRowsPerPageChange = (e) => {
+    setRowsPerPage(Number(e.target.value));
+    setCurrentPage(1);
+  };
+
+  const toggleSort = (key) => {
+    setSortConfig((prevConfig) => ({
+      key,
+      direction: prevConfig.key === key && prevConfig.direction === "asc" ? "desc" : "asc",
+    }));
+  };
+
+  //   return filterData
+  //     .sort((a, b) => b.Total - a.Total)
+  //     .map((partdata) => (
+  //       <Tr>
+  //         <Td  className="whitespace-nowrap px-2 py-1">{partdata.Mesin}</Td>
+  //         <Td  className="whitespace-nowrap px-2 py-1">{partdata.Line}</Td>
+  //         <Td className="break-words whitespace-pre-line">{partdata.Pekerjaan}</Td>
+  //         <Td>{moment(partdata.Tanggal).format("DD/MM/YYYY")}</Td>
+  //         <Td  className="whitespace-nowrap px-2 py-1">{partdata.Quantity}</Td>
+  //         <Td  className="whitespace-nowrap px-2 py-1">{partdata.Unit}</Td>
+  //         <Td className="whitespace-nowrap px-2 py-1">{partdata.Pic}</Td>
+  //         <Td className="whitespace-nowrap px-2 py-1">{partdata.Tawal}</Td>
+  //         <Td className="whitespace-nowrap px-2 py-1">{partdata.Tahir}</Td>
+  //         <Td className="whitespace-nowrap px-2 py-1">{partdata.Total}</Td>
+  //         <Td>
+  //         {userGlobal.level > 2 ? (
+  //           <Button
+  //             colorScheme="green"
+  //             onClick={() => {
+  //               navigate(`/createedite/${partdata.id}`);
+  //             }}
+  //           >
+  //             Edit
+  //           </Button>
+  //         ) : (
+  //           <></>
+  //         )}
+  //         <Button colorScheme="red" onClick={() => deleteData(partdata.id)}>
+  //           Delete
+  //         </Button>
+  //       </Td>
+  //     </Tr>
+  //   ));
+  // };
+
   const generatePDF =  useReactToPrint({
     content: ()=> ComponentPDF.current,
     documentTitle: Name+" Data"
   });
 
+  const SortIcon = ({ active, direction }) => (
+    <span className="inline-block ml-1">
+      <svg
+        className={`w-4 h-4 transform ${active ? 'text-blue-600' : 'text-gray-400'}`}
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        {direction === 'asc' ? (
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+        ) : (
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        )}
+      </svg>
+    </span>
+  );
+
   return (
-    <>
+    <div className="my-4">
       <div>
-        <h1 class="text-center text-4xl antialiased hover:subpixel-antialiased; p-8 mr-5">
+        <h1 class="text-center text-4xl my-2">
           PARETO MACHINE BREAKDOWN
         </h1>
         {userGlobal.level == 1 ? (
           <></>
         ) : (
-          <>
-            <App />
-            <Pareto />
-          </>
+          <div className="flex flex-col shadow-md">
+            <App 
+             width="100%" 
+             height={400}/>
+            <Pareto 
+             width="100%" 
+             height={450} />
+          </div>
         )}
       </div>
-
+      
       <div className="flex flex-col xl:flex-row justify-center space-y-4 xl:space-y-0 xl:space-x-4">
         <div className="flex flex-col xl:flex-row justify-center space-y-4 xl:space-y-0 xl:space-x-4">
           <div className="flex flex-col items-center xl:w-1/3">
@@ -238,10 +322,22 @@ function MaintenanceBreakdown() {
             </Select>
           </Box>
         </div>
-        <div className="flex flex-col xl:flex-row justify-center space-y-4 xl:space-y-0 xl:space-x-4">
+        <div className="flex flex-wrap justify-center gap-2 xl:flex-nowrap xl:space-x-4">
           <div className="flex flex-col items-center">
+            <h6 className="mb-2 invisible">Row Selector</h6>
+            <Select value={rowsPerPage} onChange={handleRowsPerPageChange} width="80px">
+              {[5, 10, 20, 40, 60, 100].map((num) => (
+                <option key={num} value={num}>
+                  {num}
+                </option>
+              ))}
+            </Select>
+      
+          </div>
+          <div className="flex flex-col items-center">
+            <div className="mb-2 invisible">Label Placeholder</div> 
             <Button
-              className="w-40 font-sans"
+              className="w-36 font-sans"
               colorScheme="blue"
               onClick={() => {
                 navigate(`/createnew`);
@@ -251,8 +347,9 @@ function MaintenanceBreakdown() {
             </Button>
           </div>
           <div className="flex flex-col items-center">
+            <div className="mb-2 invisible">Label Placeholder</div> 
             <Button
-              className="w-40 font-sans"
+              className="w-36 font-sans"
               colorScheme="red"
               onClick={() => setIsTableVisible(!isTableVisible)}
             >
@@ -260,8 +357,9 @@ function MaintenanceBreakdown() {
             </Button>
           </div>
           <div className="flex flex-col items-center">
+            <div className="mb-2 invisible">Label Placeholder</div> 
             <Button
-              className="w-40 font-sans"
+              className="w-36 font-sans"
               colorScheme="green"
               onClick={generatePDF}
             >
@@ -269,61 +367,99 @@ function MaintenanceBreakdown() {
             </Button>
           </div>
         </div>
+        {/* Pilihan Jumlah Row & Sorting Tanggal */}
+        <div className="flex flex-wrap justify-center gap-2 mt-4 xl:flex-nowrap xl:space-x-4">
+          {/* Pilihan Jumlah Row */}
+          
+        </div>
       </div>
       <br />
       {isTableVisible && (
-      <TableContainer className="bg-card rounded-md"           
-      sx={{ 
-        overflowX: "auto", 
-        maxWidth: "90%", }}>
-        <Table key={colorMode} variant="simple" ref={ComponentPDF} sx={{ minWidth: "1200px" /* Adjust as needed */ }}>
-          <TableCaption
-          sx={{
-            color: tulisanColor,
-          }}>Imperial to metric conversion factors</TableCaption>
-          <Thead>
-            <Tr>
-              <Th sx={{
-            color: tulisanColor,
-          }}>Mesin</Th>
-              <Th sx={{
-            color: tulisanColor,
-          }}>Line</Th>
-              <Th sx={{
-            color: tulisanColor,
-          }}>Pekerjaan</Th>
-              <Th sx={{
-            color: tulisanColor,
-          }}>Tanggal</Th>
-              <Th sx={{
-            color: tulisanColor,
-          }}>Quantity</Th>
-              <Th sx={{
-            color: tulisanColor,
-          }}>Unit</Th>
-              <Th sx={{
-            color: tulisanColor,
-          }}>Pic</Th>
-              <Th sx={{
-            color: tulisanColor,
-          }}>Awal Pengerjaan</Th>
-              <Th sx={{
-            color: tulisanColor,
-          }}>Akhir Pengerjaan</Th>
-              <Th sx={{
-            color: tulisanColor,
-          }}>Total</Th>
-              <Th sx={{
-            color: tulisanColor,
-          }}>Action</Th>
-            </Tr>
-          </Thead>
-          <Tbody>{renderPartList()}</Tbody>
-        </Table>
-      </TableContainer>
+      <div className="w-full mx-auto" style={{ maxWidth: "86%" }}>
+        <TableContainer className="bg-card rounded-md overflow-x-auto">
+          <Table
+            key={colorMode}
+            variant="simple"
+            ref={ComponentPDF}
+            className="w-full" // Tabel ikut mengecil saat viewport mengecil
+          >
+            <TableCaption 
+              className="text-center"
+              sx={{ color: tulisanColor }}
+            >
+              Imperial to metric conversion factors
+            </TableCaption>
+            <Thead>
+              <Tr>
+                <Th sx={{ color: tulisanColor }}>Mesin</Th>
+                <Th sx={{ color: tulisanColor }}>Line</Th>
+                <Th sx={{ color: tulisanColor }}>Pekerjaan</Th>
+                <Th onClick={() => toggleSort("Tanggal")} className="cursor-pointer" sx={{ color: tulisanColor }}>Tanggal
+                  <SortIcon active={sortConfig.key === "Tanggal"} direction={sortConfig.direction} />
+                </Th>
+                <Th sx={{ color: tulisanColor }}>Quantity</Th>
+                <Th sx={{ color: tulisanColor }}>Unit</Th>
+                <Th sx={{ color: tulisanColor }}>Pic</Th>
+                <Th sx={{ color: tulisanColor }}>Awal Pengerjaan</Th>
+                <Th sx={{ color: tulisanColor }}>Akhir Pengerjaan</Th>
+                <Th sx={{ color: tulisanColor }}>Total</Th>
+                <Th sx={{ color: tulisanColor }}>Action</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+            {paginatedData.length > 0 ? (
+              paginatedData.map((partdata, index) => (
+                <Tr key={index}>
+                  <Td className="px-2 py-1">{partdata.Mesin}</Td>
+                  <Td className="px-2 py-1">{partdata.Line}</Td>
+                  <Td className="break-words whitespace-normal px-2 py-1">{partdata.Pekerjaan}</Td>
+                  <Td>{moment(partdata.Tanggal).format("DD/MM/YYYY")}</Td>
+                  <Td className="px-2 py-1">{partdata.Quantity}</Td>
+                  <Td className="px-2 py-1">{partdata.Unit}</Td>
+                  <Td className="px-2 py-1">{partdata.Pic}</Td>
+                  <Td className="px-2 py-1">{partdata.Tawal}</Td>
+                  <Td className="px-2 py-1">{partdata.Tahir}</Td>
+                  <Td className="px-2 py-1">{partdata.Total}</Td>
+                  <Td>
+                    {userGlobal.level > 2 && (
+                      <Button
+                        colorScheme="green"
+                        onClick={() => navigate(`/createedite/${partdata.id}`)}
+                      >
+                        Edit
+                      </Button>
+                    )}
+                    <Button colorScheme="red" onClick={() => deleteData(partdata.id)}>
+                      Delete
+                    </Button>
+                  </Td>
+                </Tr>
+              ))
+            ) : (
+              <Tr>
+                <Td colSpan={11} textAlign="center">
+                  No data available
+                </Td>
+              </Tr>
+            )}
+            </Tbody>
+          </Table>
+        </TableContainer>
+      </div>
       )}
-
-    </>
+      {/* Pagination Controls */}
+      <div className="flex justify-center items-center mt-4 gap-4">
+        <Button onClick={handlePrevPage} isDisabled={currentPage === 1} colorScheme="blue">
+          Previous
+        </Button>
+        <span className="text-text">
+          Page {currentPage} of {totalPages || 1}
+        </span>
+        <Button onClick={handleNextPage} isDisabled={currentPage === totalPages} colorScheme="blue">
+          Next
+        </Button>
+      </div>
+    </div>
   );
 }
 

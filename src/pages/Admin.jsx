@@ -6,9 +6,7 @@ import AdminTabel from "./AdminTabel";
 function Admin() {
 
   return (
-    <div className="overflow-hidden">
-      <Header/>
-      <br />
+    <div className="my-2">
       <>
         <Tabs variant='line' >
           <TabList>

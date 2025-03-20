@@ -16,7 +16,6 @@ import Mettler from "./Mettler";
 function Instrument() {
   return (
     <div>
-      <Header/>
       <>
         <Tabs isFitted size={"lg"} variant="enclosed" width="100%" maxW="1400px" mx="auto" mt="16px">
           <TabList>

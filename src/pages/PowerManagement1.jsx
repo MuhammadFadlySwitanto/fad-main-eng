@@ -1466,9 +1466,10 @@ export default function PowerManagement() {
             }}
           />
         </div>
-        <div className="flex items-center xl:w-24">
+        <div className="flex flex-col">
+          <div className="mb-1 invisible">jan diapus</div>
           <Button
-            className="ml-2 w-full xl:w-auto mt-3"
+            className="ml-2"
             colorScheme="blue"
             onClick={() => fetchDataDayly()}
           >
@@ -1632,9 +1633,10 @@ export default function PowerManagement() {
             }}
           />  
         </div>
-        <div className="flex items-center xl:w-24">
+        <div className="flex flex-col">
+          <div className="mb-1 invisible">jan diapus</div>
           <Button
-            className="ml-2 w-full xl:w-auto mt-3"
+            className="ml-2"
             colorScheme="blue"
             onClick={() => fetchDataMonthly()}
           >
@@ -1714,17 +1716,14 @@ export default function PowerManagement() {
           />
         </div>
         <div>
-          <br />
-            <Button
-              className="ml-2 mt-1"
-              colorScheme="blue"
-              sx={{
-                marginBottom: "8px"
-              }}
-              onClick={() => fetchSec()}
-            >
-              Submit
-            </Button>
+          <div className="mb-1 invisible">jan diapus</div>
+          <Button
+            className="ml-2"
+            colorScheme="blue"
+            onClick={() => fetchSec()}
+          >
+            Submit
+          </Button>
         </div>
       </Stack>
       <div className="flex justify-center font-bold text-text text-4xl mt-8">
@@ -1806,9 +1805,10 @@ export default function PowerManagement() {
             }}
           />
         </div>
-        <div className="flex items-center xl:w-24">
+        <div className="flex flex-col">
+          <div className="mb-1 invisible">jan diapus</div>
           <Button
-            className="ml-2 w-full xl:w-auto mt-3"
+            className="ml-2"
             colorScheme="blue"
             onClick={() => fetchPowerSankey()}
             >

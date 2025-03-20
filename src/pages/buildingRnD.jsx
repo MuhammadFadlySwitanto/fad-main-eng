@@ -209,7 +209,7 @@ export default function BuildingRnD() {
     if (AllDataRND.length === 0) {
       return (
         <Tr>
-          <Td colSpan={10} className="text-center">
+          <Td colSpan={5} textAlign="center" display="table-cell">
             No data available
           </Td>
         </Tr>
@@ -411,7 +411,7 @@ export default function BuildingRnD() {
           </div>
         </div>
       </div>
-      <div className="block p-1 bg-card rounded-lg shadow-lg aspect-ratio-container"> 
+      <div className="block p-1 bg-card rounded-lg shadow-lg mx-auto"> 
       {loading ? (
       <Spinner
         thickness="4px"
@@ -504,7 +504,7 @@ export default function BuildingRnD() {
       </div>
       )}
       {/* Pagination Controls */}
-      <div className="flex justify-center items-center mt-4 gap-4">
+      <div className="flex justify-center items-center my-4 gap-4">
         <Button
           onClick={handlePrevPage}
           isDisabled={currentPage === 1}

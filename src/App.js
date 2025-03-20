@@ -31,8 +31,8 @@ import HistoryTabel from "./pages/HistoryTabel";
 import LandingPage from "./pages/LandingPage";
 import ResetPass from "./pages/ResetPass";
 import Dashboard from "./pages/Dashboard";
-import Chart02 from "./pages/chart02";
 import Chat from "./components/Chat";
+import Header from "./components/header";
 
 
 function App() {
@@ -99,44 +99,41 @@ function App() {
         <>
           <Sidebar /> 
         </>
-        {/* <div> */}
-          {/* <div>
-            <Navbar />
+
+        {/* Wrapper untuk Header + Konten */}
+        <div className="grid grid-rows-[auto_1fr] min-h-screen">
           
-          </div> */}
-          {/* <div>
-            <Sidebar />
-          </div> */}
-        {/* </div> */}
+          {/* Header */}
+          <>
+            <Header />
+          </>
 
-        {/* <div className="overflow-auto"> */}
-        <Routes>
-          {/* <Route path="/" element={<Login />} /> */}
-          {/* <Route path="/register" element={<Register />} /> */}
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/maintenance" element={<Maintenance />} />
-          <Route path="/Instrument" element={<Instrument />} />
-
-          <Route path="/pareto" element={<Pareto />} />
-          <Route path="/createnew" element={<CreateNew />} />
-          <Route path="/createedite/:id" element={<CreateEdit />} />
-          <Route path="/building" element={<AppPareto />} />
-          <Route path="/mail" element={<CheckMail />} />
-          <Route path="/editprofile" element={<EditProfile />} />
-          <Route path="/production" element={<Production />} />
-          <Route path="/OPE" element={<App1 />} />
-          <Route path="/avabilityope" element={<AvabilityOPE />} />
-          <Route path="/avabilitmachine" element={<AvabilityMachine />} />
-          <Route path="/admin" element={<Admin />} />
-          <Route path="/oeeLine" element={<OEEline />} />
-          <Route path="/utility" element={<Utility />} />
-          <Route path="/Stopwatch" element={<Stopwatch />} />
-          <Route path="/HistoricalMachine" element={<MachineHistorical />} />
-          <Route path="/BatchRecord" element={<BatchRecord />} />
-          <Route path="/Chart02" element={<Chart02 />} />
-          <Route path="/HistoryTabel" element={<HistoryTabel />} />
-        </Routes>
-        {/* </div> */}
+          {/* Konten Utama */}
+          <div className="overflow-x-auto">
+            <Routes>
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/maintenance" element={<Maintenance />} />
+              <Route path="/Instrument" element={<Instrument />} />
+              <Route path="/pareto" element={<Pareto />} />
+              <Route path="/createnew" element={<CreateNew />} />
+              <Route path="/createedite/:id" element={<CreateEdit />} />
+              <Route path="/building" element={<AppPareto />} />
+              <Route path="/mail" element={<CheckMail />} />
+              <Route path="/editprofile" element={<EditProfile />} />
+              <Route path="/production" element={<Production />} />
+              <Route path="/OPE" element={<App1 />} />
+              <Route path="/avabilityope" element={<AvabilityOPE />} />
+              <Route path="/avabilitmachine" element={<AvabilityMachine />} />
+              <Route path="/admin" element={<Admin />} />
+              <Route path="/oeeLine" element={<OEEline />} />
+              <Route path="/utility" element={<Utility />} />
+              <Route path="/Stopwatch" element={<Stopwatch />} />
+              <Route path="/HistoricalMachine" element={<MachineHistorical />} />
+              <Route path="/BatchRecord" element={<BatchRecord />} />
+              <Route path="/HistoryTabel" element={<HistoryTabel />} />
+            </Routes>
+          </div>
+        </div>
         <>
           <Chat />
         </>

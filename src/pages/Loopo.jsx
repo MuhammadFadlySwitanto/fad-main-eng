@@ -146,7 +146,7 @@ export default function Loopo() {
     const options = {
       zoomEnabled: true,
       responsive: true, 
-      maintainAspectRatio: false,
+      maintainAspectRatio: true,
       theme: isDarkMode ? "dark2" : "light2",
       backgroundColor: isDarkMode ? "#171717" : "#ffffff",
       Margin: 8,
@@ -189,99 +189,100 @@ export default function Loopo() {
     };
 
   return(
-    <div>
-      <Stack
-        className="flex flex-row justify-center mb-4  "
-        direction="row"
-        spacing={4}
-        align="center"
-        >
-        <div>
-          <h5 className="mb-1">Parameter</h5>
-          <Select placeholder="Select Parameter" onChange={getLoopoArea}>
-            <option value="lopo_A845A_2.1">A845A_2.1 (Ozone Hours Meter)</option>
-            <option value="lopo_FT845A_8.1">FT845A_8.1 (Flow Meter Return)</option>
-            <option value="lopo_LT560A_1.1">LT560A_1.1 (PW Tank)</option>
-            <option value="lopo_P845A_1.1">P845A_1.1 (Pompa Supply)</option>
-            <option value="lopo_PT845A_1.1">PT845A_1.1 (Pressure Supply)</option>
-            <option value="lopo_PT845A_8.1">PT845A_8.1 (Pressure Return)</option>
-            <option value="lopo_QE845A_4.1">QE845A_4.1 (UV Hours Meter)</option>
-            <option value="lopo_QE845A_5.1">QE845A_5.1 (Ozone After Pompa)</option>
-            <option value="lopo_TT845A_3.1">TT845A_3.1 (Suhu After PHE)</option>
-            <option value="lopo_V845A_3.1">V845A_3.1 (Valve Motorize Chiller PHE)</option>
-            <option value="QE845A_6.1">QE845A 6.1 (TOC)</option>
-            <option value="QE845A_8.1">QE845A 8.1 (Conductivity)</option>
-            <option value="TE845A_8.1">TE845A 8.1 (Suhu Return)</option>
-          </Select>
+    <div className="my-4">
+      <div className="flex justify-center items-center my-6 mx-auto w-full">
+        <div className="grid lg:grid-cols-4 gap-4 w-full max-w-screen-xl xl:flex xl:flex-row xl:justify-center">
+          {/* Column 1: Select Parameter */}
+          <div className="w-full flex flex-col items-center">
+            <h5 className="mb-1">Parameter</h5>
+            <Select placeholder="Select Parameter" className="w-full" onChange={getLoopoArea}>
+              <option value="lopo_A845A_2.1">A845A_2.1 (Ozone Hours Meter)</option>
+              <option value="lopo_FT845A_8.1">FT845A_8.1 (Flow Meter Return)</option>
+              <option value="lopo_LT560A_1.1">LT560A_1.1 (PW Tank)</option>
+              <option value="lopo_P845A_1.1">P845A_1.1 (Pompa Supply)</option>
+              <option value="lopo_PT845A_1.1">PT845A_1.1 (Pressure Supply)</option>
+              <option value="lopo_PT845A_8.1">PT845A_8.1 (Pressure Return)</option>
+              <option value="lopo_QE845A_4.1">QE845A_4.1 (UV Hours Meter)</option>
+              <option value="lopo_QE845A_5.1">QE845A_5.1 (Ozone After Pompa)</option>
+              <option value="lopo_TT845A_3.1">TT845A_3.1 (Suhu After PHE)</option>
+              <option value="lopo_V845A_3.1">V845A_3.1 (Valve Motorize Chiller PHE)</option>
+              <option value="QE845A_6.1">QE845A 6.1 (TOC)</option>
+              <option value="QE845A_8.1">QE845A 8.1 (Conductivity)</option>
+              <option value="TE845A_8.1">TE845A 8.1 (Suhu Return)</option>
+            </Select>
+          </div>
+          {/* Kolom 2 */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 w-full">
+            <div className="flex flex-col items-center">
+              <h5 className="mb-1">Start Time</h5>
+              <Input
+                onChange={dateStart}
+                placeholder="Select Date"
+                size="md"
+                type="date"
+                className="w-full"
+                css={{
+                  "&::-webkit-calendar-picker-indicator": {
+                    color: isDarkMode ? "white" : "black",
+                    filter: isDarkMode ? "invert(1)" : "none",
+                  },
+                }}
+                sx={{
+                  border: "1px solid",
+                  borderColor: borderColor,
+                  borderRadius: "0.395rem",
+                  background: "var(--color-background)", // background color from Tailwind config
+        
+                  _hover: {
+                    borderColor: hoverBorderColor,
+                  },
+                }}
+              />
+            </div>
+            <div className="flex flex-col items-center">
+              <h5 className="mb-1">Finish Time</h5>
+              <Input
+                onChange={dateFinish}
+                placeholder="Select Date"
+                size="md"
+                type="date"
+                className="w-full"
+                css={{
+                  "&::-webkit-calendar-picker-indicator": {
+                    color: isDarkMode ? "white" : "black",
+                    filter: isDarkMode ? "invert(1)" : "none",
+                  },
+                }}
+                sx={{
+                  border: "1px solid",
+                  borderColor: borderColor,
+                  borderRadius: "0.395rem",
+                  background: "var(--color-background)", // background color from Tailwind config
+        
+                  _hover: {
+                    borderColor: hoverBorderColor,
+                  },
+                }}
+              />
+            </div>
+          </div>
+          <div className="w-full flex flex-col items-center">
+            <h5 className="mb-1 invisible">Placeholder</h5>
+            <Button className="w-full" colorScheme="blue" onClick={() => fetchLoopo()}>
+              Submit
+            </Button>
+          </div>
+        
+          {/* Kolom 4: Statistik Tengah */}
+          <div className="flex flex-col justify-center items-center text-center w-full">
+            <div className="text-text">Avg = {avg.toLocaleString()} {unit}</div>
+            <div className="text-text">Max = {max.toLocaleString()} {unit}</div>
+            <div className="text-text">Min = {min.toLocaleString()} {unit}</div>
+          </div>
         </div>
-        <div>
-          <h5 className="mb-1">Start Time</h5>
-          <Input
-            onChange={dateStart}
-            placeholder="Select Date and Time"
-            size="md"
-            type="date"
-            css={{
-              "&::-webkit-calendar-picker-indicator": {
-                color: isDarkMode ? "white" : "black",
-                filter: isDarkMode ? "invert(1)" : "none",
-              },
-            }}
-            sx={{
-              border: "1px solid",
-              borderColor: borderColor,
-              borderRadius: "0.395rem",
-              background: "var(--color-background)", // background color from Tailwind config
-    
-              _hover: {
-                borderColor: hoverBorderColor,
-              },
-            }}
-          /> 
-        </div>
-        <div>
-          <h5 className="mb-1">Finish Time</h5>
-          <Input
-            onChange={dateFinish}
-            placeholder="Select Date and Time"
-            size="md"
-            type="date"
-            css={{
-              "&::-webkit-calendar-picker-indicator": {
-                color: isDarkMode ? "white" : "black",
-                filter: isDarkMode ? "invert(1)" : "none",
-              },
-            }}
-            sx={{
-              border: "1px solid",
-              borderColor: borderColor,
-              borderRadius: "0.395rem",
-              background: "var(--color-background)", // background color from Tailwind config
-    
-              _hover: {
-                borderColor: hoverBorderColor,
-              },
-            }}
-          />
-        </div>
-        <div>
-          <br />
-          <Button
-            className="ml-2 mt-1"
-            colorScheme="blue"
-            onClick={() => fetchLoopo()}
-          >
-            Submit
-          </Button>
-        </div>
-          <div className="mt-3">
-          <div className="ml-10 text-text">Avg = {avg.toLocaleString()} {unit}</div>
-          <div className="ml-10 text-text">Max = {max.toLocaleString()} {unit}</div>
-          <div className="ml-10 text-text">Min = {min.toLocaleString()} {unit}</div>
-        </div>
-      </Stack>
+      </div>
       <div className="flex flex-row justify-center mx-8 p-1 rounded-md shadow-lg overflow-x-auto "> 
-          <CanvasJSChart className="" options={options} />
+        <CanvasJSChart className="" options={options} />
       </div>
       <br />
       <div className="mt-3">

@@ -90,10 +90,9 @@ function Utility() {
   };
   return (
     <div>
-      <Header />
-      <div>{renderTabContent()}
-        
-      </div>
+      <>
+        {renderTabContent()}
+      </>
     </div>
   );
 }

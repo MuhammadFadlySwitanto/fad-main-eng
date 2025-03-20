@@ -32,7 +32,6 @@ import { getDateProd } from "../features/part/prodSlice";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useColorMode, useColorModeValue } from "@chakra-ui/react";
-import Header from "../components/header";
 
 var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
@@ -191,69 +190,67 @@ function LandingProduction() {
 
   return (
     <div className="min-h-screen bg-background">
-    <Header />
-
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex flex-col sm:flex-row justify-center gap-6 mb-4">
-            <div>
-              <h5 className="mb-1 text-text">Year Search</h5>
-              <Select
-                sx={{
-                  border: "1px solid",
-                  borderColor: borderColor,
-                  text: tulisanColor,
-                  borderRadius: "0.395rem",
-                  background: "var(--color-background)",
-                  _hover: {
-                    borderColor: hoverBorderColor,
-                  },
-                }}>
-                <option value="2021">2021</option>
-                <option value="2022">2022</option>
-                <option value="2023">2023</option>
-                <option value="2024">2024</option>
-                <option value="2025">2025</option>
-              </Select>
-            </div>
-            <div>
-              <h5 className="mb-1 text-text">Month Search</h5>
-              <Select onChange={getDate} value={dateValue}
-                sx={{
-                  border: "1px solid",
-                  borderColor: borderColor,
-                  borderRadius: "0.395rem",
-                  background: "var(--color-background)",
-                  _hover: {
-                    borderColor: hoverBorderColor,
-                  },
-                }}>
-                <option value="0">All</option>
-                <option value="1">Jan</option>
-                <option value="2">Feb</option>
-                <option value="3">Mar</option>
-                <option value="4">Apr</option>
-                <option value="5">Mei</option>
-                <option value="6">Jun</option>
-                <option value="7">Jul</option>
-                <option value="8">Agu</option>
-                <option value="9">Sep</option>
-                <option value="10">Okt</option>
-                <option value="11">Nov</option>
-                <option value="12">Des</option>
-              </Select>
-            </div>
+      <div className="container mx-auto px-4 py-4">
+        <div className="flex flex-col sm:flex-row justify-center gap-6 mb-4">
+          <div>
+            <h5 className="mb-1 text-text">Year Search</h5>
+            <Select
+              sx={{
+                border: "1px solid",
+                borderColor: borderColor,
+                text: tulisanColor,
+                borderRadius: "0.395rem",
+                background: "var(--color-background)",
+                _hover: {
+                  borderColor: hoverBorderColor,
+                },
+              }}>
+              <option value="2021">2021</option>
+              <option value="2022">2022</option>
+              <option value="2023">2023</option>
+              <option value="2024">2024</option>
+              <option value="2025">2025</option>
+            </Select>
+          </div>
+          <div>
+            <h5 className="mb-1 text-text">Month Search</h5>
+            <Select onChange={getDate} value={dateValue}
+              sx={{
+                border: "1px solid",
+                borderColor: borderColor,
+                borderRadius: "0.395rem",
+                background: "var(--color-background)",
+                _hover: {
+                  borderColor: hoverBorderColor,
+                },
+              }}>
+              <option value="0">All</option>
+              <option value="1">Jan</option>
+              <option value="2">Feb</option>
+              <option value="3">Mar</option>
+              <option value="4">Apr</option>
+              <option value="5">Mei</option>
+              <option value="6">Jun</option>
+              <option value="7">Jul</option>
+              <option value="8">Agu</option>
+              <option value="9">Sep</option>
+              <option value="10">Okt</option>
+              <option value="11">Nov</option>
+              <option value="12">Des</option>
+            </Select>
           </div>
         </div>
-        <div className="flex flex-col ">
-          <h1
-            onClick={() => headerHendeler()}
-            class="text-center text-text text-5xl font-bold cursor-pointer mb-1 ml-12">
-            Overall Plant Effectiveness
-          </h1>
-          <Card overflow="hidden" className="my-3 mx-5 flex justify-center">
-            <CanvasJSChart options={options} />
-          </Card>
-        </div>      
+      </div>
+      <div className="flex flex-col ">
+        <h1
+          onClick={() => headerHendeler()}
+          className="text-center text-text text-5xl font-bold cursor-pointer mb-1 ml-12">
+          Overall Plant Effectiveness
+        </h1>
+        <div overflow="hidden" className="my-3 mx-5 flex justify-center">
+          <CanvasJSChart options={options} />
+        </div>
+      </div>      
 
     </div>
   );
