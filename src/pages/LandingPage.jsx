@@ -113,27 +113,28 @@ function LandingPage () {
 			<div className="flex flex-col lg:flex-row items-center justify-between min-h-[calc(100vh-120px)]">
 				{/* Left Content */}
                 <div className="w-full xl:w-1/2 xl:pr-12">
-                        <div className="text-center xl:text-left">
-                            <h1 className="text-5xl lg:text-6xl xl:text-7xl xl:ml-8 font-bold leading-tight text-white font-jakarta mb-8">
-                                HISTORICAL MACHINERY
-                            </h1>
-                            <div className="flex items-center justify-center xl:justify-start">
-                                <div className="hidden xl:block w-0.5 h-28 bg-[#D9DBE1] mr-8 self-center"></div>
-                                <p className="text-xl font-light text-white max-w-xl">
-                                    Pantau dan kendalikan seluruh proses produksi Anda secara real-time dan historis. 
-                                    Dapatkan data akurat dan visualisasi yang jelas untuk pengambilan keputusan yang lebih baik.
-                                </p>
-                            </div>
-                            <div className="mt-8 flex justify-center xl:justify-center xl:ml-6">
-                                <button
-                                    onClick={goDashboard}
-                                    className="px-12 h-11 bg-hijau hover:bg-hijau2 rounded text-white"
-                                >
-                                    Get Started
-                                </button>
-                            </div>
+                {/* "tadi nambahin xl:text-left ntah siapa tadi yg nambahin skrg dah dihapus alonami" */}
+                    <div className="text-center"> 
+                        <h1 className="text-5xl lg:text-6xl xl:text-7xl xl:ml-8 font-bold leading-tight text-white font-jakarta mb-8">
+                            HISTORICAL MACHINERY
+                        </h1>
+                        <div className="flex items-center justify-center xl:justify-start">
+                            <div className="hidden xl:block w-0.5 h-28 bg-[#D9DBE1] mr-8 self-center"></div>
+                            <p className="text-xl font-light text-white max-w-xl">
+                                Pantau dan kendalikan seluruh proses produksi Anda secara real-time dan historis. 
+                                Dapatkan data akurat dan visualisasi yang jelas untuk pengambilan keputusan yang lebih baik.
+                            </p>
+                        </div>
+                        <div className="mt-8 flex justify-center xl:justify-center xl:ml-6">
+                            <button
+                                onClick={goDashboard}
+                                className="px-12 h-11 bg-hijau hover:bg-hijau2 rounded text-white"
+                            >
+                                Get Started
+                            </button>
                         </div>
                     </div>
+                </div>
 				 {/* SVG Section */}
                  <div className="w-full xl:w-1/2 mt-12 xl:mt-0">
                     <div className="max-w-2xl mx-auto">
