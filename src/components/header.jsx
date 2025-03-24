@@ -124,7 +124,7 @@ function Header()  {
               <KeyboardArrowDownIcon sx={{ fontSize: 25 }} alt="Dropdown" className={`w-6 h-6 flex-shrink-0 cursor-pointer transform transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`} />
             </a>
             {isDropdownOpen && (
-            <div  className="absolute right-0 mt-[30px] flex w-48 flex-col rounded-sm border border-border bg-background">
+            <div  className="absolute right-0 mt-[17px] flex w-48 flex-col rounded-sm border border-border bg-background">
               <ul className="flex flex-col gap-5 border-b px-6 pt-2 pb-0 mb-0 bg-background">
                 <li>
                 <a className="flex items-center gap-3.5 mb-2 text-sm font-medium duration-300 ease-in-out lg:text-base cursor-pointer"

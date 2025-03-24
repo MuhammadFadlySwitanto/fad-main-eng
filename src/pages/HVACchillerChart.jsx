@@ -65,8 +65,10 @@ export default function HVACchillerChart() {
 
   const fetchDataChiller = async () => {
     console.log("Fetching data...");
-    setLoading(true); // Start spinner
-    setError(null); // Clear previous errors
+    //ini console log penting, nanti kalau ada masalah nyalain aja ini komennya
+    // console.log(data);
+    setLoading(true); 
+    setError(null);
 
     try {
       let arr = list.map((item) => ({ params: item })); // Create array of request params
@@ -82,10 +84,10 @@ export default function HVACchillerChart() {
       ]);
 
       console.log("Data fetched successfully for all areas.");
-    console.log("Response 1:", response.data); // Log responses to verify the data
-    console.log("Response 2:", response1.data);
-    console.log("Response 3:", response2.data);
-    console.log("Response 4:", response3.data);
+      console.log("Response 1:", response.data); // Log responses to verify the data
+      console.log("Response 2:", response1.data);
+      console.log("Response 3:", response2.data);
+      console.log("Response 4:", response3.data);
 
      // Handle empty responses by setting default values if no data
      if (!response.data.length) {
@@ -117,7 +119,7 @@ export default function HVACchillerChart() {
       const mappedData3 = mapDataResponse3(response3.data, area); // Mapping response3 data
       setData3(mappedData3); // Set mapped data for the fourth response
 
-        console.log("All data fetched successfully");
+      console.log("All data fetched successfully");
       } catch (err) {
         console.error("Error fetching data:", err);
         setError("Failed to fetch data");
@@ -130,32 +132,40 @@ export default function HVACchillerChart() {
         
       }             
     };
-        const fetchName = () => {
-          setlabel1(list.at(0).area);
-          setlabel2(list.at(1).area);
-          setlabel3(list.at(2).area);
-          setlabel4(list.at(3).area);
-        };
-        const mapData = (data, area) => {
-          return data.map((item) => {
-            // Define the default structure for each item
-            let mappedItem = {
-              label: item.label,
-              y: item.y,
-              x: item.x,
-            };
+      const fetchName = () => {
+        setlabel1(list.at(0).area);
+        setlabel2(list.at(1).area);
+        setlabel3(list.at(2).area);
+        setlabel4(list.at(3).area);
+      };
+      const mapData = (data, area) => {
+        return data.map((item) => {
+          // Define the default structure for each item
+          let mappedItem = {
+            label: new Date(item.x).toLocaleString("id-ID", {
+              timeZone: "Asia/Jakarta",
+              year: "numeric",
+              month: "2-digit",
+              day: "2-digit",
+              hour: "2-digit",
+              minute: "2-digit",
+              hour12: false
+              }).replace(/\//g, "-").replace(",", ""), // Format jadi YYYY-MM-DD HH:mm
+            y: item.y,
+            x: item.x,
+          };
         
-            // Apply transformations based on specific areas
-            if (area === "R-EvapPress") {
-              mappedItem.y = item.y * 2; // Example of modifying y for "R-EvapPress"
-            } else if (area === "R-UnitCap" || area === "R-Status" || area === "R-Alarm") {
-              mappedItem.x = item.x + 10; // Example of modifying x for other areas
-            } else {
-              // The default transformation when area doesn't match any condition
-              // Here you can modify the data in the default way you need
-              mappedItem.y = item.y;  // Or apply any default transformation if needed
-              mappedItem.x = item.x;  // Default behavior for "x"
-            }
+          // Apply transformations based on specific areas
+          if (area === "R-EvapPress") {
+            mappedItem.y = item.y * 2; // Example of modifying y for "R-EvapPress"
+          } else if (area === "R-UnitCap" || area === "R-Status" || area === "R-Alarm") {
+            mappedItem.x = item.x + 10; // Example of modifying x for other areas
+          } else {
+            // The default transformation when area doesn't match any condition
+            // Here you can modify the data in the default way you need
+            mappedItem.y = item.y;  // Or apply any default transformation if needed
+            mappedItem.x = item.x;  // Default behavior for "x"
+          }
         
             // Return the mapped item
             return mappedItem;
@@ -164,7 +174,15 @@ export default function HVACchillerChart() {
         const mapDataResponse1 = (data, area) => {
           return data.map((item) => {
             let mappedItem = {
-              label: item.label,
+              label: new Date(item.x).toLocaleString("id-ID", {
+                timeZone: "Asia/Jakarta",
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: false
+                }).replace(/\//g, "-").replace(",", ""), // Format jadi YYYY-MM-DD HH:mm
               y: item.y,
               x: item.x,
             };
@@ -174,8 +192,8 @@ export default function HVACchillerChart() {
             } else if (area === "R-UnitCap" || area === "R-Status" || area === "R-Alarm") {
               mappedItem.x = item.x + 10; // Example of modifying x for other areas
             } else {
-              mappedItem.y = item.y;  // Default behavior for "y"
-              mappedItem.x = item.x;  // Default behavior for "x"
+              mappedItem.y = item.y; 
+              mappedItem.x = item.x;  
             }
         
             return mappedItem;
@@ -184,7 +202,15 @@ export default function HVACchillerChart() {
         const mapDataResponse2 = (data, area) => {
           return data.map((item) => {
             let mappedItem = {
-              label: item.label,
+              label: new Date(item.x).toLocaleString("id-ID", {
+                timeZone: "Asia/Jakarta",
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: false
+                }).replace(/\//g, "-").replace(",", ""), // Format jadi YYYY-MM-DD HH:mm
               y: item.y,
               x: item.x,
             };
@@ -194,8 +220,8 @@ export default function HVACchillerChart() {
             } else if (area === "R-UnitCap" || area === "R-Status" || area === "R-Alarm") {
               mappedItem.x = item.x + 10; // Example of modifying x for other areas
             } else {
-              mappedItem.y = item.y;  // Default behavior for "y"
-              mappedItem.x = item.x;  // Default behavior for "x"
+              mappedItem.y = item.y;
+              mappedItem.x = item.x; 
             }
         
             return mappedItem;
@@ -204,7 +230,15 @@ export default function HVACchillerChart() {
         const mapDataResponse3 = (data, area) => {
           return data.map((item) => {
             let mappedItem = {
-              label: item.label,
+              label: new Date(item.x).toLocaleString("id-ID", {
+                timeZone: "Asia/Jakarta",
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: false
+                }).replace(/\//g, "-").replace(",", ""), // Format jadi YYYY-MM-DD HH:mm
               y: item.y,
               x: item.x,
             };
@@ -214,8 +248,8 @@ export default function HVACchillerChart() {
             } else if (area === "R-UnitCap" || area === "R-Status" || area === "R-Alarm") {
               mappedItem.x = item.x + 10; // Example of modifying x for other areas
             } else {
-              mappedItem.y = item.y;  // Default behavior for "y"
-              mappedItem.x = item.x;  // Default behavior for "x"
+              mappedItem.y = item.y;
+              mappedItem.x = item.x; 
             }
         
             return mappedItem;
@@ -223,7 +257,7 @@ export default function HVACchillerChart() {
         };     
                 
     const handleAddlist = () => {  
-        setList ([...list, {area: "", chiller: "",komp: "", start: "", finish: ""}])
+      setList ([...list, {area: "", chiller: "",komp: "", start: "", finish: ""}])
     };
         
     const handleDeleteList = (i) => {
@@ -273,7 +307,7 @@ export default function HVACchillerChart() {
       day: "numeric",
       hour: "numeric",
       minute: "numeric",
-      timeZone: "Asia/Jakarta",
+      timeZone: "UTC",
       hour12: false
     };
 
@@ -655,10 +689,7 @@ export default function HVACchillerChart() {
       <form>
         {list.map((list, index) => (   
         <div key={index}>
-          <Stack className="flex flex-row justify-center mb-4  "
-            direction="row"
-            spacing={4}
-            align="center">
+          <div className=" grid grid-cols-1 md:grid-cols-2 xl:grid-cols-6 gap-4 justify-center mb-4">
             <div>
               <h5 className="mb-1">Area</h5>
               <Select value = {list.area} name="area" placeholder="Select Area" onChange={(e) => handleListChange(e, index)}>
@@ -784,7 +815,7 @@ export default function HVACchillerChart() {
                 Delete
               </Button>
             </div>
-          </Stack>
+          </div>
         </div> 
         ))}
       </form>

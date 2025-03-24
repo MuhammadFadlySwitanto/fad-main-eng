@@ -245,19 +245,25 @@ function App() {
     );
   } else {
     return (
-     <div className="bg-background min-h-screen min-w-full grid grid-cols-[auto_1fr]">
-        {/* <div> */} 
+      <div className="bg-background min-h-screen min-w-full grid grid-cols-[auto_1fr] ">
         <>
           <Sidebar /> 
         </>
-        <Routes>
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/mail" element={<CheckMail />} />
-          <Route path="/Stopwatch" element={<Stopwatch />} />            
-        </Routes>
+        <div className="grid grid-rows-[auto_1fr] min-h-screen">
+          <>
+            <Header />
+          </>
+          <div className="overflow-x-auto">
+            <Routes>
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/mail" element={<CheckMail />} />
+              <Route path="/Stopwatch" element={<Stopwatch />} />            
+            </Routes>
+          </div>
+        </div>
         <>
           <Chat />
-        </>
+        </>      
       </div>
     );
   }
