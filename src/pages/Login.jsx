@@ -156,7 +156,7 @@ function Login () {
               <button
                 type="button"
                 onClick={togglePasswordVisibility}
-                className="absolute right-4 top-[45px] w-5 cursor-pointer text-white focus:outline-none">
+                className="absolute right-4 top-[42px] w-5 cursor-pointer text-white focus:outline-none">
                 {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
               </button>
             </div>
