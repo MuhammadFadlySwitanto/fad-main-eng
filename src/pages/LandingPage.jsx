@@ -119,8 +119,8 @@ function LandingPage () {
                             HISTORICAL MACHINERY
                         </h1>
                         <div className="flex items-center justify-center xl:justify-start">
-                            <div className="hidden xl:block w-0.5 h-28 bg-[#D9DBE1] mr-8 self-center"></div>
-                            <p className="text-xl font-light text-white max-w-xl">
+                            <div className="hidden xl:block w-0.5 h-28 bg-[#D9DBE1] mr-4 self-center"></div>
+                            <p className="text-xl font-light text-white max-w-xl mx-auto">
                                 Pantau dan kendalikan seluruh proses produksi Anda secara real-time dan historis. 
                                 Dapatkan data akurat dan visualisasi yang jelas untuk pengambilan keputusan yang lebih baik.
                             </p>

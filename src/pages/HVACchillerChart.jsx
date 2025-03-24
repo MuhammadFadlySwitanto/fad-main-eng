@@ -132,12 +132,21 @@ export default function HVACchillerChart() {
         
       }             
     };
-      const fetchName = () => {
-        setlabel1(list.at(0).area);
-        setlabel2(list.at(1).area);
-        setlabel3(list.at(2).area);
-        setlabel4(list.at(3).area);
-      };
+    const fetchName = () => {
+      if (list && list.length >= 4) {
+        // Ensure that each item in the list has the 'area' property
+        if (list[0].area && list[1].area && list[2].area && list[3].area) {
+          setlabel1(list.at(0).area);
+          setlabel2(list.at(1).area);
+          setlabel3(list.at(2).area);
+          setlabel4(list.at(3).area);
+        } else {
+          console.error("One or more items in the list do not have the 'area' property.");
+        }
+      } else {
+        console.error("List does not have enough elements.");
+      }
+    };
       const mapData = (data, area) => {
         return data.map((item) => {
           // Define the default structure for each item
