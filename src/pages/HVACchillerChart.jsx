@@ -273,7 +273,7 @@ export default function HVACchillerChart() {
       day: "numeric",
       hour: "numeric",
       minute: "numeric",
-      timeZone: "UTC",
+      timeZone: "Asia/Jakarta",
       hour12: false
     };
 
