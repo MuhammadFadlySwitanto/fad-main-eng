@@ -141,106 +141,127 @@ function App() {
     );
   } else if (levelData === 4) {
     return (
-      <div className="bg-background min-h-screen min-w-full grid grid-cols-[auto_1fr]">
-      {/* <div> */} 
-        <div>
+      <div className="bg-background min-h-screen min-w-full grid grid-cols-[auto_1fr] ">
+        <>
           <Sidebar /> 
+        </>
+
+        {/* Wrapper untuk Header + Konten */}
+        <div className="grid grid-rows-[auto_1fr] min-h-screen">
+          
+          {/* Header */}
+          <>
+            <Header />
+          </>
+          <div className="overflow-x-auto">
+            <Routes>
+              {/* <Route path="/" element={<Login />} /> */}
+              {/* <Route path="/register" element={<Register />} /> */}
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/maintenance" element={<Maintenance />} />
+              <Route path="/Instrument" element={<Instrument />} />
+              <Route path="/pareto" element={<Pareto />} />
+              <Route path="/createnew" element={<CreateNew />} />
+              <Route path="/createedite/:id" element={<CreateEdit />} />
+              <Route path="/building" element={<AppPareto />} />
+              <Route path="/mail" element={<CheckMail />} />
+              <Route path="/editprofile" element={<EditProfile />} />
+              <Route path="/production" element={<Production />} />
+              <Route path="/HistoricalMachine" element={<MachineHistorical />} />
+              <Route path="/avabilityope" element={<AvabilityOPE />} />
+              <Route path="/avabilitmachine" element={<AvabilityMachine />} />
+              <Route path="/oeeLine" element={<OEEline />} />
+              <Route path="/utility" element={<Utility />} />
+              <Route path="/Stopwatch" element={<Stopwatch />} />
+            </Routes>
+          </div>
         </div>
-        <Routes>
-          {/* <Route path="/" element={<Login />} /> */}
-          {/* <Route path="/register" element={<Register />} /> */}
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/maintenance" element={<Maintenance />} />
-          <Route path="/Instrument" element={<Instrument />} />
-          <Route path="/pareto" element={<Pareto />} />
-          <Route path="/createnew" element={<CreateNew />} />
-          <Route path="/createedite/:id" element={<CreateEdit />} />
-          <Route path="/building" element={<AppPareto />} />
-          <Route path="/mail" element={<CheckMail />} />
-          <Route path="/editprofile" element={<EditProfile />} />
-          <Route path="/production" element={<Production />} />
-          <Route path="/HistoricalMachine" element={<MachineHistorical />} />
-          <Route path="/avabilityope" element={<AvabilityOPE />} />
-          <Route path="/avabilitmachine" element={<AvabilityMachine />} />
-          <Route path="/oeeLine" element={<OEEline />} />
-          <Route path="/utility" element={<Utility />} />
-          <Route path="/Stopwatch" element={<Stopwatch />} />
-        </Routes>
+        <>
+          <Chat />
+        </>
       </div>
     );
-  }
-  if (levelData === 3) {
+  } if (levelData === 3) {
     return (
-      // <div>
-      //   <div>
-      //     <div>
-      //       <Navbar />
-      //     </div>
-      //   </div>
-      <div className="bg-background min-h-screen min-w-full grid grid-cols-[auto_1fr]">
-      {/* <div> */} 
-        <div>
+      <div className="bg-background min-h-screen min-w-full grid grid-cols-[auto_1fr] ">
+        <>
           <Sidebar /> 
+        </>
+        <div className="grid grid-rows-[auto_1fr] min-h-screen">
+          <>
+            <Header />
+          </>
+          <div className="overflow-x-auto">
+            <Routes>
+              {/* <Route path="/" element={<Login />} /> */}
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/maintenance" element={<Maintenance />} />
+              <Route path="/Instrument" element={<Instrument />} />
+              <Route path="/pareto" element={<Pareto />} />
+              <Route path="/createnew" element={<CreateNew />} />
+              <Route path="/createedite/:id" element={<CreateEdit />} />
+              <Route path="/mail" element={<CheckMail />} />
+              <Route path="/editprofile" element={<EditProfile />} />
+              <Route path="/production" element={<Production />} />
+              <Route path="/OPE" element={<App1 />} />
+              <Route path="/avabilityope" element={<AvabilityOPE />} />
+              <Route path="/avabilitmachine" element={<AvabilityMachine />} />
+              <Route path="/oeeLine" element={<OEEline />} />
+              <Route path="/utility" element={<Utility />} />
+              <Route path="/Stopwatch" element={<Stopwatch />} />
+            </Routes>
+          </div>
         </div>
-
-        <Routes>
-          {/* <Route path="/" element={<Login />} /> */}
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/maintenance" element={<Maintenance />} />
-          <Route path="/Instrument" element={<Instrument />} />
-          <Route path="/pareto" element={<Pareto />} />
-          <Route path="/createnew" element={<CreateNew />} />
-          <Route path="/createedite/:id" element={<CreateEdit />} />
-          <Route path="/mail" element={<CheckMail />} />
-          <Route path="/editprofile" element={<EditProfile />} />
-          <Route path="/production" element={<Production />} />
-          <Route path="/OPE" element={<App1 />} />
-          <Route path="/avabilityope" element={<AvabilityOPE />} />
-          <Route path="/avabilitmachine" element={<AvabilityMachine />} />
-          <Route path="/oeeLine" element={<OEEline />} />
-          <Route path="/utility" element={<Utility />} />
-          <Route path="/Stopwatch" element={<Stopwatch />} />
-        </Routes>
+        <>
+          <Chat />
+        </> 
       </div>
     );
   } else if (levelData === 2) {
     return (
-      // <div>
-      //   <div>
-      //     <div>
-      //       <Navbar />
-      //     </div>
-      //   </div>
-      <div className="bg-background min-h-screen min-w-full grid grid-cols-[auto_1fr]">
-      {/* <div> */} 
-        <div>
+      <div className="bg-background min-h-screen min-w-full grid grid-cols-[auto_1fr] ">
+        <>
           <Sidebar /> 
+        </>
+        <div className="grid grid-rows-[auto_1fr] min-h-screen">
+          <>
+            <Header />
+          </>
+          <div className="overflow-x-auto">
+            <Routes>
+              {/* <Route path="/" element={<Login />} /> */}
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/maintenance" element={<Maintenance />} />
+              <Route path="/Instrument" element={<Instrument />} />
+              <Route path="/production" element={<Production />} />
+            </Routes>
+          </div>
         </div>
-
-        <Routes>
-          {/* <Route path="/" element={<Login />} /> */}
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/maintenance" element={<Maintenance />} />
-          <Route path="/Instrument" element={<Instrument />} />
-          <Route path="/production" element={<Production />} />
-        </Routes>
+        <>
+          <Chat />
+        </> 
       </div>
     );
   } else if (levelData === 1) {
     return (
-      // <div>
-      //   <div>
-      //     <Navbar /> 
-      //   </div>
-      <div className="bg-background min-h-screen min-w-full grid grid-cols-[auto_1fr]">
-      {/* <div> */} 
-        <div>
+      <div className="bg-background min-h-screen min-w-full grid grid-cols-[auto_1fr] ">
+        <>
           <Sidebar /> 
+        </>
+        <div className="grid grid-rows-[auto_1fr] min-h-screen">
+          <>
+            <Header />
+          </>
+          <div className="overflow-x-auto">
+            <Routes>
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/maintenance" element={<Maintenance />} />
+            </Routes>
+          </div>
         </div>
-          <Routes>
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/maintenance" element={<Maintenance />} />
-          </Routes>
+        <>
+          <Chat />
+        </> 
       </div>
     );
   } else {
