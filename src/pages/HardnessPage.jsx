@@ -87,7 +87,7 @@ function HardnessPage() {
       }
     );
     // Preproses data untuk format tanggal dan waktu
-    const processedData = response.data.rows.map((row) => ({
+    const processedData = response.data.map((row) => ({
       ...row,
       created_date: row.created_date.split("T")[0], // Ambil hanya bagian YYYY-MM-DD
       time_insert: row.time_insert.split(".")[0], // Ambil hanya bagian HH:MM:SS
@@ -109,7 +109,7 @@ function HardnessPage() {
     );
 
       // Preprocess data to format created_date
-      const processedData = response.data.rows.map((row) => ({
+      const processedData = response.data.map((row) => ({
       ...row,
       label: row.label.split("T")[0], // Extract YYYY-MM-DD
     }));
@@ -128,7 +128,7 @@ function HardnessPage() {
       }
     );
       // Preprocess data to format created_date
-      const processedData2 = response2.data.rows.map((row) => ({
+      const processedData2 = response2.data.map((row) => ({
       ...row,
       label: row.label.split("T")[0], // Extract YYYY-MM-DD
     }));
@@ -146,7 +146,7 @@ function HardnessPage() {
     );
 
       // Preprocess data to format created_date
-    const processedData3 = response3.data.rows.map((row) => ({
+    const processedData3 = response3.data.map((row) => ({
       ...row,
       label: row.label.split("T")[0], // Extract YYYY-MM-DD
     }));
@@ -297,7 +297,7 @@ function HardnessPage() {
     } 
     return visibleData.map((instrument, index) => (
       <Tr key={index}>
-        <Td>{instrument.id_setup}</Td>
+        <Td>{instrument.id}</Td>
         <Td>{instrument.h_value}</Td>
         <Td>{instrument.d_value}</Td>
         <Td>{instrument.t_value}</Td>
@@ -342,6 +342,7 @@ function HardnessPage() {
   //==================================KODE BUAT CUSTOMISASI CHART ========================================
 
   const thicknessOptions = {
+    zoomEnabled: true,
     theme: isDarkMode ? "dark2" : "light2",
     axisY: {
       prefix: "",
@@ -380,6 +381,7 @@ function HardnessPage() {
   };
 
   const diameterOptions = {
+    zoomEnabled: true,
     theme: isDarkMode ? "dark2" : "light2",
     axisY: {
       prefix: "",
@@ -418,6 +420,7 @@ function HardnessPage() {
   };
 
   const hardnessOptions = {
+    zoomEnabled: true,
     theme: isDarkMode ? "dark2" : "light2",
     axisY: {
       prefix: "",
@@ -646,7 +649,7 @@ function HardnessPage() {
           }}>Imperial to metric conversion factors</TableCaption>
           <Thead>
             <Tr>
-                <Th sx={{color: tulisanColor}} onClick={() => handleSort('id_setup')} className="hover:bg-tombol">
+                <Th sx={{color: tulisanColor}} onClick={() => handleSort('id')} className="hover:bg-tombol">
                   <div className="flex items-center justify-between cursor-pointer">
                     ID
                     <SortIcon active={sortConfig.key === 'id_setup'} direction={sortConfig.direction} />

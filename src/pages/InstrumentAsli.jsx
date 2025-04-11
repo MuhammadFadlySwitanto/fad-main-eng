@@ -47,8 +47,6 @@ function Instrument() {
     document.documentElement.getAttribute("data-theme") === "dark"
   );
 
-
-
   const fetchData = async () => {
     let response = await Axios.get("http://10.126.15.137:8002/part/instrument");
     setDataInstrument(response.data);
