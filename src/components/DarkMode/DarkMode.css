@@ -36,10 +36,10 @@
     background: #242424;
 }
 .dark_mode_input:checked + .dark_mode_label:after {
-    left: 62px;
-    transform: translateX(-100%);
+    left: calc(100% - 28px); /* 100% lebar parent dikurangi lebar tombol (25px) dan margin kanan (3px) */
     background: linear-gradient(180deg, #777, #3a3a3a);
 }
+
 .dark_mode_label:active:after {
     width: 30px;
 }

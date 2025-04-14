@@ -33,6 +33,7 @@
   import GambarNvmdp from "../assets/GambarNvmdp";
   import Gambarkotak from "../assets/Gambarkotak";
   import Gambarboiler from "../assets/Gambarboiler";
+  import { HiOutlinePrinter } from "react-icons/hi";
   import { useColorMode, useColorModeValue } from "@chakra-ui/react";
   import { toast, ToastContainer } from "react-toastify";
   import "react-toastify/dist/ReactToastify.css";
@@ -613,18 +614,21 @@
             <div className="text-text text-4xl font-sans font-bold mb-8 text-center">
               KALBE CONSUMER HEALTH OVERVIEW
             </div>
-            <div class="flex flex-col space-y-6 md:space-y-0 md:flex-row-reverse justify-between">
-              <div class="flex flex-wrap items-start justify-end -mb-3">
-                <button class="inline-flex px-5 py-3 text-text border bg-coba border-meta-2 dark:border-meta-4 hover:bg-gray-100 dark:hover:bg-boxdark focus:bg-gray-200 dark:focus:bg-gray-800 rounded-md mb-3 shadow-md">
-                  <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="flex-shrink-0 h-5 w-5 -ml-1 mt-0.5 mr-2">
+            <div className="flex flex-col space-y-6 md:space-y-0 md:flex-row-reverse justify-between">
+              <div className="flex flex-wrap items-start justify-end gap-x-4 gap-y-2">
+                <button className="inline-flex px-5 py-3 text-text border bg-coba border-meta-2 dark:border-meta-4 hover:bg-gray-200 dark:hover:bg-boxdark focus:bg-gray-200 dark:focus:bg-gray-800 rounded-md mb-3 shadow-md">
+                  <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="flex-shrink-0 h-5 w-5 -ml-1 mt-0.5 mr-2">
                     <path strokeLinecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                   </svg>
                   Manage dashboard
                 </button>
+                <button className="inline-flex px-5 py-3 text-text border bg-coba border-meta-2 dark:border-meta-4 hover:bg-gray-200 dark:hover:bg-boxdark focus:bg-gray-200 dark:focus:bg-gray-800 rounded-md mb-3 shadow-md">
+                  <HiOutlinePrinter size={24} className="flex-shrink-0 h-6 w-6 text-text -ml-1 mr-2"/>Print
+                </button>
                 {userGlobal.level == 5 ? 
-                <button class="inline-flex px-5 py-3 text-text bg-coba border border-meta-2 dark:border-meta-4 hover:bg-gray-100 dark:hover:bg-boxdark focus:bg-gray-200 dark:focus:bg-gray-800 rounded-md ml-6 mb-3 shadow-md"
+                <button className="inline-flex px-5 py-3 text-text bg-coba border border-meta-2 dark:border-meta-4 hover:bg-gray-200 dark:hover:bg-boxdark focus:bg-gray-200 dark:focus:bg-gray-800 rounded-md mb-3 shadow-md"
                 onClick={onOpen}>
-                  <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="flex-shrink-0 h-6 w-6 text-text -ml-1 mr-2">
+                  <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="flex-shrink-0 h-6 w-6 text-text -ml-1 mr-2">
                     <path strokeLinecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                   </svg>
                   Create Bill

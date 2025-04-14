@@ -31,12 +31,12 @@ const HistoryTabel = () => {
       { value: '/GetDailyChiller138', label: 'Get Daily Chiller 138' },
       { value: '/GetDailyBoiler138', label: 'Get Daily Boiler 138' },
       { value: '/GetDailyInstrumentIPC', label: 'Get Daily Instrument IPC' },
-      { value: '/GetDailyPower55', label: 'Get Daily Power 55' },
-      { value: '/GetDailyHVAC55', label: 'Get Daily HVAC 55' },
-      { value: '/GetDailyINV_HVAC', label: 'Get Daily INV_HVAC' },
-      { value: '/GetDailyEMSUTY', label: 'Get Daily EMS-UTY' },
-      { value: '/GetDailyDehum', label: 'Get Daily Dehum' },
-      { value: '/GetDailyWATER', label: 'Get Daily Water' },
+      { value: '/GetDailyPower55', label: 'Get Daily Power 138' },
+      { value: '/GetDailyHVAC55', label: 'Get Daily HVAC 138' },
+      { value: '/GetDailyINV_HVAC', label: 'Get Daily INV_HVAC 138' },
+      { value: '/GetDailyEMSUTY', label: 'Get Daily EMS-UTY 55' },
+      { value: '/GetDailyDehum', label: 'Get Daily Dehum 138' },
+      { value: '/GetDailyWATER', label: 'Get Daily Water 138' },
     ];
   
     const fetchData = async () => {
