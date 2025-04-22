@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from "react";
+import React, { useState, useEffect, useRef, useMemo, forwardRef, useImperativeHandle, } from "react";
 import AcUnitIcon from '@mui/icons-material/AcUnit';
 import FireHydrantAltIcon from '@mui/icons-material/FireHydrantAlt';
 import ConstructionIcon from '@mui/icons-material/Construction';
@@ -9,8 +9,13 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import   {Progress  } from "@chakra-ui/react";
 import ChartDashboard from "../components/ChartDashboard";
 
+// export const getMvmdpData = [
+//   { title: 'LVMDP 1 Load Percentage', value: `${((lvmdp1 / getLimit.Limit_Listrik) * 100).toFixed(2)} %` },
+//   { title: 'PP1 Chiller', value: `${pp1Chiller ?? 'N/A'}` },
+//   { title: 'PP2 Hydrant', value: `${pp2Hydrant ?? 'N/A'}` },
+// ];
 
-const NVMDP = ({getLimit, dataTotalUang}) => {
+const NVMDP = React.forwardRef(({ getLimit, dataTotalUang }, ref) => {
     const [sdp1Produksi, setSdp1Produksi] = useState(null);
     const [sdp2Produksi, setSdp2Produksi] = useState(null);
     const [pp2Hydrant, setPp2Hydrant] = useState(null);
@@ -38,6 +43,42 @@ const NVMDP = ({getLimit, dataTotalUang}) => {
     const [isDarkMode, setIsDarkMode] = useState(
         document.documentElement.getAttribute("data-theme") === "dark"
     );
+
+    // // Fungsi untuk mengambil data NVMDP
+    // const getNVMDPData = () => {
+    //   const data = [
+    //     {
+    //       title: "LVMDP 1 Load Percentage",
+    //       value: `${((lvmdp1 / getLimit.Limit_Listrik) * 100).toFixed(2)} %`,
+    //     },
+    //     { title: "PP1 Chiller", value: `${pp1Chiller ?? "N/A"}` },
+    //     { title: "PP2 Hydrant", value: `${pp2Hydrant ?? "N/A"}` },
+    //   ];
+
+    //   console.log("Mengambil data dari NVMDP:", data); // Debugging
+    //   return data;
+    // };
+
+    // // Expose fungsi `getNVMDPData` ke parent melalui ref
+    // React.useImperativeHandle(ref, () => ({
+    //   getNVMDPData,
+    // }));
+
+    // Fungsi untuk mengambil data NVMDP
+    useImperativeHandle(ref, () => ({
+        getNVMDPData: () => [
+        { title: "Solar Panel 1 - 6", value: `${solarPanel ?? "N/A"}` },
+        { title: "Solar Panel 7 - 12", value: `${solarPanel2 ?? "N/A"}` },
+        { title: "Solar Panel Total ", value: `${((solarPanel ?? 0) + (solarPanel2 ?? 0))}` },
+        { title: "LVMDP Usage", value: `${lvmdp1 ?? "N/A" } ` },
+        { title: "LVMDP Total Cost", value: `${(lvmdp1*dataTotalUang).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} ` },
+        { title: "PP1 Chiller", value: `${pp1Chiller ?? "N/A"}` },
+        { title: "PP2 Hydrant", value: `${pp2Hydrant ?? "N/A"}` },
+        { title: "SDP1 Utility", value: `${sdp1Utility ?? "N/A"}` },
+        { title: "SDP1 Produksi", value: `${sdp1Produksi ?? "N/A"}` },
+        { title: "SDP2 Produksi", value: `${sdp2Produksi ?? "N/A"}` },
+      ],
+    }));
 
     const grafanaMVMDPMonth = isDarkMode 
     ? "https://snapshots.raintank.io/dashboard/snapshot/sxKIJvabjpjQB6qzN01qxrktG81CEd4p?orgId=0&viewPanel=38&kiosk"
@@ -852,7 +893,7 @@ const NVMDP = ({getLimit, dataTotalUang}) => {
         </iframe>
       </div>
     </>
-  )
-}
+  );
+})
 
 export default NVMDP

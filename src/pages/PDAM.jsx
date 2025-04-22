@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } from "react";
 import YardIcon from '@mui/icons-material/Yard';
 import { GrFanOption } from "react-icons/gr";
 import { GiBaseDome } from "react-icons/gi";
@@ -7,7 +7,7 @@ import { IoLogoElectron } from "react-icons/io5";
 import ChartDashboard from "../components/ChartDashboard";
 import ChartYearly from "../components/ChartYearly";
 
-const PDAM = () => {
+const PDAM = forwardRef((props, ref) => {
     const [inlet, setInlet] = useState(null);
     const [domestic, setDomestic] = useState(null);
     const [tamanpos, setTamanPos] = useState(null);
@@ -29,21 +29,17 @@ const PDAM = () => {
         document.documentElement.getAttribute("data-theme") === "dark"
     );
 
-    const grafanaInlet = isDarkMode 
-    ? "https://snapshots.raintank.io/dashboard/snapshot/qu9c61rKSAKBVDFnELoLGbigEa2bEFhK?orgId=0&kiosk"
-    : "https://snapshots.raintank.io/dashboard/snapshot/qu9c61rKSAKBVDFnELoLGbigEa2bEFhK?orgId=0&kiosk&theme=light";
-    const grafanaDomestic = isDarkMode 
-    ? "https://snapshots.raintank.io/dashboard/snapshot/F2S4hzK528lnJKXhrqXuuXuANZ2ukGiJ?orgId=0&kiosk"
-    : "https://snapshots.raintank.io/dashboard/snapshot/F2S4hzK528lnJKXhrqXuuXuANZ2ukGiJ?orgId=0&kiosk&theme=light";
-    const grafanaTaman = isDarkMode 
-    ? "https://snapshots.raintank.io/dashboard/snapshot/lIetxbn0LnxATh9nkYk9af7lvnaSFeg8?orgId=0&kiosk"
-    : "https://snapshots.raintank.io/dashboard/snapshot/lIetxbn0LnxATh9nkYk9af7lvnaSFeg8?orgId=0&kiosk&theme=light";
-    const grafanaOsmo = isDarkMode 
-    ? "https://snapshots.raintank.io/dashboard/snapshot/v1Ret7UfE1QbpyhYNOkEh98jlcc0IatX?orgId=0&kiosk"
-    : "https://snapshots.raintank.io/dashboard/snapshot/v1Ret7UfE1QbpyhYNOkEh98jlcc0IatX?orgId=0&kiosk&theme=light";
-    const grafanaBoiler = isDarkMode 
-    ? "https://snapshots.raintank.io/dashboard/snapshot/rjp6mbq3O8HEpUwdOKfZ7FYpif7XMu4Y?orgId=0&kiosk"
-    : "https://snapshots.raintank.io/dashboard/snapshot/rjp6mbq3O8HEpUwdOKfZ7FYpif7XMu4Y?orgId=0&kiosk&theme=light";
+    // Fungsi untuk mengambil data PDAM PDF
+    useImperativeHandle(ref, () => ({
+        getPDAMData: () => [
+        { title: "Boiler",value: `${parseFloat(boiler).toFixed(2)}` },
+        { title: "Domestik", value: `${domestic}` },
+        { title: "Inlet Pre-Treatment", value: `${inlet}` },
+        { title: "Reject Osmotron", value: `${parseFloat(rejectosmo).toFixed(2) }` },
+        { title: "Taman Pos Jaga", value: `${parseFloat(tamanpos).toFixed(2) }` },
+        ],
+    }));
+
     const grafanaPDAMMonth = isDarkMode 
     ? "https://snapshots.raintank.io/dashboard/snapshot/T7IQgfFb5B4gGT16l7u7mV7RKmzoBJSW?orgId=0&kiosk"
     : "https://snapshots.raintank.io/dashboard/snapshot/T7IQgfFb5B4gGT16l7u7mV7RKmzoBJSW?orgId=0&kiosk&theme=light";
@@ -422,7 +418,7 @@ const PDAM = () => {
       </div>
 
     </>
-  )
-}
+  );
+})
 
 export default PDAM

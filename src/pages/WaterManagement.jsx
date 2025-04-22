@@ -814,7 +814,7 @@ export default function WaterManagement() {
     return(
       <div>
         <div className="flex flex-col xl:flex-row justify-center my-4 space-y-4 xl:space-y-0 xl:space-x-4">
-          <div className="flex flex-col xl:w-64">
+          <div className="flex flex-col items-center xl:w-64">
             <h5 className="mb-1">Flow Meter</h5>
             <Select placeholder="Select Flow Meter" onChange={getWaterArea}>
             <option value="cMT-DB-WATER-UTY_PDAM_Sehari_data">PDAM</option>
@@ -875,7 +875,7 @@ export default function WaterManagement() {
               placeholder="Select Date and Time"
               size="md"
               type="date"
-              width="200px"
+              // width="200px"
               css={{
                 "&::-webkit-calendar-picker-indicator": {
                   color: isDarkMode ? "white" : "black",
@@ -947,7 +947,6 @@ export default function WaterManagement() {
             placeholder="Select Date and Time"
             size="md"
             type="date"
-            width="200px"
             css={{
               "&::-webkit-calendar-picker-indicator": {
                 color: isDarkMode ? "white" : "black",

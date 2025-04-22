@@ -6,6 +6,7 @@ module.exports = {
     extend: {
       fontFamily: {
         DMSans: ['DM Sans', 'serif'],
+        poppins: ['Poppins', 'sans-serif'],
       },
       minHeight: {
         'dvh': '100dvh',
