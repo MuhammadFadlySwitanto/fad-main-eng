@@ -122,9 +122,12 @@ import MyDocument from '../components/MyDocument';
       { title: 'Electricity Usage', value: `${data.MVMDP} KWh` },
       { title: 'Total Electricity Cost', value: `${(data.MVMDP * dataTotalUang).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}` },
       { title: 'Master Box Line 1 - 1', value: `${data.MasterBoxL1} ` },
-      { title: 'Master Box Line 2 - 2', value: `${data.MasterBoxL1} ` },
-      { title: 'Master Box Line 3 - 1', value: `${data.MasterBoxL1} ` },
-      { title: 'Master Box Line 3 - 2', value: `${data.MasterBoxL1} ` },
+      { title: 'Master Box Line 2 - 2', value: `${data.MasterBoxL2_2} ` },
+      { title: 'Master Box Line 3 - 1', value: `${data.MasterBoxL3_1} ` },
+      { title: 'Master Box Line 3 - 2', value: `${data.MasterBoxL3_2} ` },
+      { title: 'Daily Electricity', value: `${getLimit["Limit_Listrik"]} ` },
+      { title: 'Daily PDAM', value: `${getLimit["Limit_Air"]} ` },
+      { title: 'Daily Gas', value: `${getLimit["Limit_Gas"]} ` },
     ];
 
     //   // Ambil data dari NVMDP dan PDAM saat komponen di-render
@@ -767,7 +770,7 @@ import MyDocument from '../components/MyDocument';
                     ))}
                   </SimpleGrid>
 
-                  {/* Fourth Row - 3 Number Inputs */}
+                  {/* Fourth Row - pokoknya ini si limitnya */}
                   <Box mb={4}>
                     <Text fontSize="lg" fontWeight="bold" mb={3}>
                       Parameter Limit
