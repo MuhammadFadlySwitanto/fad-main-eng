@@ -224,7 +224,7 @@ const groupDataByCategory = (data) => {
     
     // If not assigned to any specific category, put in Other
     if (!assigned) {
-      groupedData['Other'].push(item);
+      groupedData['Others'].push(item);
     }
   });
   
