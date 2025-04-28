@@ -201,7 +201,7 @@ const groupDataByCategory = (data) => {
     'Utility Cost': ['Total Boiler Cost', 'Total PDAM Cost', 'Total Electricity Cost'],
     'Production Data': ['Master Box Line 1 - 1', 'Master Box Line 2 - 2', 'Master Box Line 3 - 1', 'Master Box Line 3 - 2'],
     'Daily Limits': ['Daily Electricity', 'Daily PDAM', 'Daily Gas'],
-    'Other': []
+    'Others': []
   };
   
   const groupedData = {};

@@ -111,7 +111,7 @@ import MyDocument from '../components/MyDocument';
     const timeLabels = ['Start 1', 'Finish 1', 'Start 2', 'Finish 2'];
 
     const dashboardStaticData = () =>  [
-      { title: 'TODAY COST / UNIT', value: `Rp ${(totalCostPerUnit).toFixed(2)}` },
+      { title: 'Today Total Cost / Unit', value: `Rp ${(totalCostPerUnit).toFixed(2)}` },
       { title: 'Line 1 Cost / Unit', value: `Rp ${(costPerUnitLine1).toFixed(2)}` },
       { title: 'Line 2 Cost / Unit', value: `Rp ${(costPerUnitLine2).toFixed(2)}` },
       { title: 'Line 3 Cost / Unit', value: `Rp ${(costPerUnitLine3).toFixed(2)}` },
