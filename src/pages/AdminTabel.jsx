@@ -33,14 +33,14 @@ function AdminTabel() {
   );
 
   const fetchUser = async () => {
-    let response = await axios.get("http://10.126.15.88:8002/part/alluser");
+    let response = await axios.get("http://10.126.15.197:8002/part/alluser");
     setUserData(response.data);
   };
 
   const updateUser = async (id, data) => {
     let dataUser = { level: data };
     let response = await axios.patch(
-      `http://10.126.15.88:8002/part/userupdate/${id}`,
+      `http://10.126.15.197:8002/part/userupdate/${id}`,
       dataUser
     );
     if (response) {
@@ -54,7 +54,7 @@ function AdminTabel() {
 
   const deleteUser = async (id) => {
     let response = await axios.delete(
-      `http://10.126.15.88:8002/part/userdelete/${id}`
+      `http://10.126.15.197:8002/part/userdelete/${id}`
     );
     if (response) {
       if (!toastDisplayed.current) {
@@ -67,7 +67,7 @@ function AdminTabel() {
 
   const editUser = async (id) => {
     let response = await axios.patch(
-      `http://10.126.15.88:8002/part/useredit/${id}`
+      `http://10.126.15.197:8002/part/useredit/${id}`
     );
 
     fetchUser();

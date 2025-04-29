@@ -29,7 +29,7 @@ export default function Loopo() {
 
   const fetchLoopo = async () => {
     let response = await axios.get(
-      "http://10.126.15.88:8002/part/Loopo",
+      "http://10.126.15.197:8002/part/Loopo",
       {
         params: {
           area: LoopoArea,

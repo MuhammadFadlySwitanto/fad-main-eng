@@ -82,7 +82,7 @@ export default function HVACchillerChart() {
 
     // Buat array permintaan API berdasarkan jumlah elemen di list
     const requests = list.map((item) =>
-      axios.get("http://10.126.15.88:8002/part/ChillerGraph", { params: item })
+      axios.get("http://10.126.15.197:8002/part/ChillerGraph", { params: item })
     );
 
     // Fetch semua data secara paralel
@@ -393,7 +393,7 @@ export default function HVACchillerChart() {
           setLoadingTable(true); // Start spinner
           setErrorTable(null);   // Clear previous errors
           let response4 = await axios.get(
-            "http://10.126.15.88:8002/part/ChillerStatus", 
+            "http://10.126.15.197:8002/part/ChillerStatus", 
             {
               params: {
                 start: startDate,
@@ -404,7 +404,7 @@ export default function HVACchillerChart() {
             }
           );
           let response5 = await axios.get(
-            "http://10.126.15.88:8002/part/ChillerKondisi", 
+            "http://10.126.15.197:8002/part/ChillerKondisi", 
             {
               params: {
                 start: startDate,
@@ -416,7 +416,7 @@ export default function HVACchillerChart() {
             }
           );
           let response6 = await axios.get(
-            "http://10.126.15.88:8002/part/ChillerNama", 
+            "http://10.126.15.197:8002/part/ChillerNama", 
             {
               params: {
                 start: startDate,
@@ -427,7 +427,7 @@ export default function HVACchillerChart() {
             }
           ); 
           let response7 = await axios.get(
-            "http://10.126.15.88:8002/part/ChillerData1", 
+            "http://10.126.15.197:8002/part/ChillerData1", 
             {
               params: {
                 start: startDate,
@@ -438,7 +438,7 @@ export default function HVACchillerChart() {
             }
           ); 
           let response8 = await axios.get(
-            "http://10.126.15.88:8002/part/ChillerData2", 
+            "http://10.126.15.197:8002/part/ChillerData2", 
             {
               params: {
                 start: startDate,
@@ -449,7 +449,7 @@ export default function HVACchillerChart() {
             }
           ); 
           let response9 = await axios.get(
-            "http://10.126.15.88:8002/part/ChillerData3", 
+            "http://10.126.15.197:8002/part/ChillerData3", 
             {
               params: {
                 start: startDate,
@@ -460,7 +460,7 @@ export default function HVACchillerChart() {
             }
           ); 
           let response10 = await axios.get(
-            "http://10.126.15.88:8002/part/ChillerData4", 
+            "http://10.126.15.197:8002/part/ChillerData4", 
             {
               params: {
                 start: startDate,
@@ -471,7 +471,7 @@ export default function HVACchillerChart() {
             }
           );
           let response11 = await axios.get(
-            "http://10.126.15.88:8002/part/ChillerData5", 
+            "http://10.126.15.197:8002/part/ChillerData5", 
             {
               params: {
                 start: startDate,
@@ -483,7 +483,7 @@ export default function HVACchillerChart() {
             }
           ); 
           let response12 = await axios.get(
-            "http://10.126.15.88:8002/part/ChillerData6", 
+            "http://10.126.15.197:8002/part/ChillerData6", 
             {
               params: {
                 start: startDate,
@@ -494,7 +494,7 @@ export default function HVACchillerChart() {
             }
           ); 
           let response13 = await axios.get(
-            "http://10.126.15.88:8002/part/ChillerData7", 
+            "http://10.126.15.197:8002/part/ChillerData7", 
             {
               params: {
                 start: startDate,
@@ -505,7 +505,7 @@ export default function HVACchillerChart() {
             }
           ); 
           let response14 = await axios.get(
-            "http://10.126.15.88:8002/part/ChillerData8", 
+            "http://10.126.15.197:8002/part/ChillerData8", 
             {
               params: {
                 start: startDate,
@@ -516,7 +516,7 @@ export default function HVACchillerChart() {
             }
           ); 
           let response15 = await axios.get(
-            "http://10.126.15.88:8002/part/ChillerData9", 
+            "http://10.126.15.197:8002/part/ChillerData9", 
             {
               params: {
                 start: startDate,

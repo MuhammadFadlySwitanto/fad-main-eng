@@ -49,7 +49,7 @@ function HVAChendeling() {
   // const fetchGraphData = async () => {
   //   try {
   //     let response = await Axios.get(
-  //       `http://10.126.15.88:8002/part/GrafanaWater`,
+  //       `http://10.126.15.197:8002/part/GrafanaWater`,
   //       {
   //         params: 
   //         { area }

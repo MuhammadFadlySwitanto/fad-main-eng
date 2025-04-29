@@ -87,14 +87,14 @@ const formatTimestamp = (uniqueTimestamp) => {
 
   // Fetch Line data
   const fetchLine = async () => {
-    let response = await axios.get("http://10.126.15.88:8002/part/lineData");
+    let response = await axios.get("http://10.126.15.197:8002/part/lineData");
     setFetchLineData(response.data);
   };
 
   // Fetch Process data based on the selected line
   const fetchProces = async (line) => {
     let response = await axios.get(
-      "http://10.126.15.88:8002/part/procesData",
+      "http://10.126.15.197:8002/part/procesData",
       { params: { line_name: line } }
     );
     setFetchProcesData(response.data);
@@ -103,7 +103,7 @@ const formatTimestamp = (uniqueTimestamp) => {
   // Fetch Machine data based on the selected line and process
   const fetchMachine = async (line, proces) => {
     let response = await axios.get(
-      "http://10.126.15.88:8002/part/machineData",
+      "http://10.126.15.197:8002/part/machineData",
       { params: { line_name: line, proces_name: proces } }
     );
     setFetchMachineData(response.data);
@@ -176,7 +176,7 @@ const formatTimestamp = (uniqueTimestamp) => {
       console.error(`Endpoint not found for line: ${line}, machine: ${machine}`);
       return null;
     }
-    return `http://10.126.15.88:8002/part${endpoint}`;
+    return `http://10.126.15.197:8002/part${endpoint}`;
   };
 
   const determineSearchEndpoint = (line, machine) => {
@@ -203,7 +203,7 @@ const formatTimestamp = (uniqueTimestamp) => {
       console.error(`Search endpoint not found for line: ${line}, machine: ${machine}`);
       return null;
     }
-    return `http://10.126.15.88:8002/part${endpoint}`;
+    return `http://10.126.15.197:8002/part${endpoint}`;
   };
 
 

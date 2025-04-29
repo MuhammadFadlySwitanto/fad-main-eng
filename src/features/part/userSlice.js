@@ -29,7 +29,7 @@ export function registerData(data) {
   return async () => {
     try {
       const response = await Axios.post(
-        "http://10.126.15.88:8002/part/register",
+        "http://10.126.15.197:8002/part/register",
         data
       );
 
@@ -53,7 +53,7 @@ export function loginData(data) {
   return async (dispatch) => {
     try {
       let response = await Axios.post(
-        "http://10.126.15.88:8002/part/login",
+        "http://10.126.15.197:8002/part/login",
         data
       );
       
@@ -79,7 +79,7 @@ export function CheckLogin(token) {
     try {
       
     let respons = await Axios.post(
-      "http://10.126.15.88:8002/part/check-Login",
+      "http://10.126.15.197:8002/part/check-Login",
       {},
       {
         headers: {

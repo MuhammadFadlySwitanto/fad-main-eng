@@ -86,7 +86,7 @@ const Chat = () => {
   const initializeWebSocket = () => {
     if (ws.current?.readyState === WebSocket.OPEN) return;
 
-    ws.current = new WebSocket("ws://10.126.15.88:8002");
+    ws.current = new WebSocket("ws://10.126.15.197:8002");
     
     ws.current.onopen = () => {
       console.log("WebSocket connection opened");

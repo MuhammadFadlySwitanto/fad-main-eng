@@ -88,7 +88,7 @@ const ProductionIsi = () => {
     };
   
     const fetchData = async (data, start, finish) => {
-      let response = await axios.get("http://10.126.15.88:8002/part/oee", {
+      let response = await axios.get("http://10.126.15.197:8002/part/oee", {
         params: {
           machine: data,
           start: start,
@@ -97,7 +97,7 @@ const ProductionIsi = () => {
       });
   
       let response1 = await axios.get(
-        "http://10.126.15.88:8002/part/variableoee",
+        "http://10.126.15.197:8002/part/variableoee",
         {
           params: {
             machine: data,

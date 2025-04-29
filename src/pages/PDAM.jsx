@@ -49,7 +49,7 @@ const PDAM = forwardRef((props, ref) => {
 
     useEffect(() => {
         // Buat koneksi WebSocket
-        socketRef.current = new WebSocket("ws://10.126.15.88:1880/ws/test");
+        socketRef.current = new WebSocket("ws://10.126.15.197:1880/ws/test");
     
         socketRef.current.onopen = () => {
         console.log("WebSocket connected");
@@ -143,7 +143,7 @@ const PDAM = forwardRef((props, ref) => {
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
                     <div className="rounded-md border border-border shadow-buatcard bg-coba p-6 relative w-full">
                     <p className="text-text my-2">Ini adalah pop-up dari card Boiler.</p>
-                    <ChartDashboard endpoint="http://10.126.15.88:8002/part/GrafanaWater" area="cMT-DB-WATER-UTY_Met_Boiler_data" title="Boiler Data Graph" colors={Colors1}
+                    <ChartDashboard endpoint="http://10.126.15.197:8002/part/GrafanaWater" area="cMT-DB-WATER-UTY_Met_Boiler_data" title="Boiler Data Graph" colors={Colors1}
                         style={{
                         border: 'none', // Removes border
                         position: 'relative',
@@ -196,7 +196,7 @@ const PDAM = forwardRef((props, ref) => {
             <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
                 <div className="rounded-md border border-border shadow-buatcard bg-coba p-6 relative w-full">
                 <p className="text-text my-2">Ini adalah pop-up dari card Domestik.</p>
-                <ChartDashboard endpoint="http://10.126.15.88:8002/part/GrafanaWater" area="cMT-DB-WATER-UTY_Met_Domestik_data" title="Domestik Data Graph" colors={Colors2}
+                <ChartDashboard endpoint="http://10.126.15.197:8002/part/GrafanaWater" area="cMT-DB-WATER-UTY_Met_Domestik_data" title="Domestik Data Graph" colors={Colors2}
                     style={{
                     border: 'none', // Removes border
                     position: 'relative',
@@ -250,7 +250,7 @@ const PDAM = forwardRef((props, ref) => {
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
             <div className="rounded-md border border-border shadow-buatcard bg-coba p-6 relative w-full">
               <p className="text-text my-2">Ini adalah pop-up dari card Inlet.</p>
-              <ChartDashboard endpoint="http://10.126.15.88:8002/part/GrafanaWater" area="cMT-DB-WATER-UTY_Met_Inlet_Pt_data" title="Inlet Pre-Treatment Data Graph" colors={Colors1}
+              <ChartDashboard endpoint="http://10.126.15.197:8002/part/GrafanaWater" area="cMT-DB-WATER-UTY_Met_Inlet_Pt_data" title="Inlet Pre-Treatment Data Graph" colors={Colors1}
                     style={{
                     border: 'none', // Removes border
                     position: 'relative',
@@ -308,7 +308,7 @@ const PDAM = forwardRef((props, ref) => {
             <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
                 <div className="rounded-md border border-border shadow-buatcard bg-coba p-6 relative w-full">
                 <p className="text-text my-2">Ini adalah pop-up dari card Reject Osmotron.</p>
-                <ChartDashboard endpoint="http://10.126.15.88:8002/part/GrafanaWater" area="cMT-DB-WATER-UTY_Met_RO_data" title="Reject Osmotron Data Graph" colors={Colors1}
+                <ChartDashboard endpoint="http://10.126.15.197:8002/part/GrafanaWater" area="cMT-DB-WATER-UTY_Met_RO_data" title="Reject Osmotron Data Graph" colors={Colors1}
                     style={{
                     border: 'none', // Removes border
                     position: 'relative',
@@ -364,7 +364,7 @@ const PDAM = forwardRef((props, ref) => {
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
             <div className="rounded-md border border-border shadow-buatcard bg-coba p-6 relative w-full">
               <p className="text-text my-2">Ini adalah pop-up dari card Taman Pos Jaga.</p>
-              <ChartDashboard endpoint="http://10.126.15.88:8002/part/GrafanaWater" area="cMT-DB-WATER-UTY_Met_Taman_data" title="Taman Pos Jaga Data Graph" colors={Colors2}
+              <ChartDashboard endpoint="http://10.126.15.197:8002/part/GrafanaWater" area="cMT-DB-WATER-UTY_Met_Taman_data" title="Taman Pos Jaga Data Graph" colors={Colors2}
                 style={{
                   border: 'none', // Removes border
                   position: 'relative',
@@ -395,7 +395,7 @@ const PDAM = forwardRef((props, ref) => {
 {/* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------         */}
         <div className="text-center mt-8 p-2 shadow-buatcard bg-coba rounded-md relative">
             <h1 className="text-center text-text text-4xl antialiased hover:subpixel-antialiased mb-2">PDAM Chart</h1>
-            <ChartYearly endpoint="http://10.126.15.88:8002/part/GrafanaMVMDPYear" area="cMT-DB-WATER-UTY_Met_PDAM_data" title=" " colors={Colors2}
+            <ChartYearly endpoint="http://10.126.15.197:8002/part/GrafanaMVMDPYear" area="cMT-DB-WATER-UTY_Met_PDAM_data" title=" " colors={Colors2}
                 style={{
                 border: 'none', // Removes border
                 position: 'relative',

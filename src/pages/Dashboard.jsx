@@ -157,7 +157,7 @@ import MyDocument from '../components/MyDocument';
 
     useEffect(() => {
       // Buat koneksi WebSocket
-      socketRef.current = new WebSocket("ws://10.126.15.88:1880/ws/test");
+      socketRef.current = new WebSocket("ws://10.126.15.197:1880/ws/test");
 
       socketRef.current.onopen = () => {
         //console.log("WebSocket connected");
@@ -222,11 +222,11 @@ import MyDocument from '../components/MyDocument';
 
       const fetchData = async () => {
         try {
-          let response = await axios.get("http://10.126.15.88:8002/part/GetJam");
+          let response = await axios.get("http://10.126.15.197:8002/part/GetJam");
           setGetJam (response.data[0]);
-          let response2 = await axios.get("http://10.126.15.88:8002/part/GetParameter")
+          let response2 = await axios.get("http://10.126.15.197:8002/part/GetParameter")
           setGetParameter(response2.data[0])
-          let response3 = await axios.get("http://10.126.15.88:8002/part/GetLimit")
+          let response3 = await axios.get("http://10.126.15.197:8002/part/GetLimit")
           setGetLimit(response3.data[0])
 
           const inputValue1 = response2.data[0].Parameter_Listrik
@@ -507,7 +507,7 @@ import MyDocument from '../components/MyDocument';
   //     let tempData = mainObject
       
   //     let response = await axios.post(
-  //       "http://10.126.15.88:8002/part/CreateJam",
+  //       "http://10.126.15.197:8002/part/CreateJam",
   //       tempData
   //     );
   //     console.log(tempData);
@@ -534,7 +534,7 @@ import MyDocument from '../components/MyDocument';
   //   console.log(newParameterData);
   
   // let response2 = await axios.post(
-  //       "http://10.126.15.88:8002/part/CreateParameter",
+  //       "http://10.126.15.197:8002/part/CreateParameter",
   //       newParameterData
   //     );
            
@@ -554,7 +554,7 @@ import MyDocument from '../components/MyDocument';
 
   const createJamPost = async () => {
     let tempData = mainObject;
-    let response = await axios.post("http://10.126.15.88:8002/part/CreateJam", tempData);
+    let response = await axios.post("http://10.126.15.197:8002/part/CreateJam", tempData);
     console.log(tempData);
   };
 
@@ -578,7 +578,7 @@ import MyDocument from '../components/MyDocument';
     };
     console.log(newParameterData);
     
-    let response2 = await axios.post("http://10.126.15.88:8002/part/CreateParameter", newParameterData);
+    let response2 = await axios.post("http://10.126.15.197:8002/part/CreateParameter", newParameterData);
   };
 
   const createLimit = async () => {
@@ -596,7 +596,7 @@ import MyDocument from '../components/MyDocument';
     };
 
     try {
-      let response = await axios.post("http://10.126.15.88:8002/part/CreateLimit", limitData);
+      let response = await axios.post("http://10.126.15.197:8002/part/CreateLimit", limitData);
       console.log(response.data);
     } catch (error) {
       console.error("Error creating limit:", error);

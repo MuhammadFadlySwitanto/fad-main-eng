@@ -14,7 +14,7 @@ function LandingPage () {
 
     const checkConnection = async () => {
         try {
-            const response = await Axios.get('http://10.126.15.88:8002/api/connection');
+            const response = await Axios.get('http://10.126.15.197:8002/api/connection');
             const { db1, db2, db3, db4, postgresql } = response.data;
             
             const errors = [];

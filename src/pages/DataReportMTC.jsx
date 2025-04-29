@@ -40,7 +40,7 @@ function DataReportMTC() {
 
   const fetchData = async () => {
     let response = await axios.get(
-      "http://10.126.15.88:8002/part/dataReportMTC",
+      "http://10.126.15.197:8002/part/dataReportMTC",
       {
         params: {
           date: dateData,
