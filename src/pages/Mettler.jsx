@@ -59,7 +59,7 @@ const Mettler = () => {
 
   const fetchTableData = async () => {
     let response = await Axios.get(
-      `http://10.126.15.137:8002/part/getMettlerData`,
+      `http://10.126.15.88:8002/part/getMettlerData`,
       {
         params: {
           start: startDate,
@@ -72,7 +72,7 @@ const Mettler = () => {
 
   // const fetchGraphMettlere = async () => {
   //   let response = await Axios.get(
-  //     `http://10.126.15.137:8002/part/getMettlerGraph`,
+  //     `http://10.126.15.88:8002/part/getMettlerGraph`,
   //     {
   //       params: {
   //         start: startDate,

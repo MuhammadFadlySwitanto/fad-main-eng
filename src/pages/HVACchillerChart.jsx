@@ -66,60 +66,36 @@ export default function HVACchillerChart() {
   const fetchDataChiller = async () => {
     console.log("Fetching data...");
     //ini console log penting, nanti kalau ada masalah nyalain aja ini komennya
-    // console.log(data);
+    console.log("please keluar bang", data);
     setLoading(true); 
     setError(null);
 
     try {
-      let arr = list.map((item) => ({ params: item })); // Create array of request params
 
-      console.log("Requesting data for all 4 areas...");
-
-       // Fetch all data concurrently
-      const [response, response1, response2, response3] = await Promise.all([
-        axios.get("http://10.126.15.137:8002/part/ChillerGraph", arr[0]),
-        axios.get("http://10.126.15.137:8002/part/ChillerGraph", arr[1]),
-        axios.get("http://10.126.15.137:8002/part/ChillerGraph", arr[2]),
-        axios.get("http://10.126.15.137:8002/part/ChillerGraph", arr[3]),
-      ]);
-
-      console.log("Data fetched successfully for all areas.");
-      console.log("Response 1:", response.data); // Log responses to verify the data
-      console.log("Response 2:", response1.data);
-      console.log("Response 3:", response2.data);
-      console.log("Response 4:", response3.data);
-
-     // Handle empty responses by setting default values if no data
-     if (!response.data.length) {
-      console.warn("Response 1 has no data, using default values.");
-      response.data = []; // Set default empty array if no data
+          // Validasi list sebelum membuat request
+    if (!list || list.some(item => !item.area || !item.chiller))  {
+      throw new Error("List tidak valid. Pastikan memiliki setidaknya 4 elemen dengan 'area' dan 'chiller'.");
     }
-    if (!response1.data.length) {
-      console.warn("Response 2 has no data, using default values.");
-      response1.data = []; // Set default empty array if no data
-    }
-    if (!response2.data.length) {
-      console.warn("Response 3 has no data, using default values.");
-      response2.data = []; // Set default empty array if no data
-    }
-    if (!response3.data.length) {
-      console.warn("Response 4 has no data, using default values.");
-      response3.data = []; // Set default empty array if no data
-    }
+    
+    let arr = list.map((item) => ({ params: item })); // Create array of request params
+    console.log("Request Params:", arr);
 
-      const mappedData = mapData(response.data, area);
-      setData(mappedData); // Set the mapped data
+    // Buat array permintaan API berdasarkan jumlah elemen di list
+    const requests = list.map((item) =>
+      axios.get("http://10.126.15.88:8002/part/ChillerGraph", { params: item })
+    );
 
-      const mappedData1 = mapDataResponse1(response1.data, area); // Mapping response1 data
-      setData1(mappedData1); // Set mapped data for the second response
+    // Fetch semua data secara paralel
+    const responses = await Promise.all(requests);
 
-      const mappedData2 = mapDataResponse2(response2.data, area); // Mapping response2 data
-      setData2(mappedData2); // Set mapped data for the third response
+    // Map data dari respons ke array dataPoints untuk chart
+    const mappedDataArray = responses.map((response, index) =>
+      mapData(response.data, list[index]?.area)
+    );
 
-      const mappedData3 = mapDataResponse3(response3.data, area); // Mapping response3 data
-      setData3(mappedData3); // Set mapped data for the fourth response
-
-      console.log("All data fetched successfully");
+    // Set data ke state berdasarkan jumlah elemen
+    setData(mappedDataArray);
+      console.log("All data fetched successfully", mappedDataArray);
       } catch (err) {
         console.error("Error fetching data:", err);
         setError("Failed to fetch data");
@@ -143,43 +119,45 @@ export default function HVACchillerChart() {
         } else {
           console.error("One or more items in the list do not have the 'area' property.");
         }
-      } else {
-        console.error("List does not have enough elements.");
+      // } else {
+      //   console.error("List does not have enough elements.");
       }
     };
-      const mapData = (data, area) => {
-        return data.map((item) => {
-          // Define the default structure for each item
-          let mappedItem = {
-            label: new Date(item.x).toLocaleString("id-ID", {
-              timeZone: "Asia/Jakarta",
-              year: "numeric",
-              month: "2-digit",
-              day: "2-digit",
-              hour: "2-digit",
-              minute: "2-digit",
-              hour12: false
-              }).replace(/\//g, "-").replace(",", ""), // Format jadi YYYY-MM-DD HH:mm
-            y: item.y,
-            x: item.x,
-          };
-        
-          // Apply transformations based on specific areas
-          if (area === "R-EvapPress") {
-            mappedItem.y = item.y * 2; // Example of modifying y for "R-EvapPress"
-          } else if (area === "R-UnitCap" || area === "R-Status" || area === "R-Alarm") {
-            mappedItem.x = item.x + 10; // Example of modifying x for other areas
-          } else {
-            // The default transformation when area doesn't match any condition
-            // Here you can modify the data in the default way you need
-            mappedItem.y = item.y;  // Or apply any default transformation if needed
-            mappedItem.x = item.x;  // Default behavior for "x"
-          }
-        
-            // Return the mapped item
-            return mappedItem;
-          });
+    const mapData = (data, area) => {
+      if (!Array.isArray(data) || data.length === 0) {
+        console.warn("Data kosong atau tidak valid:", data);
+        return [];
+      }
+    
+      return data.map(item => {
+        if (!item.x || !item.y) {
+          console.error("Data tidak valid:", item);
+          return null;
+        }
+    
+        let mappedItem = {
+          label: new Date(item.x).toLocaleString("id-ID", {
+            timeZone: "Asia/Jakarta",
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
+          }).replace(/\//g, "-").replace(",", ""),
+          y: item.y,
+          x: item.x,
         };
+    
+        if (area === "R-EvapPress") {
+          mappedItem.y = item.y * 2;
+        } else if (["R-UnitCap", "R-Status", "R-Alarm"].includes(area)) {
+          mappedItem.x = item.x + 10;
+        }
+    
+        return mappedItem;
+      }).filter(Boolean); // Hapus item null
+    };
         const mapDataResponse1 = (data, area) => {
           return data.map((item) => {
             let mappedItem = {
@@ -270,27 +248,35 @@ export default function HVACchillerChart() {
     };
         
     const handleDeleteList = (i) => {
-        const newList = [...list];
-        newList.splice(i, 1);
-        setList(newList);
-        if (i === 1){
-          setData1()}
-        else if (i === 0){
-          setData()
-        }
-        else if (i === 2){
-          setData2()
-        }
-        else if (i === 3){
-          setData3()
-        }
+      const newList = [...list];
+      newList.splice(i, 1);
+      setList(newList);
+      if (i === 1){
+        setData1()}
+      else if (i === 0){
+        setData()
+      }
+      else if (i === 2){
+        setData2()
+      }
+      else if (i === 3){
+        setData3()
+      }
     };
+
     const handleListChange = (e, i) => {
-        const field = e.target.name;
-        const newList = [...list];
-        newList[i][field] = e.target.value;
-        setList(newList); 
+      const field = e.target.name;
+      const newList = [...list];
+      newList[i][field] = e.target.value;
+      setList(newList); 
     };
+
+    // Pastikan list memiliki elemen valid sebelum fetch
+    useEffect(() => {
+      if (list.length >= 4 && list.every(item => item.area && item.chiller)) {
+        fetchDataChiller();
+      }
+    }, [list]);
 
     useEffect(() => {
       console.log("loading state changed:", loading);
@@ -332,67 +318,40 @@ export default function HVACchillerChart() {
         prefix: "",
       },
       axisX: {
-        valueFormatString: "YYYY-MMM-DD HH:mm K",
-        labelFormatter: function(e) {
+        valueFormatString: "DD MMM YYYY HH:mm",
+        labelFormatter: function (e) {
           let date = new Date(e.value);
-          let content = date.toLocaleDateString("en-US", localeOptions);
-          return content;
-        }
+          return date.toLocaleString("id-ID", localeOptions);
+        },
       },
       toolTip: {
         shared: true,
-      }, 
-      data: [
-        {
-          type: "spline",
-          name: "1."+label1,
-          showInLegend: true,
-          markerType: "circle",
-          yValueFormatString: "",
-          xValueType: "dateTime",
-          dataPoints: data,
-          color: "red"
-        },
-        {
-          type: "spline",
-          name: "2."+label2,
-          showInLegend: true,
-          markerType: "circle",
-          yValueFormatString: "",
-          xValueType: "dateTime",
-          dataPoints: data1,
-          color: "blue"
-        },
-        {
-          type: "spline",
-          name: "3."+label3,
-          showInLegend: true,
-          markerType: "circle",
-          yValueFormatString: "",
-          xValueType: "dateTime",
-          dataPoints: data2,
-          color: "green"
-        },
-        {
-          type: "spline",
-          name: "4."+label4,
-          showInLegend: true,
-          markerType: "circle",
-          yValueFormatString: "",
-          xValueType: "dateTime",
-          dataPoints: data3,
-          color: "magenta"
-        },
-      ],
+      },
+      data: data.map((dataPoints, index) => ({
+        type: "spline",
+        name: `${index + 1}.${list[index]?.area || "Area"}`,
+        showInLegend: true,
+        markerType: "circle",
+        yValueFormatString: "",
+        xValueType: "dateTime",
+        dataPoints: dataPoints,
+        color: ["red", "blue", "green", "magenta"][index], // Warna dinamis
+      })),
     };
-      useEffect(()=>{
-        if (list.length >=4){
-            setState(true);
-        } else {
-            setState(false);
-        }
-        
-      });
+
+    useEffect(()=>{
+      if (list.length >=4){
+          setState(true);
+      } else {
+          setState(false);
+      }
+    });
+
+    useEffect(() => {
+      setLoading(false); // Set loading to false when data is ready
+    }, [data, data1, data2, data3]);
+
+// ========================================================= Ini dibawah Chart =======================================================================
       let dateStart = (e) =>{
         var dataInput = e.target.value;
         setStartDate(dataInput);
@@ -434,7 +393,7 @@ export default function HVACchillerChart() {
           setLoadingTable(true); // Start spinner
           setErrorTable(null);   // Clear previous errors
           let response4 = await axios.get(
-            "http://10.126.15.137:8002/part/ChillerStatus", 
+            "http://10.126.15.88:8002/part/ChillerStatus", 
             {
               params: {
                 start: startDate,
@@ -445,7 +404,7 @@ export default function HVACchillerChart() {
             }
           );
           let response5 = await axios.get(
-            "http://10.126.15.137:8002/part/ChillerKondisi", 
+            "http://10.126.15.88:8002/part/ChillerKondisi", 
             {
               params: {
                 start: startDate,
@@ -457,7 +416,7 @@ export default function HVACchillerChart() {
             }
           );
           let response6 = await axios.get(
-            "http://10.126.15.137:8002/part/ChillerNama", 
+            "http://10.126.15.88:8002/part/ChillerNama", 
             {
               params: {
                 start: startDate,
@@ -468,7 +427,7 @@ export default function HVACchillerChart() {
             }
           ); 
           let response7 = await axios.get(
-            "http://10.126.15.137:8002/part/ChillerData1", 
+            "http://10.126.15.88:8002/part/ChillerData1", 
             {
               params: {
                 start: startDate,
@@ -479,7 +438,7 @@ export default function HVACchillerChart() {
             }
           ); 
           let response8 = await axios.get(
-            "http://10.126.15.137:8002/part/ChillerData2", 
+            "http://10.126.15.88:8002/part/ChillerData2", 
             {
               params: {
                 start: startDate,
@@ -490,7 +449,7 @@ export default function HVACchillerChart() {
             }
           ); 
           let response9 = await axios.get(
-            "http://10.126.15.137:8002/part/ChillerData3", 
+            "http://10.126.15.88:8002/part/ChillerData3", 
             {
               params: {
                 start: startDate,
@@ -501,7 +460,7 @@ export default function HVACchillerChart() {
             }
           ); 
           let response10 = await axios.get(
-            "http://10.126.15.137:8002/part/ChillerData4", 
+            "http://10.126.15.88:8002/part/ChillerData4", 
             {
               params: {
                 start: startDate,
@@ -512,7 +471,7 @@ export default function HVACchillerChart() {
             }
           );
           let response11 = await axios.get(
-            "http://10.126.15.137:8002/part/ChillerData5", 
+            "http://10.126.15.88:8002/part/ChillerData5", 
             {
               params: {
                 start: startDate,
@@ -524,7 +483,7 @@ export default function HVACchillerChart() {
             }
           ); 
           let response12 = await axios.get(
-            "http://10.126.15.137:8002/part/ChillerData6", 
+            "http://10.126.15.88:8002/part/ChillerData6", 
             {
               params: {
                 start: startDate,
@@ -535,7 +494,7 @@ export default function HVACchillerChart() {
             }
           ); 
           let response13 = await axios.get(
-            "http://10.126.15.137:8002/part/ChillerData7", 
+            "http://10.126.15.88:8002/part/ChillerData7", 
             {
               params: {
                 start: startDate,
@@ -546,7 +505,7 @@ export default function HVACchillerChart() {
             }
           ); 
           let response14 = await axios.get(
-            "http://10.126.15.137:8002/part/ChillerData8", 
+            "http://10.126.15.88:8002/part/ChillerData8", 
             {
               params: {
                 start: startDate,
@@ -557,7 +516,7 @@ export default function HVACchillerChart() {
             }
           ); 
           let response15 = await axios.get(
-            "http://10.126.15.137:8002/part/ChillerData9", 
+            "http://10.126.15.88:8002/part/ChillerData9", 
             {
               params: {
                 start: startDate,
@@ -609,89 +568,89 @@ export default function HVACchillerChart() {
         }
         const result = Object.values(obj); 
 
-      const handlePrevPage = () => {
-        setCurrentPage((prev) => Math.max(prev - 1, 1));
-      };  
-      const handleNextPage = () => {
-        setCurrentPage((prev) => Math.min(prev + 1, Math.ceil(result.length / rowsPerPage)));
-      };
+    const handlePrevPage = () => {
+      setCurrentPage((prev) => Math.max(prev - 1, 1));
+    };  
+    const handleNextPage = () => {
+      setCurrentPage((prev) => Math.min(prev + 1, Math.ceil(result.length / rowsPerPage)));
+    };
 
-      const TableFull = () => {
-        const startIndex = (currentPage - 1) * rowsPerPage;
-        const visibleData = result.slice(startIndex, startIndex + rowsPerPage);
+    const TableFull = () => {
+      const startIndex = (currentPage - 1) * rowsPerPage;
+      const visibleData = result.slice(startIndex, startIndex + rowsPerPage);
 
-        if (result.length === 0) {
-          return (
-            <Tr>
-              <Td colSpan={10} className="text-center">
-                No data available
-              </Td>
-            </Tr>
-          );
-        }
-
-        return visibleData.map((data, index) => (
-          <Tr key={index}>
-            <Td>{data.time}</Td>
-            <Td>{data.Alarm_Chiller}</Td>
-            <Td>{data.Status_Chiller}</Td>
-            <Td>{data.Fan_Kondensor}</Td>
-            <Td>{data.Status_Kompresor}</Td>
-            <Td>{data.Bodi_Chiller}</Td>
-            <Td>{data.KisiKisi_Kondensor}</Td>
-            <Td>{data.Lvl_Oil_Sight_Glass_Atas}</Td>
-            <Td>{data.Lvl_Oil_Sight_Glass_Bawah}</Td>
-            <Td>{data.Jalur_Sight_Glass_EXP_Valve}</Td>
-            <Td>{data.Operator}</Td>
-            <Td>{data.Engineer}</Td>
-            <Td>{data.Utility_SPV}</Td>
-            <Td>{data.Active_Setpoint}</Td>
-            <Td>{data.Evap_LWT}</Td>
-            <Td>{data.Evap_EWT}</Td>
-            <Td>{data.Unit_Capacity_Full}</Td>
-            <Td>{data.Outdoor_Temperature}</Td>
-            <Td>{data.Unit_Capacity_Kompresor}</Td>
-            <Td>{data.Evap_Pressure_Kompresor}</Td>
-            <Td>{data.Cond_Pressure_Kompresor}</Td>
-            <Td>{data.Evap_Sat_Temperature_Kompresor}</Td>
-            <Td>{data.Cond_Sat_Temperature_Kompresor}</Td>
-            <Td>{data.Suction_Temperature_Kompresor}</Td>
-            <Td>{data.Discharge_Temperature_Kompresor}</Td>
-            <Td>{data.Suction_SH_Kompresor}</Td>
-            <Td>{data.Discharge_SH_Kompresor}</Td>
-            <Td>{data.Evap_Approach_Kompresor}</Td>
-            <Td>{data.Evap_Design_Approach_Kompresor}</Td>
-            <Td>{data.Cond_Approach_Kompresor}</Td>
-            <Td>{data.Oil_Pressure_Kompresor}</Td>
-            <Td>{data.Oil_Pressure_Differential_Kompresor}</Td>
-            <Td>{data.EXV_Position_Kompresor}</Td>
-            <Td>{data.Run_Hour_Kompressor}</Td>
-            <Td>{data.Ampere_Kompressor}</Td>
-            <Td>{data.No_Of_Start_Kompresor}</Td>
-            <Td>{data.Total_Fan_ON_Kompresor}</Td>
-            <Td>{data.Tekanan_Return_Chiller}</Td>
-            <Td>{data.Tekanan_Supply_Chiller}</Td>
-            <Td>{data.Inlet_Softwater}</Td>
-            <Td>{data.Pompa_CHWS_1}</Td>
-            <Td>{data.Suhu_sebelum_Pompa_Supply}</Td>
-            <Td>{data.Suhu_sesudah_Pompa_Supply}</Td>
-            <Td>{data.Tekanan_Sebelum_Pompa_Supply}</Td>
-            <Td>{data.Tekanan_Sesudah_Pompa_Supply}</Td>
-            <Td>{data.Pompa_CHWR_1}</Td>
-            <Td>{data.Suhu_sebelum_Pompa_Return}</Td>
-            <Td>{data.Suhu_sesudah_Pompa_Return}</Td>
-            <Td>{data.Tekanan_Sebelum_Pompa_Return}</Td>
-            <Td>{data.Tekanan_Sesudah_Pompa_Return}</Td>
-            <Td>{data.Tegangan_RS}</Td>
-            <Td>{data.Tegangan_ST}</Td>
-            <Td>{data.Tegangan_TR}</Td>
-            <Td>{data.Ampere_RS}</Td>
-            <Td>{data.Ampere_ST}</Td>
-            <Td>{data.Ampere_TR}</Td>
-            <Td>{data.Grounding_Ampere}</Td>
+      if (result.length === 0) {
+        return (
+          <Tr>
+            <Td colSpan={10} className="text-center">
+              No data available
+            </Td>
           </Tr>
-        ));
-      };
+        );
+      }
+      return visibleData.map((data, index) => (
+        <Tr key={index}>
+          <Td>{data.time}</Td>
+          <Td>{data.Alarm_Chiller}</Td>
+          <Td>{data.Status_Chiller}</Td>
+          <Td>{data.Fan_Kondensor}</Td>
+          <Td>{data.Status_Kompresor}</Td>
+          <Td>{data.Bodi_Chiller}</Td>
+          <Td>{data.KisiKisi_Kondensor}</Td>
+          <Td>{data.Lvl_Oil_Sight_Glass_Atas}</Td>
+          <Td>{data.Lvl_Oil_Sight_Glass_Bawah}</Td>
+          <Td>{data.Jalur_Sight_Glass_EXP_Valve}</Td>
+          <Td>{data.Operator}</Td>
+          <Td>{data.Engineer}</Td>
+          <Td>{data.Utility_SPV}</Td>
+          <Td>{data.Active_Setpoint}</Td>
+          <Td>{data.Evap_LWT}</Td>
+          <Td>{data.Evap_EWT}</Td>
+          <Td>{data.Unit_Capacity_Full}</Td>
+          <Td>{data.Outdoor_Temperature}</Td>
+          <Td>{data.Unit_Capacity_Kompresor}</Td>
+          <Td>{data.Evap_Pressure_Kompresor}</Td>
+          <Td>{data.Cond_Pressure_Kompresor}</Td>
+          <Td>{data.Evap_Sat_Temperature_Kompresor}</Td>
+          <Td>{data.Cond_Sat_Temperature_Kompresor}</Td>
+          <Td>{data.Suction_Temperature_Kompresor}</Td>
+          <Td>{data.Discharge_Temperature_Kompresor}</Td>
+          <Td>{data.Suction_SH_Kompresor}</Td>
+          <Td>{data.Discharge_SH_Kompresor}</Td>
+          <Td>{data.Evap_Approach_Kompresor}</Td>
+          <Td>{data.Evap_Design_Approach_Kompresor}</Td>
+          <Td>{data.Cond_Approach_Kompresor}</Td>
+          <Td>{data.Oil_Pressure_Kompresor}</Td>
+          <Td>{data.Oil_Pressure_Differential_Kompresor}</Td>
+          <Td>{data.EXV_Position_Kompresor}</Td>
+          <Td>{data.Run_Hour_Kompressor}</Td>
+          <Td>{data.Ampere_Kompressor}</Td>
+          <Td>{data.No_Of_Start_Kompresor}</Td>
+          <Td>{data.Total_Fan_ON_Kompresor}</Td>
+          <Td>{data.Tekanan_Return_Chiller}</Td>
+          <Td>{data.Tekanan_Supply_Chiller}</Td>
+          <Td>{data.Inlet_Softwater}</Td>
+          <Td>{data.Pompa_CHWS_1}</Td>
+          <Td>{data.Suhu_sebelum_Pompa_Supply}</Td>
+          <Td>{data.Suhu_sesudah_Pompa_Supply}</Td>
+          <Td>{data.Tekanan_Sebelum_Pompa_Supply}</Td>
+          <Td>{data.Tekanan_Sesudah_Pompa_Supply}</Td>
+          <Td>{data.Pompa_CHWR_1}</Td>
+          <Td>{data.Suhu_sebelum_Pompa_Return}</Td>
+          <Td>{data.Suhu_sesudah_Pompa_Return}</Td>
+          <Td>{data.Tekanan_Sebelum_Pompa_Return}</Td>
+          <Td>{data.Tekanan_Sesudah_Pompa_Return}</Td>
+          <Td>{data.Tegangan_RS}</Td>
+          <Td>{data.Tegangan_ST}</Td>
+          <Td>{data.Tegangan_TR}</Td>
+          <Td>{data.Ampere_RS}</Td>
+          <Td>{data.Ampere_ST}</Td>
+          <Td>{data.Ampere_TR}</Td>
+          <Td>{data.Grounding_Ampere}</Td>
+        </Tr>
+      ));
+    };
+
   return (
     <div>
       <br />

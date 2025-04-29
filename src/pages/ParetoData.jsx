@@ -25,9 +25,9 @@ function Pareto({ width = "100%", height = 400, className = "" }) {
     try {
       // Fetch data for all lines
       const [line1Response, line2Response, line3Response] = await Promise.all([
-        axios.get("http://10.126.15.137:8002/part/line1", { params: { date } }),
-        axios.get("http://10.126.15.137:8002/part/line2", { params: { date } }),
-        axios.get("http://10.126.15.137:8002/part/line3", { params: { date } })
+        axios.get("http://10.126.15.88:8002/part/line1", { params: { date } }),
+        axios.get("http://10.126.15.88:8002/part/line2", { params: { date } }),
+        axios.get("http://10.126.15.88:8002/part/line3", { params: { date } })
       ]);
 
       // Process and combine data

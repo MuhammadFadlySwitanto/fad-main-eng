@@ -23,7 +23,7 @@ function ParetoLine({ width, height, className }) {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const response = await axios.get("http://10.126.15.137:8002/part/pareto", {
+      const response = await axios.get("http://10.126.15.88:8002/part/pareto", {
         params: { date: date }
       });
       

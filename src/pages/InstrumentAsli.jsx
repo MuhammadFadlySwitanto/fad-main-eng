@@ -48,7 +48,7 @@ function Instrument() {
   );
 
   const fetchData = async () => {
-    let response = await Axios.get("http://10.126.15.137:8002/part/instrument");
+    let response = await Axios.get("http://10.126.15.88:8002/part/instrument");
     setDataInstrument(response.data);
   };
 
@@ -70,7 +70,7 @@ function Instrument() {
     setSubmitText(inputText);
     let data = { nobatch: `${submitText}` };
     let hardness = await Axios.post(
-      "http://10.126.15.137:8002/part/hardness",
+      "http://10.126.15.88:8002/part/hardness",
       data
     );
 
@@ -86,7 +86,7 @@ function Instrument() {
     setHardnessData(result1);
 
     let thickness = await Axios.post(
-      "http://10.126.15.137:8002/part/thickness",
+      "http://10.126.15.88:8002/part/thickness",
       data
     );
     var result2 = [];
@@ -101,7 +101,7 @@ function Instrument() {
     setThicknessData(result2);
 
     let diameter = await Axios.post(
-      "http://10.126.15.137:8002/part/diameter",
+      "http://10.126.15.88:8002/part/diameter",
       data
     );
     var result3 = [];

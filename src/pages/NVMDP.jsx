@@ -89,7 +89,7 @@ const NVMDP = React.forwardRef(({ getLimit, dataTotalUang }, ref) => {
   
     useEffect(() => {
       // Buat koneksi WebSocket     
-      socketRef.current = new WebSocket("ws://10.126.15.137:1880/ws/test");
+      socketRef.current = new WebSocket("ws://10.126.15.88:1880/ws/test");
   
       socketRef.current.onopen = () => {
         console.log("WebSocket connected");
@@ -484,7 +484,7 @@ const NVMDP = React.forwardRef(({ getLimit, dataTotalUang }, ref) => {
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
             <div className="rounded-md border border-border shadow-buatcard bg-coba p-6 relative w-full">
               <p className="text-text my-2">Ini adalah pop-up dari card Solar Panel 1 - 6.</p>
-              <ChartDashboard endpoint="http://10.126.15.137:8002/part/GrafanaPower" area="cMT-Gedung-UTY_Inverter1-6_SP_data" title="Inverter Solar Panel 1-6 Data Graph" colors={Colors1}
+              <ChartDashboard endpoint="http://10.126.15.88:8002/part/GrafanaPower" area="cMT-Gedung-UTY_Inverter1-6_SP_data" title="Inverter Solar Panel 1-6 Data Graph" colors={Colors1}
                 style={{
                   border: 'none', // Removes border
                   position: 'relative',
@@ -506,7 +506,7 @@ const NVMDP = React.forwardRef(({ getLimit, dataTotalUang }, ref) => {
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
             <div className="rounded-md border border-border shadow-buatcard bg-coba p-6 relative w-full">
               <p className="text-text my-2">Ini adalah pop-up dari card Solar Panel 7 - 12.</p>
-              <ChartDashboard endpoint="http://10.126.15.137:8002/part/GrafanaPower" area="cMT-Gedung-UTY_Inverter7-12_SP_data" title="Inverter Solar Panel 7-12 Data Graph" colors={Colors1}
+              <ChartDashboard endpoint="http://10.126.15.88:8002/part/GrafanaPower" area="cMT-Gedung-UTY_Inverter7-12_SP_data" title="Inverter Solar Panel 7-12 Data Graph" colors={Colors1}
                 style={{
                   border: 'none', // Removes border
                   position: 'relative',
@@ -580,7 +580,7 @@ const NVMDP = React.forwardRef(({ getLimit, dataTotalUang }, ref) => {
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
             <div className="rounded-md border border-border shadow-buatcard bg-coba p-6 relative w-full">
               <p className="text-text my-2">Ini adalah pop-up dari card LVMDP.</p>
-              <ChartDashboard endpoint="http://10.126.15.137:8002/part/GrafanaPower" area="cMT-Gedung-UTY_LVMDP1_data" title="LVMDP Data Graph" colors={Colors2}
+              <ChartDashboard endpoint="http://10.126.15.88:8002/part/GrafanaPower" area="cMT-Gedung-UTY_LVMDP1_data" title="LVMDP Data Graph" colors={Colors2}
                 style={{
                   border: 'none', // Removes border
                   position: 'relative',
@@ -634,7 +634,7 @@ const NVMDP = React.forwardRef(({ getLimit, dataTotalUang }, ref) => {
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
           <div className="rounded-md border border-border shadow-buatcard bg-coba p-6 relative w-full">
             <p className="text-text my-2">Ini adalah pop-up dari card Chiller.</p>
-            <ChartDashboard endpoint="http://10.126.15.137:8002/part/GrafanaPower" area="cMT-Gedung-UTY_PP.1-Chiller_data" title="Chiller Data Graph" colors={Colors2}
+            <ChartDashboard endpoint="http://10.126.15.88:8002/part/GrafanaPower" area="cMT-Gedung-UTY_PP.1-Chiller_data" title="Chiller Data Graph" colors={Colors2}
               style={{
                 border: 'none', // Removes border
                 position: 'relative',
@@ -689,7 +689,7 @@ const NVMDP = React.forwardRef(({ getLimit, dataTotalUang }, ref) => {
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
           <div className="rounded-md border border-border shadow-buatcard bg-coba p-6 relative w-full">
             <p className="text-text my-2">Ini adalah pop-up dari card Hydrant.</p>
-            <ChartDashboard endpoint="http://10.126.15.137:8002/part/GrafanaPower" area="cMT-Gedung-UTY_PP.2-Hydrant_data" title="Hydrant Data Graph" colors={Colors1}
+            <ChartDashboard endpoint="http://10.126.15.88:8002/part/GrafanaPower" area="cMT-Gedung-UTY_PP.2-Hydrant_data" title="Hydrant Data Graph" colors={Colors1}
               style={{
                 border: 'none', // Removes border
                 position: 'relative',
@@ -743,7 +743,7 @@ const NVMDP = React.forwardRef(({ getLimit, dataTotalUang }, ref) => {
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
             <div className="rounded-md border border-border shadow-buatcard bg-coba p-6 relative w-full">
               <p className="text-text my-2">Ini adalah pop-up dari card Utility.</p>
-              <ChartDashboard endpoint="http://10.126.15.137:8002/part/GrafanaPower" area="cMT-Gedung-UTY_SDP.1-Utility_data" title="Utility Data Graph" colors={Colors1}
+              <ChartDashboard endpoint="http://10.126.15.88:8002/part/GrafanaPower" area="cMT-Gedung-UTY_SDP.1-Utility_data" title="Utility Data Graph" colors={Colors1}
                 style={{
                   border: 'none', // Removes border
                   position: 'relative',
@@ -796,7 +796,7 @@ const NVMDP = React.forwardRef(({ getLimit, dataTotalUang }, ref) => {
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
             <div className="rounded-md border border-border shadow-buatcard bg-coba p-6 relative w-full">
               <p className="text-text my-2">Ini adalah pop-up dari card SDP 1 Production.</p>
-              <ChartDashboard endpoint="http://10.126.15.137:8002/part/GrafanaPower" area="cMT-Gedung-UTY_SDP.1-Produksi_data" title="SDP 1 Production Data Graph" colors={Colors3}
+              <ChartDashboard endpoint="http://10.126.15.88:8002/part/GrafanaPower" area="cMT-Gedung-UTY_SDP.1-Produksi_data" title="SDP 1 Production Data Graph" colors={Colors3}
                 style={{
                   border: 'none', // Removes border
                   position: 'relative',
@@ -849,7 +849,7 @@ const NVMDP = React.forwardRef(({ getLimit, dataTotalUang }, ref) => {
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
             <div className="rounded-md border border-border shadow-buatcard bg-coba p-6 relative w-full">
               <p className="text-text mt-2">Ini adalah pop-up dari card SDP 2 Production.</p>
-              <ChartDashboard endpoint="http://10.126.15.137:8002/part/GrafanaPower" area="cMT-Gedung-UTY_SDP.2-Produksi_data" title="SDP 2 Production Data Graph" colors={Colors3}
+              <ChartDashboard endpoint="http://10.126.15.88:8002/part/GrafanaPower" area="cMT-Gedung-UTY_SDP.2-Produksi_data" title="SDP 2 Production Data Graph" colors={Colors3}
                 style={{
                   border: 'none', // Removes border
                   position: 'relative',
@@ -869,7 +869,7 @@ const NVMDP = React.forwardRef(({ getLimit, dataTotalUang }, ref) => {
       </div>
       <div className="text-center mt-8 p-2 shadow-buatcard bg-coba rounded-md relative">
         <h1 className="text-center text-text text-4xl antialiased hover:subpixel-antialiased mb-2">MVMDP Chart</h1>
-        <ChartDashboard endpoint="http://10.126.15.137:8002/part/GrafanaMVMDPYear" area="cMT-Gedung-UTY_MVMDP_data" title=" " colors={Colors2}
+        <ChartDashboard endpoint="http://10.126.15.88:8002/part/GrafanaMVMDPYear" area="cMT-Gedung-UTY_MVMDP_data" title=" " colors={Colors2}
           style={{
           border: 'none', // Removes border
           position: 'relative',

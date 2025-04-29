@@ -46,30 +46,30 @@ function HVAChendeling() {
     return () => observer.disconnect();
   }, []);
 
-  const fetchGraphData = async () => {
-    try {
-      let response = await Axios.get(
-        `http://10.126.15.137:8002/part/GrafanaWater`,
-        {
-          params: 
-          { area }
-        }
+  // const fetchGraphData = async () => {
+  //   try {
+  //     let response = await Axios.get(
+  //       `http://10.126.15.88:8002/part/GrafanaWater`,
+  //       {
+  //         params: 
+  //         { area }
+  //       }
         
-      );
-      console.log(response);
-      const processedData = response.data.map((row) => ({
-        x: new Date(row.x * 1000), // Konversi timestamp ke objek Date
-        y: Math.max(0, Number(row.y))
-      }));
-      setWaterTamanGraph(processedData);
-    } catch (error) {
-      console.error("Error fetching data: ", error);
-    }
-  };
+  //     );
+  //     console.log(response);
+  //     const processedData = response.data.map((row) => ({
+  //       x: new Date(row.x * 1000), // Konversi timestamp ke objek Date
+  //       y: Math.max(0, Number(row.y))
+  //     }));
+  //     setWaterTamanGraph(processedData);
+  //   } catch (error) {
+  //     console.error("Error fetching data: ", error);
+  //   }
+  // };
 
-  useEffect(() => {
-    fetchGraphData();
-  }, []);
+  // useEffect(() => {
+  //   fetchGraphData();
+  // }, []);
 
   const TamanOptions = {
     theme: isDarkMode ? "dark2" : "light2",

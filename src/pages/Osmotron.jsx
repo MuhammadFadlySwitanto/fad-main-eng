@@ -23,7 +23,7 @@ export default function Osmotron() {
 
         const fetchOsmo = async () => {
             let response = await axios.get(
-                "http://10.126.15.137:8002/part/Osmotron",
+                "http://10.126.15.88:8002/part/Osmotron",
                 {
                   params: {
                     area: OsmoArea,

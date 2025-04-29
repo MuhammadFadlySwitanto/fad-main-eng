@@ -46,7 +46,7 @@ export default function BuildingRnD() {
 
     try {
       let response = await axios.get(
-        "http://10.126.15.137:8002/part/BuildingWH1Suhu", 
+        "http://10.126.15.88:8002/part/BuildingWH1Suhu", 
         {
           params: {
             area: Area,
@@ -60,7 +60,7 @@ export default function BuildingRnD() {
         
 
       let response1 = await axios.get(
-        "http://10.126.15.137:8002/part/BuildingWH1RH",
+        "http://10.126.15.88:8002/part/BuildingWH1RH",
         {
           params: {
             area: Area,
@@ -72,7 +72,7 @@ export default function BuildingRnD() {
         setRHData(response1.data);
 
       let response2 = await axios.get(
-        "http://10.126.15.137:8002/part/BuildingWH1All",
+        "http://10.126.15.88:8002/part/BuildingWH1All",
         {
           params: {
             area: Area,

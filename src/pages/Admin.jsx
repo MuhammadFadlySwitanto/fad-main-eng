@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Tabs, TabList, TabPanels, Tab, TabPanel, Box} from "@chakra-ui/react";
 import Header from "../components/header";
 import AdminTabel from "./AdminTabel";
+import LogLogin from "./LogLogin";
+
 
 function Admin() {
 
@@ -14,7 +16,7 @@ function Admin() {
               User Tabel
             </Tab>
             <Tab sx={{ outline: 'none', boxShadow: 'none' }} >
-              Projects
+              Log History User Login
             </Tab>
             <Tab sx={{ outline: 'none', boxShadow: 'none' }} >
               Settings
@@ -27,7 +29,7 @@ function Admin() {
               </Box>
             </TabPanel>
             <TabPanel>
-              <p>two!</p>
+              <LogLogin />
             </TabPanel>
             <TabPanel>
               <p>three!</p>

@@ -148,7 +148,7 @@ export default function PowerManagement() {
 
   const fetchPowerSankey = async () => {
     let response = await axios.get(
-      "http://10.126.15.137:8002/part/PowerSankey",
+      "http://10.126.15.88:8002/part/PowerSankey",
       {
         params: {
           start: startSankey,
@@ -729,7 +729,7 @@ export default function PowerManagement() {
 
     try {
     let response = await axios.get(
-      "http://10.126.15.137:8002/part/PowerDaily",
+      "http://10.126.15.88:8002/part/PowerDaily",
       {
         params: {
           area: powerArea,
@@ -788,7 +788,7 @@ export default function PowerManagement() {
 
     try {
     let response = await axios.get(
-      "http://10.126.15.137:8002/part/PowerMonthly",
+      "http://10.126.15.88:8002/part/PowerMonthly",
       {
         params: {
           area: areaMonth,
@@ -845,7 +845,7 @@ export default function PowerManagement() {
     setLoading3(true);
     setError3(null);
     try {
-      let response = await axios.get("http://10.126.15.137:8002/part/getPowerSec", {
+      let response = await axios.get("http://10.126.15.88:8002/part/getPowerSec", {
         params: {
           area: secArea,
           start: secStart,
@@ -853,7 +853,7 @@ export default function PowerManagement() {
         },
       });
 
-      let response2 = await axios.get("http://10.126.15.137:8002/part/getavgpower", {
+      let response2 = await axios.get("http://10.126.15.88:8002/part/getavgpower", {
         params: {
           area: secArea,
           start: secStart,

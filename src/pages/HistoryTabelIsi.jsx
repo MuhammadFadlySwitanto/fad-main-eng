@@ -49,7 +49,7 @@ const HistoryTabelIsi = () => {
         setIsTableVisible(true); // Show table container when starting to fetch
         setError(false);
         try {
-          const response = await axios.get(`http://10.126.15.137:8002/part${selectedEndpoint}`);
+          const response = await axios.get(`http://10.126.15.88:8002/part${selectedEndpoint}`);
           setData(response.data);
           // setIsTableVisible(true);
         } catch (error) {
