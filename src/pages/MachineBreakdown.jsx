@@ -79,6 +79,7 @@ function MaintenanceBreakdown() {
   useEffect(() => {
     // fetchDataPLC();
   }, []);
+  
   const idData = "";
   const getDate = (e) => {
     var dataInput = e.target.value;

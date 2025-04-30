@@ -1,6 +1,6 @@
 import React, { useEffect, Component, useState } from "react";
 import CanvasJSReact from "../canvasjs.react";
-import { Button, ButtonGroup, Stack, Input, Select, Tbody, Tr, Th, Td, Table, Box, TableContainer, Thead, Spinner } from "@chakra-ui/react";
+import { Button, ButtonGroup, Stack, Input, Select, Tbody, Tr, Th, Td, Table, Box, TableContainer, Thead, Spinner, SimpleGrid, Flex } from "@chakra-ui/react";
 import axios from "axios";
 import { ExportToExcel } from "../ExportToExcel";
 import { useColorMode, useColorModeValue } from "@chakra-ui/react";
@@ -64,128 +64,79 @@ export default function HVACchillerChart() {
   );
 
   const fetchDataChiller = async () => {
-    console.log("Fetching data...");
     //ini console log penting, nanti kalau ada masalah nyalain aja ini komennya
-    console.log("please keluar bang", data);
+    // console.log("please keluar bang", data);
     setLoading(true); 
     setError(null);
 
     try {
-
-          // Validasi list sebelum membuat request
-    if (!list || list.some(item => !item.area || !item.chiller))  {
-      throw new Error("List tidak valid. Pastikan memiliki setidaknya 4 elemen dengan 'area' dan 'chiller'.");
-    }
-    
-    let arr = list.map((item) => ({ params: item })); // Create array of request params
-    console.log("Request Params:", arr);
-
-    // Buat array permintaan API berdasarkan jumlah elemen di list
-    const requests = list.map((item) =>
-      axios.get("http://10.126.15.197:8002/part/ChillerGraph", { params: item })
-    );
-
-    // Fetch semua data secara paralel
-    const responses = await Promise.all(requests);
-
-    // Map data dari respons ke array dataPoints untuk chart
-    const mappedDataArray = responses.map((response, index) =>
-      mapData(response.data, list[index]?.area)
-    );
-
-    // Set data ke state berdasarkan jumlah elemen
-    setData(mappedDataArray);
-      console.log("All data fetched successfully", mappedDataArray);
-      } catch (err) {
-        console.error("Error fetching data:", err);
-        setError("Failed to fetch data");
-      } finally {
-        const delay = 2000; // 2 seconds in milliseconds
-        setTimeout(() => {
-          setLoading(false); // Stop spinner after requests finish
-          console.log("Finished fetching data, stopping spinner...");
-        }, delay);
-        
-      }             
-    };
-    const fetchName = () => {
-      if (list && list.length >= 4) {
-        // Ensure that each item in the list has the 'area' property
-        if (list[0].area && list[1].area && list[2].area && list[3].area) {
-          setlabel1(list.at(0).area);
-          setlabel2(list.at(1).area);
-          setlabel3(list.at(2).area);
-          setlabel4(list.at(3).area);
-        } else {
-          console.error("One or more items in the list do not have the 'area' property.");
-        }
-      // } else {
-      //   console.error("List does not have enough elements.");
+      // Validasi list sebelum membuat request
+      if (!list || list.some(item => !item.area || !item.chiller))  {
+        throw new Error("List tidak valid. Pastikan memiliki setidaknya 4 elemen dengan 'area' dan 'chiller'.");
       }
-    };
-    const mapData = (data, area) => {
-      if (!Array.isArray(data) || data.length === 0) {
-        console.warn("Data kosong atau tidak valid:", data);
-        return [];
-      }
-    
-      return data.map(item => {
-        if (!item.x || !item.y) {
-          console.error("Data tidak valid:", item);
-          return null;
+      
+      let arr = list.map((item) => ({ params: item })); // Create array of request params
+      console.log("Request Params:", arr);
+
+      // Buat array permintaan API berdasarkan jumlah elemen di list
+      const requests = list.map((item) =>
+        axios.get("http://10.126.15.197:8002/part/ChillerGraph", { params: item })
+      );
+
+      // Fetch semua data secara paralel
+      const responses = await Promise.all(requests);
+
+      // Map data dari respons ke array dataPoints untuk chart
+      const mappedDataArray = responses.map((response, index) =>
+        mapData(response.data, list[index]?.area)
+      );
+
+      // Set data ke state berdasarkan jumlah elemen
+      setData(mappedDataArray);
+      //ini juga sama buat ngeliat isi dari mappedDataArray liat si isi si data
+        console.log("All data fetched successfully", mappedDataArray);
+        } catch (err) {
+          console.error("Error fetching data:", err);
+          setError("Failed to fetch data");
+        } finally {
+          const delay = 2000; // 2 seconds in milliseconds
+          setTimeout(() => {
+            setLoading(false); // Stop spinner after requests finish
+            console.log("Finished fetching data, stopping spinner...");
+          }, delay);
+        }             
+      };
+
+      const mapData = (data, area) => {
+        if (!Array.isArray(data) || data.length === 0) {
+          console.warn("Data kosong atau tidak valid:", data);
+          return [];
         }
-    
-        let mappedItem = {
-          label: new Date(item.x).toLocaleString("id-ID", {
-            timeZone: "Asia/Jakarta",
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: false,
-          }).replace(/\//g, "-").replace(",", ""),
-          y: item.y,
-          x: item.x,
-        };
-    
-        if (area === "R-EvapPress") {
-          mappedItem.y = item.y * 2;
-        } else if (["R-UnitCap", "R-Status", "R-Alarm"].includes(area)) {
-          mappedItem.x = item.x + 10;
-        }
-    
-        return mappedItem;
-      }).filter(Boolean); // Hapus item null
-    };
-        const mapDataResponse1 = (data, area) => {
-          return data.map((item) => {
-            let mappedItem = {
-              label: new Date(item.x).toLocaleString("id-ID", {
-                timeZone: "Asia/Jakarta",
-                year: "numeric",
-                month: "2-digit",
-                day: "2-digit",
-                hour: "2-digit",
-                minute: "2-digit",
-                hour12: false
-                }).replace(/\//g, "-").replace(",", ""), // Format jadi YYYY-MM-DD HH:mm
-              y: item.y,
-              x: item.x,
-            };
-        
-            if (area === "R-EvapPress") {
-              mappedItem.y = item.y * 2; // Example of modifying y for "R-EvapPress"
-            } else if (area === "R-UnitCap" || area === "R-Status" || area === "R-Alarm") {
-              mappedItem.x = item.x + 10; // Example of modifying x for other areas
-            } else {
-              mappedItem.y = item.y; 
-              mappedItem.x = item.x;  
-            }
-        
-            return mappedItem;
-          });
-        };
+      
+        return data.map(item => {
+          //pake console ini ges biar tau datanya masuk pa kaga
+          // console.log("Mapping item:", item);
+          if (item.x === undefined || item.y === undefined) {
+            console.error("Data tidak valid:", item);
+            return null;
+          }
+      
+          let mappedItem = {
+            label: item.label,
+            y: item.y,
+            x: item.x,
+          };
+      
+          if (area === "R-EvapPress") {
+            mappedItem.y = item.y * 2;
+          } else if (["R-UnitCap", "R-Status", "R-Alarm"].includes(area)) {
+            mappedItem.x = item.x + 10;
+          }
+      
+          return mappedItem;
+        }).filter(Boolean); // Hapus item null, berarti kalau ada value yang null/undefined dia bakal hapus dari array
+      };
+
         const mapDataResponse2 = (data, area) => {
           return data.map((item) => {
             let mappedItem = {
@@ -213,35 +164,7 @@ export default function HVACchillerChart() {
         
             return mappedItem;
           });
-        };
-        const mapDataResponse3 = (data, area) => {
-          return data.map((item) => {
-            let mappedItem = {
-              label: new Date(item.x).toLocaleString("id-ID", {
-                timeZone: "Asia/Jakarta",
-                year: "numeric",
-                month: "2-digit",
-                day: "2-digit",
-                hour: "2-digit",
-                minute: "2-digit",
-                hour12: false
-                }).replace(/\//g, "-").replace(",", ""), // Format jadi YYYY-MM-DD HH:mm
-              y: item.y,
-              x: item.x,
-            };
-        
-            if (area === "R-EvapPress") {
-              mappedItem.y = item.y * 2; // Example of modifying y for "R-EvapPress"
-            } else if (area === "R-UnitCap" || area === "R-Status" || area === "R-Alarm") {
-              mappedItem.x = item.x + 10; // Example of modifying x for other areas
-            } else {
-              mappedItem.y = item.y;
-              mappedItem.x = item.x; 
-            }
-        
-            return mappedItem;
-          });
-        };     
+        };  
                 
     const handleAddlist = () => {  
       setList ([...list, {area: "", chiller: "",komp: "", start: "", finish: ""}])
@@ -277,12 +200,6 @@ export default function HVACchillerChart() {
         fetchDataChiller();
       }
     }, [list]);
-
-    useEffect(() => {
-      console.log("loading state changed:", loading);
-      console.log("error state changed:", error);
-    }, [loading, error]); // Runs whenever `loading` or `error` state changes
-    
     
     useEffect(() => {
       const handleThemeChange = () => {
@@ -335,7 +252,7 @@ export default function HVACchillerChart() {
         yValueFormatString: "",
         xValueType: "dateTime",
         dataPoints: dataPoints,
-        color: ["red", "blue", "green", "magenta"][index], // Warna dinamis
+        color: ["red", "blue", "green", "magenta"][index % 4], // Warna dinamis
       })),
     };
 
@@ -346,10 +263,6 @@ export default function HVACchillerChart() {
           setState(false);
       }
     });
-
-    useEffect(() => {
-      setLoading(false); // Set loading to false when data is ready
-    }, [data, data1, data2, data3]);
 
 // ========================================================= Ini dibawah Chart =======================================================================
       let dateStart = (e) =>{
@@ -568,12 +481,12 @@ export default function HVACchillerChart() {
         }
         const result = Object.values(obj); 
 
-    const handlePrevPage = () => {
-      setCurrentPage((prev) => Math.max(prev - 1, 1));
-    };  
-    const handleNextPage = () => {
-      setCurrentPage((prev) => Math.min(prev + 1, Math.ceil(result.length / rowsPerPage)));
-    };
+      const handlePrevPage = () => {
+        setCurrentPage((prev) => Math.max(prev - 1, 1));
+      };  
+      const handleNextPage = () => {
+        setCurrentPage((prev) => Math.min(prev + 1, Math.ceil(result.length / rowsPerPage)));
+      };
 
     const TableFull = () => {
       const startIndex = (currentPage - 1) * rowsPerPage;
@@ -660,7 +573,8 @@ export default function HVACchillerChart() {
           <div className=" grid grid-cols-1 md:grid-cols-2 xl:grid-cols-6 gap-4 justify-center mb-4">
             <div>
               <h5 className="mb-1">Area</h5>
-              <Select value = {list.area} name="area" placeholder="Select Area" onChange={(e) => handleListChange(e, index)}>
+              <Select value = {list.area} name="area" placeholder="Select Area" sx={{border: "1px solid", borderColor: borderColor, borderRadius: "0.332rem", background: "var(--color-background)", _hover: {borderColor: hoverBorderColor},}}
+                onChange={(e) => handleListChange(e, index)}>
                 <option value="R-ActiSetpoiCH">Active Setpoint</option>
                 <option value="R-EvapLWTCH">Evap LWT</option>
                 <option value="R-EvapEWTCH">Evap EWT</option>
@@ -711,17 +625,19 @@ export default function HVACchillerChart() {
             </div>
             <div>
               <h5 className="mb-1">Chiller</h5>
-              <Select value = {list.chiller} name="chiller" placeholder="Select Chiller" onChange={(e) => handleListChange(e, index)}>
-                  <option value="1">Chiller 1</option>
-                  <option value="2">Chiller 2</option>
-                  <option value="3">Chiller 3</option>
+              <Select value = {list.chiller} name="chiller" placeholder="Select Chiller" sx={{border: "1px solid", borderColor: borderColor, borderRadius: "0.332rem", background: "var(--color-background)", _hover: {borderColor: hoverBorderColor},}}
+                onChange={(e) => handleListChange(e, index)}>
+                <option value="1">Chiller 1</option>
+                <option value="2">Chiller 2</option>
+                <option value="3">Chiller 3</option>
               </Select>
             </div>
             <div>
               <h5 className="mb-1">Kompresor</h5>
-              <Select value = {list.komp} name="komp" placeholder="Full Chiller" onChange={(e) => handleListChange(e, index)}>
-                  <option value="K1CH">Kompresor 1</option>
-                  <option value="K2CH">Kompresor 2</option>
+              <Select value = {list.komp} name="komp" placeholder="Full Chiller" sx={{border: "1px solid", borderColor: borderColor, borderRadius: "0.332rem", background: "var(--color-background)", _hover: {borderColor: hoverBorderColor},}}
+                onChange={(e) => handleListChange(e, index)}>
+                <option value="K1CH">Kompresor 1</option>
+                <option value="K2CH">Kompresor 2</option>
               </Select>
             </div>
             <div>
@@ -741,7 +657,7 @@ export default function HVACchillerChart() {
                 sx={{
                   border: "1px solid",
                   borderColor: borderColor,
-                  borderRadius: "0.395rem",
+                  borderRadius: "0.332rem",
                   background: "var(--color-background)", // background color from Tailwind config
         
                   _hover: {
@@ -766,7 +682,7 @@ export default function HVACchillerChart() {
                 sx={{
                   border: "1px solid",
                   borderColor: borderColor,
-                  borderRadius: "0.395rem",
+                  borderRadius: "0.332rem",
                   background: "var(--color-background)", // background color from Tailwind config
         
                   _hover: {
@@ -774,10 +690,9 @@ export default function HVACchillerChart() {
                   },
                 }}/>
             </div>
-            <div>
-              <br />
+            <div className="flex justify-center md:justify-center xl:justify-start items-center">
               <Button
-                className="ml-1 mt-1"
+                className="mt-7 w-full md:w-32 xl:w-20"
                 colorScheme="red"
                 onClick={() => handleDeleteList(index)}>
                 Delete
@@ -795,7 +710,6 @@ export default function HVACchillerChart() {
         <div>
           <Button
             isDisabled={state}
-            className="m1-4"
             colorScheme="cyan"
             onClick={handleAddlist}>
             Compare
@@ -803,9 +717,8 @@ export default function HVACchillerChart() {
         </div>
         <div>
           <Button
-            className="m1-4"
             colorScheme="blue"
-            onClick={() => {fetchDataChiller();fetchName()}}>
+            onClick={() => {fetchDataChiller();}}>
             Submit
           </Button>
         </div>
@@ -828,75 +741,212 @@ export default function HVACchillerChart() {
       )}
       </div>
       <br />
-      <Stack
-        className="flex flex-row justify-center mb-4  "
-        direction="row"
-        spacing={4}
-        align="center">
-        <div>
-          <h5 className="mb-1">Chiller</h5>
-          <Select  placeholder="Select Chiller" onChange={chillerData}>
-            <option value="1">Chiller 1</option>
-            <option value="2">Chiller 2</option>
-            <option value="3">Chiller 3</option>
-          </Select>
-        </div>
-        <div>
-          <h5 className="mb-1">Kompresor</h5>
-          <Select  placeholder="Select Kompresor" onChange={KompData}>
-            <option value="K1CH">Kompresor 1</option>
-            <option value="K2CH">Kompresor 2</option>
-          </Select>
-        </div>
-        <div>
-          <h5 className="mb-1">Start Time</h5>
-          <Input
-            onChange={dateStart}
-            placeholder="Select Date and Time"
-            size="md"
-            type="date"
-            css={{
-              "&::-webkit-calendar-picker-indicator": {
-                color: isDarkMode ? "white" : "black",
-                filter: isDarkMode ? "invert(1)" : "none",
-              },
-            }}/> 
-        </div>
-        <div>
-          <h5 className="mb-1">Finish Time</h5>
-          <Input
-            onChange={dateFinish}
-            placeholder="Select Date and Time"
-            size="md"
-            type="date"
-            css={{
-              "&::-webkit-calendar-picker-indicator": {
-                color: isDarkMode ? "white" : "black",
-                filter: isDarkMode ? "invert(1)" : "none",
-              },
-            }}/>
-        </div>
-        <div>
-          <br />
+      <Box className="w-full mb-4">
+        {/* ini buat tampilan yg xl atau yg lagi fullscreen*/}
+        <Flex 
+          display={{ base: 'none', xl: 'flex' }} 
+          flexDirection="row" 
+          gap="3" 
+          alignItems="flex-end"
+          flexWrap="nowrap">
+          <Box flex="1">
+            <h5 className="mb-1">Chiller</h5>
+            <Select placeholder="Select Chiller" onChange={chillerData} width="100%">
+              <option value="1">Chiller 1</option>
+              <option value="2">Chiller 2</option>
+              <option value="3">Chiller 3</option>
+            </Select>
+          </Box>
+          <Box flex="1">
+            <h5 className="mb-1">Kompresor</h5>
+            <Select placeholder="Select Kompresor" onChange={KompData} width="100%">
+              <option value="K1CH">Kompresor 1</option>
+              <option value="K2CH">Kompresor 2</option>
+            </Select>
+          </Box>
+          <Box flex="1">
+            <h5 className="mb-1">Start Time</h5>
+            <Input
+              onChange={dateStart}
+              placeholder="Select Date and Time"
+              size="md"
+              type="date"
+              width="100%"
+              css={{
+                "&::-webkit-calendar-picker-indicator": {
+                  color: isDarkMode ? "white" : "black",
+                  filter: isDarkMode ? "invert(1)" : "none",
+                },
+              }}
+              sx={{border: "1px solid", borderColor: borderColor, borderRadius: "0.332rem", background: "var(--color-background)", _hover: {borderColor: hoverBorderColor},}}/> 
+          </Box>
+          <Box flex="1">
+            <h5 className="mb-1">Finish Time</h5>
+            <Input
+              onChange={dateFinish}
+              placeholder="Select Date and Time"
+              size="md"
+              type="date"
+              width="100%"
+              css={{
+                "&::-webkit-calendar-picker-indicator": {
+                  color: isDarkMode ? "white" : "black",
+                  filter: isDarkMode ? "invert(1)" : "none",
+                },
+              }}
+              sx={{border: "1px solid", borderColor: borderColor, borderRadius: "0.332rem", background: "var(--color-background)", _hover: {borderColor: hoverBorderColor},}}/>
+          </Box>
           <Button
-            className="ml-1 mt-1"
             colorScheme="blue"
             onClick={() => fetchChillerTable()}
             disabled={loadingTable}
-            >
+          >
             {loadingTable ? "Loading..." : "Submit"}
           </Button>
-        </div>
-        <div>
-          <br />
           <Button
-            className="w-32 mt-1"
             colorScheme="red"
-            onClick={() => setIsTableVisible(!isTableVisible)}>
+            onClick={() => setIsTableVisible(!isTableVisible)}
+          >
             {isTableVisible ? "Hide All Data" : "Show All Data"}
           </Button>
-        </div>
-      </Stack>
+        </Flex>
+        
+      {/* Ini buat tampilan layar ketika md: inputs in first row, buttons in second row */}
+      <Box display={{ base: 'none', md: 'block', xl: 'none' }}>
+        <SimpleGrid columns={4} spacing="3" mb="3">
+          <Box>
+            <h5 className="mb-1">Chiller</h5>
+            <Select placeholder="Select Chiller" onChange={chillerData} width="100%" sx={{border: "1px solid", borderColor: borderColor, borderRadius: "0.332rem", background: "var(--color-background)", _hover: {borderColor: hoverBorderColor},}}>
+              <option value="1">Chiller 1</option>
+              <option value="2">Chiller 2</option>
+              <option value="3">Chiller 3</option>
+            </Select>
+          </Box>
+          <Box>
+            <h5 className="mb-1 truncate">Kompresor</h5>
+            <Select placeholder="Select Kompresor" onChange={KompData} width="100%" sx={{border: "1px solid", borderColor: borderColor, borderRadius: "0.332rem", background: "var(--color-background)", _hover: {borderColor: hoverBorderColor},}}>
+              <option value="K1CH">Kompresor 1</option>
+              <option value="K2CH">Kompresor 2</option>
+            </Select>
+          </Box>
+          <Box>
+            <h5 className="mb-1">Start Time</h5>
+            <Input
+              onChange={dateStart}
+              placeholder="Select Date and Time"
+              size="md"
+              type="date"
+              width="100%"
+              css={{
+                "&::-webkit-calendar-picker-indicator": {
+                  color: isDarkMode ? "white" : "black",
+                  filter: isDarkMode ? "invert(1)" : "none",
+                },
+              }}
+              sx={{border: "1px solid", borderColor: borderColor, borderRadius: "0.332rem", background: "var(--color-background)", _hover: {borderColor: hoverBorderColor},}}/> 
+          </Box>
+          <Box>
+            <h5 className="mb-1">Finish Time</h5>
+            <Input
+              onChange={dateFinish}
+              placeholder="Select Date and Time"
+              size="md"
+              type="date"
+              width="100%"
+              css={{
+                "&::-webkit-calendar-picker-indicator": {
+                  color: isDarkMode ? "white" : "black",
+                  filter: isDarkMode ? "invert(1)" : "none",
+                },
+              }}
+              sx={{border: "1px solid", borderColor: borderColor, borderRadius: "0.332rem", background: "var(--color-background)", _hover: {borderColor: hoverBorderColor},}}/>
+          </Box>
+        </SimpleGrid>
+        <Flex justifyContent="center" gap="3">
+          <Button
+            colorScheme="blue"
+            onClick={() => fetchChillerTable()}
+            disabled={loadingTable}
+          >
+            {loadingTable ? "Loading..." : "Submit"}
+          </Button>
+          <Button
+            colorScheme="red"
+            onClick={() => setIsTableVisible(!isTableVisible)}
+          >
+            {isTableVisible ? "Hide All Data" : "Show All Data"}
+          </Button>
+        </Flex>
+      </Box>
+
+      {/* For mobile/small screens: default grid layout w-full semua kecuali 2 button yg sejajar */}
+      <Box display={{ base: 'block', md: 'none' }}>
+        <SimpleGrid columns={[1, 2]} spacing="3" mb="3">
+          <Box>
+            <h5 className="mb-1">Chiller</h5>
+            <Select placeholder="Select Chiller" onChange={chillerData} width="100%">
+              <option value="1">Chiller 1</option>
+              <option value="2">Chiller 2</option>
+              <option value="3">Chiller 3</option>
+            </Select>
+          </Box>
+          <Box>
+            <h5 className="mb-1">Kompresor</h5>
+            <Select placeholder="Select Kompresor" onChange={KompData} width="100%">
+              <option value="K1CH">Kompresor 1</option>
+              <option value="K2CH">Kompresor 2</option>
+            </Select>
+          </Box>
+          <Box>
+            <h5 className="mb-1">Start Time</h5>
+            <Input
+              onChange={dateStart}
+              placeholder="Select Date and Time"
+              size="md"
+              type="date"
+              width="100%"
+              css={{
+                "&::-webkit-calendar-picker-indicator": {
+                  color: isDarkMode ? "white" : "black",
+                  filter: isDarkMode ? "invert(1)" : "none",
+                },
+              }}
+            /> 
+          </Box>
+          <Box>
+            <h5 className="mb-1">Finish Time</h5>
+            <Input
+              onChange={dateFinish}
+              placeholder="Select Date and Time"
+              size="md"
+              type="date"
+              width="100%"
+              css={{
+                "&::-webkit-calendar-picker-indicator": {
+                  color: isDarkMode ? "white" : "black",
+                  filter: isDarkMode ? "invert(1)" : "none",
+                },
+              }}
+            />
+          </Box>
+        </SimpleGrid>
+        <Flex justifyContent="center" gap="3">
+          <Button
+            colorScheme="blue"
+            onClick={() => fetchChillerTable()}
+            disabled={loadingTable}
+          >
+            {loadingTable ? "Loading..." : "Submit"}
+          </Button>
+          <Button
+            colorScheme="red"
+            onClick={() => setIsTableVisible(!isTableVisible)}
+          >
+            {isTableVisible ? "Hide All Data" : "Show All Data"}
+          </Button>
+        </Flex>
+      </Box>
+    </Box>
       <Stack className="flex flex-row justify-center gap-2"
         direction="row"
         spacing={2}

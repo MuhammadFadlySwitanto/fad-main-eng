@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import * as XLSX from "xlsx";
-import { useColorMode, useColorModeValue, Box } from "@chakra-ui/react";
+import { useColorMode, useColorModeValue, Box, Flex } from "@chakra-ui/react";
 
 function DataReportMTC() {
   const [listData, setListData] = useState([]);
@@ -85,7 +85,7 @@ function DataReportMTC() {
     if (listData.length === 0) {
       return (
         <Tr>
-          <Td colSpan={13} className="text-center text-text">
+          <Td colSpan={13} className="text-text" textAlign="center">
             No data available
           </Td>
         </Tr>
@@ -127,95 +127,105 @@ function DataReportMTC() {
           REPORT MAINTENANCE
         </h1>
       </div>
-
-      <Stack
-        className="flex flex-row justify-center"
-        direction="row"
-        spacing={4}
-        align="center"
-      >
-        {/* <div className="main">
-          <h1>Search Mesin</h1>
-          <div className="search">
-            <input
-              id="outlined-basic"
-              variant="outlined"
-              fullWidth
-              label="Search"
-              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-            />
-          </div>
-        </div> */}
-        <Box key={colorMode}>
-          <h6 className="mb-2">Monthly Search</h6>
-          <Select placeholder="Select Month" onChange={dateHendeler} 
-          sx={{
-            border: "1px solid",
-            borderColor: borderColor,
-            borderRadius: "0.395rem",
-            background: "var(--color-background)", // background color from Tailwind config
-  
-            _hover: {
-              borderColor: hoverBorderColor,
-            },
-          }}>
-            <option value="1">Jan</option>
-            <option value="2">Feb</option>
-            <option value="3">Mar</option>
-            <option value="4">Apr</option>
-            <option value="5">Mei</option>
-            <option value="6">Jun</option>
-            <option value="7">Jul</option>
-            <option value="8">Agu</option>
-            <option value="9">Sep</option>
-            <option value="10">Okt</option>
-            <option value="11">Nov</option>
-            <option value="12">Des</option>
-          </Select>
+      {/* Default: 2 rows, XL: 1 row */}
+      <Box className="w-full">
+        <Box>
+          <Flex 
+            className="flex flex-col md:flex-row xl:flex-row gap-4 mb-4 items-start" 
+            justify="center">
+            <Box className="w-full md:w-auto">
+              <h6 className="mb-2">Monthly Search</h6>
+              <Select placeholder="Select Month" onChange={dateHendeler} className="w-full"
+              sx={{
+                border: "1px solid",
+                borderColor: borderColor,
+                borderRadius: "0.336rem",
+                background: "var(--color-background)", // background color from Tailwind config
+      
+                _hover: {
+                  borderColor: hoverBorderColor,
+                },
+              }}>
+                <option value="1">Jan</option>
+                <option value="2">Feb</option>
+                <option value="3">Mar</option>
+                <option value="4">Apr</option>
+                <option value="5">Mei</option>
+                <option value="6">Jun</option>
+                <option value="7">Jul</option>
+                <option value="8">Agu</option>
+                <option value="9">Sep</option>
+                <option value="10">Okt</option>
+                <option value="11">Nov</option>
+                <option value="12">Des</option>
+              </Select>
+            </Box>
+            <Box className="w-full md:w-auto">
+              <h6 className="mb-2">Rows</h6>
+              <Select
+                value={rowsPerPage}
+                onChange={(e) => setRowsPerPage(Number(e.target.value))}
+                width="80px"
+                sx={{
+                  border: "1px solid",
+                  borderColor: borderColor,
+                  borderRadius: "0.336rem",
+                  background: "var(--color-background)", // background color from Tailwind config
+        
+                  _hover: {
+                    borderColor: hoverBorderColor,
+                  },
+                }}>
+                <option value={5}>5</option>
+                <option value={10}>10</option>
+                <option value={20}>20</option>
+                <option value={40}>40</option>
+                <option value={60}>60</option>
+                <option value={100}>100</option>
+              </Select>
+            </Box>
+            <Flex 
+              className="flex flex-col sm:flex-row md:flex-row gap-4 justify-center items-start w-full md:w-auto mt-4 md:mt-auto"
+            >
+              <Button
+                className="w-full sm:w-40 md:w-auto"
+                colorScheme="blue"
+                onClick={() => fetchData()}
+              >
+                Submit
+              </Button>
+              <Button 
+                className="w-full sm:w-40 md:w-auto" 
+                colorScheme="green" 
+                onClick={exportToExcel}
+              >
+                Export to Excel
+              </Button>
+            </Flex>
+          </Flex>
+          {/* <Flex 
+            className="flex flex-col sm:flex-row xl:flex-row gap-4" 
+            justify="center">
+            <Button
+              className="w-full sm:w-40 xl:w-auto"
+              colorScheme="blue"
+              onClick={() => fetchData()}
+            >
+              Submit
+            </Button>
+            <Button 
+              className="w-full sm:w-40 xl:w-auto" 
+              colorScheme="green" 
+              onClick={exportToExcel}
+            >
+              Export to Excel
+            </Button>
+          </Flex> */}
         </Box>
-        {/* <div>
-          <h2>Line</h2>
-          <Select placeholder="Select Line">
-            <option value="Line4">FULL</option>
-            <option value="Line1">Line 1</option>
-            <option value="Line2">Line 2</option>
-            <option value="Line3">Line 3</option>
-            <option value="Line4">Line 4</option>
-          </Select>
-        </div> */}
-        <div className="mt-4">
-          <Select
-            value={rowsPerPage}
-            onChange={(e) => setRowsPerPage(Number(e.target.value))}
-            width="80px">
-            <option value={5}>5</option>
-            <option value={10}>10</option>
-            <option value={20}>20</option>
-            <option value={40}>40</option>
-            <option value={60}>60</option>
-            <option value={100}>100</option>
-          </Select>
-        </div>
-        <div>
-          <br />
-          <Button
-            className="w-40"
-            colorScheme="blue"
-            onClick={() => fetchData()}
-          >
-            Submit
-          </Button>
-        </div>
-        <div>
-          <br />
-          <Button className="w-40" colorScheme="green" onClick={exportToExcel} >
-            Export to Excel
-          </Button>
-        </div>
-      </Stack>
+      </Box>
       <br />
-      <TableContainer className="bg-card rounded-md" sx={{ overflowX: "auto", maxWidth: "92%" }}>
-        <Table key={colorMode} variant="simple" sx={{ minWidth: "1200px"}}>
+      <TableContainer className="bg-card rounded-md mx-auto" sx={{ overflowX: "auto" }}>
+        <Table key={colorMode} variant="simple">
           <Thead>
             <Tr>
               <Th sx={{
