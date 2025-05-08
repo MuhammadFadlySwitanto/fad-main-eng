@@ -65,7 +65,7 @@ function Sidebar() {
 
   const getNavigationItems = () => {
     const navigation = [];
-    if(userGlobal.level <1 ){
+    if(userGlobal.level < 1 ){
       navigation.push(
         { name: "Dashboard", icon: <DashboardOutlinedIcon />, path: "/dashboard" }
       );
@@ -117,10 +117,16 @@ function Sidebar() {
       },{
         name: "Production",
         icon: <FactoryIcon sx={{ fontSize: 21 }} className="flex-shrink-0 m-1 "/>,
-        path: "/Production",
+        path: "/production",
+        subMenu: [
+          {
+            name: "Input Data",
+            path: "/production?tab=Input",
+            visible: userGlobal.level < 5, // Conditional visibility
+          },
+          { name: "Overview", path: "/production?tab=Prod" },
+        ],
       });
-      // navigation.push();
-      // navigation.push();
     }
     if (userGlobal.level == 3) {
       navigation.push({
@@ -167,7 +173,15 @@ function Sidebar() {
       },{
         name: "Production",
         icon: <FactoryIcon sx={{ fontSize: 21 }} className="flex-shrink-0 m-1 "/>,
-        path: "/Production",
+        path: "/production",
+        subMenu: [
+          {
+            name: "Input Data",
+            path: "/production?tab=Input",
+            visible: userGlobal.level < 5, // Conditional visibility
+          },
+          { name: "Overview", path: "/production?tab=Prod" },
+        ],
       },{
         name: "Building",
         icon: <BsBuildingsFill size={20}/>,
@@ -228,7 +242,15 @@ function Sidebar() {
       },{
         name: "Production",
         icon: <FactoryIcon sx={{ fontSize: 21 }} className="flex-shrink-0 m-1 "/>,
-        path: "/Production",
+        path: "/production",
+        subMenu: [
+          {
+            name: "Input Data",
+            path: "/production?tab=Input",
+            visible: userGlobal.level < 5, // Conditional visibility
+          },
+          { name: "Overview", path: "/production?tab=Prod" },
+        ],
       },{
         name: "Building",
         icon: <BsBuildingsFill size={20}/>,
@@ -297,7 +319,15 @@ function Sidebar() {
       },{
         name: "Production",
         icon: <FactoryIcon sx={{ fontSize: 21 }} className="flex-shrink-0 m-1 " />,
-        path: "/Production",
+        path: "/production",
+        subMenu: [
+          {
+            name: "Input Data",
+            path: "/production?tab=Input",
+            visible: userGlobal.level < 5, // Conditional visibility
+          },
+          { name: "Overview", path: "/production?tab=Prod" },
+        ],
       },{
         name: "Building",
         icon: <BsBuildingsFill size={20} />,

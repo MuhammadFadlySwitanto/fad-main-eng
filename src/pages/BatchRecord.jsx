@@ -425,10 +425,10 @@ const cleanData = (dataKey, value) => {
     // Format the value to 2 decimal places
     return parseFloat(value).toFixed(2);
   }
-  if (dataKey === "time@timestamp") {
-    // Format the timestamp to a readable format
-    return formatTimestamp(value);
-  }
+  // if (dataKey === "time@timestamp") {
+  //   // Format the timestamp to a readable format
+  //   return formatTimestamp(value);
+  // }
   return value;
 };
 
