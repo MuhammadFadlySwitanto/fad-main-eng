@@ -7,7 +7,8 @@ const ProductionInput = () => {
   // State untuk form input
   const [formData, setFormData] = useState({
     shift: '1',
-    date: formatDate(new Date()),
+    tanggal: new Date().toISOString().split('T')[0], // Default ke format yyyy-mm-dd
+    // tanggal: formatDate(new Date()), // kalau mau pake yg format itu pakelah yg ini
   });
 
   // State untuk menyimpan data tabel
@@ -51,9 +52,9 @@ const ProductionInput = () => {
       try {
         // Fetch semua opsi downtime sekali di awal
         const [minorRes, plannedRes, unplannedRes] = await Promise.all([
-          axios.get('/api/downtime-details', { params: { type: 'Minor' } }),
-          axios.get('/api/downtime-details', { params: { type: 'Planned' } }),
-          axios.get('/api/downtime-details', { params: { type: 'Unplanned' } })
+          axios.get("http://10.126.15.197:8002/part/alldowntime", { params: { type: 'Minor' } }),
+          axios.get("http://10.126.15.197:8002/part/alldowntime", { params: { type: 'Planned' } }),
+          axios.get("http://10.126.15.197:8002/part/alldowntime", { params: { type: 'Unplanned' } })
         ]);
 
         setDowntimeOptions({
@@ -77,14 +78,16 @@ const ProductionInput = () => {
     
     try {
       // Format tanggal untuk API jika diperlukan (tergantung format yang dibutuhkan API)
-      const [day, month, year] = formData.date.split('/');
-      const formattedDate = `${year}-${month}-${day}`;
+      // dikomen 2 const ini, karena kalau gak dia akan coba nge-try. dan malah gak di eksekusi si endpoint ini
+      // const [day, month, year] = formData.date.split('/');
+      // const formattedDate = `${year}-${month}-${day}`;
       
       // Ganti dengan endpoint API yang sebenarnya
-      const response = await axios.get('/api/production', {
+      const response = await axios.get("http://10.126.15.197:8002/part/HM1Report", {
         params: {
           shift: formData.shift,
-          date: formattedDate
+          // tanggal: formattedDate, //ini kalau pake yang format
+          tanggal: formData.tanggal, // Menggunakan format yyyy-mm-dd (langsung tembak)
         }
       });
       
@@ -102,14 +105,14 @@ const ProductionInput = () => {
     // Update tipe downtime untuk baris tertentu
     const updatedTableData = [...tableData];
     updatedTableData[rowIndex].downtime_type = downtimeType;
-    updatedTableData[rowIndex].downtime_detail = ''; // Reset detail ketika tipe berubah
+    updatedTableData[rowIndex].detail = ''; // Reset detail ketika tipe berubah
     setTableData(updatedTableData);
   };
 
   // Handle perubahan dropdown "Detail"
   const handleDetailChange = (rowIndex, detail) => {
     const updatedTableData = [...tableData];
-    updatedTableData[rowIndex].downtime_detail = detail;
+    updatedTableData[rowIndex].detail = detail;
     setTableData(updatedTableData);
   };
 
@@ -117,7 +120,7 @@ const ProductionInput = () => {
   const handleSubmitDowntime = async (rowIndex) => {
     const currentRow = tableData[rowIndex];
     
-    if (!currentRow.downtime_type || !currentRow.downtime_detail) {
+    if (!currentRow.downtime_type || !currentRow.detail) {
       alert('Silakan pilih Downtime Type dan Detail terlebih dahulu');
       return;
     }
@@ -129,8 +132,11 @@ const ProductionInput = () => {
       // Data yang akan dikirim ke server untuk update baris yang sudah ada
       const postData = {
         id: currentRow.id, // ID baris yang akan diupdate
+        start: currentRow.start, // ID baris yang akan diupdate
+        finish: currentRow.finish, // ID baris yang akan diupdate
+        total_minutes: currentRow.total_minutes, // ID baris yang akan diupdate
         downtime_type: currentRow.downtime_type,
-        downtime_detail: currentRow.downtime_detail,
+        downtime_detail: currentRow.detail,
         username: userGlobal.name,
         submitted_at: submitDateTime
       };
@@ -138,7 +144,7 @@ const ProductionInput = () => {
       console.log('Data yang dikirim ke server:', postData);
       
       // Endpoint API untuk update data
-      await axios.post('/api/update-downtime', postData);
+      await axios.post("http://10.126.15.197:8002/part/HM1InsertDowntime", postData);
       
       alert('Data berhasil disimpan');
       
@@ -167,10 +173,10 @@ const ProductionInput = () => {
       <h1 className="text-2xl font-bold mb-6">Production Downtime Input</h1>
       
       {/* Form Input */}
-      <div className="bg-white shadow-md rounded-lg p-6 mb-6">
+      <div className="bg-card shadow-md rounded-lg p-6 mb-6">
         <form onSubmit={handleSubmit} className="flex flex-wrap gap-4 items-end">
           <div className="w-full md:w-auto">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-text mb-1">
               Shift
             </label>
             <Select
@@ -196,13 +202,13 @@ const ProductionInput = () => {
           </div>
           
           <div className="w-full md:w-auto">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-text mb-1">
               Date
             </label>
             <Input
-              type="text"
-              name="date"
-              value={formData.date}
+              type="date"
+              name="tanggal"
+              value={formData.tanggal} // bisa ganti dari .tanggal ke .date kalau mau pake yang format itu
               onChange={handleInputChange}
               placeholder="DD/MM/YYYY"
               className="block w-full px-3"
@@ -250,54 +256,72 @@ const ProductionInput = () => {
       
       {/* Table */}
       {tableData.length > 0 && (
-        <div className="bg-white shadow-md rounded-lg overflow-x-auto">
+        <div className="bg-card shadow-md rounded-lg overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+            <thead className="bg-gray-100 dark:bg-[#242424]">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Start</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Finish</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total (Minutes)</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Downtime Type</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Detail</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-text uppercase tracking-wider">Start</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-text uppercase tracking-wider">Finish</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-text uppercase tracking-wider">Total (Minutes)</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-text uppercase tracking-wider">Downtime Type</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-text uppercase tracking-wider">Detail</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-text uppercase tracking-wider">Action</th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-card divide-y divide-gray-200">
               {tableData.map((row, index) => (
                 <tr key={row.id || index}>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{row.start}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{row.finish}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{row.total}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-text">{row.start}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-text">{row.finish}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-text">{row.total_minutes}</td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <select
-                      value={row.downtimeType || ''}
+                    <Select
+                      value={row.downtime_type || ''}
                       onChange={(e) => handleDowntimeTypeChange(index, e.target.value)}
                       disabled={row.is_processed} // Disable jika sudah diproses
-                      className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                      className="block w-full px-3 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                      sx={{
+                        border: "1px solid",
+                        borderColor: borderColor,
+                        background: "var(--color-background)", // background color from Tailwind config
+              
+                        _hover: {
+                          borderColor: hoverBorderColor,
+                        },
+                      }}
                     >
                       <option value="">Select Type</option>
                       <option value="Minor">Minor</option>
                       <option value="Planned">Planned</option>
                       <option value="Unplanned">Unplanned</option>
-                    </select>
+                    </Select>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     {row.downtime_type ? (
-                      <select
-                        value={row.downtime_detail || ''}
+                      <Select
+                        value={row.detail || ''}
                         onChange={(e) => handleDetailChange(index, e.target.value)}
-                        className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                        className="block w-full px-3 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                        sx={{
+                          border: "1px solid",
+                          borderColor: borderColor,
+                          background: "var(--color-background)", // background color from Tailwind config
+                
+                          _hover: {
+                            borderColor: hoverBorderColor,
+                          },
+                        }}
                         disabled={row.is_processed} // Disable jika sudah diproses
                       >
                       <option value="">Select Detail</option>
                       {downtimeOptions[row.downtime_type]?.map((detail, detailIndex) => (
-                        <option key={detailIndex} value={detail.name}>
-                          {detail.name}
+                        <option key={detailIndex} value={detail.detail}>
+                          {detail.detail}
                         </option>
                       ))}
-                      </select>
+                      </Select>
                     ) : (
-                      <span className="text-sm text-gray-500">Select Downtime Type first</span>
+                      <span className="text-sm text-text2">Select Downtime Type first</span>
                     )}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
@@ -308,7 +332,7 @@ const ProductionInput = () => {
                     ) : (
                       <button
                         onClick={() => handleSubmitDowntime(index)}
-                        disabled={!row.downtime_type || !row.downtime_detail}
+                        disabled={!row.downtime_type || !row.detail}
                         className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:bg-gray-300 disabled:cursor-not-allowed"
                       >
                         Submit
