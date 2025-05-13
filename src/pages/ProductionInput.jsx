@@ -132,9 +132,6 @@ const ProductionInput = () => {
       // Data yang akan dikirim ke server untuk update baris yang sudah ada
       const postData = {
         id: currentRow.id, // ID baris yang akan diupdate
-        start: currentRow.start, // ID baris yang akan diupdate
-        finish: currentRow.finish, // ID baris yang akan diupdate
-        total_minutes: currentRow.total_minutes, // ID baris yang akan diupdate
         downtime_type: currentRow.downtime_type,
         downtime_detail: currentRow.detail,
         username: userGlobal.name,
@@ -273,7 +270,7 @@ const ProductionInput = () => {
                 <tr key={row.id || index}>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-text">{row.start}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-text">{row.finish}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-text">{row.total_minutes}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-text">{row.total_menit}</td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <Select
                       value={row.downtime_type || ''}
