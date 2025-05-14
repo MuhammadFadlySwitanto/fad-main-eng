@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useSelector } from "react-redux";
 import {  useColorMode, useColorModeValue, Select, Input } from "@chakra-ui/react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ProductionInput = () => {
   // State untuk form input
@@ -72,7 +74,7 @@ const ProductionInput = () => {
 
   // Handle submit form untuk fetch data
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     setIsLoading(true);
     setError('');
     
@@ -92,6 +94,7 @@ const ProductionInput = () => {
       });
       
       setTableData(response.data);
+      // console.log('Table Data:', tableData);
     } catch (err) {
       setError('Gagal mengambil data. Silakan coba lagi.');
       console.error(err);
@@ -119,6 +122,8 @@ const ProductionInput = () => {
   // Handle submit downtime untuk setiap baris
   const handleSubmitDowntime = async (rowIndex) => {
     const currentRow = tableData[rowIndex];
+    // console.log('Row index:', rowIndex);
+    // console.log('Row data:', tableData[rowIndex]);
     
     if (!currentRow.downtime_type || !currentRow.detail) {
       alert('Silakan pilih Downtime Type dan Detail terlebih dahulu');
@@ -143,10 +148,10 @@ const ProductionInput = () => {
       // Endpoint API untuk update data
       await axios.post("http://10.126.15.197:8002/part/HM1InsertDowntime", postData);
       
-      alert('Data berhasil disimpan');
+      toast.success('Data berhasil disimpan');
       
       // Refresh data setelah submit
-      handleSubmit();
+      await handleSubmit();
     } catch (err) {
       alert('Gagal menyimpan data. Silakan coba lagi.');
       console.error(err);
@@ -342,6 +347,7 @@ const ProductionInput = () => {
           </table>
         </div>
       )}
+      <ToastContainer position="top-center" />
     </div>
   );
 };
