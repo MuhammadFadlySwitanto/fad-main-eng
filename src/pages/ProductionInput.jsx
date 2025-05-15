@@ -10,7 +10,7 @@ const ProductionInput = () => {
   const [formData, setFormData] = useState({
     shift: '1',
     tanggal: new Date().toISOString().split('T')[0], // Default ke format yyyy-mm-dd
-    area: 'HM1'
+    machine: 'HM1'
     // tanggal: formatDate(new Date()), // kalau mau pake yg format itu pakelah yg ini
   });
 
@@ -297,9 +297,9 @@ const ProductionInput = () => {
       
       {/* Table */}
       {tableData.length > 0 && (
-        <div className="bg-card shadow-md rounded-lg overflow-x-auto">
+        <div className="bg-card shadow-lg rounded-lg overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
-            <thead className="dark:bg-gray-100 bg-[#242424]">
+            <thead className="bg-card">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-text uppercase tracking-wider">Start</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-text uppercase tracking-wider">Finish</th>
@@ -371,7 +371,7 @@ const ProductionInput = () => {
                       value={row.keterangan || ''}
                       onChange={(e) => handleKeteranganChange(index, e.target.value)}
                       rows={2}
-                      className="block w-full px-3 py-2 text-sm border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 resize-none"
+                      className="block w-full px-3 py-2 text-sm text-text border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 resize-none"
                       placeholder="Masukkan keterangan..."
                     />
                   </td>
