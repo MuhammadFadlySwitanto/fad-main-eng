@@ -10,6 +10,7 @@ const ProductionInput = () => {
   const [formData, setFormData] = useState({
     shift: '1',
     tanggal: new Date().toISOString().split('T')[0], // Default ke format yyyy-mm-dd
+    area: 'HM1'
     // tanggal: formatDate(new Date()), // kalau mau pake yg format itu pakelah yg ini
   });
 
@@ -120,6 +121,12 @@ const ProductionInput = () => {
     setTableData(updatedTableData);
   };
 
+  const handleKeteranganChange = (rowIndex, value) => {
+  setTableData((prevData) =>
+    prevData.map((row, i) => (i === rowIndex ? { ...row, keterangan: value } : row))
+  );
+};
+
   // Handle submit downtime untuk setiap baris
   const handleSubmitDowntime = async (rowIndex) => {
     const currentRow = tableData[rowIndex];
@@ -140,6 +147,7 @@ const ProductionInput = () => {
         id: currentRow.id, // ID baris yang akan diupdate
         downtime_type: currentRow.downtime_type,
         downtime_detail: currentRow.detail,
+        keterangan: currentRow.keterangan || '', // Tambahkan keterangan
         username: userGlobal.name,
         submitted_at: submitDateTime
       };
@@ -187,6 +195,16 @@ const ProductionInput = () => {
               value={formData.machine}
               onChange={handleInputChange}
               className="block w-full px-3"
+              sx={{
+                border: "1px solid",
+                borderColor: borderColor,
+                borderRadius: "0.336rem",
+                background: "var(--color-background)", // background color from Tailwind config
+      
+                _hover: {
+                  borderColor: hoverBorderColor,
+                },
+              }}
             >
               <option value="HM1">HM1 A</option>
               <option value="HM2">HM1 B</option>
@@ -281,13 +299,14 @@ const ProductionInput = () => {
       {tableData.length > 0 && (
         <div className="bg-card shadow-md rounded-lg overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-100 dark:bg-[#242424]">
+            <thead className="dark:bg-gray-100 bg-[#242424]">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-text uppercase tracking-wider">Start</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-text uppercase tracking-wider">Finish</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-text uppercase tracking-wider">Total (Minutes)</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-text uppercase tracking-wider">Downtime Type</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-text uppercase tracking-wider">Detail</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-text uppercase tracking-wider">Keterangan</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-text uppercase tracking-wider">Action</th>
               </tr>
             </thead>
@@ -346,6 +365,15 @@ const ProductionInput = () => {
                     ) : (
                       <span className="text-sm text-text2">Select Downtime Type first</span>
                     )}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <textarea
+                      value={row.keterangan || ''}
+                      onChange={(e) => handleKeteranganChange(index, e.target.value)}
+                      rows={2}
+                      className="block w-full px-3 py-2 text-sm border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 resize-none"
+                      placeholder="Masukkan keterangan..."
+                    />
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     {row.is_processed ? (
