@@ -90,6 +90,7 @@ const ProductionInput = () => {
           shift: formData.shift,
           // tanggal: formattedDate, //ini kalau pake yang format
           tanggal: formData.tanggal, // Menggunakan format yyyy-mm-dd (langsung tembak)
+          area: formData.machine
         }
       });
       
@@ -177,6 +178,26 @@ const ProductionInput = () => {
       {/* Form Input */}
       <div className="bg-card shadow-md rounded-lg p-6 mb-6">
         <form onSubmit={handleSubmit} className="flex flex-wrap gap-4 items-end">
+          <div className="w-full md:w-auto">
+            <label className="block text-sm font-medium text-text mb-1">
+              Machine
+            </label>
+            <Select
+              name="machine"
+              value={formData.machine}
+              onChange={handleInputChange}
+              className="block w-full px-3"
+            >
+              <option value="HM1">HM1 A</option>
+              <option value="HM2">HM1 B</option>
+              <option value="CM1">CM 1</option>
+              <option value="CM2">CM 2</option>
+              <option value="CM3">CM 3</option>
+              <option value="CM4">CM 4</option>
+              <option value="CM5">CM 5</option>
+            </Select>
+          </div>
+
           <div className="w-full md:w-auto">
             <label className="block text-sm font-medium text-text mb-1">
               Shift
