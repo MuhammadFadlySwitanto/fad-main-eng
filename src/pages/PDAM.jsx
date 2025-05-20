@@ -59,7 +59,7 @@ const PDAM = forwardRef((props, ref) => {
         try {
             const message = event.data;
             const varWebSocket = JSON.parse(message);
-            console.log(varWebSocket);
+            // console.log(varWebSocket);
     
             // Set state untuk masing-masing nilai
             setInlet(varWebSocket["Inlet"]);

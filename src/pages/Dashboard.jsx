@@ -130,23 +130,6 @@ import MyDocument from '../components/MyDocument';
       { title: 'Daily Gas', value: `${getLimit["Limit_Gas"]} ` },
     ];
 
-    //   // Ambil data dari NVMDP dan PDAM saat komponen di-render
-    // useEffect(() => {
-    //   const nvmdp = NVMDP({ getLimit });
-    //   const pdam = PDAM({ getWaterLimit });
-
-    //   // Ambil data dari kedua komponen
-    //   setNvmdpData(nvmdp.getNVMDPData());
-    //   setPdamData(pdam.getPDAMData());
-    // }, [getLimit, getWaterLimit]);
-
-    // // Fungsi untuk mengambil data untuk PDF
-    // const handlePrintPDF = () => {
-    //   const allData = [...dashboardData, ...nvmdpData, ...pdamData];
-    //   console.log("Data untuk PDF:", allData); // Debugging
-    //   return allData;
-    // };
-
     const handlePrintPDF = () => {
       const dashboardData = dashboardStaticData(); // asumsi kamu punya ini
       const pdamData = pdamRef.current?.getPDAMData() || [];
@@ -610,6 +593,7 @@ import MyDocument from '../components/MyDocument';
     // console.log("dataTotalUangAir:", dataTotalUangAir);
     // console.log("Total_Gas_Boiler:", data.Total_Gas_Boiler);
     // console.log("dataTotalUangGas:", dataTotalUangGas);
+    
     // Menghitung TotalCost
     const MVMDP = data.MVMDP ?? 0;
     const PDAM = data.PDAM ?? 0;

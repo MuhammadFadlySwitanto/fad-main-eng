@@ -23,6 +23,7 @@ const ProductionInput = () => {
   const { colorMode } = useColorMode();
   const borderColor = useColorModeValue("rgba(var(--color-border))", "rgba(var(--color-border))");
   const hoverBorderColor = useColorModeValue("rgba(var(--color-border2))", "rgba(var(--color-border2))");
+  const buatSiSelect = useColorModeValue("rgba(var(--color-text))", "rgba(var(--color-text))");
 
   const [isDarkMode, setIsDarkMode] = useState(
     document.documentElement.getAttribute("data-theme") === "dark"
@@ -105,67 +106,608 @@ const ProductionInput = () => {
     }
   };
 
-  // Handle perubahan dropdown "Downtime Type"
-  const handleDowntimeTypeChange = (rowIndex, downtimeType) => {
-    // Update tipe downtime untuk baris tertentu
-    const updatedTableData = [...tableData];
-    updatedTableData[rowIndex].downtime_type = downtimeType;
-    updatedTableData[rowIndex].detail = ''; // Reset detail ketika tipe berubah
-    setTableData(updatedTableData);
-  };
+//   // Handle perubahan dropdown "Downtime Type"
+//   const handleDowntimeTypeChange = (rowIndex, downtimeType) => {
+//     // Update tipe downtime untuk baris tertentu
+//     const updatedTableData = [...tableData];
+//     updatedTableData[rowIndex].downtime_type = downtimeType;
+//     updatedTableData[rowIndex].detail = ''; // Reset detail ketika tipe berubah
+//     setTableData(updatedTableData);
+//   };
 
-  // Handle perubahan dropdown "Detail"
-  const handleDetailChange = (rowIndex, detail) => {
-    const updatedTableData = [...tableData];
-    updatedTableData[rowIndex].detail = detail;
-    setTableData(updatedTableData);
-  };
+//   // Handle perubahan dropdown "Detail"
+//   const handleDetailChange = (rowIndex, detail) => {
+//     const updatedTableData = [...tableData];
+//     updatedTableData[rowIndex].detail = detail;
+//     setTableData(updatedTableData);
+//   };
 
-  const handleKeteranganChange = (rowIndex, value) => {
-  setTableData((prevData) =>
+//   const handleKeteranganChange = (rowIndex, value) => {
+//   setTableData((prevData) =>
+//     prevData.map((row, i) => (i === rowIndex ? { ...row, keterangan: value } : row))
+//   );
+// };
+
+// Fungsi untuk mengkonversi waktu format HH:MM menjadi menit
+const convertTimeToMinutes = (timeStr) => {
+  const [hours, minutes] = timeStr.split(':').map(Number);
+  return hours * 60 + minutes;
+};
+
+// Fungsi untuk mengkonversi menit menjadi format waktu HH:MM
+const convertMinutesToTime = (totalMinutes) => {
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+  return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+};
+
+// Fungsi untuk mendapatkan waktu berikutnya berdasarkan waktu awal dan durasi dalam menit
+const getNextTime = (startTime, durationMinutes) => {
+  const startMinutes = convertTimeToMinutes(startTime);
+  const endMinutes = startMinutes + durationMinutes;
+  return convertMinutesToTime(endMinutes);
+};
+
+// Fungsi untuk memastikan waktu berada dalam range yang diizinkan
+const ensureTimeInRange = (timeStr, minTimeStr, maxTimeStr) => {
+  const time = convertTimeToMinutes(timeStr);
+  const minTime = convertTimeToMinutes(minTimeStr);
+  const maxTime = convertTimeToMinutes(maxTimeStr);
+  
+  if (time < minTime) return minTimeStr;
+  if (time > maxTime) return maxTimeStr;
+  return timeStr;
+};
+
+// 1. Toggle untuk menampilkan/menyembunyikan sub-rows
+const handleToggleSubRows = (index) => {
+  setTableData(prevData => {
+    const newData = [...prevData];
+    // Toggle showSubRows property
+    const showSubRows = !newData[index].showSubRows;
+    
+    newData[index] = {
+      ...newData[index],
+      showSubRows
+    };
+    
+    // Inisialisasi sub-rows jika belum ada atau showSubRows is true
+    if (showSubRows && (!newData[index].subRows || newData[index].subRows.length === 0)) {
+      // Inisialisasi dengan 1 sub-row yang memiliki total_menit sama dengan main row
+      newData[index].subRows = [createSubRowWithFullDuration(newData[index])];
+    }
+    
+    return newData;
+  });
+};
+
+// 2. Fungsi untuk membuat sub-row dengan durasi penuh dari main row
+const createSubRowWithFullDuration = (mainRow) => {
+  return {
+    start: mainRow.start,
+    finish: mainRow.finish,
+    total_menit: mainRow.total_menit,
+    downtime_type: '',
+    detail: '',
+    keterangan: ''
+  };
+};
+
+// 3. Fungsi untuk membuat sub-row kosong dengan durasi yang tersisa
+const createEmptySubRow = (mainRow, remainingMinutes, lastEndTime) => {
+  // Pastikan waktu start tidak melebihi waktu finish main row
+  const safeStartTime = ensureTimeInRange(lastEndTime, mainRow.start, mainRow.finish);
+  
+  // Hitung maksimum durasi untuk sub-row ini
+  const maxMinutes = convertTimeToMinutes(mainRow.finish) - convertTimeToMinutes(safeStartTime);
+  const safeDuration = Math.min(remainingMinutes, maxMinutes);
+  
+  // Jika durasi terlalu kecil, gunakan durasi minimum (misalnya 1 menit)
+  const finalDuration = Math.max(safeDuration, 1);
+  
+  // Hitung finish time berdasarkan start time dan durasi
+  const finishTime = getNextTime(safeStartTime, finalDuration);
+  
+  // Pastikan finish time tidak melebihi finish time main row
+  const safeFinishTime = ensureTimeInRange(finishTime, mainRow.start, mainRow.finish);
+  
+  return {
+    start: safeStartTime,
+    finish: safeFinishTime,
+    total_menit: finalDuration,
+    downtime_type: '',
+    detail: '',
+    keterangan: ''
+  };
+};
+
+// 4. Tambah sub-row baru (maksimum 5) dengan mempertimbangkan waktu yang tersisa
+const handleAddSubRow = (rowIndex) => {
+  setTableData(prevData => {
+    const newData = [...prevData];
+    const mainRow = newData[rowIndex];
+    if (!mainRow.subRows) mainRow.subRows = [];
+
+    if (mainRow.subRows.length >= 5) {
+      toast.info('Maksimum 5 sub-row diperbolehkan');
+      return newData;
+    }
+
+    // Hitung total menit yang sudah dialokasikan di sub-rows
+    const allocatedMinutes = mainRow.subRows.reduce(
+      (sum, subRow) => sum + subRow.total_menit, 0
+    );
+    const remainingMinutes = mainRow.total_menit - allocatedMinutes;
+
+    if (remainingMinutes < 1) {
+      toast.warning('Tidak ada waktu tersisa untuk sub-row baru');
+      return newData;
+    }
+
+    // Dapatkan finish dari sub-row terakhir, atau start dari main row jika belum ada sub-row
+    let prevFinish = mainRow.start;
+    if (mainRow.subRows.length > 0) {
+      prevFinish = mainRow.subRows[mainRow.subRows.length - 1].finish;
+    }
+
+    // Sub-row baru: start=prevFinish, finish=mainRow.finish atau +remainingMinutes, total_menit=remainingMinutes
+    // Pakai getNextTime untuk cari finish
+    const maxFinish = convertTimeToMinutes(mainRow.finish);
+    const startMinutes = convertTimeToMinutes(prevFinish);
+    let finishMinutes = startMinutes + remainingMinutes;
+    if (finishMinutes > maxFinish) finishMinutes = maxFinish;
+
+    const newSubRow = {
+      start: prevFinish,
+      finish: convertMinutesToTime(finishMinutes),
+      total_menit: finishMinutes - startMinutes,
+      downtime_type: '',
+      detail: '',
+      keterangan: ''
+    };
+
+    mainRow.subRows.push(newSubRow);
+    return newData;
+  });
+};
+
+// 5. Hapus sub-row dan realokasi waktunya
+const handleRemoveSubRow = (rowIndex, subRowIndex) => {
+  setTableData(prevData => {
+    const newData = [...prevData];
+    const mainRow = newData[rowIndex];
+    
+    if (mainRow.subRows && mainRow.subRows.length > 1) { // Minimal harus ada 1 sub-row
+      // Simpan durasi dan waktu dari sub-row yang akan dihapus
+      const removedDuration = mainRow.subRows[subRowIndex].total_menit;
+      const removedStart = mainRow.subRows[subRowIndex].start;
+      const removedFinish = mainRow.subRows[subRowIndex].finish;
+      
+      // Hapus sub-row
+      mainRow.subRows.splice(subRowIndex, 1);
+      
+      // Jika sub-row yang dihapus bukan yang terakhir, perlu menyesuaikan waktu mulai sub-row berikutnya
+      if (subRowIndex < mainRow.subRows.length) {
+        mainRow.subRows[subRowIndex].start = removedStart;
+        mainRow.subRows[subRowIndex].total_menit += removedDuration;
+        mainRow.subRows[subRowIndex].finish = getNextTime(
+          mainRow.subRows[subRowIndex].start, 
+          mainRow.subRows[subRowIndex].total_menit
+        );
+      } else {
+        // Jika yang dihapus adalah sub-row terakhir, tambahkan durasinya ke sub-row sebelumnya
+        const lastSubRowIndex = mainRow.subRows.length - 1;
+        mainRow.subRows[lastSubRowIndex].total_menit += removedDuration;
+        mainRow.subRows[lastSubRowIndex].finish = getNextTime(
+          mainRow.subRows[lastSubRowIndex].start, 
+          mainRow.subRows[lastSubRowIndex].total_menit
+        );
+      }
+      
+      // Atur ulang waktu mulai dan akhir sub-row berikutnya untuk menghindari gap atau tumpang tindih
+      for (let i = 0; i < mainRow.subRows.length - 1; i++) {
+        const nextIndex = i + 1;
+        mainRow.subRows[nextIndex].start = mainRow.subRows[i].finish;
+        mainRow.subRows[nextIndex].finish = getNextTime(
+          mainRow.subRows[nextIndex].start,
+          mainRow.subRows[nextIndex].total_menit
+        );
+      }
+    } else {
+      toast.info('Minimal harus ada 1 sub-row');
+    }
+    
+    return newData;
+  });
+};
+
+// 6. Handler untuk perubahan waktu start di sub-row
+const handleSubRowStartChange = (rowIndex, subRowIndex, newStartTime) => {
+  setTableData(prevData => {
+    const newData = [...prevData];
+    const mainRow = newData[rowIndex];
+    const subRow = mainRow.subRows[subRowIndex];
+    
+    // Pastikan waktu mulai baru berada dalam range main row
+    const mainRowStartMinutes = convertTimeToMinutes(mainRow.start);
+    const mainRowFinishMinutes = convertTimeToMinutes(mainRow.finish);
+    const newStartMinutes = convertTimeToMinutes(newStartTime);
+    const currentFinishMinutes = convertTimeToMinutes(subRow.finish);
+    
+    // Pastikan waktu mulai baru tidak lebih awal dari main row dan tidak lebih akhir dari waktu selesai main row
+    if (newStartMinutes < mainRowStartMinutes) {
+      toast.error('Waktu mulai tidak boleh lebih awal dari waktu mulai main row');
+      return newData;
+    }
+    
+    if (newStartMinutes >= currentFinishMinutes) {
+      toast.error('Waktu mulai tidak boleh sama dengan atau lebih dari waktu selesai main row');
+      return newData;
+    }
+    
+    // Untuk sub-row yang bukan pertama, pastikan tidak lebih awal dari finish sub-row sebelumnya
+    if (subRowIndex > 0) {
+      const prevSubRowFinishMinutes = convertTimeToMinutes(mainRow.subRows[subRowIndex - 1].finish);
+      if (newStartMinutes < prevSubRowFinishMinutes) {
+        toast.error('Waktu mulai tidak boleh lebih awal dari waktu selesai sub-row sebelumnya');
+        return newData;
+      }
+    }
+    
+     // Update waktu mulai
+    subRow.start = newStartTime;
+    
+    // Recalculate total_menit berdasarkan waktu mulai baru dan waktu selesai yang tetap
+    subRow.total_menit = currentFinishMinutes - newStartMinutes;
+    
+    // Jika ini bukan sub-row terakhir, sub-row berikutnya tidak perlu diubah
+    // karena waktu finish sub-row ini tidak berubah
+    
+    return newData;
+  });
+};
+
+// 6b. Handler untuk perubahan waktu finish di sub-row
+const handleSubRowFinishChange = (rowIndex, subRowIndex, newFinishTime) => {
+  setTableData(prevData => {
+    const newData = [...prevData];
+    const mainRow = newData[rowIndex];
+    const subRow = mainRow.subRows[subRowIndex];
+    
+    // Pastikan waktu finish baru berada dalam range main row
+    const mainRowFinishMinutes = convertTimeToMinutes(mainRow.finish);
+    const newFinishMinutes = convertTimeToMinutes(newFinishTime);
+    const currentStartMinutes = convertTimeToMinutes(subRow.start);
+    
+    // Pastikan waktu finish baru tidak lebih awal dari waktu mulai sub-row
+    if (newFinishMinutes <= currentStartMinutes) {
+      toast.error('Waktu selesai tidak boleh sama dengan atau lebih awal dari waktu mulai sub-row');
+      return newData;
+    }
+    
+    // Pastikan waktu finish baru tidak lebih akhir dari waktu finish main row
+    if (newFinishMinutes > mainRowFinishMinutes) {
+      toast.error('Waktu selesai tidak boleh lebih dari waktu selesai main row');
+      return newData;
+    }
+    
+    // Jika ini bukan sub-row terakhir, pastikan tidak melebihi waktu mulai sub-row berikutnya
+    if (subRowIndex < mainRow.subRows.length - 1) {
+      const nextSubRowStartMinutes = convertTimeToMinutes(mainRow.subRows[subRowIndex + 1].start);
+      if (newFinishMinutes > nextSubRowStartMinutes) {
+        toast.error('Waktu selesai tidak boleh lebih dari waktu mulai sub-row berikutnya');
+        return newData;
+      }
+    }
+    
+    // Update waktu selesai
+    subRow.finish = newFinishTime;
+    
+    // Recalculate total_menit berdasarkan waktu mulai yang tetap dan waktu selesai baru
+    subRow.total_menit = newFinishMinutes - currentStartMinutes;
+    
+    // Jika ini bukan sub-row terakhir, update waktu mulai dari sub-row berikutnya
+    if (subRowIndex < mainRow.subRows.length - 1) {
+      mainRow.subRows[subRowIndex + 1].start = newFinishTime;
+      
+      // Recalculate total_menit untuk sub-row berikutnya berdasarkan waktu mulai baru
+      const nextSubRow = mainRow.subRows[subRowIndex + 1];
+      const nextSubRowFinishMinutes = convertTimeToMinutes(nextSubRow.finish);
+      nextSubRow.total_menit = nextSubRowFinishMinutes - newFinishMinutes;
+      
+      // Jika ini mengakibatkan durasi sub-row berikutnya kurang dari 1 menit,
+      // sesuaikan finish time sub-row saat ini dan berikan peringatan
+      if (nextSubRow.total_menit < 1) {
+        toast.warning('Perubahan waktu selesai dibatasi untuk menjaga sub-row berikutnya minimal 1 menit');
+        
+        // Kembalikan ke finish time yang memastikan sub-row berikutnya minimal 1 menit
+        const safeFinishMinutes = nextSubRowFinishMinutes - 1;
+        subRow.finish = convertMinutesToTime(safeFinishMinutes);
+        subRow.total_menit = safeFinishMinutes - currentStartMinutes;
+        
+        // Update waktu mulai sub-row berikutnya
+        nextSubRow.start = subRow.finish;
+        nextSubRow.total_menit = 1; // Minimal 1 menit
+      }
+    }
+    
+    return newData;
+  });
+};
+
+// 7. Handler untuk perubahan Total Minutes di sub-row
+const handleSubRowTotalMinutesChange = (rowIndex, subRowIndex, newTotalMinutes) => {
+  setTableData(prevData => {
+    const newData = [...prevData];
+    const mainRow = newData[rowIndex];
+    const subRow = mainRow.subRows[subRowIndex];
+    
+    // Convert to number
+    newTotalMinutes = parseInt(newTotalMinutes);
+    
+    // Pastikan nilai total menit valid
+    if (isNaN(newTotalMinutes) || newTotalMinutes <= 0) {
+      toast.error('Total menit harus lebih dari 0');
+      return newData;
+    }
+    
+    // Hitung maksimum menit yang tersedia untuk sub-row ini
+    const startMinutes = convertTimeToMinutes(subRow.start);
+    const mainRowFinishMinutes = convertTimeToMinutes(mainRow.finish);
+    const maxPossibleDuration = mainRowFinishMinutes - startMinutes;
+    
+    // Jika sub-row berikutnya ada, hitung batas atas tambahan
+    if (subRowIndex < mainRow.subRows.length - 1) {
+      const nextSubRowStartMinutes = convertTimeToMinutes(mainRow.subRows[subRowIndex + 1].start);
+      const maxBeforeNextStart = nextSubRowStartMinutes - startMinutes;
+      
+      if (newTotalMinutes > maxBeforeNextStart) {
+        // Kasus khusus: jika ini adalah perubahan yang akan mempengaruhi sub-row berikutnya
+        const originalDuration = subRow.total_menit;
+        const increasedBy = newTotalMinutes - originalDuration;
+        
+        // Pastikan total durasi semua sub-row tidak melebihi main row
+        let totalCurrentDuration = mainRow.subRows.reduce((sum, sr) => sum + sr.total_menit, 0);
+        const adjustedTotal = totalCurrentDuration - originalDuration + newTotalMinutes;
+        
+        if (adjustedTotal > mainRow.total_menit) {
+          toast.error(`Total durasi tidak boleh melebihi ${mainRow.total_menit} menit`);
+          return newData;
+        }
+        
+        // Update durasi sub-row ini
+        subRow.total_menit = newTotalMinutes;
+        subRow.finish = getNextTime(subRow.start, newTotalMinutes);
+        
+        // Update waktu mulai sub-row berikutnya
+        mainRow.subRows[subRowIndex + 1].start = subRow.finish;
+        
+        // Sesuaikan durasi sub-row berikutnya
+        const nextSubRow = mainRow.subRows[subRowIndex + 1];
+        nextSubRow.total_menit = Math.max(1, nextSubRow.total_menit - increasedBy); // minimum 1 menit
+        nextSubRow.finish = getNextTime(nextSubRow.start, nextSubRow.total_menit);
+        
+        // Recalculate all subsequent sub-rows
+        for (let i = subRowIndex + 2; i < mainRow.subRows.length; i++) {
+          mainRow.subRows[i].start = mainRow.subRows[i - 1].finish;
+          mainRow.subRows[i].finish = getNextTime(
+            mainRow.subRows[i].start,
+            mainRow.subRows[i].total_menit
+          );
+        }
+      } else {
+        // Normal case: this change won't affect next sub-row
+        subRow.total_menit = newTotalMinutes;
+        subRow.finish = getNextTime(subRow.start, newTotalMinutes);
+      }
+    } else {
+      // This is the last sub-row, make sure it doesn't exceed main row's finish time
+      if (newTotalMinutes > maxPossibleDuration) {
+        toast.warning(`Durasi maksimum yang tersedia adalah ${maxPossibleDuration} menit`);
+        newTotalMinutes = maxPossibleDuration;
+      }
+      
+      subRow.total_menit = newTotalMinutes;
+      subRow.finish = getNextTime(subRow.start, newTotalMinutes);
+    }
+    
+    // Validate total duration of all sub-rows
+    const totalSubRowMinutes = mainRow.subRows.reduce(
+      (sum, sr) => sum + sr.total_menit, 0
+    );
+    
+    if (totalSubRowMinutes > mainRow.total_menit) {
+      toast.error(`Total durasi (${totalSubRowMinutes}) melebihi durasi main row (${mainRow.total_menit})`);
+      
+      // Reset back to original value
+      subRow.total_menit = subRow.total_menit - (totalSubRowMinutes - mainRow.total_menit);
+      subRow.finish = getNextTime(subRow.start, subRow.total_menit);
+    }
+    
+    return newData;
+  });
+};
+
+// 8. Handler untuk perubahan data di sub-rows
+const handleSubRowDowntimeTypeChange = (rowIndex, subRowIndex, value) => {
+  setTableData(prevData => {
+    const newData = [...prevData];
+    if (newData[rowIndex].subRows) {
+      newData[rowIndex].subRows[subRowIndex].downtime_type = value;
+      // Reset detail karena downtime type berubah
+      newData[rowIndex].subRows[subRowIndex].detail = '';
+    }
+    return newData;
+  });
+};
+
+const handleSubRowDetailChange = (rowIndex, subRowIndex, value) => {
+  setTableData(prevData => {
+    const newData = [...prevData];
+    if (newData[rowIndex].subRows) {
+      newData[rowIndex].subRows[subRowIndex].detail = value;
+    }
+    return newData;
+  });
+};
+
+const handleSubRowKeteranganChange = (rowIndex, subRowIndex, value) => {
+  setTableData(prevData => {
+    const newData = [...prevData];
+    if (newData[rowIndex].subRows) {
+      newData[rowIndex].subRows[subRowIndex].keterangan = value;
+    }
+    return newData;
+  });
+};
+
+// 9. Handler untuk dropdown Downtime Type di main row
+const handleDowntimeTypeChange = (rowIndex, downtimeType) => {
+  setTableData(prevData => {
+    const newData = [...prevData];
+    newData[rowIndex].downtime_type = downtimeType;
+    newData[rowIndex].detail = ''; // Reset detail ketika tipe berubah
+    return newData;
+  });
+};
+
+// 10. Handler untuk dropdown Detail di main row
+const handleDetailChange = (rowIndex, detail) => {
+  setTableData(prevData => {
+    const newData = [...prevData];
+    newData[rowIndex].detail = detail;
+    return newData;
+  });
+};
+
+// 11. Handler untuk Keterangan di main row
+const handleKeteranganChange = (rowIndex, value) => {
+  setTableData(prevData =>
     prevData.map((row, i) => (i === rowIndex ? { ...row, keterangan: value } : row))
   );
 };
 
-  // Handle submit downtime untuk setiap baris
-  const handleSubmitDowntime = async (rowIndex) => {
-    const currentRow = tableData[rowIndex];
-    // console.log('Row index:', rowIndex);
-    // console.log('Row data:', tableData[rowIndex]);
-    
+// 12. Submit downtime dengan axios
+const handleSubmitDowntime = async (rowIndex) => {
+  const currentRow = tableData[rowIndex];
+  
+    // Cek jika user menggunakan sub-rows atau tidak
+  const useSubRows = currentRow.showSubRows && currentRow.subRows && currentRow.subRows.length > 0;
+  
+  // Validasi untuk main row (hanya jika tidak menggunakan sub-rows)
+  if (!useSubRows) {
     if (!currentRow.downtime_type || !currentRow.detail) {
-      alert('Silakan pilih Downtime Type dan Detail terlebih dahulu');
+      toast.error('Silakan pilih Downtime Type dan Detail terlebih dahulu');
+      return;
+    }
+  } else {
+    // Periksa apakah semua sub-rows sudah lengkap
+    const incompleteSubRow = currentRow.subRows.find(subRow => 
+      !subRow.downtime_type || !subRow.detail
+    );
+    
+    if (incompleteSubRow) {
+      toast.error('Silakan lengkapi Downtime Type dan Detail pada semua sub-row');
       return;
     }
     
-    try {
-      // Mendapatkan waktu saat ini untuk timestamp
-      const submitDateTime = new Date().toISOString();
+    // Pastikan total menit di sub-rows tidak melebihi main row
+    const totalSubRowMinutes = currentRow.subRows.reduce(
+      (sum, subRow) => sum + subRow.total_menit, 0
+    );
+    
+    if (totalSubRowMinutes > currentRow.total_menit) {
+      toast.error(`Total menit sub-rows (${totalSubRowMinutes}) melebihi total menit main row (${currentRow.total_menit})`);
+      return;
+    }
+    
+    // Pastikan semua sub-rows berada dalam range main row
+    const isInvalid = currentRow.subRows.some(subRow => {
+      const subRowStartTime = convertTimeToMinutes(subRow.start);
+      const subRowFinishTime = convertTimeToMinutes(subRow.finish);
+      const mainRowStartTime = convertTimeToMinutes(currentRow.start);
+      const mainRowFinishTime = convertTimeToMinutes(currentRow.finish);
       
-      // Data yang akan dikirim ke server untuk update baris yang sudah ada
-      const postData = {
-        id: currentRow.id, // ID baris yang akan diupdate
-        downtime_type: currentRow.downtime_type,
-        downtime_detail: currentRow.detail,
-        keterangan: currentRow.keterangan || '', // Tambahkan keterangan
+      return subRowStartTime < mainRowStartTime || 
+             subRowFinishTime > mainRowFinishTime ||
+             subRowStartTime >= subRowFinishTime;
+    });
+    
+    if (isInvalid) {
+      toast.error('Ada sub-row yang tidak valid. Pastikan semua sub-row berada dalam rentang waktu main row');
+      return;
+    }
+    
+    // Pastikan sub-rows berurutan tanpa gap
+    for (let i = 0; i < currentRow.subRows.length - 1; i++) {
+      const currentFinish = currentRow.subRows[i].finish;
+      const nextStart = currentRow.subRows[i + 1].start;
+      
+      if (currentFinish !== nextStart) {
+        toast.error(`Ada gap antara sub-row ${i+1} dan ${i+2}. Waktu selesai dan mulai harus berurutan.`);
+        return;
+      }
+    }
+  }
+  
+  try {
+    // Mendapatkan waktu saat ini untuk timestamp
+    const submitDateTime = new Date().toISOString();
+    
+    // Persiapkan data untuk main row
+    const mainRowData = {
+      id: currentRow.id,
+      downtime_type: currentRow.downtime_type,
+      downtime_detail: currentRow.detail,
+      keterangan: currentRow.keterangan || '',
+      username: userGlobal.name,
+      submitted_at: submitDateTime
+    };
+    
+    // Jika menggunakan sub-rows, persiapkan data sub-rows untuk dikirim
+    if (useSubRows) {
+      // Siapkan data sub-rows
+      const subRowsData = currentRow.subRows.map(subRow => ({
+        parent_id: currentRow.id,
+        shift: formData.shift,
+        tanggal: formData.tanggal,
+        area: formData.machine,
+        start: subRow.start,
+        finish: subRow.finish,
+        total_menit: subRow.total_menit,
+        downtime_type: subRow.downtime_type,
+        downtime_detail: subRow.detail,
+        keterangan: subRow.keterangan || '',
         username: userGlobal.name,
         submitted_at: submitDateTime
+      }));
+      
+      // Kirim data main row dan sub-rows
+      const payload = {
+        mainRow: mainRowData,
+        subRows: subRowsData
       };
       
-      console.log('Data yang dikirim ke server:', postData);
+      console.log('Data yang dikirim ke server:', payload);
       
-      // Endpoint API untuk update data
-      await axios.post("http://10.126.15.197:8002/part/HM1InsertDowntime", postData);
-      
-      toast.success('Data berhasil disimpan');
-      
-      // Refresh data setelah submit
-      await handleSubmit();
-    } catch (err) {
-      alert('Gagal menyimpan data. Silakan coba lagi.');
-      console.error(err);
+      // Ganti URL dengan endpoint yang sesuai
+      await axios.post("http://10.126.15.197:8002/part/HM1InsertDowntimeWithSubRows", payload);
+    } else {
+      // Kirim hanya data main row
+      console.log('Data yang dikirim ke server:', mainRowData);
+      await axios.post("http://10.126.15.197:8002/part/HM1InsertDowntime", mainRowData);
     }
-  };
+    
+    toast.success('Data berhasil disimpan');
+    
+    // Refresh data setelah submit
+    await handleSubmit();
+  } catch (err) {
+    toast.error('Gagal menyimpan data. Silakan coba lagi.');
+    console.error(err);
+  }
+};
+
 
   useEffect(() => {
     const handleThemeChange = () => {
@@ -301,6 +843,7 @@ const ProductionInput = () => {
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-card">
               <tr>
+                <th className="px-3 py-3 text-left text-xs font-medium text-text uppercase tracking-wider"></th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-text uppercase tracking-wider">Start</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-text uppercase tracking-wider">Finish</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-text uppercase tracking-wider">Total (Minutes)</th>
@@ -312,37 +855,32 @@ const ProductionInput = () => {
             </thead>
             <tbody className="bg-card divide-y divide-gray-200">
               {tableData.map((row, index) => (
-                <tr key={row.id || index}>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-text">{row.start}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-text">{row.finish}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-text">{row.total_menit}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <Select
-                      value={row.downtime_type || ''}
-                      onChange={(e) => handleDowntimeTypeChange(index, e.target.value)}
-                      disabled={row.is_processed} // Disable jika sudah diproses
-                      className="block w-full px-3 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                      sx={{
-                        border: "1px solid",
-                        borderColor: borderColor,
-                        background: "var(--color-background)", // background color from Tailwind config
-              
-                        _hover: {
-                          borderColor: hoverBorderColor,
-                        },
-                      }}
-                    >
-                      <option value="">Select Type</option>
-                      <option value="Minor">Minor</option>
-                      <option value="Planned">Planned</option>
-                      <option value="Unplanned">Unplanned</option>
-                    </Select>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {row.downtime_type ? (
+                <>
+                  <tr key={row.id || `main-${index}`}>
+                    <td className="px-3 py-4 whitespace-nowrap text-center">
+                      <button 
+                        onClick={() => handleToggleSubRows(index)}
+                        className="text-blue-500 hover:text-blue-700 focus:outline-none"
+                      >
+                        {row.showSubRows ? (
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M5 10a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z" clipRule="evenodd" />
+                          </svg>
+                        ) : (
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd" />
+                          </svg>
+                        )}
+                      </button>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-text">{row.start}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-text">{row.finish}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-text">{row.total_menit}</td>
+                    <td className="px-6 py-4 whitespace-nowrap">
                       <Select
-                        value={row.detail || ''}
-                        onChange={(e) => handleDetailChange(index, e.target.value)}
+                        value={row.downtime_type || ''}
+                        onChange={(e) => handleDowntimeTypeChange(index, e.target.value)}
+                        disabled={row.showSubRows}
                         className="block w-full px-3 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                         sx={{
                           border: "1px solid",
@@ -353,52 +891,173 @@ const ProductionInput = () => {
                             borderColor: hoverBorderColor,
                           },
                         }}
-                        disabled={row.is_processed} // Disable jika sudah diproses
                       >
-                      <option value="">Select Detail</option>
-                      {downtimeOptions[row.downtime_type]?.map((detail, detailIndex) => (
-                        <option key={detailIndex} value={detail.detail}>
-                          {detail.detail}
-                        </option>
-                      ))}
+                        <option value="">Select Type</option>
+                        <option value="Minor">Minor</option>
+                        <option value="Planned">Planned</option>
+                        <option value="Unplanned">Unplanned</option>
                       </Select>
-                    ) : (
-                      <span className="text-sm text-text2">Select Downtime Type first</span>
-                    )}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <textarea
-                      value={row.keterangan || ''}
-                      onChange={(e) => handleKeteranganChange(index, e.target.value)}
-                      rows={2}
-                      className="block w-full px-3 py-2 text-sm text-text border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 resize-none"
-                      placeholder="Masukkan keterangan..."
-                    />
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {row.is_processed ? (
-                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                        Processed
-                      </span>
-                    ) : (
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {row.downtime_type ? (
+                        <Select
+                          value={row.detail || ''}
+                          onChange={(e) => handleDetailChange(index, e.target.value)}
+                          disabled={row.showSubRows}
+                          className="block w-full px-3 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                          sx={{
+                            border: "1px solid",
+                            borderColor: borderColor,
+                            background: "var(--color-background)", // background color from Tailwind config
+                  
+                            _hover: {
+                              borderColor: hoverBorderColor,
+                            },
+                          }}
+                        >
+                        <option value="">Select Detail</option>
+                        {downtimeOptions[row.downtime_type]?.map((detail, detailIndex) => (
+                          <option key={detailIndex} value={detail.detail}>
+                            {detail.detail}
+                          </option>
+                        ))}
+                        </Select>
+                      ) : (
+                        <span className="text-sm text-text2">Select Downtime Type first</span>
+                      )}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <textarea
+                        value={row.keterangan || ''}
+                        onChange={(e) => handleKeteranganChange(index, e.target.value)}
+                        rows={2}
+                        className="block w-full px-3 py-2 text-sm text-text border border-border bg-card rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 resize-none"
+                        placeholder="Masukkan keterangan..."
+                      />
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
                       <button
                         onClick={() => handleSubmitDowntime(index)}
-                        disabled={!row.downtime_type || !row.detail}
+                        disabled={
+                          row.showSubRows 
+                            ? !(row.subRows && row.subRows.length > 0 && row.subRows.every(subRow => subRow.downtime_type && subRow.detail))
+                            : (!row.downtime_type || !row.detail)
+                        }
                         className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:bg-gray-300 disabled:cursor-not-allowed"
                       >
                         Submit
-                      </button>
-                    )}
-                  </td>
-                </tr>
+                      </button> 
+                    </td>
+                  </tr>
+
+                  {row.showSubRows && row.subRows && row.subRows.map((subRow, subIndex) => (
+                    <tr key={`sub-${index}-${subIndex}`} className="bg-card2">
+                      <td className="px-3 py-4 whitespace-nowrap text-center">
+                        {subIndex === (row.subRows.length - 1) && row.subRows.length < 5 && (
+                          <button 
+                            onClick={() => handleAddSubRow(index)}
+                            className="text-green-500 hover:text-green-700 focus:outline-none"
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                              <path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd" />
+                            </svg>
+                          </button>
+                        )}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <input
+                          type="time"
+                          value={subRow.start}
+                          onChange={(e) => handleSubRowStartChange(index, subIndex, e.target.value)}
+                          className="time-input block w-full px-3 py-2 text-sm text-text border border-black dark:border-white bg-card2 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                          min={subIndex === 0 ? row.start : row.subRows[subIndex-1].finish}
+                          max={row.finish} 
+                        />
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <input
+                          type="time"
+                          value={subRow.finish}
+                          onChange={(e) => handleSubRowFinishChange(index, subIndex, e.target.value)}
+                          className="time-input w-full px-3 py-2 text-sm text-text border border-black dark:border-white bg-card2 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                          min={row.start}
+                          max={subIndex < row.subRows.length - 1 ? row.subRows[subIndex + 1].start : row.finish} 
+                        />
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <input
+                          type="number"
+                          value={subRow.total_menit}
+                          onChange={(e) => handleSubRowTotalMinutesChange(index, subIndex, e.target.value)}
+                          className="block w-full px-3 py-2 text-sm text-text border border-black dark:border-white bg-card2 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                          min="1"
+                          max={row.total_menit}
+                        />
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <Select
+                          value={subRow.downtime_type || ''}
+                          onChange={(e) => handleSubRowDowntimeTypeChange(index, subIndex, e.target.value)}
+                          className="block w-full px-3 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                          sx={{
+                            border: "1px solid",
+                            borderColor: buatSiSelect}}
+                        >
+                          <option value="">Select Type</option>
+                          <option value="Minor">Minor</option>
+                          <option value="Planned">Planned</option>
+                          <option value="Unplanned">Unplanned</option>
+                        </Select>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        {subRow.downtime_type ? (
+                          <Select
+                            value={subRow.detail || ''}
+                            onChange={(e) => handleSubRowDetailChange(index, subIndex, e.target.value)}
+                            className="block w-full px-3 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                            sx={{
+                              border: "1px solid",
+                              borderColor: buatSiSelect}}
+                          >
+                          <option value="">Select Detail</option>
+                          {downtimeOptions[subRow.downtime_type]?.map((detail, detailIndex) => (
+                            <option key={detailIndex} value={detail.detail}>
+                              {detail.detail}
+                            </option>
+                          ))}
+                          </Select>
+                        ) : (
+                          <span className="text-sm text-text2">Select Downtime Type first</span>
+                        )}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <textarea
+                          value={subRow.keterangan || ''}
+                          onChange={(e) => handleSubRowKeteranganChange(index, subIndex, e.target.value)}
+                          rows={2}
+                          className="block w-full px-3 py-2 text-sm text-text border border-black dark:border-white bg-card2 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 resize-none"
+                          placeholder="Masukkan keterangan..."
+                        />
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <button
+                          onClick={() => handleRemoveSubRow(index, subIndex)}
+                          className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                        >
+                          Remove
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </>
               ))}
             </tbody>
           </table>
         </div>
       )}
-      <ToastContainer position="top-center" />
+      <ToastContainer position="top-center" draggable/>
     </div>
-  );
+  )
 };
 
 export default ProductionInput;
