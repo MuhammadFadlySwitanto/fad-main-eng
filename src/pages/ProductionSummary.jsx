@@ -95,6 +95,22 @@ function ProductionSummary() {
       },
     });
 
+    // Konstanta untuk nilai maksimum yang diterima
+    const MAX_VALID_PERFORMANCE = 200;
+
+    // Function untuk mengecek apakah suatu nilai valid
+    const isValidPerformance = (value) => {
+      return (
+        typeof value === 'number' &&
+        isFinite(value) &&
+        value <= MAX_VALID_PERFORMANCE &&
+        value >= 0 &&
+        // Tambahan check khusus untuk nilai yang sangat besar
+        value !== Number.MAX_VALUE &&
+        value < 1.8e+308  // Menangkap nilai yang mendekati MAX_VALUE
+      );
+    };
+
     let response1 = await axios.get(
       "http://10.126.15.197:8002/part/variableoee",
       {
@@ -111,7 +127,7 @@ function ProductionSummary() {
     setOeeCm1(response.data);
     setVarOee(response1.data);
 
-    console.log(oeeChart);
+    // console.log(oeeChart);
 
     var resultAva = [];
     for (var i = 0; i < response.data.length; i++) {
@@ -123,15 +139,16 @@ function ProductionSummary() {
     }
     setAvaLine(resultAva);
 
-    var resultPer = [];
-    for (i = 0; i < response.data.length; i++) {
-      var objPer = {
-        x: response.data[i].id,
-        y: Number(response.data[i].performance.toFixed(2)),
-      };
-      resultPer.push(objPer);
-    }
+    // Filter dan proses data performance
+    const resultPer = response.data
+      .filter(item => isValidPerformance(item.performance))
+      .map(item => ({
+          x: item.id,
+          y: Number(item.performance.toFixed(2))
+      }));
     setPerLine(resultPer);
+    console.log(perLine);
+    console.log(resultPer);
 
     var resultQua = [];
     for (i = 0; i < response.data.length; i++) {
@@ -222,11 +239,24 @@ function ProductionSummary() {
     (oeeVar[0].Ava / 100) * (oeeVar[0].Per / 100) * (oeeVar[0].Qua / 100) * 100;
 
     const renderCm1 = () => {
+      // Filter data anomali terlebih dahulu
+      const filteredOeeCm1 = oeeCm1.filter(cm1 => {
+          // Cek apakah performance adalah nilai yang wajar
+        return (
+          // Memastikan performance bukan Infinity
+          isFinite(cm1.performance) &&
+          // Memastikan performance tidak melebihi batas wajar (misalnya 200%)
+          cm1.performance <= 200 &&
+          // Memastikan performance tidak negatif
+          cm1.performance >= 0
+        );
+      });
+
       const indexOfLastRow = currentPage * rowsPerPage;
       const indexOfFirstRow = indexOfLastRow - rowsPerPage;
-      const currentData = oeeCm1.slice(indexOfFirstRow, indexOfLastRow);
+      const currentData = filteredOeeCm1.slice(indexOfFirstRow, indexOfLastRow);
     
-      if (oeeCm1.length === 0) {
+      if (filteredOeeCm1.length === 0) {
         return (
           <Tr>
             <Td colSpan={10} textAlign="center" display="table-cell" className="text-red-500">
@@ -309,6 +339,7 @@ function ProductionSummary() {
 
   const options1 = {
     responsive: true,
+    zoomEnabled: true,
     theme: isDarkMode ? "dark2" : "light2",
     title: {
       text: "OEE",
@@ -645,8 +676,8 @@ return (
     </div>
     <div className="flex justify-center">
     {isTableVisible && (
-      <TableContainer className="bg-card rounded-md mt-4 mx-4" sx={{ overflowX: "auto", maxWidth: "90%" }}>
-        <Table key={colorMode} variant="simple" sx={{ minWidth: "1200px"}}>
+      <TableContainer className="bg-card rounded-md mt-4 mx-4" sx={{ overflowX: "auto", maxWidth: "96%" }}>
+        <Table key={colorMode} variant="simple">
           <TableCaption sx={{
           color: tulisanColor,
           }}>Machine Performance</TableCaption>

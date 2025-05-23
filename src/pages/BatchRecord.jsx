@@ -18,7 +18,6 @@ import {
   Select
 } from "@chakra-ui/react";
 import axios from "axios";
-import Header from "../components/header";
 import { useColorMode, useColorModeValue } from "@chakra-ui/react";
 
 function BatchRecord() {

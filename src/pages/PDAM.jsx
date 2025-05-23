@@ -404,7 +404,7 @@ const PDAM = forwardRef((props, ref) => {
                 height: '580px'
                 }}/>
             <br/>
-            <iframe
+            {/* <iframe
             src={grafanaPDAMYear}
             style={{
                 border: 'none', // Removes border
@@ -414,7 +414,7 @@ const PDAM = forwardRef((props, ref) => {
                 height: '800px', // Set a fixed height for the iframe
             }}
             title="Grafana Chart">
-            </iframe>
+            </iframe> */}
       </div>
 
     </>

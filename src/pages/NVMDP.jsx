@@ -36,9 +36,9 @@ const NVMDP = React.forwardRef(({ getLimit, dataTotalUang }, ref) => {
     const [showProd, setShowProd] = useState(false); 
     const [showProd2, setShowProd2] = useState(false); 
 
-    const Colors1 = { dark: "#dfa2fc", light: "#e1c2f0" };
-    const Colors2 = { dark: "#b88be8", light: "#efe0ff" };
-    const Colors3 = { dark: "#c692fc", light: "#efe0ff" };
+    const Colors1 = { dark: "#dfa2fc", light: "#c385e1" };
+    const Colors2 = { dark: "#b88be8", light: "#c894ff" };
+    const Colors3 = { dark: "#c692fc", light: "#bb7bff" };
 
     const [isDarkMode, setIsDarkMode] = useState(
         document.documentElement.getAttribute("data-theme") === "dark"
@@ -878,7 +878,7 @@ const NVMDP = React.forwardRef(({ getLimit, dataTotalUang }, ref) => {
           height: '580px'
         }}/>
         <br/>
-        <iframe
+        {/* <iframe
           src={grafanaMVMDPYear}
           // width="540"
           // height="480"
@@ -890,7 +890,7 @@ const NVMDP = React.forwardRef(({ getLimit, dataTotalUang }, ref) => {
             height: '840px', // Set a fixed height for the iframe
           }}
           title="Grafana Chart">
-        </iframe>
+        </iframe> */}
       </div>
     </>
   );
