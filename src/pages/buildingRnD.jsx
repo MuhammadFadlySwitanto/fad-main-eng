@@ -323,7 +323,7 @@ export default function BuildingRnD() {
 
   return(
     <div>
-      <div className="flex flex-row justify-center space-x-4 mt-8 mb-8 flex-wrap xl:flex-nowrap ">
+      <div className="flex flex-row justify-center space-x-4 my-6 flex-wrap xl:flex-nowrap ">
         <div>
           <h5 className="mb-1">Area</h5>
           <Select placeholder="Select Area"  onChange={getArea}>
@@ -394,18 +394,13 @@ export default function BuildingRnD() {
           />
         </div>
         <div className="w-full flex justify-center xl:w-auto">
-          <div className="ml-0 xl:ml-6 mt-6 truncate">
-            <Button
-              colorScheme="blue"
-              onClick={() => fetchRNDSuhu()}>
+          <div className="ml-0 xl:ml-6 mt-7 truncate">
+            <Button colorScheme="blue" onClick={() => fetchRNDSuhu()}>
               Submit
             </Button>
           </div>
-          <div className="ml-2 mt-6 truncate">
-            <Button
-              isDisabled={state}
-              colorScheme="green"
-              onClick={generatePDF}>
+          <div className="ml-2 mt-7 truncate">
+            <Button isDisabled={state} colorScheme="green" onClick={generatePDF}>
               Export to PDF
             </Button>
           </div>
@@ -413,15 +408,17 @@ export default function BuildingRnD() {
       </div>
       <div className="block p-1 bg-card rounded-lg shadow-lg mx-auto"> 
       {loading ? (
-      <Spinner
-        thickness="4px"
-        speed="0.65s"
-        emptyColor="gray.200"
-        color="blue.500"
-        size="xl"
-      />
+      <div className="flex flex-col items-center">
+        <Spinner
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+          color="blue.500"
+          size="xl"
+        />
+      </div>
       ) : error ? (
-        <div className="text-red-500">No available data</div>
+        <div className="text-red-500 flex flex-col items-center">No available data</div>
       ) : (
         <CanvasJSChart className="" options={options} />
       )}

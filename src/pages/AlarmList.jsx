@@ -77,7 +77,7 @@ function AlarmList() {
       if (AlarmData.length === 0) {
         return (
           <Tr>
-            <Td colSpan={3} textAlign="center" display="table-cell" className="text-red-500">
+            <Td colSpan={4} textAlign="center" display="table-cell" className="text-red-500">
               No data available
             </Td>
           </Tr>
@@ -116,7 +116,17 @@ function AlarmList() {
       {/* Kolom 1 - Input Parameter dan Start Time */}
         <div className="mb-2 xl:mb-0">
           <h5 className="mb-1">Parameter</h5>
-          <Select placeholder="Select Alarm" onChange={getAlarmType} className="w-full">
+          <Select placeholder="Select Alarm" onChange={getAlarmType} className="w-full"
+          sx={{
+              border: "1px solid",
+              borderColor: borderColor,
+              borderRadius: "0.395rem",
+              background: "var(--color-background)", // background color from Tailwind config
+    
+              _hover: {
+                borderColor: hoverBorderColor,
+              },
+            }}>
             <option value="Alarm_Air_Event_Log">Pemakaian Air</option>
             <option value="Alarm_Loopo_Event_Log">Loopo</option>
             <option value="Alarm_Osmotron_Event_Log">Osmotron</option>
@@ -182,7 +192,17 @@ function AlarmList() {
           <Select
             value={rowsPerPage}
             onChange={(e) => setRowsPerPage(Number(e.target.value))}
-            className="w-full xl:w-20">
+            className="w-full xl:w-20"
+            sx={{
+              border: "1px solid",
+              borderColor: borderColor,
+              borderRadius: "0.395rem",
+              background: "var(--color-background)", // background color from Tailwind config
+    
+              _hover: {
+                borderColor: hoverBorderColor,
+              },
+            }}>
             <option value={5}>5</option>
             <option value={10}>10</option>
             <option value={20}>20</option>
@@ -208,14 +228,15 @@ function AlarmList() {
         <TableContainer className="bg-card rounded-md overflow-x-auto">
           <Table key={colorMode} variant="simple">
             <Thead>
-              <Tr backgroundColor="blue.200">
+              <Tr border="1px"
+              backgroundColor= {isDarkMode ? 'blue.300' : 'blue.200' } >
                 <Th sx={{color: tulisanColor}}
-                  textAlign={"center"}>No</Th>
+                  textAlign={"center"} border="1px">No</Th>
                 <Th sx={{
                   color: tulisanColor}}
-                  textAlign={"center"}>Date Time</Th>
+                  textAlign={"center"} border="1px">Date Time</Th>
                 <Th sx={{color: tulisanColor,}} 
-                  textAlign={"center"}>Event</Th>
+                  textAlign={"center"} border="1px">Event</Th>
               </Tr>
             </Thead>
             <Tbody >{table()}</Tbody>

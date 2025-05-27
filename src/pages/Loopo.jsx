@@ -191,11 +191,21 @@ export default function Loopo() {
   return(
     <div className="my-4">
       <div className="flex justify-center items-center my-6 mx-auto w-full">
-        <div className="grid lg:grid-cols-4 gap-4 w-full max-w-screen-xl xl:flex xl:flex-row xl:justify-center">
+        <div className="grid lg:grid-cols-4 gap-4 w-full max-w-screen-xl xl:flex xl:flex-row xl:justify-center xl:items-center">
           {/* Column 1: Select Parameter */}
-          <div className="w-full flex flex-col items-center">
+          <div className="w-full flex flex-col items-center xl:w-96">
             <h5 className="mb-1">Parameter</h5>
-            <Select placeholder="Select Parameter" className="w-full" onChange={getLoopoArea}>
+            <Select placeholder="Select Parameter" className="w-full" onChange={getLoopoArea}
+            sx={{
+              border: "1px solid",
+              borderColor: borderColor,
+              borderRadius: "0.395rem",
+              background: "var(--color-background)", // background color from Tailwind config
+    
+              _hover: {
+                borderColor: hoverBorderColor,
+              },
+            }}>
               <option value="lopo_A845A_2.1">A845A_2.1 (Ozone Hours Meter)</option>
               <option value="lopo_FT845A_8.1">FT845A_8.1 (Flow Meter Return)</option>
               <option value="lopo_LT560A_1.1">LT560A_1.1 (PW Tank)</option>
@@ -212,7 +222,7 @@ export default function Loopo() {
             </Select>
           </div>
           {/* Kolom 2 */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 w-full">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 w-full xl:w-96">
             <div className="flex flex-col items-center">
               <h5 className="mb-1">Start Time</h5>
               <Input
@@ -266,22 +276,22 @@ export default function Loopo() {
               />
             </div>
           </div>
-          <div className="w-full flex flex-col items-center">
+          <div className="w-full flex flex-col items-center xl:w-48">
             <h5 className="mb-1 invisible">Placeholder</h5>
-            <Button className="w-full" colorScheme="blue" onClick={() => fetchLoopo()}>
+            <Button className="w-full xl:w-auto xl:px-8" style={{ minWidth: '120px' }} colorScheme="blue" onClick={() => fetchLoopo()}>
               Submit
             </Button>
           </div>
         
           {/* Kolom 4: Statistik Tengah */}
-          <div className="flex flex-col justify-center items-center text-center w-full">
+          <div className="flex flex-col justify-center items-center text-center w-full xl:w-36">
             <div className="text-text">Avg = {avg.toLocaleString()} {unit}</div>
             <div className="text-text">Max = {max.toLocaleString()} {unit}</div>
             <div className="text-text">Min = {min.toLocaleString()} {unit}</div>
           </div>
         </div>
       </div>
-      <div className="flex flex-row justify-center mx-8 p-1 rounded-md shadow-lg overflow-x-auto "> 
+      <div className="flex flex-row justify-center mx-6 p-1 bg-card rounded-md shadow-lg overflow-x-auto "> 
         <CanvasJSChart className="" options={options} />
       </div>
       <br />

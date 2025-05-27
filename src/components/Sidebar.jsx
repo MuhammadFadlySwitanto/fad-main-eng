@@ -116,7 +116,7 @@ function Sidebar() {
         path: "/Instrument",
       },{
         name: "Production",
-        icon: <FactoryIcon sx={{ fontSize: 21 }} className="flex-shrink-0 m-1 "/>,
+        icon: <FactoryIcon sx={{ fontSize: 22 }} className="flex-shrink-0 "/>,
         path: "/production",
         subMenu: [
           {
@@ -172,7 +172,7 @@ function Sidebar() {
         ],
       },{
         name: "Production",
-        icon: <FactoryIcon sx={{ fontSize: 21 }} className="flex-shrink-0 m-1 "/>,
+        icon: <FactoryIcon sx={{ fontSize: 22 }} className="flex-shrink-0 "/>,
         path: "/production",
         subMenu: [
           {
@@ -241,7 +241,7 @@ function Sidebar() {
         ],
       },{
         name: "Production",
-        icon: <FactoryIcon sx={{ fontSize: 21 }} className="flex-shrink-0 m-1 "/>,
+        icon: <FactoryIcon sx={{ fontSize: 22 }} className="flex-shrink-0 "/>,
         path: "/production",
         subMenu: [
           {
@@ -318,7 +318,7 @@ function Sidebar() {
         ],
       },{
         name: "Production",
-        icon: <FactoryIcon sx={{ fontSize: 21 }} className="flex-shrink-0 m-1 " />,
+        icon: <FactoryIcon sx={{ fontSize: 22 }} className="flex-shrink-0 " />,
         path: "/production",
         subMenu: [
           {

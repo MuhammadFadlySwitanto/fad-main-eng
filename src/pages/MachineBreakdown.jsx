@@ -326,7 +326,17 @@ function MaintenanceBreakdown() {
         <div className="flex flex-wrap justify-center gap-2 xl:flex-nowrap xl:space-x-4">
           <div className="flex flex-col items-center">
             <h6 className="mb-2 invisible">Row Selector</h6>
-            <Select value={rowsPerPage} onChange={handleRowsPerPageChange} width="80px">
+            <Select value={rowsPerPage} onChange={handleRowsPerPageChange} width="80px"
+            sx={{
+                border: "1px solid",
+                borderColor: borderColor,
+                borderRadius: "0.395rem",
+                background: "var(--color-background)", // background color from Tailwind config
+      
+                _hover: {
+                  borderColor: hoverBorderColor,
+                },
+              }}>
               {[5, 10, 20, 40, 60, 100].map((num) => (
                 <option key={num} value={num}>
                   {num}

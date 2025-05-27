@@ -11,7 +11,9 @@ import { event } from "jquery";
 function CreateNew() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(
+    document.documentElement.getAttribute("data-theme") === "dark"
+  );
 
   const [dataList, setDataList] = useState({});
   const [newLine, setNewLine] = useState("");
@@ -119,17 +121,20 @@ function CreateNew() {
 
   useEffect(() => {
     fetchLine();
-
-    const checkTheme = () => {
-      const currentTheme = document.documentElement.getAttribute("data-theme");
-      setIsDarkMode(currentTheme === "dark");
-    };
-
-    // Panggil `checkTheme` saat komponen pertama kali dimuat
-    checkTheme();
-
-
   }, []);
+
+  useEffect(() => {
+    const handleThemeChange = () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      setIsDarkMode(currentTheme === 'dark');
+    };
+    // Observe attribute changes
+    const observer = new MutationObserver(handleThemeChange);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+
+    return () => observer.disconnect();
+  }, []);
+  
 
   if (newStartTime && newFinishTime) {
     var hm = newStartTime;

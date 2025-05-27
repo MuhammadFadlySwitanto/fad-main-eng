@@ -345,25 +345,15 @@ function BuildingEMS() {
 
   return (
     <div>
-      <div className="flex flex-row justify-center my-8 flex-wrap xl:flex-nowrap">
+      <div className="flex flex-row justify-center space-x-4 my-6 flex-wrap xl:flex-nowrap">
         <div className="w-96 ml-4">
-          <label
-            htmlFor="line"
-            className="block text-lg font-medium leading-4 text-text ml-1"
-            >
-            Room
-          </label>
+          <h5 className="mb-1">Area</h5>
           <Select onChange={emsAreaPick} placeholder="Ruangan">
             {renderDropDownArea()}
           </Select>
         </div>
-        <div className="ml-4 ">
-          <label
-            htmlFor="line"
-            className="block text-lg font-medium leading-4 text-text"
-            >
-            Start Date
-          </label>
+        <div>
+          <h5 className="mb-1"> Start Date</h5>
           <Input
             onChange={datePickStart}
             placeholder="Start Date"
@@ -387,13 +377,8 @@ function BuildingEMS() {
             }}
           />
         </div>
-        <div className="ml-4 ">
-          <label
-            htmlFor="line"
-            className="block text-lg font-medium leading-4 text-text"
-            >
-            Finish Date
-          </label>
+        <div>
+          <h5 className="mb-1"> Finish Date </h5>
           <Input
             onChange={datePickFinish}
             placeholder="Finish Date"
@@ -418,17 +403,14 @@ function BuildingEMS() {
           />
         </div>
         <div className="w-full flex justify-center xl:w-auto">
-          <div className="ml-4 mt-4 truncate">
+          <div className="ml-0 xl:ml-6 mt-7 truncate">
             <Button onClick={() => getSubmit()} colorScheme="blue">
               Submit
             </Button>
           </div>
-          <div className="ml-4 mt-4">
-            <Button
-            isDisabled={state}
-            colorScheme="red"
-            onClick={generatePDF}>
-            Export to PDF
+          <div className="ml-2 mt-7">
+            <Button isDisabled={state} colorScheme="red" onClick={generatePDF}>
+              Export to PDF
             </Button>
           </div>
         </div>

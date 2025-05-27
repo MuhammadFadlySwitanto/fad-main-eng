@@ -1,25 +1,30 @@
 import React, { useEffect, Component, useState } from "react";
 import CanvasJSReact from "../canvasjs.react";
 import { Button, ButtonGroup, Stack, Input, Select } from "@chakra-ui/react";
+import { useColorMode, useColorModeValue } from "@chakra-ui/react";
 import axios from "axios";
 
 var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 export default function Osmotron() {
-        const [startDate, setStartDate] = useState();
-        const [finishDate, setFinishDate] = useState();
-        const [OsmoArea, setOsmoArea] = useState();
-        const [OsmoData, setOsmoData] = useState();
-        const [max, setmax]= useState ([]);
-        const [min, setmin]= useState ([]);
-        const [avg, setavg]= useState ([]);
-        const [unit, setunit] = useState();
-        const [title, setTitle] = useState();
+  const [startDate, setStartDate] = useState();
+  const [finishDate, setFinishDate] = useState();
+  const [OsmoArea, setOsmoArea] = useState();
+  const [OsmoData, setOsmoData] = useState();
+  const [max, setmax]= useState ([]);
+  const [min, setmin]= useState ([]);
+  const [avg, setavg]= useState ([]);
+  const [unit, setunit] = useState();
+  const [title, setTitle] = useState();
 
-        const [isDarkMode, setIsDarkMode] = useState(
-          document.documentElement.getAttribute("data-theme") === "dark"
-        );
+  const { colorMode } = useColorMode();
+  const borderColor = useColorModeValue("rgba(var(--color-border))", "rgba(var(--color-border))");
+  const hoverBorderColor = useColorModeValue("rgba(var(--color-border2))", "rgba(var(--color-border2))");
+
+  const [isDarkMode, setIsDarkMode] = useState(
+    document.documentElement.getAttribute("data-theme") === "dark"
+  );
 
         const fetchOsmo = async () => {
             let response = await axios.get(
@@ -191,11 +196,21 @@ export default function Osmotron() {
   return(
     <div className="my-4">
       <div className="flex justify-center items-center my-6 mx-auto w-full">
-        <div className="grid lg:grid-cols-4 gap-4 w-full max-w-screen-xl xl:flex xl:flex-row xl:justify-center">
+        <div className="grid lg:grid-cols-4 gap-4 w-full max-w-screen-xl xl:flex xl:flex-row xl:justify-center xl:items-center">
           {/* Column 1: Select Parameter */}
-          <div className="w-full flex flex-col items-center">
+          <div className="w-full flex flex-col items-center xl:w-96">
             <h5 className="mb-1">Parameter</h5>
-            <Select placeholder="Select Parameter" onChange={getOsmoArea}>
+            <Select placeholder="Select Parameter" className="w-full" onChange={getOsmoArea}
+            sx={{
+              border: "1px solid",
+              borderColor: borderColor,
+              borderRadius: "0.395rem",
+              background: "var(--color-background)", // background color from Tailwind config
+    
+              _hover: {
+                borderColor: hoverBorderColor,
+              },
+            }}>
               <option value="osmo_B270A_6.1">B270A_6.1 (Unit EDI)</option>
               <option value="osmo_ET270A_6.11">ET270A_6.11 (Voltase EDI)</option>
               <option value="osmo_ET270A_6.12">ET270A_6.12 (Ampere EDI)</option>
@@ -243,18 +258,29 @@ export default function Osmotron() {
               <option value="FT270A_6.1">FT270A_6.1 (Output Osmotron)</option>
             </Select>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 w-full">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 w-full xl:w-96">
             <div className="flex flex-col items-center">
               <h5 className="mb-1">Start Time</h5>
               <Input
                 onChange={dateStart}
-                placeholder="Select Date and Time"
+                placeholder="Select Date"
                 size="md"
-                type="date"
+                type="date" 
+                className="w-full"
                 css={{
                   "&::-webkit-calendar-picker-indicator": {
                     color: isDarkMode ? "white" : "black",
                     filter: isDarkMode ? "invert(1)" : "none",
+                  },
+                }}
+                sx={{
+                  border: "1px solid",
+                  borderColor: borderColor,
+                  borderRadius: "0.395rem",
+                  background: "var(--color-background)", // background color from Tailwind config
+        
+                  _hover: {
+                    borderColor: hoverBorderColor,
                   },
                 }}
               /> 
@@ -263,32 +289,43 @@ export default function Osmotron() {
               <h5 className="mb-1">Finish Time</h5>
               <Input
                 onChange={dateFinish}
-                placeholder="Select Date and Time"
+                placeholder="Select Date"
                 size="md"
-                type="date"
+                type="date" 
+                className="w-full"
                 css={{
                   "&::-webkit-calendar-picker-indicator": {
                     color: isDarkMode ? "white" : "black",
                     filter: isDarkMode ? "invert(1)" : "none",
                   },
                 }}
+                sx={{
+                  border: "1px solid",
+                  borderColor: borderColor,
+                  borderRadius: "0.395rem",
+                  background: "var(--color-background)", // background color from Tailwind config
+        
+                  _hover: {
+                    borderColor: hoverBorderColor,
+                  },
+                }}
               />
             </div>
           </div>
-          <div className="w-full flex flex-col items-center">
+          <div className="w-full flex flex-col items-center xl:w-48">
             <h5 className="mb-1 invisible">Placeholder</h5>
-            <Button className="w-full" colorScheme="blue" onClick={() => fetchOsmo()}>
+            <Button className="w-full xl:w-auto xl:px-8" style={{ minWidth: '120px' }} colorScheme="blue" onClick={() => fetchOsmo()}>
               Submit
             </Button>
           </div>
-        <div className="flex flex-col justify-center items-center text-center w-full">
-          <div className="text-text">Avg = {avg.toLocaleString()} {unit}</div>
-          <div className="text-text">Max = {max.toLocaleString()} {unit}</div>
-          <div className="text-text">Min = {min.toLocaleString()} {unit}</div>
-        </div>
+          <div className="flex flex-col justify-center items-center text-center w-full xl:w-36">
+            <div className="text-text">Avg = {avg.toLocaleString()} {unit}</div>
+            <div className="text-text">Max = {max.toLocaleString()} {unit}</div>
+            <div className="text-text">Min = {min.toLocaleString()} {unit}</div>
+          </div>
         </div>
       </div>
-      <div className="flex flex-row justify-center mx-8 p-1 rounded-md overflow-x-auto"> 
+      <div className="flex flex-row justify-center mx-6 p-1 bg-card rounded-md shadow-lg overflow-x-auto"> 
           <CanvasJSChart className="" options={options} />
       </div>
     </div>

@@ -1476,11 +1476,9 @@ export default function PowerManagement() {
             Submit
           </Button>
         </div>
-        <div className="mt-3">
+        <div>
           <div className="ml-16 text-text">Total = {totalDaily.toLocaleString()} Kwh</div>
-          <div className="ml-16 text-text">
-            Average = {avarageDaily.toLocaleString()} Kwh
-          </div>
+          <div className="ml-16 text-text">Average = {avarageDaily.toLocaleString()} Kwh</div>
         </div>
       </div>
       <div className="flex flex-row box-border justify-center mx-8 p-1 bg-card rounded-lg overflow-x-auto relative">
@@ -1643,7 +1641,7 @@ export default function PowerManagement() {
             Submit
           </Button>
         </div>
-        <div className="mt-3">
+        <div>
           <div className="ml-16 text-text">
             Total = {totalMonthly.toLocaleString()} Kwh
           </div>
