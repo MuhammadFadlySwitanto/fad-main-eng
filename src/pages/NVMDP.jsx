@@ -8,6 +8,7 @@ import { GiPowerGenerator } from "react-icons/gi";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import   {Progress  } from "@chakra-ui/react";
 import ChartDashboard from "../components/ChartDashboard";
+import ChartYearly from "../components/ChartYearly";
 
 // export const getMvmdpData = [
 //   { title: 'LVMDP 1 Load Percentage', value: `${((lvmdp1 / getLimit.Limit_Listrik) * 100).toFixed(2)} %` },
@@ -267,6 +268,51 @@ const NVMDP = React.forwardRef(({ getLimit, dataTotalUang }, ref) => {
         </div>
       </div>
 
+      {/* Pop-Up */}
+      {showSolarPanel && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
+          <div className="rounded-md border border-border shadow-buatcard bg-coba p-6 relative w-full">
+            <p className="text-text my-2">Ini adalah pop-up dari card Solar Panel 1 - 6.</p>
+            <ChartDashboard endpoint="http://10.126.15.197:8002/part/GrafanaPower" area="cMT-Gedung-UTY_Inverter1-6_SP_data" title="Inverter Solar Panel 1-6 Data Graph" colors={Colors1}
+              style={{
+                border: 'none', // Removes border
+                position: 'relative',
+                width: '100%', // Full width of parent div
+                aspectRatio: '16 / 6', // Adjust aspect ratio as needed
+                height: '580px'
+              }}/>
+            <button
+              onClick={() => setShowSolarPanel(false)}
+              className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full"
+            >
+              X
+            </button>
+          </div>
+        </div>
+      )}
+      {/* Pop-Up */}
+      {showSolarPanel2 && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
+          <div className="rounded-md border border-border shadow-buatcard bg-coba p-6 relative w-full">
+            <p className="text-text my-2">Ini adalah pop-up dari card Solar Panel 7 - 12.</p>
+            <ChartDashboard endpoint="http://10.126.15.197:8002/part/GrafanaPower" area="cMT-Gedung-UTY_Inverter7-12_SP_data" title="Inverter Solar Panel 7-12 Data Graph" colors={Colors1}
+              style={{
+                border: 'none', // Removes border
+                position: 'relative',
+                width: '100%', // Full width of parent div
+                aspectRatio: '16 / 6', // Adjust aspect ratio as needed
+                height: '580px'
+              }}/>
+            <button
+              onClick={() => setShowSolarPanel2(false)}
+              className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full"
+            >
+              X
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Right Side Cards - Top Row */}
       <div className="xl:col-span-3 w-full">
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:h-full xl:grid-cols-3 xl:h-64 2xl:gap-7">
@@ -287,28 +333,51 @@ const NVMDP = React.forwardRef(({ getLimit, dataTotalUang }, ref) => {
               </div>
             </div>
             <Progress hasStripe value={lvmdp1} max={getLimit.Limit_Listrik} colorScheme="green" className="rounded-full" 
-              sx={{
-                '& > div': { backgroundColor: '#fffaa6' }, // Warna kustom untuk bar
-                backgroundColor: isDarkMode ? '#282828' : '#ededed' // Warna kustom untuk track
-              }}/>
-              <div className="flex justify-end">
-                <span className="flex items-center gap-1 text-[16px] pt-1 text-gray-500 font-light">{((lvmdp1/getLimit.Limit_Listrik )*100).toFixed(2)} %
-                  <svg
-                    className="fill-gray-500"
-                    width="10"
-                    height="11"
-                    viewBox="0 0 10 11"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M4.35716 2.47737L0.908974 5.82987L5.0443e-07 4.94612L5 0.0848689L10 4.94612L9.09103 5.82987L5.64284 2.47737L5.64284 10.0849L4.35716 10.0849L4.35716 2.47737Z"
-                      fill=""
-                    />
-                  </svg>
-                </span>
-              </div>
+            sx={{'& > div': { backgroundColor: '#fffaa6' }, // Warna kustom untuk bar
+              backgroundColor: isDarkMode ? '#282828' : '#ededed' // Warna kustom untuk track
+            }}/>
+            <div className="flex justify-end">
+              <span className="flex items-center gap-1 text-[16px] pt-1 text-gray-500 font-light">{((lvmdp1/getLimit.Limit_Listrik )*100).toFixed(2)} %
+                <svg
+                  className="fill-gray-500"
+                  width="10"
+                  height="11"
+                  viewBox="0 0 10 11"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M4.35716 2.47737L0.908974 5.82987L5.0443e-07 4.94612L5 0.0848689L10 4.94612L9.09103 5.82987L5.64284 2.47737L5.64284 10.0849L4.35716 10.0849L4.35716 2.47737Z"
+                    fill=""
+                  />
+                </svg>
+              </span>
+            </div>
           </div>
+
+          {/* Pop-Up */}
+          {showPopup && (
+            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
+              <div className="rounded-md border border-border shadow-buatcard bg-coba p-6 relative w-full">
+                <p className="text-text my-2">Ini adalah pop-up dari card LVMDP.</p>
+                <ChartDashboard endpoint="http://10.126.15.197:8002/part/GrafanaPower" area="cMT-Gedung-UTY_LVMDP1_data" title="LVMDP Data Graph" colors={Colors2}
+                  style={{
+                    border: 'none', // Removes border
+                    position: 'relative',
+                    width: '100%', // Full width of parent div
+                    aspectRatio: '16 / 6', // Adjust aspect ratio as needed
+                    height: '580px'
+                  }}/>
+                <button
+                  onClick={() => setShowPopup(false)}
+                  className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full"
+                >
+                  X
+                </button>
+              </div>
+            </div>
+          )}
+          
           {/* Card Chiller */}
           <div className="rounded-md mt-2 border border-border px-7.5 py-6 shadow-buatcard bg-coba cursor-pointer"
             onClick={() => setShowChillerPopup(true)}>
@@ -325,6 +394,30 @@ const NVMDP = React.forwardRef(({ getLimit, dataTotalUang }, ref) => {
               </div>
             </div>
           </div>
+
+          {/* Pop-Up */}
+          {showChillerPopup && (
+            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
+              <div className="rounded-md border border-border shadow-buatcard bg-coba p-6 relative w-full">
+                <p className="text-text my-2">Ini adalah pop-up dari card Chiller.</p>
+                <ChartDashboard endpoint="http://10.126.15.197:8002/part/GrafanaPower" area="cMT-Gedung-UTY_PP.1-Chiller_data" title="Chiller Data Graph" colors={Colors2}
+                  style={{
+                    border: 'none', // Removes border
+                    position: 'relative',
+                    width: '100%', // Full width of parent div
+                    aspectRatio: '16 / 6', // Adjust aspect ratio as needed
+                    height: '580px'
+                  }}/>
+                <button
+                  onClick={() => setShowChillerPopup(false)}
+                  className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full"
+                >
+                  X
+                </button>
+              </div>
+            </div>
+          )}
+
           {/* Card Hydrant */}
           <div className="rounded-md mt-2 border border-border px-7.5 py-6 shadow-buatcard bg-coba cursor-pointer"
             onClick={() => setShowHydrantPopup(true)}>
@@ -343,6 +436,29 @@ const NVMDP = React.forwardRef(({ getLimit, dataTotalUang }, ref) => {
           </div>
         </div>
       </div>
+
+      {/* Pop-Up */}
+      {showHydrantPopup && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
+          <div className="rounded-md border border-border shadow-buatcard bg-coba p-6 relative w-full">
+            <p className="text-text my-2">Ini adalah pop-up dari card Hydrant.</p>
+            <ChartDashboard endpoint="http://10.126.15.197:8002/part/GrafanaPower" area="cMT-Gedung-UTY_PP.2-Hydrant_data" title="Hydrant Data Graph" colors={Colors1}
+              style={{
+                border: 'none', // Removes border
+                position: 'relative',
+                width: '100%', // Full width of parent div
+                aspectRatio: '16 / 6', // Adjust aspect ratio as needed
+                height: '580px'
+              }}/>
+            <button
+              onClick={() => setShowHydrantPopup(false)}
+              className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full"
+            >
+              X
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Bottom Row Cards */}
       <div className="xl:col-span-3 w-full">
@@ -367,6 +483,30 @@ const NVMDP = React.forwardRef(({ getLimit, dataTotalUang }, ref) => {
               </div>
             </div>
           </div>
+
+          {/* Pop-Up */}
+          {showUtil && (
+            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
+              <div className="rounded-md border border-border shadow-buatcard bg-coba p-6 relative w-full">
+                <p className="text-text my-2">Ini adalah pop-up dari card Utility.</p>
+                <ChartDashboard endpoint="http://10.126.15.197:8002/part/GrafanaPower" area="cMT-Gedung-UTY_SDP.1-Utility_data" title="Utility Data Graph" colors={Colors1}
+                  style={{
+                    border: 'none', // Removes border
+                    position: 'relative',
+                    width: '100%', // Full width of parent div
+                    aspectRatio: '16 / 6', // Adjust aspect ratio as needed
+                    height: '580px'
+                  }}/>
+                <button
+                  onClick={() => setShowUtil(false)}
+                  className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full"
+                >
+                  X
+                </button>
+              </div>
+            </div>
+          )}
+          
           {/* SDP1 Card */}
           <div className="rounded-md mt-2 border border-border px-7.5 py-6 shadow-buatcard bg-coba cursor-pointer min-w-0"
             onClick={() => setShowProd(true)}>
@@ -387,6 +527,30 @@ const NVMDP = React.forwardRef(({ getLimit, dataTotalUang }, ref) => {
               </div>
             </div>
           </div>
+
+          {/* Pop-Up */}
+          {showProd && (
+            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
+              <div className="rounded-md border border-border shadow-buatcard bg-coba p-6 relative w-full">
+                <p className="text-text my-2">Ini adalah pop-up dari card SDP 1 Production.</p>
+                <ChartDashboard endpoint="http://10.126.15.197:8002/part/GrafanaPower" area="cMT-Gedung-UTY_SDP.1-Produksi_data" title="SDP 1 Production Data Graph" colors={Colors3}
+                  style={{
+                    border: 'none', // Removes border
+                    position: 'relative',
+                    width: '100%', // Full width of parent div
+                    aspectRatio: '16 / 6', // Adjust aspect ratio as needed
+                    height: '580px'
+                  }}/>
+                <button
+                  onClick={() => setShowProd(false)}
+                  className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full"
+                >
+                  X
+                </button>
+              </div>
+            </div>
+          )}
+
           {/* SDP2 Card */}
           <div className="rounded-md mt-2 border border-border px-7.5 py-6 shadow-buatcard bg-coba cursor-pointer min-w-0"
             onClick={() => setShowProd2(true)}>
@@ -403,12 +567,35 @@ const NVMDP = React.forwardRef(({ getLimit, dataTotalUang }, ref) => {
               </div>
             </div>
           </div>
+
+          {/* Pop-Up */}
+          {showProd2 && (
+            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
+              <div className="rounded-md border border-border shadow-buatcard bg-coba p-6 relative w-full">
+                <p className="text-text mt-2">Ini adalah pop-up dari card SDP 2 Production.</p>
+                <ChartDashboard endpoint="http://10.126.15.197:8002/part/GrafanaPower" area="cMT-Gedung-UTY_SDP.2-Produksi_data" title="SDP 2 Production Data Graph" colors={Colors3}
+                  style={{
+                    border: 'none', // Removes border
+                    position: 'relative',
+                    width: '100%', // Full width of parent div
+                    aspectRatio: '16 / 6', // Adjust aspect ratio as needed
+                    height: '580px'
+                  }}/>
+                <button
+                  onClick={() => setShowProd2(false)}
+                  className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full"
+                >
+                  X
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
 {/* ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ */}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-2 transition delay-200 mt-4">
-        <div className="rounded-md mt-2 flex flex-col border border-border px-7.5 py-6 shadow-buatcard bg-coba">
+        {/* <div className="rounded-md mt-2 flex flex-col border border-border px-7.5 py-6 shadow-buatcard bg-coba">
           <div className="flex items-center gap-4">
             <div className="flex h-[46px] w-[46px] items-center justify-center rounded-full bg-lingkaran">
               <svg
@@ -429,7 +616,7 @@ const NVMDP = React.forwardRef(({ getLimit, dataTotalUang }, ref) => {
                 />
               </svg>
             </div>
-            <h1 className="text-text text-2xl font-semibold font-DMSans">Inverter</h1>
+            <h1 className="text-text text-2xl font-semibold font-DMSans">Inverterrrrrr</h1>
           </div>
           <div className="grid grid-cols-2 border-b border-gray-300 mt-1">
             <div className="py-1 px-4 text-center font-semibold text-text border-r border-gray-400 cursor-pointer
@@ -454,8 +641,6 @@ const NVMDP = React.forwardRef(({ getLimit, dataTotalUang }, ref) => {
           <div className="mt-2 flex items-end justify-between">
             <div>
               <h4 className="text-[28px] font-bold font-poppins text-black dark:text-white">
-              {/* kalau pake dollar / duit pake kode yg dibawah (yg di komenin) */}
-              {/* ${((filteredValue?.Inverter_SP_1to6?.[0] ?? 0) + (filteredValue?.Inverter_SP_7to12?.[0] ?? 0)).toLocaleString("en-US")} */}
               {((solarPanel ?? 0) + (solarPanel2 ?? 0))}
               </h4>
               <span className="text-[16px] gap-1 font-medium font-poppins text-black dark:text-white">Total</span>
@@ -477,54 +662,9 @@ const NVMDP = React.forwardRef(({ getLimit, dataTotalUang }, ref) => {
               </svg>
             </span>
           </div>
-        </div>
-
-        {/* Pop-Up */}
-        {showSolarPanel && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
-            <div className="rounded-md border border-border shadow-buatcard bg-coba p-6 relative w-full">
-              <p className="text-text my-2">Ini adalah pop-up dari card Solar Panel 1 - 6.</p>
-              <ChartDashboard endpoint="http://10.126.15.197:8002/part/GrafanaPower" area="cMT-Gedung-UTY_Inverter1-6_SP_data" title="Inverter Solar Panel 1-6 Data Graph" colors={Colors1}
-                style={{
-                  border: 'none', // Removes border
-                  position: 'relative',
-                  width: '100%', // Full width of parent div
-                  aspectRatio: '16 / 6', // Adjust aspect ratio as needed
-                  height: '580px'
-                }}/>
-              <button
-                onClick={() => setShowSolarPanel(false)}
-                className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full"
-              >
-                X
-              </button>
-            </div>
-          </div>
-        )}
-        {/* Pop-Up */}
-        {showSolarPanel2 && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
-            <div className="rounded-md border border-border shadow-buatcard bg-coba p-6 relative w-full">
-              <p className="text-text my-2">Ini adalah pop-up dari card Solar Panel 7 - 12.</p>
-              <ChartDashboard endpoint="http://10.126.15.197:8002/part/GrafanaPower" area="cMT-Gedung-UTY_Inverter7-12_SP_data" title="Inverter Solar Panel 7-12 Data Graph" colors={Colors1}
-                style={{
-                  border: 'none', // Removes border
-                  position: 'relative',
-                  width: '100%', // Full width of parent div
-                  aspectRatio: '16 / 6', // Adjust aspect ratio as needed
-                  height: '580px'
-                }}/>
-              <button
-                onClick={() => setShowSolarPanel2(false)}
-                className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full"
-              >
-                X
-              </button>
-            </div>
-          </div>
-        )}
+        </div> */}
 {/* ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ */}
-        <div className="rounded-md mt-2 border border-border px-7.5 py-6 shadow-buatcard bg-coba cursor-pointer"
+      {/* <div className="rounded-md mt-2 border border-border px-7.5 py-6 shadow-buatcard bg-coba cursor-pointer"
         onClick={() => setShowPopup(true)}>
           <div className="flex items-center gap-4">
             <div className="flex h-[46px] w-[46px] items-center justify-center rounded-full bg-lingkaran">
@@ -573,38 +713,15 @@ const NVMDP = React.forwardRef(({ getLimit, dataTotalUang }, ref) => {
               </svg>
             </span>
           </div>
-        </div>
-
-        {/* Pop-Up */}
-        {showPopup && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
-            <div className="rounded-md border border-border shadow-buatcard bg-coba p-6 relative w-full">
-              <p className="text-text my-2">Ini adalah pop-up dari card LVMDP.</p>
-              <ChartDashboard endpoint="http://10.126.15.197:8002/part/GrafanaPower" area="cMT-Gedung-UTY_LVMDP1_data" title="LVMDP Data Graph" colors={Colors2}
-                style={{
-                  border: 'none', // Removes border
-                  position: 'relative',
-                  width: '100%', // Full width of parent div
-                  aspectRatio: '16 / 6', // Adjust aspect ratio as needed
-                  height: '580px'
-                }}/>
-              <button
-                onClick={() => setShowPopup(false)}
-                className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full"
-              >
-                X
-              </button>
-            </div>
-          </div>
-        )}
+        </div> */}
 {/* ---------------------------------------------------------------------------------------------------------------------------------------------------------- */}
-        <div className="rounded-md mt-2 border border-border px-7.5 py-6 shadow-buatcard bg-coba cursor-pointer"
+        {/* <div className="rounded-md mt-2 border border-border px-7.5 py-6 shadow-buatcard bg-coba cursor-pointer"
         onClick={() => setShowChillerPopup(true)}>
           <div className="flex items-center gap-4">
             <div className="flex h-[46px] w-[46px] items-center justify-center rounded-full bg-lingkaran relative">
               <AcUnitIcon sx={{ fontSize: 32 }} className="overflow-hidden m-1 z-10 "/>
             </div>
-            <h1 className="text-text text-2xl font-semibold font-DMSans">Chiller</h1>
+            <h1 className="text-text text-2xl font-semibold font-DMSans">Chillerrrr</h1>
           </div>
           <div className="mt-7 flex items-end justify-between">
             <div>
@@ -627,33 +744,10 @@ const NVMDP = React.forwardRef(({ getLimit, dataTotalUang }, ref) => {
               </svg>
             </span>
           </div>
-        </div>
-
-        {/* Pop-Up */}
-        {showChillerPopup && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
-          <div className="rounded-md border border-border shadow-buatcard bg-coba p-6 relative w-full">
-            <p className="text-text my-2">Ini adalah pop-up dari card Chiller.</p>
-            <ChartDashboard endpoint="http://10.126.15.197:8002/part/GrafanaPower" area="cMT-Gedung-UTY_PP.1-Chiller_data" title="Chiller Data Graph" colors={Colors2}
-              style={{
-                border: 'none', // Removes border
-                position: 'relative',
-                width: '100%', // Full width of parent div
-                aspectRatio: '16 / 6', // Adjust aspect ratio as needed
-                height: '580px'
-              }}/>
-            <button
-              onClick={() => setShowChillerPopup(false)}
-              className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full"
-            >
-              X
-            </button>
-          </div>
-        </div>
-        )}
-  {/* ----------------------------------------------------------------------------------------------------------------------------------------------------------      */}
-        <div className="rounded-md mt-2 border border-border px-7.5 py-6 shadow-buatcard bg-coba cursor-pointer"
-        onClick={() => setShowHydrantPopup(true)}>
+        </div> */}
+{/* ----------------------------------------------------------------------------------------------------------------------------------------------------------      */}
+        {/* <div className="rounded-md mt-2 border border-border px-7.5 py-6 shadow-buatcard bg-coba cursor-pointer"
+          onClick={() => setShowHydrantPopup(true)}>
           <div className="flex items-center gap-4">
             <div className="flex h-[46px] w-[46px] items-center justify-center rounded-full bg-lingkaran relative">
               <FireHydrantAltIcon sx={{ fontSize: 32 }} className="flex-shrink-0 m-1 z-10 "/>
@@ -681,34 +775,11 @@ const NVMDP = React.forwardRef(({ getLimit, dataTotalUang }, ref) => {
               </svg>
             </span>
           </div>
-        </div>
+        </div> */}
       </div>
-
-      {/* Pop-Up */}
-      {showHydrantPopup && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
-          <div className="rounded-md border border-border shadow-buatcard bg-coba p-6 relative w-full">
-            <p className="text-text my-2">Ini adalah pop-up dari card Hydrant.</p>
-            <ChartDashboard endpoint="http://10.126.15.197:8002/part/GrafanaPower" area="cMT-Gedung-UTY_PP.2-Hydrant_data" title="Hydrant Data Graph" colors={Colors1}
-              style={{
-                border: 'none', // Removes border
-                position: 'relative',
-                width: '100%', // Full width of parent div
-                aspectRatio: '16 / 6', // Adjust aspect ratio as needed
-                height: '580px'
-              }}/>
-            <button
-              onClick={() => setShowHydrantPopup(false)}
-              className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full"
-            >
-              X
-            </button>
-          </div>
-        </div>
-        )}
   {/* -------------------------------------------------------------------------------------------------------------------------------------------- */}
       <div className="grid grid-cols-1 justify-center gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-3 2xl:gap-2">
-        <div className="rounded-md mt-2 border border-border px-7.5 py-6 shadow-buatcard bg-coba cursor-pointer"
+        {/* <div className="rounded-md mt-2 border border-border px-7.5 py-6 shadow-buatcard bg-coba cursor-pointer"
         onClick={() => setShowUtil(true)}>
           <div className="flex items-center gap-4">
             <div className="flex h-[46px] w-[46px] items-center justify-center rounded-full bg-lingkaran relative">
@@ -737,31 +808,10 @@ const NVMDP = React.forwardRef(({ getLimit, dataTotalUang }, ref) => {
               </svg>
             </span>
           </div>
-        </div>
-        {/* Pop-Up */}
-        {showUtil && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
-            <div className="rounded-md border border-border shadow-buatcard bg-coba p-6 relative w-full">
-              <p className="text-text my-2">Ini adalah pop-up dari card Utility.</p>
-              <ChartDashboard endpoint="http://10.126.15.197:8002/part/GrafanaPower" area="cMT-Gedung-UTY_SDP.1-Utility_data" title="Utility Data Graph" colors={Colors1}
-                style={{
-                  border: 'none', // Removes border
-                  position: 'relative',
-                  width: '100%', // Full width of parent div
-                  aspectRatio: '16 / 6', // Adjust aspect ratio as needed
-                  height: '580px'
-                }}/>
-              <button
-                onClick={() => setShowUtil(false)}
-                className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full"
-              >
-                X
-              </button>
-            </div>
-          </div>
-        )}
+        </div> */}
+        
 {/* -----------------------------------------------------------------------------------------------------------------------------------------------------------------------         */}
-        <div className="rounded-md mt-2 border border-border px-7.5 py-6 shadow-buatcard bg-coba cursor-pointer"
+      {/* <div className="rounded-md mt-2 border border-border px-7.5 py-6 shadow-buatcard bg-coba cursor-pointer"
         onClick={() => setShowProd(true)}>
           <div className="flex items-center gap-4">
             <div className="flex h-[46px] w-[46px] items-center justify-center rounded-full bg-lingkaran relative">
@@ -790,31 +840,9 @@ const NVMDP = React.forwardRef(({ getLimit, dataTotalUang }, ref) => {
               </svg>
             </span>
           </div>
-        </div>
-        {/* Pop-Up */}
-        {showProd && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
-            <div className="rounded-md border border-border shadow-buatcard bg-coba p-6 relative w-full">
-              <p className="text-text my-2">Ini adalah pop-up dari card SDP 1 Production.</p>
-              <ChartDashboard endpoint="http://10.126.15.197:8002/part/GrafanaPower" area="cMT-Gedung-UTY_SDP.1-Produksi_data" title="SDP 1 Production Data Graph" colors={Colors3}
-                style={{
-                  border: 'none', // Removes border
-                  position: 'relative',
-                  width: '100%', // Full width of parent div
-                  aspectRatio: '16 / 6', // Adjust aspect ratio as needed
-                  height: '580px'
-                }}/>
-              <button
-                onClick={() => setShowProd(false)}
-                className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full"
-              >
-                X
-              </button>
-            </div>
-          </div>
-        )}
+        </div> */}
 {/* -----------------------------------------------------------------------------------------------------------------------------------------------------------------------         */}
-        <div className="rounded-md mt-2 border border-border px-7.5 py-6 shadow-buatcard bg-coba cursor-pointer"
+      {/* <div className="rounded-md mt-2 border border-border px-7.5 py-6 shadow-buatcard bg-coba cursor-pointer"
         onClick={() => setShowProd2(true)}>
           <div className="flex items-center gap-4">
             <div className="flex h-[46px] w-[46px] items-center justify-center rounded-full bg-lingkaran relative">
@@ -843,33 +871,11 @@ const NVMDP = React.forwardRef(({ getLimit, dataTotalUang }, ref) => {
               </svg>
             </span>
           </div>
-        </div>
-        {/* Pop-Up */}
-        {showProd2 && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
-            <div className="rounded-md border border-border shadow-buatcard bg-coba p-6 relative w-full">
-              <p className="text-text mt-2">Ini adalah pop-up dari card SDP 2 Production.</p>
-              <ChartDashboard endpoint="http://10.126.15.197:8002/part/GrafanaPower" area="cMT-Gedung-UTY_SDP.2-Produksi_data" title="SDP 2 Production Data Graph" colors={Colors3}
-                style={{
-                  border: 'none', // Removes border
-                  position: 'relative',
-                  width: '100%', // Full width of parent div
-                  aspectRatio: '16 / 6', // Adjust aspect ratio as needed
-                  height: '580px'
-                }}/>
-              <button
-                onClick={() => setShowProd2(false)}
-                className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full"
-              >
-                X
-              </button>
-            </div>
-          </div>
-        )}
+        </div> */}
       </div>
       <div className="text-center mt-8 p-2 shadow-buatcard bg-coba rounded-md relative">
         <h1 className="text-center text-text text-4xl antialiased hover:subpixel-antialiased mb-2">MVMDP Chart</h1>
-        <ChartDashboard endpoint="http://10.126.15.197:8002/part/GrafanaMVMDPYear" area="cMT-Gedung-UTY_MVMDP_data" title=" " colors={Colors2}
+        <ChartYearly endpoint="http://10.126.15.197:8002/part/GrafanaMVMDPYear" area="cMT-Gedung-UTY_MVMDP_data" title=" " colors={Colors2}
           style={{
           border: 'none', // Removes border
           position: 'relative',
@@ -890,7 +896,10 @@ const NVMDP = React.forwardRef(({ getLimit, dataTotalUang }, ref) => {
             height: '840px', // Set a fixed height for the iframe
           }}
           title="Grafana Chart">
+          
         </iframe> */}
+        {/* kalau pake dollar / duit pake kode yg dibawah (yg di komenin) */}
+        {/* ${((filteredValue?.Inverter_SP_1to6?.[0] ?? 0) + (filteredValue?.Inverter_SP_7to12?.[0] ?? 0)).toLocaleString("en-US")} */}
       </div>
     </>
   );
