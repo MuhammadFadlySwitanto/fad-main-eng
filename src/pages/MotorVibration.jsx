@@ -316,47 +316,53 @@ function Motor() {
               placeholder="All Machine"
               onChange={(e) => setMachinePicker(e.target.value)}
             >
-              <option value="cMT-VibrasiHVAC_Area_N33_data">Area N33</option>
-              <option value="cMT-VibrasiHVAC_Area_P10_data">Area P10</option>
-              <option value="cMT-VibrasiHVAC_Area_W25toN33_data">Area W25toN33</option>
-              <option value="cMT-VibrasiHVAC_Area_W25toP10_data">Area W25toP10</option>
-              <option value="cMT-VibrasiHVAC_CMH AHU E 1.01_data">CMH AHU E 1.01</option>
-              <option value="cMT-VibrasiHVAC_CMH AHU F 1.01_data">CMH AHU F 1.01</option>
-              <option value="cMT-VibrasiHVAC_CMH AHU F 1.02_data">CMH AHU F 1.02</option>
-              <option value="cMT-VibrasiHVAC_CMH AHU FT1.01_data">CMH AHU FT 1.01</option>
-              <option value="cMT-VibrasiHVAC_CMH AHU FT 1.01_data">CMH AHU FT 1.01</option>
-              <option value="cMT-VibrasiHVAC_CMH AHU FT 1.02_data">CMH AHU FT 1.02</option>
-              <option value="cMT-VibrasiHVAC_CMH AHU G 1.01_data">CMH AHU G 1.01</option>
-              <option value="cMT-VibrasiHVAC_CMH AHU G 1.02_data">CMH AHU G 1.02</option>
-              <option value="cMT-VibrasiHVAC_CMH AHU LA 2.01_data">AHU LA 2.01</option>
-              <option value="cMT-VibrasiHVAC_CMH AHU MG 1.01_data">AHU MG 1.01</option>
-              <option value="cMT-VibrasiHVAC_CMH AHU MG 1.02_data">AHU MG 1.02</option>
-              <option value="cMT-VibrasiHVAC_CMH AHU MG 1.03_data">AHU MG 1.03</option>
-              <option value="cMT-VibrasiHVAC_CMH AHU RND 3.01_data">AHU RnD 3.01</option>
-              <option value="cMT-VibrasiHVAC_CMH AHU RND 3.02_data">AHU RnD 3.02</option>
-              <option value="cMT-VibrasiHVAC_CMH AHU WG 1.01_data">AHU WG 1.01</option>
-              <option value="cMT-VibrasiHVAC_CMH AHU WG 1.02_data">AHU WG 1.02</option>
-              <option value="cMT-VibrasiHVAC_CMH AHU WH1_data">AHU WH1</option>
-              <option value="cMT-VibrasiHVAC_CMH DCU FT 1.02_data">DCU FT 1.02</option>
-              <option value="cMT-VibrasiHVAC_CMH DCU WG 1.02_data">DCU WG 1.02</option>
-              <option value="cMT-VibrasiHVAC_CMH RFU E 1.01_data">RFU E 1.01</option>
-              <option value="cMT-VibrasiHVAC_CMH RFU FT 1.01_data">RFU FT 1.01</option>
-              <option value="cMT-VibrasiHVAC_CMH RFU FT 1.02_data">RFU FT 1.02</option>
-              <option value="cMT-VibrasiHVAC_CMH RFU MG 1.01_data">RFU MG 1.01</option>
-              <option value="cMT-VibrasiHVAC_CMH RFU MG 1.02_data">RFU MG 1.02</option>
-              <option value="cMT-VibrasiHVAC_CMH RFU WG 1.01_data">RFU WG 1.01</option>
-              <option value="cMT-VibrasiHVAC_CMH RFU WG 1.02_data">RFU WG 1.02</option>
-              <option value="cMT-VibrasiHVAC_CMH TFU F 1.01_data">TFU F 1.01</option>
-              <option value="cMT-VibrasiHVAC_CMH TFU WG 1.01_data">TFU WG 1.01</option>
+              <option value="cMT-DB-EMS-UTY_Area_N33_New_data">Area N33</option>
+              <option value="cMT-DB-EMS-UTY_Area_P10_New_data">Area P10</option>
+              <option value="cMT-DB-EMS-UTY_Area_W25toN33_Nw_data">Area W25toN33</option>
+              <option value="cMT-DB-EMS-UTY_Area_W25toP10_Nw_data">Area W25toP10</option>
+              <option value="cMT-VibrasiHVAC_Data_AHU_E1.01_data">CMH AHU E 1.01</option>
+              <option value="cMT-VibrasiHVAC_Data_AHU_F1.01_data">CMH AHU F 1.01</option>
+              <option value="cMT-VibrasiHVAC_Data_AHU_F1.02_data">CMH AHU F 1.02</option>
+
+              <option value="cMT-VibrasiHVAC_Data_AHU_FT1.01_data">CMH AHU FT 1.01</option>
+
+              <option value="cMT-VibrasiHVAC_Data_AHU_FT1.02_data">CMH AHU FT 1.02</option>
+              <option value="cMT-VibrasiHVAC_Data_AHU_G1.01_data">CMH AHU G 1.01</option>
+              <option value="cMT-VibrasiHVAC_Data_AHU_G1.02_data">CMH AHU G 1.02</option>
+              <option value="cMT-VibrasiHVAC_Data_AHU_LA2.01_data">AHU LA 2.01</option>
+              <option value="cMT-VibrasiHVAC_Data_AHU_MG1.01_data">AHU MG 1.01</option>
+              <option value="cMT-VibrasiHVAC_Data_AHU_MG1.02_data">AHU MG 1.02</option>
+              <option value="cMT-VibrasiHVAC_Data_AHU_MG1.03_data">AHU MG 1.03</option>
+              <option value="cMT-VibrasiHVAC_Data_AHU_RND3.01_data">AHU RnD 3.01</option>
+              <option value="cMT-VibrasiHVAC_Data_AHU_RND3.02_data">AHU RnD 3.02</option>
+              <option value="cMT-VibrasiHVAC_Data_AHU_WG1.01_data">AHU WG 1.01</option>
+              <option value="cMT-VibrasiHVAC_Data_AHU_WG1.02_data">AHU WG 1.02</option>
+              <option value="cMT-VibrasiHVAC_Data_AHU_WH1_data">AHU WH1</option>
+              <option value="cMT-VibrasiHVAC_Data_DCU_FT1.02_data">DCU FT 1.02</option>
+              <option value="cMT-VibrasiHVAC_Data_DCU_WG1.02_data">DCU WG 1.02</option>
+              <option value="cMT-VibrasiHVAC_Data_DCU_MG1.02_data">DCU MG 1.02</option>
+              <option value="cMT-VibrasiHVAC_Data_DHU_MG1.03_data">DHU MG 1.03</option>
+              <option value="cMT-VibrasiHVAC_Data_DHU_RND3.01_data">DHU RnD 1.03</option>
+
+              <option value="cMT-VibrasiHVAC_Data_RFU_E1.01_data">RFU E 1.01</option>
+              <option value="cMT-VibrasiHVAC_Data_RFU_FT1.01_data">RFU FT 1.01</option>
+              <option value="cMT-VibrasiHVAC_Data_RFU_FT1.02_data">RFU FT 1.02</option>
+              <option value="cMT-VibrasiHVAC_Data_RFU_MG1.01_data">RFU MG 1.01</option>
+              <option value="cMT-VibrasiHVAC_Data_RFU_MG1.02_data">RFU MG 1.02</option>
+              <option value="cMT-VibrasiHVAC_Data_RFU_WG1.01_data">RFU WG 1.01</option>
+              <option value="cMT-VibrasiHVAC_Data_RFU_WG1.02_data">RFU WG 1.02</option>
+              <option value="cMT-VibrasiHVAC_Data_TFU_F1.01_data">TFU F 1.01</option>
+              <option value="cMT-VibrasiHVAC_Data_TFU_WG1.01_data">TFU WG 1.01</option>
               <option value="cMT-VibrasiHVAC_GAC_WH2_data">GAC WH2</option>
               <option value="cMT-VibrasiHVAC_GBAC1_WH1_data">GBAC1 WH1</option>
               <option value="cMT-VibrasiHVAC_GBAC2_WH1_data">GBAC2 WH1</option>
-              <option value="cMT-VibrasiHVAC_M_Current_FT1.01_data">M Current FT 1.01</option>
+
+              <option value="cMT-VibrasiHVAC_2_Current_FT1.01_data">M Current FT 1.01</option>
               <option value="cMT-VibrasiHVAC_M_Temp_FT1.01_data">M Temp FT 1.01</option>
               <option value="cMT-VibrasiHVAC_PackagingF_Line1_data">Packaging F Line 1</option>
               <option value="cMT-VibrasiHVAC_PackagingF_Line2_data">Packaging F Line 2</option>
               <option value="cMT-VibrasiHVAC_PackagingF_Line3_data">Packaging F Line 3</option>
-              <option value="cMT-VibrasiHVAC_Test 1jam 120x_data">Test 1 Jam 120x data</option>
+
               <option value="cMT-VibrasiHVAC_X_ACC_G_FT1.01_data">X ACC G FT 1.01</option>
               <option value="cMT-VibrasiHVAC_X_AXISVCF_FT1.01_data">X AXISVCF FT 1.01</option>
               <option value="cMT-VibrasiHVAC_X_Axis_Ve_FT1.01_data">X Axis Ve FT 1.01</option>

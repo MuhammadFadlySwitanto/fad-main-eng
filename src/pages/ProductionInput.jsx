@@ -193,133 +193,94 @@ const createSubRowWithFullDuration = (mainRow) => {
   };
 };
 
-// 3. Fungsi untuk membuat sub-row kosong dengan durasi yang tersisa
-const createEmptySubRow = (mainRow, remainingMinutes, lastEndTime) => {
-  // Pastikan waktu start tidak melebihi waktu finish main row
-  const safeStartTime = ensureTimeInRange(lastEndTime, mainRow.start, mainRow.finish);
-  
-  // Hitung maksimum durasi untuk sub-row ini
-  const maxMinutes = convertTimeToMinutes(mainRow.finish) - convertTimeToMinutes(safeStartTime);
-  const safeDuration = Math.min(remainingMinutes, maxMinutes);
-  
-  // Jika durasi terlalu kecil, gunakan durasi minimum (misalnya 1 menit)
-  const finalDuration = Math.max(safeDuration, 1);
-  
-  // Hitung finish time berdasarkan start time dan durasi
-  const finishTime = getNextTime(safeStartTime, finalDuration);
-  
-  // Pastikan finish time tidak melebihi finish time main row
-  const safeFinishTime = ensureTimeInRange(finishTime, mainRow.start, mainRow.finish);
-  
-  return {
-    start: safeStartTime,
-    finish: safeFinishTime,
-    total_menit: finalDuration,
-    downtime_type: '',
-    detail: '',
-    keterangan: ''
+  // Tambah sub-row baru (maksimum 5) dengan mempertimbangkan waktu yang tersisa
+  const handleAddSubRow = (rowIndex) => {
+    setTableData(prevData => {
+      const newData = [...prevData];
+      const mainRow = newData[rowIndex];
+      if (!mainRow.subRows) mainRow.subRows = [];
+
+      if (mainRow.subRows.length >= 5) {
+        toast.info('Maksimum 5 sub-row diperbolehkan');
+        return newData;
+      }
+
+      // Hitung total menit yang sudah dialokasikan di sub-rows
+      const allocatedMinutes = mainRow.subRows.reduce(
+        (sum, subRow) => sum + subRow.total_menit, 0
+      );
+      const remainingMinutes = mainRow.total_menit - allocatedMinutes;
+
+      if (remainingMinutes < 1) {
+        toast.warning('Tidak ada waktu tersisa untuk sub-row baru');
+        return newData;
+      }
+
+      // Dapatkan finish dari sub-row terakhir, atau start dari main row jika belum ada sub-row
+      let prevFinish = mainRow.start;
+      if (mainRow.subRows.length > 0) {
+        prevFinish = mainRow.subRows[mainRow.subRows.length - 1].finish;
+      }
+
+      // Sub-row baru: start=prevFinish, finish=mainRow.finish atau +remainingMinutes, total_menit=remainingMinutes
+      // Pakai getNextTime untuk cari finish
+      const maxFinish = convertTimeToMinutes(mainRow.finish);
+      const startMinutes = convertTimeToMinutes(prevFinish);
+      let finishMinutes = startMinutes + remainingMinutes;
+      if (finishMinutes > maxFinish) finishMinutes = maxFinish;
+
+      const newSubRow = {
+        start: prevFinish,
+        finish: convertMinutesToTime(finishMinutes),
+        total_menit: finishMinutes - startMinutes,
+        downtime_type: '',
+        detail: '',
+        keterangan: ''
+      };
+
+      mainRow.subRows.push(newSubRow);
+      return newData;
+    });
   };
-};
 
-// 4. Tambah sub-row baru (maksimum 5) dengan mempertimbangkan waktu yang tersisa
-const handleAddSubRow = (rowIndex) => {
-  setTableData(prevData => {
-    const newData = [...prevData];
-    const mainRow = newData[rowIndex];
-    if (!mainRow.subRows) mainRow.subRows = [];
-
-    if (mainRow.subRows.length >= 5) {
-      toast.info('Maksimum 5 sub-row diperbolehkan');
-      return newData;
-    }
-
-    // Hitung total menit yang sudah dialokasikan di sub-rows
-    const allocatedMinutes = mainRow.subRows.reduce(
-      (sum, subRow) => sum + subRow.total_menit, 0
-    );
-    const remainingMinutes = mainRow.total_menit - allocatedMinutes;
-
-    if (remainingMinutes < 1) {
-      toast.warning('Tidak ada waktu tersisa untuk sub-row baru');
-      return newData;
-    }
-
-    // Dapatkan finish dari sub-row terakhir, atau start dari main row jika belum ada sub-row
-    let prevFinish = mainRow.start;
-    if (mainRow.subRows.length > 0) {
-      prevFinish = mainRow.subRows[mainRow.subRows.length - 1].finish;
-    }
-
-    // Sub-row baru: start=prevFinish, finish=mainRow.finish atau +remainingMinutes, total_menit=remainingMinutes
-    // Pakai getNextTime untuk cari finish
-    const maxFinish = convertTimeToMinutes(mainRow.finish);
-    const startMinutes = convertTimeToMinutes(prevFinish);
-    let finishMinutes = startMinutes + remainingMinutes;
-    if (finishMinutes > maxFinish) finishMinutes = maxFinish;
-
-    const newSubRow = {
-      start: prevFinish,
-      finish: convertMinutesToTime(finishMinutes),
-      total_menit: finishMinutes - startMinutes,
-      downtime_type: '',
-      detail: '',
-      keterangan: ''
-    };
-
-    mainRow.subRows.push(newSubRow);
-    return newData;
-  });
-};
-
-// 5. Hapus sub-row dan realokasi waktunya
-const handleRemoveSubRow = (rowIndex, subRowIndex) => {
-  setTableData(prevData => {
-    const newData = [...prevData];
-    const mainRow = newData[rowIndex];
-    
-    if (mainRow.subRows && mainRow.subRows.length > 1) { // Minimal harus ada 1 sub-row
-      // Simpan durasi dan waktu dari sub-row yang akan dihapus
-      const removedDuration = mainRow.subRows[subRowIndex].total_menit;
+  // 5. Hapus sub-row dan realokasi waktunya
+  const handleRemoveSubRow = (rowIndex, subRowIndex) => {
+    setTableData(prevData => {
+      const newData = [...prevData];
+      const mainRow = newData[rowIndex];
+      if (!mainRow.subRows || mainRow.subRows.length <= 1) {
+        toast.info('Minimal harus ada 1 sub-row');
+        return newData;
+      }
+      const removedDuration = mainRow.subRows[subRowIndex].total_menit || 0;
       const removedStart = mainRow.subRows[subRowIndex].start;
-      const removedFinish = mainRow.subRows[subRowIndex].finish;
-      
-      // Hapus sub-row
       mainRow.subRows.splice(subRowIndex, 1);
-      
-      // Jika sub-row yang dihapus bukan yang terakhir, perlu menyesuaikan waktu mulai sub-row berikutnya
       if (subRowIndex < mainRow.subRows.length) {
         mainRow.subRows[subRowIndex].start = removedStart;
         mainRow.subRows[subRowIndex].total_menit += removedDuration;
         mainRow.subRows[subRowIndex].finish = getNextTime(
-          mainRow.subRows[subRowIndex].start, 
+          mainRow.subRows[subRowIndex].start,
           mainRow.subRows[subRowIndex].total_menit
         );
-      } else {
-        // Jika yang dihapus adalah sub-row terakhir, tambahkan durasinya ke sub-row sebelumnya
-        const lastSubRowIndex = mainRow.subRows.length - 1;
-        mainRow.subRows[lastSubRowIndex].total_menit += removedDuration;
-        mainRow.subRows[lastSubRowIndex].finish = getNextTime(
-          mainRow.subRows[lastSubRowIndex].start, 
-          mainRow.subRows[lastSubRowIndex].total_menit
+      } else if (mainRow.subRows.length > 0) {
+        const last = mainRow.subRows.length - 1;
+        mainRow.subRows[last].total_menit += removedDuration;
+        mainRow.subRows[last].finish = getNextTime(
+          mainRow.subRows[last].start,
+          mainRow.subRows[last].total_menit
         );
       }
-      
-      // Atur ulang waktu mulai dan akhir sub-row berikutnya untuk menghindari gap atau tumpang tindih
+      // Refix start/finish for all subsequent sub-rows
       for (let i = 0; i < mainRow.subRows.length - 1; i++) {
-        const nextIndex = i + 1;
-        mainRow.subRows[nextIndex].start = mainRow.subRows[i].finish;
-        mainRow.subRows[nextIndex].finish = getNextTime(
-          mainRow.subRows[nextIndex].start,
-          mainRow.subRows[nextIndex].total_menit
+        mainRow.subRows[i + 1].start = mainRow.subRows[i].finish;
+        mainRow.subRows[i + 1].finish = getNextTime(
+          mainRow.subRows[i + 1].start,
+          mainRow.subRows[i + 1].total_menit
         );
       }
-    } else {
-      toast.info('Minimal harus ada 1 sub-row');
-    }
-    
-    return newData;
-  });
-};
+      return newData;
+    });
+  };
 
 // 6. Handler untuk perubahan waktu start di sub-row
 const handleSubRowStartChange = (rowIndex, subRowIndex, newStartTime) => {
@@ -528,127 +489,127 @@ const handleSubRowTotalMinutesChange = (rowIndex, subRowIndex, newTotalMinutes) 
   });
 };
 
-// 8. Handler untuk perubahan data di sub-rows
-const handleSubRowDowntimeTypeChange = (rowIndex, subRowIndex, value) => {
-  setTableData(prevData => {
-    const newData = [...prevData];
-    if (newData[rowIndex].subRows) {
-      newData[rowIndex].subRows[subRowIndex].downtime_type = value;
-      // Reset detail karena downtime type berubah
-      newData[rowIndex].subRows[subRowIndex].detail = '';
-    }
-    return newData;
-  });
-};
-
-const handleSubRowDetailChange = (rowIndex, subRowIndex, value) => {
-  setTableData(prevData => {
-    const newData = [...prevData];
-    if (newData[rowIndex].subRows) {
-      newData[rowIndex].subRows[subRowIndex].detail = value;
-    }
-    return newData;
-  });
-};
-
-const handleSubRowKeteranganChange = (rowIndex, subRowIndex, value) => {
-  setTableData(prevData => {
-    const newData = [...prevData];
-    if (newData[rowIndex].subRows) {
-      newData[rowIndex].subRows[subRowIndex].keterangan = value;
-    }
-    return newData;
-  });
-};
-
-// 9. Handler untuk dropdown Downtime Type di main row
-const handleDowntimeTypeChange = (rowIndex, downtimeType) => {
-  setTableData(prevData => {
-    const newData = [...prevData];
-    newData[rowIndex].downtime_type = downtimeType;
-    newData[rowIndex].detail = ''; // Reset detail ketika tipe berubah
-    return newData;
-  });
-};
-
-// 10. Handler untuk dropdown Detail di main row
-const handleDetailChange = (rowIndex, detail) => {
-  setTableData(prevData => {
-    const newData = [...prevData];
-    newData[rowIndex].detail = detail;
-    return newData;
-  });
-};
-
-// 11. Handler untuk Keterangan di main row
-const handleKeteranganChange = (rowIndex, value) => {
-  setTableData(prevData =>
-    prevData.map((row, i) => (i === rowIndex ? { ...row, keterangan: value } : row))
-  );
-};
-
-// 12. Submit downtime dengan axios
-const handleSubmitDowntime = async (rowIndex) => {
-  const currentRow = tableData[rowIndex];
-  
-    // Cek jika user menggunakan sub-rows atau tidak
-  const useSubRows = currentRow.showSubRows && currentRow.subRows && currentRow.subRows.length > 0;
-  
-  // Validasi untuk main row (hanya jika tidak menggunakan sub-rows)
-  if (!useSubRows) {
-    if (!currentRow.downtime_type || !currentRow.detail) {
-      toast.error('Silakan pilih Downtime Type dan Detail terlebih dahulu');
-      return;
-    }
-  } else {
-    // Periksa apakah semua sub-rows sudah lengkap
-    const incompleteSubRow = currentRow.subRows.find(subRow => 
-      !subRow.downtime_type || !subRow.detail
-    );
-    
-    if (incompleteSubRow) {
-      toast.error('Silakan lengkapi Downtime Type dan Detail pada semua sub-row');
-      return;
-    }
-    
-    // Pastikan total menit di sub-rows tidak melebihi main row
-    const totalSubRowMinutes = currentRow.subRows.reduce(
-      (sum, subRow) => sum + subRow.total_menit, 0
-    );
-    
-    if (totalSubRowMinutes > currentRow.total_menit) {
-      toast.error(`Total menit sub-rows (${totalSubRowMinutes}) melebihi total menit main row (${currentRow.total_menit})`);
-      return;
-    }
-    
-    // Pastikan semua sub-rows berada dalam range main row
-    const isInvalid = currentRow.subRows.some(subRow => {
-      const subRowStartTime = convertTimeToMinutes(subRow.start);
-      const subRowFinishTime = convertTimeToMinutes(subRow.finish);
-      const mainRowStartTime = convertTimeToMinutes(currentRow.start);
-      const mainRowFinishTime = convertTimeToMinutes(currentRow.finish);
-      
-      return subRowStartTime < mainRowStartTime || 
-             subRowFinishTime > mainRowFinishTime ||
-             subRowStartTime >= subRowFinishTime;
+  // 8. Handler untuk perubahan data di sub-rows
+  const handleSubRowDowntimeTypeChange = (rowIndex, subRowIndex, value) => {
+    setTableData(prevData => {
+      const newData = [...prevData];
+      if (newData[rowIndex].subRows) {
+        newData[rowIndex].subRows[subRowIndex].downtime_type = value;
+        // Reset detail karena downtime type berubah
+        newData[rowIndex].subRows[subRowIndex].detail = '';
+      }
+      return newData;
     });
+  };
+
+  const handleSubRowDetailChange = (rowIndex, subRowIndex, value) => {
+    setTableData(prevData => {
+      const newData = [...prevData];
+      if (newData[rowIndex].subRows) {
+        newData[rowIndex].subRows[subRowIndex].detail = value;
+      }
+      return newData;
+    });
+  };
+
+  const handleSubRowKeteranganChange = (rowIndex, subRowIndex, value) => {
+    setTableData(prevData => {
+      const newData = [...prevData];
+      if (newData[rowIndex].subRows) {
+        newData[rowIndex].subRows[subRowIndex].keterangan = value;
+      }
+      return newData;
+    });
+  };
+
+  // 9. Handler untuk dropdown Downtime Type di main row
+  const handleDowntimeTypeChange = (rowIndex, downtimeType) => {
+    setTableData(prevData => {
+      const newData = [...prevData];
+      newData[rowIndex].downtime_type = downtimeType;
+      newData[rowIndex].detail = ''; // Reset detail ketika tipe berubah
+      return newData;
+    });
+  };
+
+  // 10. Handler untuk dropdown Detail di main row
+  const handleDetailChange = (rowIndex, detail) => {
+    setTableData(prevData => {
+      const newData = [...prevData];
+      newData[rowIndex].detail = detail;
+      return newData;
+    });
+  };
+
+  // 11. Handler untuk Keterangan di main row
+  const handleKeteranganChange = (rowIndex, value) => {
+    setTableData(prevData =>
+      prevData.map((row, i) => (i === rowIndex ? { ...row, keterangan: value } : row))
+    );
+  };
+
+  // 12. Submit downtime dengan axios
+  const handleSubmitDowntime = async (rowIndex) => {
+    const currentRow = tableData[rowIndex];
     
-    if (isInvalid) {
-      toast.error('Ada sub-row yang tidak valid. Pastikan semua sub-row berada dalam rentang waktu main row');
-      return;
-    }
+      // Cek jika user menggunakan sub-rows atau tidak
+    const useSubRows = currentRow.showSubRows && currentRow.subRows && currentRow.subRows.length > 0;
     
-    // Pastikan sub-rows berurutan tanpa gap
-    for (let i = 0; i < currentRow.subRows.length - 1; i++) {
-      const currentFinish = currentRow.subRows[i].finish;
-      const nextStart = currentRow.subRows[i + 1].start;
-      
-      if (currentFinish !== nextStart) {
-        toast.error(`Ada gap antara sub-row ${i+1} dan ${i+2}. Waktu selesai dan mulai harus berurutan.`);
+    // Validasi untuk main row (hanya jika tidak menggunakan sub-rows)
+    if (!useSubRows) {
+      if (!currentRow.downtime_type || !currentRow.detail) {
+        toast.error('Silakan pilih Downtime Type dan Detail terlebih dahulu');
         return;
       }
+    } else {
+      // Periksa apakah semua sub-rows sudah lengkap
+      const incompleteSubRow = currentRow.subRows.find(subRow => 
+        !subRow.downtime_type || !subRow.detail
+      );
+      
+      if (incompleteSubRow) {
+        toast.error('Silakan lengkapi Downtime Type dan Detail pada semua sub-row');
+        return;
+      }
+      
+      // Pastikan total menit di sub-rows tidak melebihi main row
+      const totalSubRowMinutes = currentRow.subRows.reduce(
+        (sum, subRow) => sum + subRow.total_menit, 0
+      );
+      
+      if (totalSubRowMinutes > currentRow.total_menit) {
+        toast.error(`Total menit sub-rows (${totalSubRowMinutes}) melebihi total menit main row (${currentRow.total_menit})`);
+        return;
+      }
+      
+      // Pastikan semua sub-rows berada dalam range main row
+      const isInvalid = currentRow.subRows.some(subRow => {
+        const subRowStartTime = convertTimeToMinutes(subRow.start);
+        const subRowFinishTime = convertTimeToMinutes(subRow.finish);
+        const mainRowStartTime = convertTimeToMinutes(currentRow.start);
+        const mainRowFinishTime = convertTimeToMinutes(currentRow.finish);
+        
+        return subRowStartTime < mainRowStartTime || 
+              subRowFinishTime > mainRowFinishTime ||
+              subRowStartTime >= subRowFinishTime;
+      });
+      
+      if (isInvalid) {
+        toast.error('Ada sub-row yang tidak valid. Pastikan semua sub-row berada dalam rentang waktu main row');
+        return;
+      }
+      
+      // Pastikan sub-rows berurutan tanpa gap
+      for (let i = 0; i < currentRow.subRows.length - 1; i++) {
+        const currentFinish = currentRow.subRows[i].finish;
+        const nextStart = currentRow.subRows[i + 1].start;
+        
+        if (currentFinish !== nextStart) {
+          toast.error(`Ada gap antara sub-row ${i+1} dan ${i+2}. Waktu selesai dan mulai harus berurutan.`);
+          return;
+        }
+      }
     }
-  }
   
   try {
     // Mendapatkan waktu saat ini untuk timestamp
@@ -707,6 +668,7 @@ const handleSubmitDowntime = async (rowIndex) => {
     console.error(err);
   }
 };
+
 
 
   useEffect(() => {

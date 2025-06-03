@@ -79,6 +79,14 @@ input[data-type="instrument"]:-webkit-autofill {
   filter: invert(1);
 }
 
+/* Tambahkan ke index.css atau global.css */
+input[type="time"]::-webkit-datetime-edit-hour-field,
+input[type="time"]::-webkit-datetime-edit-minute-field,
+input[type="time"]::-webkit-datetime-edit-ampm-field {
+  color: rgba(var(--color-text), 1); /* atau putih langsung */
+}
+
+
 /* Tambahkan ini di file index.css */
 input[type="password"]::-ms-reveal, 
 input[type="password"]::-ms-clear {
