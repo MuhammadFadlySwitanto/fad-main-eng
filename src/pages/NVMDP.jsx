@@ -273,7 +273,7 @@ const NVMDP = React.forwardRef(({ getLimit, dataTotalUang }, ref) => {
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
           <div className="rounded-md border border-border shadow-buatcard bg-coba p-6 relative w-full">
             <p className="text-text my-2">Ini adalah pop-up dari card Solar Panel 1 - 6.</p>
-            <ChartDashboard endpoint="http://10.126.15.197:8002/part/GrafanaPower" area="cMT-Gedung-UTY_Inverter1-6_SP_data" title="Inverter Solar Panel 1-6 Data Graph" colors={Colors1}
+            <ChartDashboard endpoint="http://10.126.15.197:8002/part/GrafanaPower" area="cMT-Gedung-UTY_Inverter1-6_SP_data" name="Inverter Solar Panel 1-6 Data" title="Inverter Solar Panel 1-6 Data Graph" colors={Colors1}
               style={{
                 border: 'none', // Removes border
                 position: 'relative',
@@ -283,7 +283,7 @@ const NVMDP = React.forwardRef(({ getLimit, dataTotalUang }, ref) => {
               }}/>
             <button
               onClick={() => setShowSolarPanel(false)}
-              className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full"
+              className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full transition-all duration-300 ease-in-out hover:scale-110 hover:bg-red-600 active:scale-95 shadow-md"
             >
               X
             </button>
@@ -295,7 +295,7 @@ const NVMDP = React.forwardRef(({ getLimit, dataTotalUang }, ref) => {
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
           <div className="rounded-md border border-border shadow-buatcard bg-coba p-6 relative w-full">
             <p className="text-text my-2">Ini adalah pop-up dari card Solar Panel 7 - 12.</p>
-            <ChartDashboard endpoint="http://10.126.15.197:8002/part/GrafanaPower" area="cMT-Gedung-UTY_Inverter7-12_SP_data" title="Inverter Solar Panel 7-12 Data Graph" colors={Colors1}
+            <ChartDashboard endpoint="http://10.126.15.197:8002/part/GrafanaPower" area="cMT-Gedung-UTY_Inverter7-12_SP_data" title="Inverter Solar Panel 7-12 Data Graph" name="Inverter Solar Panel 7-12 Data" colors={Colors1}
               style={{
                 border: 'none', // Removes border
                 position: 'relative',
@@ -305,7 +305,7 @@ const NVMDP = React.forwardRef(({ getLimit, dataTotalUang }, ref) => {
               }}/>
             <button
               onClick={() => setShowSolarPanel2(false)}
-              className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full"
+              className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full transition-all duration-300 ease-in-out hover:scale-110 hover:bg-red-600 active:scale-95 shadow-md"
             >
               X
             </button>
@@ -360,7 +360,7 @@ const NVMDP = React.forwardRef(({ getLimit, dataTotalUang }, ref) => {
             <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
               <div className="rounded-md border border-border shadow-buatcard bg-coba p-6 relative w-full">
                 <p className="text-text my-2">Ini adalah pop-up dari card LVMDP.</p>
-                <ChartDashboard endpoint="http://10.126.15.197:8002/part/GrafanaPower" area="cMT-Gedung-UTY_LVMDP1_data" title="LVMDP Data Graph" colors={Colors2}
+                <ChartDashboard endpoint="http://10.126.15.197:8002/part/GrafanaPower" area="cMT-Gedung-UTY_LVMDP1_data" title="LVMDP Data Graph" name="LVMDP" colors={Colors2}
                   style={{
                     border: 'none', // Removes border
                     position: 'relative',
@@ -370,7 +370,7 @@ const NVMDP = React.forwardRef(({ getLimit, dataTotalUang }, ref) => {
                   }}/>
                 <button
                   onClick={() => setShowPopup(false)}
-                  className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full"
+                  className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full transition-all duration-300 ease-in-out hover:scale-110 hover:bg-red-600 active:scale-95 shadow-md"
                 >
                   X
                 </button>
@@ -400,7 +400,7 @@ const NVMDP = React.forwardRef(({ getLimit, dataTotalUang }, ref) => {
             <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
               <div className="rounded-md border border-border shadow-buatcard bg-coba p-6 relative w-full">
                 <p className="text-text my-2">Ini adalah pop-up dari card Chiller.</p>
-                <ChartDashboard endpoint="http://10.126.15.197:8002/part/GrafanaPower" area="cMT-Gedung-UTY_PP.1-Chiller_data" title="Chiller Data Graph" colors={Colors2}
+                <ChartDashboard endpoint="http://10.126.15.197:8002/part/GrafanaPower" area="cMT-Gedung-UTY_PP.1-Chiller_data" name="Chiller" title="Chiller Data Graph" colors={Colors2}
                   style={{
                     border: 'none', // Removes border
                     position: 'relative',
@@ -410,7 +410,7 @@ const NVMDP = React.forwardRef(({ getLimit, dataTotalUang }, ref) => {
                   }}/>
                 <button
                   onClick={() => setShowChillerPopup(false)}
-                  className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full"
+                  className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full transition-all duration-300 ease-in-out hover:scale-110 hover:bg-red-600 active:scale-95 shadow-md"
                 >
                   X
                 </button>
@@ -442,7 +442,7 @@ const NVMDP = React.forwardRef(({ getLimit, dataTotalUang }, ref) => {
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
           <div className="rounded-md border border-border shadow-buatcard bg-coba p-6 relative w-full">
             <p className="text-text my-2">Ini adalah pop-up dari card Hydrant.</p>
-            <ChartDashboard endpoint="http://10.126.15.197:8002/part/GrafanaPower" area="cMT-Gedung-UTY_PP.2-Hydrant_data" title="Hydrant Data Graph" colors={Colors1}
+            <ChartDashboard endpoint="http://10.126.15.197:8002/part/GrafanaPower" area="cMT-Gedung-UTY_PP.2-Hydrant_data" title="Hydrant Data Graph" name="Hydrant" colors={Colors1}
               style={{
                 border: 'none', // Removes border
                 position: 'relative',
@@ -452,7 +452,7 @@ const NVMDP = React.forwardRef(({ getLimit, dataTotalUang }, ref) => {
               }}/>
             <button
               onClick={() => setShowHydrantPopup(false)}
-              className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full"
+              className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full transition-all duration-300 ease-in-out hover:scale-110 hover:bg-red-600 active:scale-95 shadow-md"
             >
               X
             </button>
@@ -489,7 +489,7 @@ const NVMDP = React.forwardRef(({ getLimit, dataTotalUang }, ref) => {
             <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
               <div className="rounded-md border border-border shadow-buatcard bg-coba p-6 relative w-full">
                 <p className="text-text my-2">Ini adalah pop-up dari card Utility.</p>
-                <ChartDashboard endpoint="http://10.126.15.197:8002/part/GrafanaPower" area="cMT-Gedung-UTY_SDP.1-Utility_data" title="Utility Data Graph" colors={Colors1}
+                <ChartDashboard endpoint="http://10.126.15.197:8002/part/GrafanaPower" area="cMT-Gedung-UTY_SDP.1-Utility_data" title="Utility Data Graph" name="SDP 1 Utility" colors={Colors1}
                   style={{
                     border: 'none', // Removes border
                     position: 'relative',
@@ -499,7 +499,7 @@ const NVMDP = React.forwardRef(({ getLimit, dataTotalUang }, ref) => {
                   }}/>
                 <button
                   onClick={() => setShowUtil(false)}
-                  className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full"
+                  className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full transition-all duration-300 ease-in-out hover:scale-110 hover:bg-red-600 active:scale-95 shadow-md"
                 >
                   X
                 </button>
@@ -533,7 +533,7 @@ const NVMDP = React.forwardRef(({ getLimit, dataTotalUang }, ref) => {
             <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
               <div className="rounded-md border border-border shadow-buatcard bg-coba p-6 relative w-full">
                 <p className="text-text my-2">Ini adalah pop-up dari card SDP 1 Production.</p>
-                <ChartDashboard endpoint="http://10.126.15.197:8002/part/GrafanaPower" area="cMT-Gedung-UTY_SDP.1-Produksi_data" title="SDP 1 Production Data Graph" colors={Colors3}
+                <ChartDashboard endpoint="http://10.126.15.197:8002/part/GrafanaPower" area="cMT-Gedung-UTY_SDP.1-Produksi_data" title="SDP 1 Production Data Graph" name="SDP 2 Production" colors={Colors3}
                   style={{
                     border: 'none', // Removes border
                     position: 'relative',
@@ -543,7 +543,7 @@ const NVMDP = React.forwardRef(({ getLimit, dataTotalUang }, ref) => {
                   }}/>
                 <button
                   onClick={() => setShowProd(false)}
-                  className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full"
+                  className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full transition-all duration-300 ease-in-out hover:scale-110 hover:bg-red-600 active:scale-95 shadow-md"
                 >
                   X
                 </button>
@@ -573,7 +573,7 @@ const NVMDP = React.forwardRef(({ getLimit, dataTotalUang }, ref) => {
             <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
               <div className="rounded-md border border-border shadow-buatcard bg-coba p-6 relative w-full">
                 <p className="text-text mt-2">Ini adalah pop-up dari card SDP 2 Production.</p>
-                <ChartDashboard endpoint="http://10.126.15.197:8002/part/GrafanaPower" area="cMT-Gedung-UTY_SDP.2-Produksi_data" title="SDP 2 Production Data Graph" colors={Colors3}
+                <ChartDashboard endpoint="http://10.126.15.197:8002/part/GrafanaPower" area="cMT-Gedung-UTY_SDP.2-Produksi_data" title="SDP 2 Production Data Graph" name="SDP 2 Production" colors={Colors3}
                   style={{
                     border: 'none', // Removes border
                     position: 'relative',
@@ -583,7 +583,7 @@ const NVMDP = React.forwardRef(({ getLimit, dataTotalUang }, ref) => {
                   }}/>
                 <button
                   onClick={() => setShowProd2(false)}
-                  className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full"
+                  className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full transition-all duration-300 ease-in-out hover:scale-110 hover:bg-red-600 active:scale-95 shadow-md"
                 >
                   X
                 </button>
@@ -875,7 +875,7 @@ const NVMDP = React.forwardRef(({ getLimit, dataTotalUang }, ref) => {
       </div>
       <div className="text-center mt-8 p-2 shadow-buatcard bg-coba rounded-md relative">
         <h1 className="text-center text-text text-4xl antialiased hover:subpixel-antialiased mb-2">MVMDP Chart</h1>
-        <ChartYearly endpoint="http://10.126.15.197:8002/part/GrafanaMVMDPYear" area="cMT-Gedung-UTY_MVMDP_data" title=" " colors={Colors2}
+        <ChartYearly endpoint="http://10.126.15.197:8002/part/GrafanaMVMDPYear" area="cMT-Gedung-UTY_MVMDP_data" title=" " name="MVMDP" colors={Colors2}
           style={{
           border: 'none', // Removes border
           position: 'relative',

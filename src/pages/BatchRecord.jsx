@@ -10,15 +10,16 @@ import {
   TableCaption,
   TableContainer,
   Button,
-  ButtonGroup,
-  Stack,
   Input,
-  Box,
   Spinner,
-  Select
+  Select,
+  Center
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useColorMode, useColorModeValue } from "@chakra-ui/react";
+import * as XLSX from 'xlsx';
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function BatchRecord() {
 // States for fetching data
@@ -42,6 +43,7 @@ const [finishDate, setFinishDate] = useState("");
 const [currentPage, setCurrentPage] = useState(1);
 const [rowsPerPage, setRowsPerPage] = useState(10);
 const [sortConfig, setSortConfig] = useState({ key: 'time@timestamp', direction: 'asc' });
+const [isLoading, setIsLoading] = useState(false);
 
 const { colorMode } = useColorMode();
 const borderColor = useColorModeValue("rgba(var(--color-border))", "rgba(var(--color-border))");
@@ -78,11 +80,41 @@ const formatTimestamp = (uniqueTimestamp) => {
   const [seconds] = uniqueTimestamp.toString().split(".");
   const date = new Date(seconds * 1000); // Convert seconds to milliseconds
   const formattedDate = date.toLocaleString("en-US", {
-    timeZone: "Asia/Jakarta",
+    timeZone: "UTC",
   });
   return `${formattedDate}`; // Return the formatted date without fractional seconds
   // return `${formattedDate}.${fractional || "00"}`; // Uncomment this line if you want to include fractional seconds
 };
+
+function formatTimestampUTC(uniqueTimestamp) {
+  if (!uniqueTimestamp) return "";
+  const [seconds, fractional = "000"] = uniqueTimestamp.toString().split(".");
+  const date = new Date(Number(seconds) * 1000);
+
+  // Format: YYYY-MM-DD HH:mm:ss.mmm UTC
+  const yyyy = date.getUTCFullYear();
+  const mm = String(date.getUTCMonth() + 1).padStart(2, '0');
+  const dd = String(date.getUTCDate()).padStart(2, '0');
+  const hh = String(date.getUTCHours()).padStart(2, '0');
+  const min = String(date.getUTCMinutes()).padStart(2, '0');
+  const ss = String(date.getUTCSeconds()).padStart(2, '0');
+  const ms = fractional.padEnd(3, "0");
+
+  return `${yyyy}-${mm}-${dd} ${hh}:${min}:${ss}.${ms} `;
+}
+
+// const formatTimestampUTC = (uniqueTimestamp) => {
+//   if (!uniqueTimestamp) return "";
+//   const [seconds, fractional = "000"] = uniqueTimestamp.toString().split(".");
+//   const date = new Date(Number(seconds) * 1000);
+//   const formattedDate = date.toLocaleString("en-US", {
+//     timeZone: "UTC",
+//     year: "numeric", month: "long", day: "numeric",
+//     hour: "2-digit", minute: "2-digit", second: "2-digit",
+//     hour12: true
+//   });
+//   return `${formattedDate}.${fractional.padEnd(3, "0")}`  ;
+// };
 
   // Fetch Line data
   const fetchLine = async () => {
@@ -212,8 +244,10 @@ const formatTimestamp = (uniqueTimestamp) => {
       alert("Please select a valid batch before fetching data.");
       return;
     }
+    setIsLoading(true); // MULAI LOADING
     const endpoint = determineSearchEndpoint(newLine, newMachine);
     if (!endpoint) {
+      setIsLoading(false);
       console.error(`Invalid search endpoint determined for line: ${newLine}, machine: ${newMachine}`);
       return;
     }
@@ -232,7 +266,9 @@ const formatTimestamp = (uniqueTimestamp) => {
       setAllDataEBR(processedData);
     } catch (error) {
       console.error("Error fetching EBR data:", error);
-      alert("Failed to fetch EBR data.");
+      toast.error("Failed to fetch EBR data.");
+    } finally {
+      setIsLoading(false); // SELESAI LOADING
     }
   };
 
@@ -247,7 +283,15 @@ const formatTimestamp = (uniqueTimestamp) => {
     const selectedLine = event.target.value;
     setNewLine(selectedLine);
     fetchProces(selectedLine); // Fetch processes based on the selected line
-    
+
+      // Buat Reset State ini
+      setNewProces("");        
+      setFetchProcesData([]);  
+      setNewMachine("");       
+      setFetchMachineData([]);  
+      setSelectedBatch("");     
+      setFetchBatchData([]);    
+      setAllDataEBR([]);        
   };
 
   const procesHandler = (event) => {
@@ -259,6 +303,11 @@ const formatTimestamp = (uniqueTimestamp) => {
 
   const machineHandler = (event) => {
     setNewMachine(event.target.value);
+
+      // Reset batch & table data
+      setSelectedBatch("");
+      setFetchBatchData([]);
+      setAllDataEBR([]);
   };
 
   const startDateHandler = (event) => {
@@ -363,6 +412,11 @@ const handleNextPage = () => {
   setCurrentPage((prev) => Math.min(prev + 1, Math.ceil(allDataEBR.length / rowsPerPage)));
 };
 
+const handleRowsPerPageChange = (e) => {
+  setRowsPerPage(Number(e.target.value));
+  setCurrentPage(1); // reset ke page 1
+};
+
 const handleSort = (key) => {
   let direction = 'asc';
   if (sortConfig.key === key && sortConfig.direction === 'asc') {
@@ -416,8 +470,8 @@ const renderTableHeader= () => {
   return null; // Jika visibleData kosong, kembalikan null
 };
 
-const cleanData = (dataKey, value) => {
-  if (dataKey === "BATCH" || dataKey === "PROCESS") {
+const cleanData = (dataKey, value, selectedMachine, selectedLine) => {
+  if (dataKey === "BATCH" || dataKey === "PROCESS"  || dataKey === "PMA_BATCH" || dataKey === "PMA_PROCESS" || dataKey === "WET_PROCESS") {
     return value.replace(/[^a-zA-Z0-9\s-]/g, '');
   }
   if (dataKey === "impeller_rpm" || dataKey === "impeller_ampere") {
@@ -428,7 +482,43 @@ const cleanData = (dataKey, value) => {
   //   // Format the timestamp to a readable format
   //   return formatTimestamp(value);
   // }
+  // return value;
+  if (dataKey === "time@timestamp") {
+    if (selectedMachine === "FBD") {
+      return formatTimestamp(value); // pakai format readable
+    } else if (selectedLine === "line1" || selectedMachine === "PMA") {
+      // Hanya untuk line1 & PMA
+      return formatTimestampUTC(value);
+    }
+    return value; // mesin lain: tampilkan apa adanya
+  }
   return value;
+};
+
+// Helper: dapatkan data terfilter & terformat seperti di tabel
+const getFormattedExportData = () => {
+  // Export semua data yang sudah terurut/terfilter
+  return sortedData.map(row => {
+    const dataKeys = Object.keys(row);
+    let cleanedRow = {};
+    dataKeys.forEach(key => {
+      cleanedRow[key] = cleanData(key, row[key], newMachine);
+    });
+    return cleanedRow;
+  });
+};
+
+// 1. Untuk EXPORT ke Excel
+const exportToExcel = () => {
+  const exportData = getFormattedExportData(); // misal: format + filter sesuai kebutuhan
+  if (!exportData || exportData.length === 0) {
+    toast.warning("No data to export!");
+    return;
+  }
+  const worksheet = XLSX.utils.json_to_sheet(exportData);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "BatchRecord");
+  XLSX.writeFile(workbook, "BatchRecord.xlsx");
 };
 
 const renderData = () => {
@@ -452,7 +542,7 @@ const renderData = () => {
         <Tr key={index}>
           {dataKeys.map((dataKey, dataIndex) => (
             <Td className="text-center bg-cobabg" key={dataIndex}>
-              {cleanData(dataKey, row[dataKey])}
+              {cleanData(dataKey, row[dataKey], newMachine)}
             </Td>
           ))}
         </Tr>
@@ -523,240 +613,252 @@ useEffect(() => {
 //   fetchLine();
 // }, []);
 
-return (
-  <>
-    <h1 className="text-center text-text text-5xl font-medium font-sans">Batch Record</h1>
-    <div className="flex flex-wrap justify-center items-center my-4 gap-6">
-            <div className="w-full sm:w-1/3 md:w-auto">
-              <div>
-                <label
-                  htmlFor="line"
-                  className="block text-sm font-medium leading-6 text-text"
-                >
-                  Line Area
-                </label>
-                <div className="mt-2">
-                  <Select placeholder="All Line" id="line" onChange={lineHandler}
-                    sx={{
-                      border: "1px solid",
-                      borderColor: borderColor,
-                      borderRadius: "0.395rem",
-                      background: "var(--color-background)", // background color from Tailwind config
-            
-                      _hover: {
-                        borderColor: hoverBorderColor,
-                      },
-                    }}>
-                    {renderLine()}
-                  </Select>
-                </div>
-              </div>
-            </div>
-            <div className="w-full sm:w-1/3 md:w-auto">
-              <div>
-                <label
-                  htmlFor="proces"
-                  className="block text-sm font-medium leading-6 text-text"
-                >
-                  Process
-                </label>
-                <div className="mt-2">
-                  <Select placeholder="All Process" onChange={procesHandler}
-                    sx={{
-                      borderRadius: "0.395rem",
-                    }}>
-                    {renderProces()}
-                  </Select>
-                </div>
-              </div>
-            </div>
-            <div className="w-full sm:w-1/3 md:w-auto">
-              <div>
-                <label
-                  htmlFor="machine"
-                  className="block text-sm font-medium leading-6 text-text"
-                >
-                  Machine
-                </label>
-                <div className="mt-2">
-                  <Select placeholder="All Machine" onChange={machineHandler}>
-                    {renderMachine()}
-                  </Select>
-                </div>
-              </div> 
-            </div>
-            <div className="w-full sm:w-1/2 md:w-auto">
-              <div>
-                <label
-                  htmlFor="start"
-                  className="block text-sm font-medium leading-6 text-text"
-                >
-                  Start Date
-                </label>
-                <div className="mt-2">
-                  <Input
-                    //onChange={dateStart}
-                    placeholder="Select Date and Time"
-                    size="md"
-                    type="date"
-                    value={startDate}
-                    onChange={startDateHandler}
-                    // onChange={(e) => setStartDate(e.target.value)}
-                    css={{
-                      "&::-webkit-calendar-picker-indicator": {
-                        color: isDarkMode ? "white" : "black",
-                        filter: isDarkMode ? "invert(1)" : "none",
-                      },
-                    }}
-                    sx={{
-                      border: "1px solid",
-                      borderColor: borderColor,
-                      borderRadius: "0.395rem",
-                      background: "var(--color-background)", // background color from Tailwind config
-            
-                      _hover: {
-                        borderColor: hoverBorderColor,
-                      },
-                    }}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="w-full sm:w-1/2 md:w-auto">
-              <div>
-                <label
-                  htmlFor="finish"
-                  className="block text-sm font-medium leading-6 text-text"
-                >
-                  Finish Date
-                </label>
-                <div className="mt-2">
-                  <Input
-                    placeholder="Select Date and Time"
-                    size="md"
-                    type="date"
-                    value={finishDate}
-                    onChange={finishDateHandler}
-                    // onChange={(e) => setFinishDate(e.target.value)}
-                    css={{
-                      "&::-webkit-calendar-picker-indicator": {
-                        color: isDarkMode ? "white" : "black",
-                        filter: isDarkMode ? "invert(1)" : "none",
-                      },
-                    }}
-                    sx={{
-                      border: "1px solid",
-                      borderColor: borderColor,
-                      borderRadius: "0.395rem",
-                      background: "var(--color-background)", // background color from Tailwind config
-            
-                      _hover: {
-                        borderColor: hoverBorderColor,
-                      },
-                    }}
-                  />
-                </div>
-              </div>        
-            </div>
-            <div className="w-full sm:w-1/2 md:w-auto">
-            <div>
-                <label
-                  htmlFor="batch"
-                  className="block text-sm font-medium leading-6 text-text"
-                >
-                  Search Batch
-                </label>
-                <div className="search mt-2">
-                  <Select
-                    placeholder="Select Batch"
-                    value={selectedBatch}
-                    sx={{
-                      border: "1px solid",
-                      borderColor: borderColor,
-                      borderRadius: "0.395rem",
-                      background: "var(--color-background)", // background color from Tailwind config
-            
-                      _hover: {
-                        borderColor: hoverBorderColor,
-                      },
-                    }}
-                    onChange={(e) => setSelectedBatch(e.target.value)}
-                  >
-                  {/* <option value="">Select Batch</option> */}
-                  {cleanBatchData.length > 0 ? (
-                    cleanBatchData.map((batch, index) => (
-                      <option key={index} value={batch}>
-                        {batch}
-                      </option>
-                    ))
-                  ) : (
-                    <option value="" disabled>
-                      No Batch Data Available
-                    </option>
-                  )}
-                  </Select>
-                </div>
-              </div>
-            </div>
-            <div className="w-full sm:w-1/2 md:w-auto">
-              <div className="no-print">
-                <Button
-                  className="w-40 mt-8 no-print"
-                  colorScheme="blue"
-                  type="submit"
-                  //onSubmit={handleSubmit}
-                   onClick={() => handleSubmit()}
-                >
-                  Submit
-                </Button>
-              </div>
-            </div>
-          </div>
-          <div className="mt-4 flex justify-center">
-            <Select
-              value={rowsPerPage}
-              onChange={(e) => setRowsPerPage(Number(e.target.value))}
-              width="80px">
-              <option value={5}>5</option>
-              <option value={10}>10</option>
-              <option value={20}>20</option>
-              <option value={40}>40</option>
-              <option value={60}>60</option>
-              <option value={100}>100</option>
-            </Select>
-          </div>
-          <div className="flex justify-center">
-          <TableContainer className="bg-card rounded-md mt-4" sx={{ overflowX: "auto", maxWidth: "90%" }}>
-              <Table key={colorMode} variant="simple" sx={{ minWidth: "1260px"}} >
-                <TableCaption sx={{color: tulisanColor}}>Batch Record</TableCaption>
-                {renderTableHeader()}
-                <Tbody>{renderData()}</Tbody>
-              </Table>
-            </TableContainer>
-          </div>
-          {/* Pagination Controls */}
-          <div className="flex justify-center items-center my-4 gap-4">
-            <Button
-              onClick={handlePrevPage}
-              isDisabled={currentPage === 1}
-              colorScheme="blue"
+  return (
+    <>
+      <h1 className="text-center text-text text-5xl font-medium font-sans">Batch Record</h1>
+      <div className="flex flex-wrap justify-center items-center my-4 gap-6">
+        <div className="w-full sm:w-1/3 md:w-auto">
+          <div>
+            <label
+              htmlFor="line"
+              className="block text-sm font-medium leading-6 text-text"
             >
-              Previous
-            </Button>
-            <span className="text-text">
-              Page {currentPage} of {Math.ceil(allDataEBR.length / rowsPerPage)}
-            </span>
-            <Button
-              onClick={handleNextPage}
-              isDisabled={currentPage === Math.ceil(allDataEBR.length / rowsPerPage)}
-              colorScheme="blue"
-            >
-              Next
-            </Button>
+              Line Area
+            </label>
+            <div className="mt-2">
+              <Select placeholder="All Line" id="line" onChange={lineHandler}
+                sx={{
+                  border: "1px solid",
+                  borderColor: borderColor,
+                  borderRadius: "0.395rem",
+                  background: "var(--color-background)", // background color from Tailwind config
+        
+                  _hover: {
+                    borderColor: hoverBorderColor,
+                  },
+                }}>
+                {renderLine()}
+              </Select>
+            </div>
           </div>
-          
-        </>
-      );
-    }
+        </div>
+        <div className="w-full sm:w-1/3 md:w-auto">
+          <div>
+            <label
+              htmlFor="proces"
+              className="block text-sm font-medium leading-6 text-text"
+            >
+              Process
+            </label>
+            <div className="mt-2">
+              <Select placeholder="All Process" onChange={procesHandler}
+                sx={{
+                  borderRadius: "0.395rem",
+                }}>
+                {renderProces()}
+              </Select>
+            </div>
+          </div>
+        </div>
+        <div className="w-full sm:w-1/3 md:w-auto">
+          <div>
+            <label
+              htmlFor="machine"
+              className="block text-sm font-medium leading-6 text-text"
+            >
+              Machine
+            </label>
+            <div className="mt-2">
+              <Select placeholder="All Machine" onChange={machineHandler}>
+                {renderMachine()}
+              </Select>
+            </div>
+          </div> 
+        </div>
+        <div className="w-full sm:w-1/2 md:w-auto">
+          <div>
+            <label
+              htmlFor="start"
+              className="block text-sm font-medium leading-6 text-text"
+            >
+              Start Date
+            </label>
+            <div className="mt-2">
+              <Input
+                //onChange={dateStart}
+                placeholder="Select Date and Time"
+                size="md"
+                type="date"
+                value={startDate}
+                onChange={startDateHandler}
+                // onChange={(e) => setStartDate(e.target.value)}
+                css={{
+                  "&::-webkit-calendar-picker-indicator": {
+                    color: isDarkMode ? "white" : "black",
+                    filter: isDarkMode ? "invert(1)" : "none",
+                  },
+                }}
+                sx={{
+                  border: "1px solid",
+                  borderColor: borderColor,
+                  borderRadius: "0.395rem",
+                  background: "var(--color-background)", // background color from Tailwind config
+        
+                  _hover: {
+                    borderColor: hoverBorderColor,
+                  },
+                }}
+              />
+            </div>
+          </div>
+        </div>
+        <div className="w-full sm:w-1/2 md:w-auto">
+          <div>
+            <label
+              htmlFor="finish"
+              className="block text-sm font-medium leading-6 text-text"
+            >
+              Finish Date
+            </label>
+            <div className="mt-2">
+              <Input
+                placeholder="Select Date and Time"
+                size="md"
+                type="date"
+                value={finishDate}
+                onChange={finishDateHandler}
+                // onChange={(e) => setFinishDate(e.target.value)}
+                css={{
+                  "&::-webkit-calendar-picker-indicator": {
+                    color: isDarkMode ? "white" : "black",
+                    filter: isDarkMode ? "invert(1)" : "none",
+                  },
+                }}
+                sx={{
+                  border: "1px solid",
+                  borderColor: borderColor,
+                  borderRadius: "0.395rem",
+                  background: "var(--color-background)", // background color from Tailwind config
+        
+                  _hover: {
+                    borderColor: hoverBorderColor,
+                  },
+                }}
+              />
+            </div>
+          </div>        
+        </div>
+        <div className="w-full sm:w-1/2 md:w-auto">
+          <div>
+            <label htmlFor="batch" className="block text-sm font-medium leading-6 text-text">Search Batch</label>
+            <div className="search mt-2">
+              <Select
+                placeholder="Select Batch"
+                value={selectedBatch}
+                sx={{
+                  border: "1px solid",
+                  borderColor: borderColor,
+                  borderRadius: "0.395rem",
+                  background: "var(--color-background)", // background color from Tailwind config
+        
+                  _hover: {
+                    borderColor: hoverBorderColor,
+                  },
+                }}
+                onChange={(e) => setSelectedBatch(e.target.value)}
+              >
+              {/* <option value="">Select Batch</option> */}
+              {cleanBatchData.length > 0 ? (
+                cleanBatchData.map((batch, index) => (
+                  <option key={index} value={batch}>
+                    {batch}
+                  </option>
+                ))
+              ) : (
+                <option value="" disabled>
+                  No Batch Data Available
+                </option>
+              )}
+              </Select>
+            </div>
+          </div>
+        </div>
+        {/* <div className="w-full sm:w-1/2 md:w-auto">
+          <label className="block text-sm font-medium leading-6 text-text invisible">
+            Submit Button
+          </label>
+            <Button
+              className="w-40 mt-2"
+              colorScheme="blue"
+              type="submit"
+              //onSubmit={handleSubmit}
+                onClick={() => handleSubmit()}
+            >
+              Submit
+            </Button>
+        </div> */}
+      </div>
+      <div className="mt-4 flex justify-center space-x-2">
+        <Button colorScheme="blue" type="submit"
+          //onSubmit={handleSubmit}
+          onClick={() => handleSubmit()}
+        >
+          Submit
+        </Button>
+        <Select
+          value={rowsPerPage}
+          onChange={handleRowsPerPageChange}
+          // onChange={(e) => setRowsPerPage(Number(e.target.value))}
+          width="80px">
+          <option value={5}>5</option>
+          <option value={10}>10</option>
+          <option value={20}>20</option>
+          <option value={40}>40</option>
+          <option value={60}>60</option>
+          <option value={100}>100</option>
+        </Select>
+        <Button colorScheme="green" className="mb-4" onClick={exportToExcel}>
+          Export to Excel
+        </Button>
+      </div>
+      {isLoading ? (
+        <Center py={10}>
+          <Spinner size="xl" thickness="4px" color="blue.500" />
+        </Center>
+      ) : (
+      <div className="flex justify-center">
+        <TableContainer className="bg-card rounded-md mt-4" sx={{ overflowX: "auto", maxWidth: "90%" }}>
+          <Table key={colorMode} variant="simple" sx={{ minWidth: "1260px"}} >
+            <TableCaption sx={{color: tulisanColor}}>Batch Record</TableCaption>
+            {renderTableHeader()}
+            <Tbody>{renderData()}</Tbody>
+          </Table>
+        </TableContainer>
+      </div>
+      )}
+      {/* Pagination Controls */}
+      <div className="flex justify-center items-center my-4 gap-4">
+        <Button
+          onClick={handlePrevPage}
+          isDisabled={currentPage === 1}
+          colorScheme="blue"
+        >
+          Previous
+        </Button>
+        <span className="text-text">
+          Page {currentPage} of {Math.ceil(allDataEBR.length / rowsPerPage)}
+        </span>
+        <Button
+          onClick={handleNextPage}
+          isDisabled={currentPage === Math.ceil(allDataEBR.length / rowsPerPage)}
+          colorScheme="blue"
+        >
+          Next
+        </Button>
+      </div>
+      <ToastContainer position="top-center" draggable />
+    </>
+  );
+}
 
 export default BatchRecord;

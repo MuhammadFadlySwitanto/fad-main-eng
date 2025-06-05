@@ -239,14 +239,15 @@ const Mettler = () => {
       tickThickness: 2,
       tickColor: isDarkMode ? "#d6d6d6" : "#474747",
     },
-  toolTip: {
+    toolTip: {
       shared: true,
-  },
-  backgroundColor: isDarkMode ? "#171717" : "#ffffff",
-  // title: { text: "Thickness", fontColor: isDarkMode ? "white" : "black" },
-  data: [
+    },
+    backgroundColor: isDarkMode ? "#171717" : "#ffffff",
+    // title: { text: "Thickness", fontColor: isDarkMode ? "white" : "black" },
+    data: [
       {
         type: "spline",
+        name: "Mettler",
         showInLegend: true,
         xValueFormatString: "",
         yValueFormatString: "",

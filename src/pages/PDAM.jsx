@@ -153,7 +153,7 @@ const PDAM = forwardRef((props, ref) => {
                         }}/>
                     <button
                         onClick={() => setShowBoiler(false)}
-                        className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full"
+                        className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full transition-all duration-300 ease-in-out hover:scale-110 hover:bg-red-600 active:scale-95 shadow-md"
                     >
                         X
                     </button>
@@ -206,7 +206,7 @@ const PDAM = forwardRef((props, ref) => {
                     }}/>
                 <button
                     onClick={() => setShowDomestic(false)}
-                    className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full"
+                    className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full transition-all duration-300 ease-in-out hover:scale-110 hover:bg-red-600 active:scale-95 shadow-md"
                 >
                     X
                 </button>
@@ -260,7 +260,7 @@ const PDAM = forwardRef((props, ref) => {
                     }}/>
               <button
                 onClick={() => setShowInlet(false)}
-                className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full"
+                className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full transition-all duration-300 ease-in-out hover:scale-110 hover:bg-red-600 active:scale-95 shadow-md"
               >
                 X
               </button>
@@ -318,7 +318,7 @@ const PDAM = forwardRef((props, ref) => {
                     }}/>
                 <button
                     onClick={() => setShowOsmo(false)}
-                    className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full"
+                    className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full transition-all duration-300 ease-in-out hover:scale-110 hover:bg-red-600 active:scale-95 shadow-md"
                 >
                     X
                 </button>
@@ -372,20 +372,9 @@ const PDAM = forwardRef((props, ref) => {
                   aspectRatio: '16 / 6', // Adjust aspect ratio as needed
                   height: '580px'
                 }}/>
-              {/* <iframe
-                src={grafanaTaman}
-                style={{
-                  border: 'none', // Removes border
-                  position: 'relative',
-                  width: '100%', // Full width of parent div
-                  aspectRatio: '16 / 6', // Adjust aspect ratio as needed
-                  height: '580px'
-                }}
-                title="Grafana Chart">
-              </iframe> */}
               <button
                 onClick={() => setShowTamanPos(false)}
-                className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full"
+                className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full transition-all duration-300 ease-in-out hover:scale-110 hover:bg-red-600 active:scale-95 shadow-md"
               >
                 X
               </button>
@@ -395,7 +384,7 @@ const PDAM = forwardRef((props, ref) => {
 {/* -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------         */}
         <div className="text-center mt-8 p-2 shadow-buatcard bg-coba rounded-md relative">
             <h1 className="text-center text-text text-4xl antialiased hover:subpixel-antialiased mb-2">PDAM Chart</h1>
-            <ChartYearly endpoint="http://10.126.15.197:8002/part/GrafanaMVMDPYear" area="cMT-DB-WATER-UTY_Met_PDAM_data" title=" " colors={Colors2}
+            <ChartYearly endpoint="http://10.126.15.197:8002/part/GrafanaMVMDPYear" area="cMT-DB-WATER-UTY_Met_PDAM_data" title=" " name="PDAM" colors={Colors2}
                 style={{
                 border: 'none', // Removes border
                 position: 'relative',

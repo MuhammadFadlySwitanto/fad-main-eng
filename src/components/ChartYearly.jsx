@@ -5,7 +5,7 @@ import CanvasJSReact from '../canvasjs.react'; // Pastikan Anda sudah menginstal
 var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
-function ChartYearly({ endpoint, area, title, colors }) {
+function ChartYearly({ endpoint, area, title, colors, name }) {
   const [graphData, setGraphData] = useState([]);
   const [isDarkMode, setIsDarkMode] = useState(
       document.documentElement.getAttribute("data-theme") === "dark"
@@ -73,6 +73,7 @@ function ChartYearly({ endpoint, area, title, colors }) {
     data: [
       {
         type: "column",
+        name: name,
         showInLegend: true,
         lineColor: isDarkMode ? colors.dark : colors.light,
         color: isDarkMode ? colors.dark : colors.light,

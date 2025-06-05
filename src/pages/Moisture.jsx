@@ -257,6 +257,7 @@ const Moisture = () => {
   data: [
       {
         type: "spline",
+        name: "Moisture",
         showInLegend: true,
         xValueFormatString: "",
         yValueFormatString: "",

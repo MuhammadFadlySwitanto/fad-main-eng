@@ -7,7 +7,7 @@ import { useColorMode, useColorModeValue } from "@chakra-ui/react";
 var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
-function ChartDashboard({endpoint, area, title, colors}) {
+function ChartDashboard({endpoint, area, title, colors, name}) {
   const [waterGraph, setWaterGraph] = useState([]);
   const [waterOsmoGraph, setWaterOsmoGraph] = useState([]);
 
@@ -102,6 +102,7 @@ function ChartDashboard({endpoint, area, title, colors}) {
     data: [
       {
         type: "column",
+        name: name,
         showInLegend: true,
         lineColor: isDarkMode ? colors.dark : colors.light,
         color: isDarkMode ? colors.dark : colors.light,

@@ -242,10 +242,10 @@ function Sartorius () {
       shared: true,
   },
   backgroundColor: isDarkMode ? "#171717" : "#ffffff",
-  // title: { text: "Thickness", fontColor: isDarkMode ? "white" : "black" },
   data: [
       {
         type: "spline",
+        name: "Sartorius",
         showInLegend: true,
         xValueFormatString: "",
         yValueFormatString: "",
