@@ -5,8 +5,6 @@ import {
   TabPanels,
   Tab,
   TabPanel,
-  Card,
-  CardBody,
   Box,
 } from "@chakra-ui/react";
 import WaterManagement from "./WaterManagement";

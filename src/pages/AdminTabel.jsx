@@ -194,10 +194,8 @@ function AdminTabel() {
   return (
     <>
       <div>
-        <h1 className="text-center text-text text-3xl font-bold "
-        >Users Tabel</h1>
+        <h1 className="text-center text-text text-3xl font-bold ">Users Tabel</h1>
       </div>
-      <br />
       <Stack className="flex flex-row justify-center gap-2"
         direction="row"
         spacing={2}

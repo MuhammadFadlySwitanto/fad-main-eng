@@ -17,9 +17,11 @@ module.exports = {
       },
       colors: {
         background: "rgba(var(--color-background))",
+        background2: "rgba(var(--color-background2))",
         border: "rgba(var(--color-border))",
         border2: "rgba(var(--color-border2))",
         card: "rgba(var(--color-card))",
+        cardb: "rgba(var(--color-cardb))",
         card2: "rgba(var(--color-card2))",
         lingkaran: "rgba(var(--color-lingkaran))",
         tombol: "rgba(var(--color-tombol))",

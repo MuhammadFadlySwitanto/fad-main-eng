@@ -87,8 +87,8 @@ function EditProfile() {
                           type="text"
                           name="fullName"
                           id="fullName"
-                          placeholder="Devid Jhon"
-                          defaultValue="Devid Jhon"
+                          placeholder="Your Name...."
+                          defaultValue={userGlobal.name}
                         />
                       </div>
                     </div>
@@ -132,8 +132,8 @@ function EditProfile() {
                         type="email"
                         name="emailAddress"
                         id="emailAddress"
-                        placeholder="devidjond45@gmail.com"
-                        defaultValue="devidjond45@gmail.com"
+                        placeholder="Your Email...."
+                        defaultValue={userGlobal.email}
                       />
                     </div>
                   </div>
@@ -154,8 +154,8 @@ function EditProfile() {
                         type="text"
                         name="Username"
                         id="Username"
-                        placeholder="devidjhon24"
-                        defaultValue="devidjhon24"
+                        placeholder="Your Username....."
+                        defaultValue={userGlobal.name}
                       />
                     </div>
                   </div>

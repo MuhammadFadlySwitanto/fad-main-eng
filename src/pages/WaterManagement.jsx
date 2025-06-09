@@ -1,6 +1,6 @@
-import React, { useEffect, Component, useState } from "react";
+import { useEffect, useState } from "react";
 import CanvasJSReact from "../canvasjs.react";
-import { Button, ButtonGroup, Stack, Input, Select } from "@chakra-ui/react";
+import { Button, Input, Select } from "@chakra-ui/react";
 import axios from "axios";
 import { Chart } from "react-google-charts";
 import { useColorMode, useColorModeValue } from "@chakra-ui/react";

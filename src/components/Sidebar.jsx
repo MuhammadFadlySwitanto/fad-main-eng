@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import LogoIcon from '../assets/kalbe CH-logo-putih.png';
 import LogoIconn2 from '../assets/logo-kalbe CH-black.png';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
@@ -9,7 +9,7 @@ import { BsBuildingsFill } from "react-icons/bs";
 import { FaChartPie } from "react-icons/fa";
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import EngineeringIcon from '@mui/icons-material/Engineering';
-import EngineeringOutlinedIcon from '@mui/icons-material/EngineeringOutlined';
+// import EngineeringOutlinedIcon from '@mui/icons-material/EngineeringOutlined';
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import MenuOpenSharpIcon from '@mui/icons-material/MenuOpenSharp';
 import TableViewIcon from '@mui/icons-material/TableView';
@@ -17,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import '../index.css'
-import { PieChart } from "@mui/icons-material";
+// import { PieChart } from "@mui/icons-material";
 
 function Sidebar() {
   const navigate = useNavigate();

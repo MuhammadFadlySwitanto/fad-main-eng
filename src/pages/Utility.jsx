@@ -1,13 +1,3 @@
-import React from "react";
-import {
-  Tabs,
-  TabList,
-  TabPanels,
-  Tab,
-  TabPanel,
-  Card,
-  CardBody,
-} from "@chakra-ui/react";
 import PowerManagement from "./PowerManagement";
 import PowerManagement2 from "./PowerManagement1";
 import HVAC from "./HVAC";
@@ -23,7 +13,6 @@ import Motor from "./MotorVibration";
 import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import Header from "../components/header";
 
 function Utility() {
   const userGlobal = useSelector((state) => state.user.user);

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Tabs, TabList, TabPanels, Tab, TabPanel, Box} from "@chakra-ui/react";
-import Header from "../components/header";
 import AdminTabel from "./AdminTabel";
 import LogLogin from "./LogLogin";
 

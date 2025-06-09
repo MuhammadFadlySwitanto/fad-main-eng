@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 const LogLogin = () => {
@@ -80,7 +80,85 @@ const LogLogin = () => {
         ipAddress: '192.168.1.104',
         userAgent: 'Chrome Mobile',
         status: 'active'
-      }
+      },
+      {
+        id: 6,
+        userId: '006',
+        username: 'guest@example.com',
+        name: 'Guest User',
+        level: 5,
+        imagePath: null,
+        loginTime: '2024-06-04T11:45:00Z',
+        logoutTime: null,
+        ipAddress: '192.168.1.104',
+        userAgent: 'Chrome Mobile',
+        status: 'active'
+      },
+            {
+        id: 7,
+        userId: '007',
+        username: 'guest@example.com',
+        name: 'Guest User',
+        level: 5,
+        imagePath: null,
+        loginTime: '2024-06-04T11:45:00Z',
+        logoutTime: null,
+        ipAddress: '192.168.1.104',
+        userAgent: 'Chrome Mobile',
+        status: 'active'
+      },
+      {
+        id: 8,
+        userId: '008',
+        username: 'guest@example.com',
+        name: 'Guest User',
+        level: 5,
+        imagePath: null,
+        loginTime: '2024-06-04T11:45:00Z',
+        logoutTime: null,
+        ipAddress: '192.168.1.104',
+        userAgent: 'Chrome Mobile',
+        status: 'active'
+      },
+      {
+        id: 9,
+        userId: '009',
+        username: 'guest@example.com',
+        name: 'Guest User',
+        level: 5,
+        imagePath: null,
+        loginTime: '2024-06-04T11:45:00Z',
+        logoutTime: null,
+        ipAddress: '192.168.1.104',
+        userAgent: 'Chrome Mobile',
+        status: 'active'
+      },
+      {
+        id: 10,
+        userId: '010',
+        username: 'guest@example.com',
+        name: 'Guest User',
+        level: 5,
+        imagePath: null,
+        loginTime: '2024-06-04T11:45:00Z',
+        logoutTime: null,
+        ipAddress: '192.168.1.104',
+        userAgent: 'Chrome Mobile',
+        status: 'active'
+      },
+      {
+        id: 11,
+        userId: '011',
+        username: 'guest@example.com',
+        name: 'Guest User',
+        level: 5,
+        imagePath: null,
+        loginTime: '2024-06-04T11:45:00Z',
+        logoutTime: null,
+        ipAddress: '192.168.1.104',
+        userAgent: 'Chrome Mobile',
+        status: 'active'
+      },
     ];
     
     setLoginLogs(mockLoginLogs);
@@ -101,36 +179,36 @@ const LogLogin = () => {
     }
 
     // Filter berdasarkan level
-    if (filterLevel !== 'all') {
-      filtered = filtered.filter(log => log.level === parseInt(filterLevel));
-    }
+    // if (filterLevel !== 'all') {
+    //   filtered = filtered.filter(log => log.level === parseInt(filterLevel));
+    // }
 
     // Filter berdasarkan tanggal
-    if (dateFilter !== 'all') {
-      const today = new Date();
-      const filterDate = new Date();
+    // if (dateFilter !== 'all') {
+    //   const today = new Date();
+    //   const filterDate = new Date();
       
-      switch(dateFilter) {
-        case 'today':
-          filterDate.setHours(0, 0, 0, 0);
-          filtered = filtered.filter(log => 
-            new Date(log.loginTime) >= filterDate
-          );
-          break;
-        case 'week':
-          filterDate.setDate(today.getDate() - 7);
-          filtered = filtered.filter(log => 
-            new Date(log.loginTime) >= filterDate
-          );
-          break;
-        case 'month':
-          filterDate.setMonth(today.getMonth() - 1);
-          filtered = filtered.filter(log => 
-            new Date(log.loginTime) >= filterDate
-          );
-          break;
-      }
-    }
+    //   switch(dateFilter) {
+    //     case 'today':
+    //       filterDate.setHours(0, 0, 0, 0);
+    //       filtered = filtered.filter(log => 
+    //         new Date(log.loginTime) >= filterDate
+    //       );
+    //       break;
+    //     case 'week':
+    //       filterDate.setDate(today.getDate() - 7);
+    //       filtered = filtered.filter(log => 
+    //         new Date(log.loginTime) >= filterDate
+    //       );
+    //       break;
+    //     case 'month':
+    //       filterDate.setMonth(today.getMonth() - 1);
+    //       filtered = filtered.filter(log => 
+    //         new Date(log.loginTime) >= filterDate
+    //       );
+    //       break;
+    //   }
+    // }
 
     setFilteredLogs(filtered);
     setCurrentPage(1);
@@ -198,44 +276,44 @@ const LogLogin = () => {
   const currentLogs = filteredLogs.slice(indexOfFirstLog, indexOfLastLog);
   const totalPages = Math.ceil(filteredLogs.length / logsPerPage);
 
-  // Cek apakah user memiliki akses untuk melihat log
-  if (!currentUser || currentUser.level > 2) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="bg-white p-8 rounded-lg shadow-md">
-          <h2 className="text-2xl font-bold text-red-600 mb-4">Akses Ditolak</h2>
-          <p className="text-gray-600">Anda tidak memiliki izin untuk mengakses halaman log login.</p>
-        </div>
-      </div>
-    );
-  }
+  // Cek user punya akses atau kagak (ini gak guna, karna admin tabel-nya ini aja khusus buat yg level 5 doang jir)
+  // if (!currentUser || currentUser.level > 2) {
+  //   return (
+  //     <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+  //       <div className="bg-white p-8 rounded-lg shadow-md">
+  //         <h2 className="text-2xl font-bold text-red-600 mb-4">Akses Ditolak</h2>
+  //         <p className="text-gray-600">Anda tidak memiliki izin untuk mengakses halaman log login.</p>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-card p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Log Login User</h1>
-          <p className="text-gray-600">Monitor aktivitas login dan logout pengguna sistem</p>
+          <h1 className="text-3xl font-bold text-text mb-2">Log Login User</h1>
+          <p className="text-text2">Monitor aktivitas login dan logout pengguna sistem</p>
         </div>
 
         {/* Filters */}
-        <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+        <div className="bg-cardb rounded-lg shadow-lg p-6 mb-6">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-text mb-2">
                 Pencarian
               </label>
               <input
                 type="text"
                 placeholder="Cari username, nama, atau IP..."
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
             
-            <div>
+            {/* <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Level User
               </label>
@@ -267,7 +345,7 @@ const LogLogin = () => {
                 <option value="week">7 Hari Terakhir</option>
                 <option value="month">30 Hari Terakhir</option>
               </select>
-            </div>
+            </div> */}
 
             <div className="flex items-end">
               <button
@@ -286,7 +364,7 @@ const LogLogin = () => {
 
         {/* Statistics */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-          <div className="bg-white p-6 rounded-lg shadow-sm">
+          <div className="bg-cardb p-6 rounded-lg shadow-sm">
             <div className="flex items-center">
               <div className="p-3 rounded-full bg-blue-100">
                 <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -294,13 +372,13 @@ const LogLogin = () => {
                 </svg>
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500">Total Login</p>
-                <p className="text-2xl font-semibold text-gray-900">{filteredLogs.length}</p>
+                <p className="text-sm font-medium text-text">Total Login</p>
+                <p className="text-2xl font-semibold text-text">{filteredLogs.length}</p>
               </div>
             </div>
           </div>
 
-          <div className="bg-white p-6 rounded-lg shadow-sm">
+          <div className="bg-cardb p-6 rounded-lg shadow-sm">
             <div className="flex items-center">
               <div className="p-3 rounded-full bg-green-100">
                 <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -308,15 +386,15 @@ const LogLogin = () => {
                 </svg>
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500">User Aktif</p>
-                <p className="text-2xl font-semibold text-gray-900">
+                <p className="text-sm font-medium text-text">User Aktif</p>
+                <p className="text-2xl font-semibold text-text">
                   {filteredLogs.filter(log => log.status === 'active').length}
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="bg-white p-6 rounded-lg shadow-sm">
+          <div className="bg-cardb p-6 rounded-lg shadow-sm">
             <div className="flex items-center">
               <div className="p-3 rounded-full bg-purple-100">
                 <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -324,15 +402,15 @@ const LogLogin = () => {
                 </svg>
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500">Sesi Selesai</p>
-                <p className="text-2xl font-semibold text-gray-900">
+                <p className="text-sm font-medium text-text">Sesi Selesai</p>
+                <p className="text-2xl font-semibold text-text">
                   {filteredLogs.filter(log => log.status === 'completed').length}
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="bg-white p-6 rounded-lg shadow-sm">
+          <div className="bg-cardb p-6 rounded-lg shadow-sm">
             <div className="flex items-center">
               <div className="p-3 rounded-full bg-yellow-100">
                 <svg className="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -340,8 +418,8 @@ const LogLogin = () => {
                 </svg>
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-500">Hari Ini</p>
-                <p className="text-2xl font-semibold text-gray-900">
+                <p className="text-sm font-medium text-text">Hari Ini</p>
+                <p className="text-2xl font-semibold text-text">
                   {filteredLogs.filter(log => {
                     const today = new Date().toDateString();
                     return new Date(log.loginTime).toDateString() === today;
@@ -353,37 +431,37 @@ const LogLogin = () => {
         </div>
 
         {/* Table */}
-        <div className="bg-white rounded-lg shadow-sm overflow-hidden">
+        <div className="bg-cardb rounded-lg shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+              <thead className="bg-gray-50 dark:bg-[#37363A]">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-text uppercase tracking-wider">
                     User
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-text uppercase tracking-wider">
                     Level
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-text uppercase tracking-wider">
                     Login
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-text uppercase tracking-wider">
                     Logout
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-text uppercase tracking-wider">
                     Durasi
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-text uppercase tracking-wider">
                     IP Address
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-text uppercase tracking-wider">
                     Status
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="bg-cardb divide-y divide-gray-200">
                 {currentLogs.map((log) => (
-                  <tr key={log.id} className="hover:bg-gray-50">
+                  <tr key={log.id} className="hover:bg-cta">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                         <div className="flex-shrink-0 h-10 w-10">
@@ -405,8 +483,8 @@ const LogLogin = () => {
                           )}
                         </div>
                         <div className="ml-4">
-                          <div className="text-sm font-medium text-gray-900">{log.name}</div>
-                          <div className="text-sm text-gray-500">{log.username}</div>
+                          <div className="text-sm font-medium text-text">{log.name}</div>
+                          <div className="text-sm text-text">{log.username}</div>
                         </div>
                       </div>
                     </td>
@@ -415,16 +493,16 @@ const LogLogin = () => {
                         {getLevelText(log.level)}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-text">
                       {formatDateTime(log.loginTime)}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-text">
                       {formatDateTime(log.logoutTime)}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-text">
                       {calculateDuration(log.loginTime, log.logoutTime)}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-text">
                       {log.ipAddress}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -440,26 +518,26 @@ const LogLogin = () => {
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
+            <div className="bg-cardb px-4 py-3 flex items-center justify-between border-t border-border sm:px-6">
               <div className="flex-1 flex justify-between sm:hidden">
                 <button
                   onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                   disabled={currentPage === 1}
-                  className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
+                  className="relative inline-flex items-center px-4 py-2 border border-border text-sm font-medium rounded-md text-text bg-blue-600 hover:bg-primaryp disabled:opacity-50"
                 >
                   Previous
                 </button>
                 <button
                   onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                   disabled={currentPage === totalPages}
-                  className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
+                  className="ml-3 relative inline-flex items-center px-4 py-2 border border-border text-sm font-medium rounded-md text-text bg-blue-600 hover:bg-primaryp disabled:opacity-50"
                 >
                   Next
                 </button>
               </div>
               <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
                 <div>
-                  <p className="text-sm text-gray-700">
+                  <p className="text-sm text-text">
                     Menampilkan <span className="font-medium">{indexOfFirstLog + 1}</span> sampai{' '}
                     <span className="font-medium">{Math.min(indexOfLastLog, filteredLogs.length)}</span> dari{' '}
                     <span className="font-medium">{filteredLogs.length}</span> hasil
@@ -484,7 +562,7 @@ const LogLogin = () => {
                         className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
                           currentPage === index + 1
                             ? 'z-10 bg-blue-50 border-blue-500 text-blue-600'
-                            : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
+                            : 'bg-white border-gray-300 text-gray-600 hover:bg-blue-200'
                         }`}
                       >
                         {index + 1}
@@ -508,12 +586,12 @@ const LogLogin = () => {
         </div>
 
         {filteredLogs.length === 0 && (
-          <div className="bg-white rounded-lg shadow-sm p-12 text-center">
+          <div className="bg-cardb rounded-lg shadow-sm p-12 text-center mt-1">
             <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
-            <h3 className="mt-4 text-lg font-medium text-gray-900">Tidak ada data log</h3>
-            <p className="mt-2 text-gray-500">Belum ada aktivitas login yang sesuai dengan filter yang dipilih.</p>
+            <h3 className="mt-4 text-lg font-medium text-text">Tidak ada data log</h3>
+            <p className="mt-2 text-text2">Belum ada aktivitas login yang sesuai dengan filter yang dipilih.</p>
           </div>
         )}
       </div>

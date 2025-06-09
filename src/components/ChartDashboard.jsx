@@ -13,22 +13,22 @@ function ChartDashboard({endpoint, area, title, colors, name}) {
 
   const [powerGraph, setPowerGraph] = useState([]);
 
-  const taman = 'cMT-DB-WATER-UTY_Met_Taman_data'; // Nama tabel yang ingin digunakan
-  const domestik = 'cMT-DB-WATER-UTY_Met_Domestik_data'; 
-  const inlet = 'cMT-DB-WATER-UTY_Met_Inlet_Pt_data'; 
-  const osmo = 'cMT-DB-WATER-UTY_Met_RO_data'; 
-  const boiler = 'cMT-DB-WATER-UTY_Met_Boiler_data'; 
-  const pdam = 'cMT-DB-WATER-UTY_Met_PDAM_data'; 
+  // const taman = 'cMT-DB-WATER-UTY_Met_Taman_data'; // Nama tabel yang ingin digunakan
+  // const domestik = 'cMT-DB-WATER-UTY_Met_Domestik_data'; 
+  // const inlet = 'cMT-DB-WATER-UTY_Met_Inlet_Pt_data'; 
+  // const osmo = 'cMT-DB-WATER-UTY_Met_RO_data'; 
+  // const boiler = 'cMT-DB-WATER-UTY_Met_Boiler_data'; 
+  // const pdam = 'cMT-DB-WATER-UTY_Met_PDAM_data'; 
 
-  const inv16 = 'cMT-Gedung-UTY_Inverter1-6_SP_data'; 
-  const inv712 = 'cMT-Gedung-UTY_Inverter7-12_SP_data'; 
-  const sdp1 = 'cMT-Gedung-UTY_SDP.1-Produksi_data'; 
-  const sdp2 = 'cMT-Gedung-UTY_SDP.2-Produksi_data'; 
-  const sdputil = 'cMT-Gedung-UTY_SDP.1-Utility_data'; 
-  const chiller = 'cMT-Gedung-UTY_PP.1-Chiller_data'; 
-  const hydrant = 'cMT-Gedung-UTY_PP.2-Hydrant_data'; 
-  const lvmdp = ' '; 
-  const power = 'cMT-Gedung-UTY_MVMDP_data'; 
+  // const inv16 = 'cMT-Gedung-UTY_Inverter1-6_SP_data'; 
+  // const inv712 = 'cMT-Gedung-UTY_Inverter7-12_SP_data'; 
+  // const sdp1 = 'cMT-Gedung-UTY_SDP.1-Produksi_data'; 
+  // const sdp2 = 'cMT-Gedung-UTY_SDP.2-Produksi_data'; 
+  // const sdputil = 'cMT-Gedung-UTY_SDP.1-Utility_data'; 
+  // const chiller = 'cMT-Gedung-UTY_PP.1-Chiller_data'; 
+  // const hydrant = 'cMT-Gedung-UTY_PP.2-Hydrant_data'; 
+  // const lvmdp = ' '; 
+  // const power = 'cMT-Gedung-UTY_MVMDP_data'; 
 
   const [isDarkMode, setIsDarkMode] = useState(
       document.documentElement.getAttribute("data-theme") === "dark"

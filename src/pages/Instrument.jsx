@@ -8,7 +8,6 @@ import {
   Box,
 } from "@chakra-ui/react";
 import HardnessPage from "./HardnessPage";
-import Header from "../components/header";
 import Sartorius from "./Sartorius";
 import Moisture from "./Moisture";
 import Mettler from "./Mettler";

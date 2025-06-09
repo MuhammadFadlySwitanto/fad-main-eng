@@ -1,11 +1,10 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import CanvasJSReact from "../canvasjs.react";
 import axios from "axios";
-import { Button, Stack } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useState } from "react";
-import Header from "../components/header";
 
 var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Select,
   Input,
@@ -18,7 +18,6 @@ import CanvasJSReact from "../canvasjs.react";
 import axios from "axios";
 import { useReactToPrint } from "react-to-print";
 import { useColorMode, useColorModeValue } from "@chakra-ui/react";
-import { Margin } from "@mui/icons-material";
 
 var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;

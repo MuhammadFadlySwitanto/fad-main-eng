@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
-import axios from "axios";
 import { useSelector } from "react-redux";
-import { useColorMode, useColorModeValue } from "@chakra-ui/react";
+import { useColorModeValue } from "@chakra-ui/react";
 import {   
   Select,
   Spinner 

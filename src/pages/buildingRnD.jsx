@@ -1,10 +1,9 @@
-import React, { useEffect, Component, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import CanvasJSReact from "../canvasjs.react";
-import { Button, ButtonGroup, Stack, Input, Select, Table, Thead, Tbody, Tr, Th, Td, TableCaption, TableContainer, Spinner } from "@chakra-ui/react";
+import { Button, Stack, Input, Select, Table, Thead, Tbody, Tr, Th, Td, TableContainer, Spinner } from "@chakra-ui/react";
 import axios from "axios";
 import { useReactToPrint } from "react-to-print";
 import { useColorMode, useColorModeValue } from "@chakra-ui/react";
-import { Margin } from "@mui/icons-material";
 
 var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;

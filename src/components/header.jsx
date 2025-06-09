@@ -6,7 +6,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import SearchIcon from '@mui/icons-material/Search';
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -84,9 +84,9 @@ function Header()  {
   useEffect(() => {}, []);
    
 
-    const imageData = userGlobal.imagePath
-    ? `http://10.126.15.197:8002${userGlobal.imagePath}`
-    : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
+  const imageData = userGlobal.imagePath
+  ? `http://10.126.15.197:8002${userGlobal.imagePath}`
+  : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
 
     
   return (
@@ -135,7 +135,7 @@ function Header()  {
                   <span className="hover:underline">My Profile</span>
                 </a>
                 {/* nyalain kondisinya biar fitur admin setting cuma buat admin doang bisa nyala dan kepake */}
-                {/* {userGlobal.isAdmin === 1 && ( */}
+                {userGlobal.isAdmin === 1 && (
                   <a className="flex items-center gap-3.5 mb-1 text-sm font-medium duration-300 ease-in-out lg:text-base cursor-pointer "
                    onClick={() => {
                     navigate(`/admin`);
@@ -143,7 +143,7 @@ function Header()  {
                     <SettingsIcon sx={{ fontSize: 25 }}/>
                     <span className="hover:underline">Admin</span>
                   </a>
-                {/* )} */}
+                )}
                 </li> 
               </ul>
               <button className="flex items-center gap-3.5 px-6 py-2 my- text-sm font-medium duration-300 ease-in-out lg:text-base cursor-pointer border-none focus:outline-none"

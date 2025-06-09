@@ -1,11 +1,8 @@
 import { React, useState, useEffect } from "react";
 import {
   Table,
-  Thead,
   Tbody,
-  Tfoot,
   Tr,
-  Th,
   Td,
   TableCaption,
   TableContainer,

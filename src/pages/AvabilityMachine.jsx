@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import CanvasJSReact from "../canvasjs.react";
 import moment from "moment/moment";
 import axios from "axios";
@@ -17,19 +17,15 @@ import {
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Td,
   TableCaption,
   TableContainer,
-  ButtonGroup,
   Stack,
-  Input,
   Select,
 } from "@chakra-ui/react";
 import { useColorMode, useColorModeValue } from "@chakra-ui/react";
-import Header from "../components/header";
 
 var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
@@ -55,7 +51,6 @@ function AvabilityMachine() {
   const { colorMode } = useColorMode();
   const borderColor = useColorModeValue("rgba(var(--color-border))", "rgba(var(--color-border))");
   const tulisanColor = useColorModeValue("rgba(var(--color-text))", "rgba(var(--color-text))");
-  const hoverBorderColor = useColorModeValue("rgba(var(--color-border2))", "rgba(var(--color-border2))");
   const kartuColor = useColorModeValue("rgba(var(--color-card))", "rgba(var(--color-card))");
 
   const [isDarkMode, setIsDarkMode] = useState(

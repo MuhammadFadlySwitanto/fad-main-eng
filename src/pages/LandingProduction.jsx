@@ -1,33 +1,7 @@
 import React, { useEffect, Component, useState } from "react";
 import axios from "axios";
 import CanvasJSReact from "../canvasjs.react";
-import {
-  CircularProgress,
-  CircularProgressLabel,
-  Progress,
-  Table,
-  Thead,
-  Tbody,
-  Tfoot,
-  Tr,
-  Th,
-  Td,
-  TableCaption,
-  TableContainer,
-  Button,
-  ButtonGroup,
-  Stack,
-  Input,
-  Select,
-  CardBody,
-  CardFooter,
-  Heading,
-  StackDivider,
-  Box,
-  Text,
-  Card,
-  CardHeader,
-} from "@chakra-ui/react";
+import {CircularProgress, CircularProgressLabel, Select} from "@chakra-ui/react";
 import { getDateProd } from "../features/part/prodSlice";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";

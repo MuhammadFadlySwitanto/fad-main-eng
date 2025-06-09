@@ -5,11 +5,12 @@
 @layer base{
   :root {
     --color-background: 245, 245, 245;
-    --color-background: 245, 245, 245;
+    --color-background2: 0, 0, 0;
 
     --color-border: 212, 212, 212;
     --color-border2: 168, 168, 168;
     --color-card: 255, 255, 255;
+    --color-cardb: 251, 251, 251;
     --color-card2: 220, 220, 220;
     --color-tombol: 195, 195, 195;
 
@@ -36,6 +37,7 @@
     --color-border: 45, 45, 45;
     --color-border2: 192, 192, 192;
     --color-card: 23, 23, 23;
+    --color-cardb: 41, 42, 46;
     --color-card2: 83, 104, 120;
     --color-tombol: 64, 64, 64;
 

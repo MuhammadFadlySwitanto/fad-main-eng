@@ -1,10 +1,7 @@
-import React, { useEffect, Component, useState } from "react";
-import CanvasJSReact from "../canvasjs.react";
-import { Button, 
-    ButtonGroup,
+import { useEffect, useState } from "react";
+import { 
     Stack, 
     Input, 
-    Select, 
     Radio, 
     RadioGroup,
     Table, 

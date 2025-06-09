@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Select } from "@chakra-ui/react";
 import Header from "../components/header";
 import { client, subscribe } from '../features/mqttClient';

@@ -1,18 +1,16 @@
-import React, { useEffect, Component, useState } from "react";
+import { useEffect, useState } from "react";
 import CanvasJSReact from "../canvasjs.react";
 
 import {
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Td,
   TableCaption,
   TableContainer,
   Button,
-  ButtonGroup,
   Stack,
   Input,
   Select,
@@ -20,8 +18,7 @@ import {
 } from "@chakra-ui/react";
 import Axios from "axios";
 import { useColorMode, useColorModeValue } from "@chakra-ui/react";
-import Header from "../components/header";
-import { color } from "framer-motion";
+// import { color } from "framer-motion";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 

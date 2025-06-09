@@ -1,18 +1,7 @@
-import React from "react";
-import {
-  Tabs,
-  TabList,
-  TabPanels,
-  Tab,
-  TabPanel,
-  Card,
-  CardBody,
-} from "@chakra-ui/react";
 import BuildingBAS from "./buildingBAS";
 import BuildingEMS from "./buildingEMS";
 import BuildingRnD from "./buildingRnD";
 import BuildingWH1 from "./buildingWH1";
-import Header from "../components/header";
 import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
