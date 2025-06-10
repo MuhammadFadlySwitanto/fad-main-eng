@@ -77,7 +77,7 @@ function AlarmList() {
       if (AlarmData.length === 0) {
         return (
           <Tr>
-            <Td colSpan={4} textAlign="center" display="table-cell" className="text-red-500">
+            <Td colSpan={4} textAlign="center" border="1px" display="table-cell" className="text-red-500">
               No data available
             </Td>
           </Tr>

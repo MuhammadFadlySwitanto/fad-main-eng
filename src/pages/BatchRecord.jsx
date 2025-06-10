@@ -401,182 +401,182 @@ function formatTimestampUTC(uniqueTimestamp) {
   // };
 
 
-const handlePrevPage = () => {
-  setCurrentPage((prev) => Math.max(prev - 1, 1));
-};
+  const handlePrevPage = () => {
+    setCurrentPage((prev) => Math.max(prev - 1, 1));
+  };
 
-const handleNextPage = () => {
-  setCurrentPage((prev) => Math.min(prev + 1, Math.ceil(allDataEBR.length / rowsPerPage)));
-};
+  const handleNextPage = () => {
+    setCurrentPage((prev) => Math.min(prev + 1, Math.ceil(allDataEBR.length / rowsPerPage)));
+  };
 
-const handleRowsPerPageChange = (e) => {
-  setRowsPerPage(Number(e.target.value));
-  setCurrentPage(1); // reset ke page 1
-};
+  const handleRowsPerPageChange = (e) => {
+    setRowsPerPage(Number(e.target.value));
+    setCurrentPage(1); // reset ke page 1
+  };
 
-const handleSort = (key) => {
-  let direction = 'asc';
-  if (sortConfig.key === key && sortConfig.direction === 'asc') {
-    direction = 'desc';
-  }
-  setSortConfig({ key, direction });
-};
-
-const sortedData = [...allDataEBR].sort((a, b) => {
-  if (sortConfig.key === 'time@timestamp') {
-    const dateA = new Date(a[sortConfig.key]);
-    const dateB = new Date(b[sortConfig.key]);
-    return sortConfig.direction === 'asc' ? dateA - dateB : dateB - dateA;
-  } else {
-    if (a[sortConfig.key] < b[sortConfig.key]) {
-      return sortConfig.direction === 'asc' ? -1 : 1;
+  const handleSort = (key) => {
+    let direction = 'asc';
+    if (sortConfig.key === key && sortConfig.direction === 'asc') {
+      direction = 'desc';
     }
-    if (a[sortConfig.key] > b[sortConfig.key]) {
-      return sortConfig.direction === 'asc' ? 1 : -1;
+    setSortConfig({ key, direction });
+  };
+
+  const sortedData = [...allDataEBR].sort((a, b) => {
+    if (sortConfig.key === 'time@timestamp') {
+      const dateA = new Date(a[sortConfig.key]);
+      const dateB = new Date(b[sortConfig.key]);
+      return sortConfig.direction === 'asc' ? dateA - dateB : dateB - dateA;
+    } else {
+      if (a[sortConfig.key] < b[sortConfig.key]) {
+        return sortConfig.direction === 'asc' ? -1 : 1;
+      }
+      if (a[sortConfig.key] > b[sortConfig.key]) {
+        return sortConfig.direction === 'asc' ? 1 : -1;
+      }
+      return 0;
     }
-    return 0;
-  }
-});
-
-const renderTableHeader= () => {
-  // Pastikan visibleData tidak kosong
-  if (allDataEBR.length > 0) {
-    // Ambil semua kunci dari objek pertama dalam visibleData
-    const dataKeys = Object.keys(allDataEBR[0]);
-
-    return (
-      <thead>
-        <tr>
-          {dataKeys.map((dataKey, index) => (
-            <th className="text-center px-4 py-2 whitespace-normal" key={index} onClick={() => handleSort(dataKey)}>
-              <div className="flex items-center justify-between cursor-pointer">
-                {dataKey}
-                {dataKey === 'data_index' && (
-                  <SortIcon active={sortConfig.key === dataKey} direction={sortConfig.direction} />
-                )}
-                {dataKey === 'time@timestamp' && (
-                  <SortIcon active={sortConfig.key === dataKey} direction={sortConfig.direction} />
-                )}
-              </div>
-            </th>
-          ))}
-        </tr>
-      </thead>
-    );
-  }
-  return null; // Jika visibleData kosong, kembalikan null
-};
-
-const cleanData = (dataKey, value, selectedMachine, selectedLine) => {
-  if (dataKey === "BATCH" || dataKey === "PROCESS"  || dataKey === "PMA_BATCH" || dataKey === "PMA_PROCESS" || dataKey === "WET_PROCESS") {
-    return value.replace(/[^a-zA-Z0-9\s-]/g, '');
-  }
-  if (dataKey === "impeller_rpm" || dataKey === "impeller_ampere") {
-    // Format the value to 2 decimal places
-    return parseFloat(value).toFixed(2);
-  }
-  // if (dataKey === "time@timestamp") {
-  //   // Format the timestamp to a readable format
-  //   return formatTimestamp(value);
-  // }
-  // return value;
-  if (dataKey === "time@timestamp") {
-    if (selectedMachine === "FBD") {
-      return formatTimestamp(value); // pakai format readable
-    } else if (selectedLine === "line1" || selectedMachine === "PMA") {
-      // Hanya untuk line1 & PMA
-      return formatTimestampUTC(value);
-    }
-    return value; // mesin lain: tampilkan apa adanya
-  }
-  return value;
-};
-
-// Helper: dapatkan data terfilter & terformat seperti di tabel
-const getFormattedExportData = () => {
-  // Export semua data yang sudah terurut/terfilter
-  return sortedData.map(row => {
-    const dataKeys = Object.keys(row);
-    let cleanedRow = {};
-    dataKeys.forEach(key => {
-      cleanedRow[key] = cleanData(key, row[key], newMachine);
-    });
-    return cleanedRow;
   });
-};
 
-// 1. Untuk EXPORT ke Excel
-const exportToExcel = () => {
-  const exportData = getFormattedExportData(); // misal: format + filter sesuai kebutuhan
-  if (!exportData || exportData.length === 0) {
-    toast.warning("No data to export!");
-    return;
-  }
-  const worksheet = XLSX.utils.json_to_sheet(exportData);
-  const workbook = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(workbook, worksheet, "BatchRecord");
-  XLSX.writeFile(workbook, "BatchRecord.xlsx");
-};
+  const renderTableHeader= () => {
+    // Pastikan visibleData tidak kosong
+    if (allDataEBR.length > 0) {
+      // Ambil semua kunci dari objek pertama dalam visibleData
+      const dataKeys = Object.keys(allDataEBR[0]);
 
-const renderData = () => {
-  const startIndex = (currentPage - 1) * rowsPerPage;
-  const visibleData = sortedData.slice(startIndex, startIndex + rowsPerPage);
-
-  if (allDataEBR.length == 0) {
-    return (
-      <Tr>
-        <Td colSpan={12} className="text-red-500" textAlign="center" display="table-cell">
-          No data available
-        </Td>
-      </Tr>
-    );
-  }else{
-    return visibleData.map((row, index) => {
-      // Ambil semua kunci dari objek row
-      const dataKeys = Object.keys(row);
-    
       return (
-        <Tr key={index}>
-          {dataKeys.map((dataKey, dataIndex) => (
-            <Td className="text-center bg-cobabg" key={dataIndex}>
-              {cleanData(dataKey, row[dataKey], newMachine)}
-            </Td>
-          ))}
+        <thead>
+          <tr>
+            {dataKeys.map((dataKey, index) => (
+              <th className="text-center px-4 py-2 whitespace-normal" key={index} onClick={() => handleSort(dataKey)}>
+                <div className="flex items-center justify-between cursor-pointer">
+                  {dataKey}
+                  {dataKey === 'data_index' && (
+                    <SortIcon active={sortConfig.key === dataKey} direction={sortConfig.direction} />
+                  )}
+                  {dataKey === 'time@timestamp' && (
+                    <SortIcon active={sortConfig.key === dataKey} direction={sortConfig.direction} />
+                  )}
+                </div>
+              </th>
+            ))}
+          </tr>
+        </thead>
+      );
+    }
+    return null; // Jika visibleData kosong, kembalikan null
+  };
+
+  const cleanData = (dataKey, value, selectedMachine, selectedLine) => {
+    if (dataKey === "BATCH" || dataKey === "PROCESS"  || dataKey === "PMA_BATCH" || dataKey === "PMA_PROCESS" || dataKey === "WET_PROCESS") {
+      return value.replace(/[^a-zA-Z0-9\s-]/g, '');
+    }
+    if (dataKey === "impeller_rpm" || dataKey === "impeller_ampere") {
+      // Format the value to 2 decimal places
+      return parseFloat(value).toFixed(2);
+    }
+    // if (dataKey === "time@timestamp") {
+    //   // Format the timestamp to a readable format
+    //   return formatTimestamp(value);
+    // }
+    // return value;
+    if (dataKey === "time@timestamp") {
+      if (selectedMachine === "FBD") {
+        return formatTimestamp(value); // pakai format readable
+      } else if (selectedLine === "line1" || selectedMachine === "PMA") {
+        // Hanya untuk line1 & PMA
+        return formatTimestampUTC(value);
+      }
+      return value; // mesin lain: tampilkan apa adanya
+    }
+    return value;
+  };
+
+  // Helper: dapatkan data terfilter & terformat seperti di tabel
+  const getFormattedExportData = () => {
+    // Export semua data yang sudah terurut/terfilter
+    return sortedData.map(row => {
+      const dataKeys = Object.keys(row);
+      let cleanedRow = {};
+      dataKeys.forEach(key => {
+        cleanedRow[key] = cleanData(key, row[key], newMachine);
+      });
+      return cleanedRow;
+    });
+  };
+
+  // 1. Untuk EXPORT ke Excel
+  const exportToExcel = () => {
+    const exportData = getFormattedExportData(); // misal: format + filter sesuai kebutuhan
+    if (!exportData || exportData.length === 0) {
+      toast.warning("No data to export!");
+      return;
+    }
+    const worksheet = XLSX.utils.json_to_sheet(exportData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "BatchRecord");
+    XLSX.writeFile(workbook, "BatchRecord.xlsx");
+  };
+
+  const renderData = () => {
+    const startIndex = (currentPage - 1) * rowsPerPage;
+    const visibleData = sortedData.slice(startIndex, startIndex + rowsPerPage);
+
+    if (allDataEBR.length == 0) {
+      return (
+        <Tr>
+          <Td colSpan={12} className="text-red-500" textAlign="center" display="table-cell">
+            No data available
+          </Td>
         </Tr>
       );
-    });  
-  }
-};
-
-const SortIcon = ({ active, direction }) => (
-  <span className="inline-block ml-1">
-    <svg
-      className={`w-4 h-4 transform ${active ? 'text-blue-600' : 'text-gray-400'}`}
-      fill="none"
-      stroke="currentColor"
-      viewBox="0 0 24 24"
-    >
-      {direction === 'asc' ? (
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
-      ) : (
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-      )}
-    </svg>
-  </span>
-);
-
-
-useEffect(() => {
-  const handleThemeChange = () => {
-    const currentTheme = document.documentElement.getAttribute('data-theme');
-    setIsDarkMode(currentTheme === 'dark');
+    } else {
+      return visibleData.map((row, index) => {
+        // Ambil semua kunci dari objek row
+        const dataKeys = Object.keys(row);
+      
+        return (
+          <Tr key={index}>
+            {dataKeys.map((dataKey, dataIndex) => (
+              <Td className="text-center bg-cobabg" key={dataIndex}>
+                {cleanData(dataKey, row[dataKey], newMachine)}
+              </Td>
+            ))}
+          </Tr>
+        );
+      });  
+    }
   };
-  // Observe attribute changes
-  const observer = new MutationObserver(handleThemeChange);
-  observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
 
-  return () => observer.disconnect();
-}, []);
+  const SortIcon = ({ active, direction }) => (
+    <span className="inline-block ml-1">
+      <svg
+        className={`w-4 h-4 transform ${active ? 'text-blue-600' : 'text-gray-400'}`}
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        {direction === 'asc' ? (
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+        ) : (
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        )}
+      </svg>
+    </span>
+  );
+
+
+  useEffect(() => {
+    const handleThemeChange = () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      setIsDarkMode(currentTheme === 'dark');
+    };
+    // Observe attribute changes
+    const observer = new MutationObserver(handleThemeChange);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+
+    return () => observer.disconnect();
+  }, []);
 
 //========================HENDELER========================================
 // const lineHendeler = (event) => {
@@ -823,15 +823,15 @@ useEffect(() => {
           <Spinner size="xl" thickness="4px" color="blue.500" />
         </Center>
       ) : (
-      <div className="flex justify-center">
-        <TableContainer className="bg-card rounded-md mt-4" sx={{ overflowX: "auto", maxWidth: "90%" }}>
-          <Table key={colorMode} variant="simple" sx={{ minWidth: "1260px"}} >
-            <TableCaption sx={{color: tulisanColor}}>Batch Record</TableCaption>
-            {renderTableHeader()}
-            <Tbody>{renderData()}</Tbody>
-          </Table>
-        </TableContainer>
-      </div>
+        <div className="flex justify-center">
+          <TableContainer className="bg-card rounded-md mt-4" sx={{ overflowX: "auto", maxWidth: "90%" }}>
+            <Table key={colorMode} variant="simple" sx={{ minWidth: "1260px"}} >
+              <TableCaption sx={{color: tulisanColor}}>Batch Record</TableCaption>
+              {renderTableHeader()}
+              <Tbody>{renderData()}</Tbody>
+            </Table>
+          </TableContainer>
+        </div>
       )}
       {/* Pagination Controls */}
       <div className="flex justify-center items-center my-4 gap-4">

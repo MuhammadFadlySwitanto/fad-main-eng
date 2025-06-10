@@ -139,6 +139,13 @@ export default function PowerManagement() {
     document.documentElement.getAttribute("data-theme") === "dark"
   );
 
+  const [chartKey, setChartKey] = useState(0);
+
+  // Setiap kali dark mode berubah, force remount Chart
+  useEffect(() => {
+    setChartKey(prev => prev + 1);
+  }, [isDarkMode]);
+
   useEffect(() => {
     var bodyWidth = document.body.clientWidth;
     var bodyHeight = document.body.clientHeight;
@@ -723,63 +730,64 @@ export default function PowerManagement() {
         list.push(persen.toFixed(2))
         data1.push(list)
       };
+  
   const fetchDataDayly = async () => {
     setLoading(true); // Start spinner
     setError(null);   // Clear previous errors
 
     try {
-    let response = await axios.get(
-      "http://10.126.15.197:8002/part/PowerDaily",
-      {
-        params: {
-          area: powerArea,
-          start: startDate,
-          finish: finishDate,
-        },
+      let response = await axios.get(
+        "http://10.126.15.197:8002/part/PowerDaily",
+        {
+          params: {
+            area: powerArea,
+            start: startDate,
+            finish: finishDate,
+          },
+        }
+      )
+      if (powerArea === "cMT-Gedung-UTY_MVMDP_data") {
+        var multipliedData = response.data.map((data) => ({
+          label: data.label,
+          y: data.y,
+          x: data.x,
+        })); 
+      } else if (
+        powerArea === "cMT-Gedung-UTY_LVMDP1_data" ||
+        powerArea === "cMT-Gedung-UTY_LVMDP2_data" ||
+        powerArea === "cMT-Gedung-UTY_SDP.1-Produksi_data"
+      ) {
+        var multipliedData = response.data.map((data) => ({
+          label: data.label,
+          y: data.y,
+          x: data.x,
+        }));
+      } else {
+        var multipliedData = response.data.map((data) => ({
+          label: data.label,
+          y: data.y,
+          x: data.x,
+        }));
       }
-    )
-    if (powerArea === "cMT-Gedung-UTY_MVMDP_data") {
-      var multipliedData = response.data.map((data) => ({
-        label: data.label,
-        y: data.y,
-        x: data.x,
-      })); 
-    } else if (
-      powerArea === "cMT-Gedung-UTY_LVMDP1_data" ||
-      powerArea === "cMT-Gedung-UTY_LVMDP2_data" ||
-      powerArea === "cMT-Gedung-UTY_SDP.1-Produksi_data"
-    ) {
-      var multipliedData = response.data.map((data) => ({
-        label: data.label,
-        y: data.y,
-        x: data.x,
-      }));
-    } else {
-      var multipliedData = response.data.map((data) => ({
-        label: data.label,
-        y: data.y,
-        x: data.x,
-      }));
+
+      setDailyPower(multipliedData);
+
+      const totalY = multipliedData.reduce((sum, data) => sum + data.y, 0);
+      const averageY = Math.ceil(totalY / multipliedData.length);
+
+      setAvarageDaily(averageY);
+      setTotalDaily(totalY);
+
+    } catch (err) {
+      console.error("Error fetching data:", err);
+      setError("Failed to fetch data. Please try again.");
+    } finally {
+      const delay = 2000; // 2 seconds in milliseconds
+        setTimeout(() => {
+          setLoading(false); // Stop spinner
+          console.log("Finished fetching data, stopping spinner...");
+        }, delay);
     }
-
-    setDailyPower(multipliedData);
-
-    const totalY = multipliedData.reduce((sum, data) => sum + data.y, 0);
-    const averageY = Math.ceil(totalY / multipliedData.length);
-
-    setAvarageDaily(averageY);
-    setTotalDaily(totalY);
-
-  } catch (err) {
-    console.error("Error fetching data:", err);
-    setError("Failed to fetch data. Please try again.");
-  } finally {
-    const delay = 2000; // 2 seconds in milliseconds
-      setTimeout(() => {
-        setLoading(false); // Stop spinner
-        console.log("Finished fetching data, stopping spinner...");
-      }, delay);
-  }
   };
 
   const fetchDataMonthly = async () => {
@@ -1010,6 +1018,24 @@ export default function PowerManagement() {
 
     return () => observer.disconnect();
   }, []);
+
+  // Paksa override style tooltip Google Chart setiap dark mode berubah
+  // useEffect(() => {
+  //   const updateTooltipAndLabel = () => {
+  //     // Tooltip
+  //     document.querySelectorAll('.google-visualization-tooltip').forEach(el => {
+  //       el.style.background = isDarkMode ? "#18181b" : "#fff";
+  //       el.style.color = isDarkMode ? "#fafafa" : "#222";
+  //     });
+  //     // SVG Label
+  //     document.querySelectorAll('.google-visualization-sankey text').forEach(el => {
+  //       el.setAttribute('fill', isDarkMode ? "#fafafa" : "#222");
+  //     });
+  //   };
+  //   const interval = setInterval(updateTooltipAndLabel, 200);
+  //   return () => clearInterval(interval);
+  // }, [isDarkMode, data]);
+
 
 // ============================================================== CHART ===========================================================================================
 
@@ -1315,16 +1341,16 @@ export default function PowerManagement() {
   const options8 = {
     responsive: true,
     maintainAspectRatio: false, 
+    tooltip: { isHtml: true },
     sankey: {
       node: { nodePadding: 20,
-              label: { fontSize: 16,
-                fontColor: isDarkMode ? "white" : "black"
-                },
+              label: { fontSize: 16,            
+              },
             },
 
       link: {
         colorMode: 'gradient',
-        colors: isDarkMode ? darkModeColors : lightModeColors
+        colors: isDarkMode ? darkModeColors : lightModeColors,
       }, 
     }
   };
@@ -1816,7 +1842,7 @@ export default function PowerManagement() {
       </div>
       <div align="center"><h1 style={{ fontSize: "2rem"}}><b className="text-text">Power Sankey Diagram </b></h1></div>
       <div align="center"><h3 style={{ fontSize: "1rem"}}><b className="text-text">kWh</b></h3></div>
-      <div align="center" className="flex flex-row justify-center pb-10 overflow-x-auto overflow-y-hidden relative">
+      <div align="center" className={`flex flex-row justify-center pb-10 overflow-x-auto overflow-y-hidden relative ${isDarkMode ? 'sankey-dark' : 'sankey-light'}`}>
         <Chart
           chartType= "Sankey"
           width="900px" // Ubah dari "100%" ke ukuran lebih besar
@@ -1829,7 +1855,7 @@ export default function PowerManagement() {
       </div>
       <div align="center"><h1 style={{ fontSize: "2rem"}}><b>Power Sankey Diagram (%)</b></h1></div>
       <div align="center"><h3 style={{ fontSize: "1rem"}}><b>Total Supply Listrik : {supplylistrik} Kwh</b></h3></div>
-      <div align="center" className="flex flex-row justify-center pb-10 relative overflow-x-auto overflow-y-hidden">
+      <div align="center" className={`flex flex-row justify-center pb-10 overflow-x-auto overflow-y-hidden relative ${isDarkMode ? 'sankey-dark' : 'sankey-light'}`}>
         <Chart
           chartType="Sankey"
           width="900px" // Ubah dari "100%" ke ukuran lebih besar

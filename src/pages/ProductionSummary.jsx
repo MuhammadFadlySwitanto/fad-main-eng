@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import CanvasJSReact from "../canvasjs.react";
 import axios from "axios";
 import moment from "moment-timezone";
@@ -26,8 +26,6 @@ import {
   CardBody,
   Heading,
   Text,
-  Grid,
-  GridItem,
   Spinner
 } from "@chakra-ui/react";
 import { useColorMode, useColorModeValue } from "@chakra-ui/react";

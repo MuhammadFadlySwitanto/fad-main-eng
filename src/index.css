@@ -99,6 +99,35 @@ input[type="password"]::-webkit-textfield-decoration-container {
   display: none;
 }
 
+.sankey-dark text {
+  fill: white !important;
+}
+.sankey-light text {
+  fill: black !important;
+}
+body.sankey-dark .google-visualization-tooltip {
+  background: #18181b !important;
+}
+body.sankey-light .google-visualization-tooltip {
+  background: #fff !important;
+}
+
+/* html[data-theme="dark"] .google-visualization-sankey text {
+  fill: #fafafa !important;   
+} */
+/* html[data-theme="light"] .google-visualization-sankey text {
+  fill: #222 !important;      
+} */
+
+/* html[data-theme="dark"] .google-visualization-tooltip {
+  background: #18181b !important;
+  color: #fafafa !important;
+}
+html[data-theme="light"] .google-visualization-tooltip {
+  background: #fff !important;
+  color: #222 !important;
+} */
+
 .scroll-box {
   overflow-x: auto;
   display: block;
