@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import moment from "moment/moment";
 import {
   Table,
@@ -10,9 +10,6 @@ import {
   TableCaption,
   TableContainer,
   Button,
-  ButtonGroup,
-  Stack,
-  Input,
   Select,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
@@ -158,10 +155,10 @@ function MaintenanceBreakdown() {
   
   const totalPages = Math.ceil(filteredData.length / rowsPerPage);
 
-  // 3. Ambil data yang sesuai dengan halaman saat ini
+  // 3. current page-nya pagination (halaman saat  ini)
   const paginatedData = sortedData.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
 
-  // 4. Fungsi untuk menangani tombol navigasi pagination
+  // Fungsi untuk menangani tombol navigasi next dan previous pagination
   const handlePrevPage = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
@@ -170,7 +167,7 @@ function MaintenanceBreakdown() {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
   };
 
-  // 5. Saat jumlah rows berubah, reset ke halaman pertama
+  // ini kalau jumlah rows berubah, reset ke halaman pertama
   const handleRowsPerPageChange = (e) => {
     setRowsPerPage(Number(e.target.value));
     setCurrentPage(1);

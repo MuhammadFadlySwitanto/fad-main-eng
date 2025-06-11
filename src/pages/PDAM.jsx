@@ -56,20 +56,20 @@ const PDAM = forwardRef((props, ref) => {
         };
     
         socketRef.current.onmessage = (event) => {
-        try {
-            const message = event.data;
-            const varWebSocket = JSON.parse(message);
-            // console.log(varWebSocket);
-    
-            // Set state untuk masing-masing nilai
-            setInlet(varWebSocket["Inlet"]);
-            setDomestic(varWebSocket["Domestic"]);
-            setTamanPos(varWebSocket["TamanPosJaga"]);
-            setBoiler(varWebSocket["Boiler"]);
-            setRejectOsmo(varWebSocket["RejectOsmotron"]);
-        } catch (error) {
-            console.error("Error parsing WebSocket message:", error);
-        }
+            try {
+                const message = event.data;
+                const varWebSocket = JSON.parse(message);
+                // console.log(varWebSocket);
+        
+                // Set state untuk masing-masing nilai
+                setInlet(varWebSocket["Inlet"]);
+                setDomestic(varWebSocket["Domestic"]);
+                setTamanPos(varWebSocket["TamanPosJaga"]);
+                setBoiler(varWebSocket["Boiler"]);
+                setRejectOsmo(varWebSocket["RejectOsmotron"]);
+            } catch (error) {
+                console.error("Error parsing WebSocket message:", error);
+            }
         };
     
         socketRef.current.onerror = (error) => {
@@ -82,9 +82,9 @@ const PDAM = forwardRef((props, ref) => {
     
         // Tutup koneksi WebSocket saat komponen akan di-unmount
         return () => {
-        if (socketRef.current) {
-            socketRef.current.close();
-        }
+            if (socketRef.current) {
+                socketRef.current.close();
+            }
         };
     }, []); // Kosongkan dependency array sehingga useEffect hanya berjalan sekali saat komponen di-mount
 
@@ -404,7 +404,7 @@ const PDAM = forwardRef((props, ref) => {
             }}
             title="Grafana Chart">
             </iframe> */}
-      </div>
+        </div>
 
     </>
   );

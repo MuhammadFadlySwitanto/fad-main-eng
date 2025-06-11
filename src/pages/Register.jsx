@@ -155,7 +155,7 @@ function Register() {
             </div>
           </form>
 
-          <ToastContainer position="top-center" />
+          <ToastContainer position="top-center" draggable />
 
           {/* Sign Up Link */}
         </div>

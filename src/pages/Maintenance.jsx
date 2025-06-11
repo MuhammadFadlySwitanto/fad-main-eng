@@ -1,23 +1,11 @@
-import React from "react";
-import {
-  Tabs,
-  TabList,
-  TabPanels,
-  Tab,
-  TabPanel,
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-} from "@chakra-ui/react";
 import MachineBreakdown from "./MachineBreakdown";
 import HandoverMaintenance from "./HandoverMaintenance";
 import MachineHistorical from "./MachineHistorical";
 import DataReportMTC from "./DataReportMTC";
-import Header from "../components/header";
 import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+
 function Maintenance() {
   const userGlobal = useSelector((state) => state.user.user);
   const [searchParams] = useSearchParams();

@@ -172,14 +172,14 @@ function WaterExportDaily() {
         </div>
       </Stack>
       <Stack
-          className="flex flex-row justify-center mb-4  "
-          direction="row"
-          spacing={4}
-          align="center"
+        className="flex flex-row justify-center mb-4  "
+        direction="row"
+        spacing={4}
+        align="center"
       >
-          <div>
-              <ExportToExcel apiData={dataExport} fileName={fileName} />
-          </div>
+        <div>
+          <ExportToExcel apiData={dataExport} fileName={fileName} />
+        </div>
       </Stack>
       <div align="center"><h1 className="text-2xl text-text"><b>Preview {fileName}:</b></h1></div>
       <TableContainer className="bg-card rounded-md">

@@ -182,7 +182,7 @@ function Login () {
             </div>
           </form>
 
-          <ToastContainer position="top-center" />
+          <ToastContainer position="top-center" draggable />
 
           {/* Sign Up Link */}
           <p className="mt-8 text-white">

@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
 import moment from "moment/moment";
 import {
-  Stack,
   Table,
   Thead,
   Tbody,
   Tr,
   Th,
   Td,
-  TableCaption,
   TableContainer,
   Button,
   Select,
@@ -273,7 +271,7 @@ function DataReportMTC() {
         </Table>
       </TableContainer>
       {/* Pagination Controls */}
-      <div className="flex justify-center items-center mt-4 gap-4">
+      <div className="flex justify-center items-center my-4 gap-4">
         <Button
           onClick={handlePrevPage}
           isDisabled={currentPage === 1}

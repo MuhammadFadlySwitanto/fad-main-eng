@@ -323,14 +323,14 @@ export default function BuildingRnD() {
           <div className="ml-2 mt-7 truncate">
             <Button
               isDisabled={state}
-              colorScheme="green"
+              colorScheme="red"
               onClick={generatePDF}>
               Export to PDF
             </Button>
           </div>
         </div>
       </div>
-      <div className="block p-1 bg-card rounded-lg shadow-lg mx-auto ">
+      <div className="block p-1 bg-card rounded-lg shadow-lg mx-auto overflow-x-auto">
       {loading ? (
       <div className="flex flex-col items-center">
         <Spinner

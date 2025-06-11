@@ -1,7 +1,6 @@
 import React, { useEffect, Component, useState } from "react";
 import CanvasJSReact from "../canvasjs.react";
 import { Button, 
-    ButtonGroup, 
     Stack, 
     Input, 
     Select, 
@@ -47,6 +46,7 @@ function WaterExportMonthly() {
           setData(response1.data); 
           setfilename("Water Totalizer Data Monthly")
     };
+
     const fetchWaterConsumption = async () => {
         let response = await axios.get(
             "http://10.126.15.197:8002/part/ExportWaterConsumptionMonthly", 
@@ -178,10 +178,10 @@ function WaterExportMonthly() {
             </div>
             <div className="text-text mt-1"> Data Type : 
                 <RadioGroup>
-                <Stack direction='row'>
-                    <Radio className="text-text" value='1' onClick={() => fetchWaterConsumption()}>Consumption</Radio>
-                    <Radio className="text-text" value='2' onClick={() => fetchWaterTotalizer()}>Totalizer</Radio>
-                </Stack>
+                    <Stack direction='row'>
+                        <Radio className="text-text" value='1' onClick={() => fetchWaterConsumption()}>Consumption</Radio>
+                        <Radio className="text-text" value='2' onClick={() => fetchWaterTotalizer()}>Totalizer</Radio>
+                    </Stack>
                 </RadioGroup>
             </div>
  

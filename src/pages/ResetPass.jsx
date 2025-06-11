@@ -187,7 +187,7 @@ const ResetPass = () => {
               </button>
             </div>
           </form>
-          <ToastContainer position="top-center" />
+          <ToastContainer position="top-center" draggable />
         </div>
       </div>
     </div>

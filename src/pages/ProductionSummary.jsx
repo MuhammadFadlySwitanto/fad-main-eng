@@ -29,7 +29,6 @@ import {
   Spinner
 } from "@chakra-ui/react";
 import { useColorMode, useColorModeValue } from "@chakra-ui/react";
-//import { useNavigate } from "react-router-dom";
 
 var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
@@ -93,17 +92,18 @@ function ProductionSummary() {
       },
     });
 
-    // Konstanta untuk nilai maksimum yang diterima
+    // kode dari MAX VALID sampai isValidPerformance ini buat filter tabel yang paling bawah, kan ada nilai yg kocag tuh 
+    // nilai yg kocag akan di filter ilang
     const MAX_VALID_PERFORMANCE = 200;
 
-    // Function untuk mengecek apakah suatu nilai valid
+    // Function untuk ngecek apakah ada nilai yg valid
     const isValidPerformance = (value) => {
       return (
         typeof value === 'number' &&
         isFinite(value) &&
         value <= MAX_VALID_PERFORMANCE &&
         value >= 0 &&
-        // Tambahan check khusus untuk nilai yang sangat besar
+        // Tambahan cek khusus untuk nilai yang sangat besar
         value !== Number.MAX_VALUE &&
         value < 1.8e+308  // Menangkap nilai yang mendekati MAX_VALUE
       );
@@ -409,314 +409,313 @@ function ProductionSummary() {
     ],
   };
 
-return (
-  <>
-    <div className="flex flex-col bg-background justify-center mx-12 gap-2 my-4 rounded-md shadow-md md:flex-row">
-      <div className="w-full md:w-1/2">
-        <CanvasJSChart options={options} />
+  return (
+    <>
+      <div className="flex flex-col bg-background justify-center mx-12 gap-2 my-4 rounded-md shadow-md md:flex-row">
+        <div className="w-full md:w-1/2">
+          <CanvasJSChart options={options} />
+        </div>
+        <div className="w-full md:w-1/2">
+          <CanvasJSChart options={options3} />
+        </div>
       </div>
-      <div className="w-full md:w-1/2">
-        <CanvasJSChart options={options3} />
+      <br />
+      <div className="flex flex-col md:flex-row bg-background justify-center mx-1 pb-10 pr-0 gap-4">
+        <Card
+          direction={{ base: "column", sm: "row" }}
+          overflow="hidden"
+          variant="outline"
+          sx={{
+            borderRadius: "0.395rem",
+            background: kartuColor,
+          }}
+        >
+          <div>
+            <CircularProgress
+              value={oeeVar[0].Ava.toFixed(2)}
+              color="purple.400"
+              size="200px"
+              fontSize="150px"
+            >
+              <CircularProgressLabel>
+                {oeeVar[0].Ava.toFixed(2)}%
+              </CircularProgressLabel>
+            </CircularProgress>
+          </div>
+          
+          <Stack>
+            <CardBody>
+              <Heading size="md">Availability</Heading>
+
+              <Text py="2">
+                Runtime ({totalRun} Min)
+                <Progress hasStripe value={100} colorScheme="purple" />
+                Idletime ({totalIdle} Min)
+                <Progress hasStripe value={(totalIdle / totalRun) * 100} colorScheme="purple" />
+                Stoptime ({totalStop} Min)
+                <Progress hasStripe value={(totalStop / totalRun) * 100} colorScheme="purple" />
+                <br />
+                availability is the ratio of Run Time to Planned Production
+                Time.
+              </Text>
+            </CardBody>
+          </Stack>
+        </Card>
+
+        <Card
+          direction={{ base: "column", sm: "row" }}
+          overflow="hidden"
+          variant="outline"
+          width=""
+          sx={{
+            borderRadius: "0.395rem",
+            background: kartuColor,
+          }}
+        >
+          <div>
+            <CircularProgress
+              value={oeeVar[0].Per.toFixed(2)}
+              color="green.400"
+              size="200px"
+              fontSize="150px"
+            >
+              <CircularProgressLabel>
+                {oeeVar[0].Per.toFixed(2)}%
+              </CircularProgressLabel>
+            </CircularProgress>
+          </div>
+
+          <Stack>
+            <CardBody>
+              <Heading size="md">Performance </Heading>
+              <Text py="2">
+                Actual Speed {totalSpeed} slave/min
+                <Progress hasStripe value={totalSpeed} colorScheme="green" />
+                Setpoint Speed 40 slave/min
+                <Progress hasStripe value={40} colorScheme="green" />
+                <br />
+                Performance is the second of the three OEE factors to be
+                calculated.
+              </Text>
+            </CardBody>
+          </Stack>
+        </Card>
+        <Card
+          direction={{ base: "column", sm: "row" }}
+          overflow="hidden"
+          variant="outline"
+          className="basis-1/3 flex-shrink-0 flex-grow-0"
+          sx={{
+            borderRadius: "0.395rem",
+            background: kartuColor,
+          }}
+        >
+          <div>
+            <CircularProgress
+              value={oeeVar[0].Qua.toFixed(2)}
+              color="red.400"
+              size="200px"
+              fontSize="150px"
+            >
+              <CircularProgressLabel>
+                {oeeVar[0].Qua.toFixed(2)}%
+              </CircularProgressLabel>
+            </CircularProgress>
+          </div>
+
+          <Stack>
+            <CardBody>
+              <Heading size="md">Quality</Heading>
+
+              <Text py="2">
+                Good Product ({toalOut} Box)
+                <Progress hasStripe value={64} colorScheme="red" />
+                Afkir Product (0 Box)
+                <Progress hasStripe value={0} colorScheme="red" />
+                <br />
+                Quality takes into account manufactured parts that do not meet
+                quality standards,
+              </Text>
+            </CardBody>
+          </Stack>
+        </Card>
       </div>
-    </div>
-    <br />
-    <div className="flex flex-col md:flex-row bg-background justify-center mx-1 pb-10 pr-0 gap-4">
-      <Card
-        direction={{ base: "column", sm: "row" }}
-        overflow="hidden"
-        variant="outline"
-        sx={{
-          borderRadius: "0.395rem",
-          background: kartuColor,
-        }}
-      >
-        <div>
-          <CircularProgress
-            value={oeeVar[0].Ava.toFixed(2)}
-            color="purple.400"
-            size="200px"
-            fontSize="150px"
-          >
-            <CircularProgressLabel>
-              {oeeVar[0].Ava.toFixed(2)}%
-            </CircularProgressLabel>
-          </CircularProgress>
-        </div>
-        
-        <Stack>
-          <CardBody>
-            <Heading size="md">Availability</Heading>
-
-            <Text py="2">
-              Runtime ({totalRun} Min)
-              <Progress hasStripe value={100} colorScheme="purple" />
-              Idletime ({totalIdle} Min)
-              <Progress hasStripe value={(totalIdle / totalRun) * 100} colorScheme="purple" />
-              Stoptime ({totalStop} Min)
-              <Progress hasStripe value={(totalStop / totalRun) * 100} colorScheme="purple" />
-              <br />
-              availability is the ratio of Run Time to Planned Production
-              Time.
-            </Text>
-          </CardBody>
-        </Stack>
-      </Card>
-
-      <Card
-        direction={{ base: "column", sm: "row" }}
-        overflow="hidden"
-        variant="outline"
-        width=""
-        sx={{
-          borderRadius: "0.395rem",
-          background: kartuColor,
-        }}
-      >
-        <div>
-          <CircularProgress
-            value={oeeVar[0].Per.toFixed(2)}
-            color="green.400"
-            size="200px"
-            fontSize="150px"
-          >
-            <CircularProgressLabel>
-              {oeeVar[0].Per.toFixed(2)}%
-            </CircularProgressLabel>
-          </CircularProgress>
-        </div>
-
-        <Stack>
-          <CardBody>
-            <Heading size="md">Performance </Heading>
-            <Text py="2">
-              Actual Speed {totalSpeed} slave/min
-              <Progress hasStripe value={totalSpeed} colorScheme="green" />
-              Setpoint Speed 40 slave/min
-              <Progress hasStripe value={40} colorScheme="green" />
-              <br />
-              Performance is the second of the three OEE factors to be
-              calculated.
-            </Text>
-          </CardBody>
-        </Stack>
-      </Card>
-      <Card
-        direction={{ base: "column", sm: "row" }}
-        overflow="hidden"
-        variant="outline"
-        className="basis-1/3 flex-shrink-0 flex-grow-0"
-        sx={{
-          borderRadius: "0.395rem",
-          background: kartuColor,
-        }}
-      >
-        <div>
-          <CircularProgress
-            value={oeeVar[0].Qua.toFixed(2)}
-            color="red.400"
-            size="200px"
-            fontSize="150px"
-          >
-            <CircularProgressLabel>
-              {oeeVar[0].Qua.toFixed(2)}%
-            </CircularProgressLabel>
-          </CircularProgress>
-        </div>
-
-        <Stack>
-          <CardBody>
-            <Heading size="md">Quality</Heading>
-
-            <Text py="2">
-              Good Product ({toalOut} Box)
-              <Progress hasStripe value={64} colorScheme="red" />
-              Afkir Product (0 Box)
-              <Progress hasStripe value={0} colorScheme="red" />
-              <br />
-              Quality takes into account manufactured parts that do not meet
-              quality standards,
-            </Text>
-          </CardBody>
-        </Stack>
-      </Card>
-    </div>
-
-    <br />
-    <div className="block bg-card rounded-lg shadow-lg p-4 mx-2 overflow-x-auto">
-      <CanvasJSChart options={options1} />
-    </div>
-    <br />
+      <br />
+      <div className="block bg-card rounded-lg shadow-lg p-4 mx-2 overflow-x-auto">
+        <CanvasJSChart options={options1} />
+      </div>
+      <br />
     
-    <div className="flex flex-col gap-4 p-4">
-      {/* Input Fields and Buttons */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:flex xl:flex-row xl:justify-center gap-4 w-full">
-        <div className="col-span-1 xl:flex-1">
-          <label className="block text-sm font-medium leading-4 text-text">
-            Mesin
-          </label>
-          <Select
-            placeholder="Select Machine"
-            onChange={changeMachine}
-            sx={{
-              border: "1px solid",
-              borderColor: borderColor,
-              borderRadius: "0.395rem",
-              background: "var(--color-background)",
-              _hover: {
-                borderColor: hoverBorderColor,
-              },
-            }}
-          >
-            <option value="mezanine.tengah_Cm1_data">Cm1</option>
-            <option value="mezanine.tengah_Cm2_data">Cm2</option>
-            <option value="mezanine.tengah_Cm3_data">Cm3</option>
-            <option value="mezanine.tengah_Cm4_data">Cm4</option>
-            <option value="mezanine.tengah_Cm5_data">Cm5</option>
-            <option value="mezanine.tengah_Hm1_data">Hm1</option>
-          </Select>
-        </div>
-        <div className="col-span-1 xl:flex-1">
-          <label className="block text-sm font-medium leading-4 text-text">
-            Start Time
-          </label>
-          <Input
-            onChange={dateStart}
-            placeholder="Select Date"
-            size="md"
-            type="date"
-            css={{
-              "&::-webkit-calendar-picker-indicator": {
-                color: isDarkMode ? "white" : "black",
-                filter: isDarkMode ? "invert(1)" : "none",
-              },
-            }}
-            sx={{
-              border: "1px solid",
-              borderColor: borderColor,
-              borderRadius: "0.395rem",
-              background: "var(--color-background)",
-              _hover: {
-                borderColor: hoverBorderColor,
-              },
-            }}
-          />
-        </div>
-        <div className="col-span-1 xl:flex-1">
-          <label className="block text-sm font-medium leading-4 text-text">
-            Finish Time
-          </label>
-          <Input
-            onChange={dateFinish}
-            placeholder="Select Date and Time"
-            size="md"
-            type="date"
-            css={{
-              "&::-webkit-calendar-picker-indicator": {
-                color: isDarkMode ? "white" : "black",
-                filter: isDarkMode ? "invert(1)" : "none",
-              },
-            }}
-            sx={{
-              border: "1px solid",
-              borderColor: borderColor,
-              borderRadius: "0.395rem",
-              background: "var(--color-background)",
-              _hover: {
-                borderColor: hoverBorderColor,
-              },
-            }}
-          />
-        </div>
-        <div className="col-span-1 xl:flex xl:flex-none xl:w-20 flex-col ">
-          <label className="block text-sm font-medium leading-4 text-text">
-            Rows
-          </label>
-          <Select
-            value={rowsPerPage}
-            onChange={(e) => setRowsPerPage(Number(e.target.value))}
-            width="80px"
-            sx={{
-              border: "1px solid",
-              borderColor: borderColor,
-              borderRadius: "0.395rem",
-              background: "var(--color-background)",
-              _hover: {
-                borderColor: hoverBorderColor,
-              },
-            }}
-          >
-            <option value={10}>10</option>
-            <option value={20}>20</option>
-            <option value={40}>40</option>
-            <option value={60}>60</option>
-            <option value={100}>100</option>
-          </Select>
-        </div>
-        <div className="col-span-1 xl:flex-1 xl:flex xl:flex-grow flex items-end">
-          <Button
-            className="w-full"
-            colorScheme="blue"
-            onClick={() => submitData()}
-          >
-            Submit
-          </Button>
-        </div>
-        <div className="col-span-1 xl:flex-1 flex items-end xl:grow">
-          <Button
-            className="w-full"
-            colorScheme="red"
-            onClick={() => setIsTableVisible(!isTableVisible)}
-          >
-            {isTableVisible ? "Hide All Data" : "Show All Data"}
-          </Button>
+      <div className="flex flex-col gap-4 p-4">
+        {/* Input Fields and Buttons */}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:flex xl:flex-row xl:justify-center gap-4 w-full">
+          <div className="col-span-1 xl:flex-1">
+            <label className="block text-sm font-medium leading-4 text-text">
+              Mesin
+            </label>
+            <Select
+              placeholder="Select Machine"
+              onChange={changeMachine}
+              sx={{
+                border: "1px solid",
+                borderColor: borderColor,
+                borderRadius: "0.395rem",
+                background: "var(--color-background)",
+                _hover: {
+                  borderColor: hoverBorderColor,
+                },
+              }}
+            >
+              <option value="mezanine.tengah_Cm1_data">Cm1</option>
+              <option value="mezanine.tengah_Cm2_data">Cm2</option>
+              <option value="mezanine.tengah_Cm3_data">Cm3</option>
+              <option value="mezanine.tengah_Cm4_data">Cm4</option>
+              <option value="mezanine.tengah_Cm5_data">Cm5</option>
+              <option value="mezanine.tengah_Hm1_data">Hm1</option>
+            </Select>
+          </div>
+          <div className="col-span-1 xl:flex-1">
+            <label className="block text-sm font-medium leading-4 text-text">
+              Start Time
+            </label>
+            <Input
+              onChange={dateStart}
+              placeholder="Select Date"
+              size="md"
+              type="date"
+              css={{
+                "&::-webkit-calendar-picker-indicator": {
+                  color: isDarkMode ? "white" : "black",
+                  filter: isDarkMode ? "invert(1)" : "none",
+                },
+              }}
+              sx={{
+                border: "1px solid",
+                borderColor: borderColor,
+                borderRadius: "0.395rem",
+                background: "var(--color-background)",
+                _hover: {
+                  borderColor: hoverBorderColor,
+                },
+              }}
+            />
+          </div>
+          <div className="col-span-1 xl:flex-1">
+            <label className="block text-sm font-medium leading-4 text-text">
+              Finish Time
+            </label>
+            <Input
+              onChange={dateFinish}
+              placeholder="Select Date and Time"
+              size="md"
+              type="date"
+              css={{
+                "&::-webkit-calendar-picker-indicator": {
+                  color: isDarkMode ? "white" : "black",
+                  filter: isDarkMode ? "invert(1)" : "none",
+                },
+              }}
+              sx={{
+                border: "1px solid",
+                borderColor: borderColor,
+                borderRadius: "0.395rem",
+                background: "var(--color-background)",
+                _hover: {
+                  borderColor: hoverBorderColor,
+                },
+              }}
+            />
+          </div>
+          <div className="col-span-1 xl:flex xl:flex-none xl:w-20 flex-col ">
+            <label className="block text-sm font-medium leading-4 text-text">
+              Rows
+            </label>
+            <Select
+              value={rowsPerPage}
+              onChange={(e) => setRowsPerPage(Number(e.target.value))}
+              width="80px"
+              sx={{
+                border: "1px solid",
+                borderColor: borderColor,
+                borderRadius: "0.395rem",
+                background: "var(--color-background)",
+                _hover: {
+                  borderColor: hoverBorderColor,
+                },
+              }}
+            >
+              <option value={10}>10</option>
+              <option value={20}>20</option>
+              <option value={40}>40</option>
+              <option value={60}>60</option>
+              <option value={100}>100</option>
+            </Select>
+          </div>
+          <div className="col-span-1 xl:flex-1 xl:flex xl:flex-grow flex items-end">
+            <Button
+              className="w-full"
+              colorScheme="blue"
+              onClick={() => submitData()}
+            >
+              Submit
+            </Button>
+          </div>
+          <div className="col-span-1 xl:flex-1 flex items-end xl:grow">
+            <Button
+              className="w-full"
+              colorScheme="red"
+              onClick={() => setIsTableVisible(!isTableVisible)}
+            >
+              {isTableVisible ? "Hide All Data" : "Show All Data"}
+            </Button>
+          </div>
         </div>
       </div>
-    </div>
-    <div className="flex justify-center">
-    {isTableVisible && (
-      <TableContainer className="bg-card rounded-md mt-4 mx-4" sx={{ overflowX: "auto", maxWidth: "96%" }}>
-        <Table key={colorMode} variant="simple">
-          <TableCaption sx={{
-          color: tulisanColor,
-          }}>Machine Performance</TableCaption>
-          <Thead>
-            <Tr>
-              <Th sx={{
-          color: tulisanColor,
-          }}>id</Th>
-              <Th sx={{
-          color: tulisanColor,
-          }}>Date Time</Th>
-              <Th sx={{
-          color: tulisanColor,
-          }}>Availability</Th>
-              <Th sx={{
-          color: tulisanColor,
-          }}>Performance</Th>
-              <Th sx={{
-          color: tulisanColor,
-          }}>Quality</Th>
-              <Th sx={{
-          color: tulisanColor,
-          }}>OEE</Th>
-              <Th sx={{
-          color: tulisanColor,
-          }}>Output</Th>
-              <Th sx={{
-          color: tulisanColor,
-          }}>RunTime</Th>
-              <Th sx={{
-          color: tulisanColor,
-          }}>StopTime</Th>
-              <Th sx={{
-          color: tulisanColor,
-          }}>Idle Time</Th>
-            </Tr>
-          </Thead>
-          <Tbody>{renderCm1()}</Tbody>
-        </Table>
-      </TableContainer>
-      )}
+      <div className="flex justify-center">
+        {isTableVisible && (
+          <TableContainer className="bg-card rounded-md mt-4 mx-4" sx={{ overflowX: "auto", maxWidth: "96%" }}>
+            <Table key={colorMode} variant="simple">
+              <TableCaption sx={{
+              color: tulisanColor,
+              }}>Machine Performance</TableCaption>
+              <Thead>
+                <Tr>
+                  <Th sx={{
+              color: tulisanColor,
+              }}>id</Th>
+                  <Th sx={{
+              color: tulisanColor,
+              }}>Date Time</Th>
+                  <Th sx={{
+              color: tulisanColor,
+              }}>Availability</Th>
+                  <Th sx={{
+              color: tulisanColor,
+              }}>Performance</Th>
+                  <Th sx={{
+              color: tulisanColor,
+              }}>Quality</Th>
+                  <Th sx={{
+              color: tulisanColor,
+              }}>OEE</Th>
+                  <Th sx={{
+              color: tulisanColor,
+              }}>Output</Th>
+                  <Th sx={{
+              color: tulisanColor,
+              }}>RunTime</Th>
+                  <Th sx={{
+              color: tulisanColor,
+              }}>StopTime</Th>
+                  <Th sx={{
+              color: tulisanColor,
+              }}>Idle Time</Th>
+                </Tr>
+              </Thead>
+              <Tbody>{renderCm1()}</Tbody>
+            </Table>
+          </TableContainer>
+        )}
       </div>
       <br />
       <div className="flex justify-center items-center mt-2 gap-4 mb-2">

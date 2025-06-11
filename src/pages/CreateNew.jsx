@@ -1,4 +1,3 @@
-import React from "react";
 import { useState } from "react";
 import { Select, Input } from "@chakra-ui/react";
 import { addPartListData } from "../features/part/partSlice";

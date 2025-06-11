@@ -292,7 +292,7 @@ export default function Loopo() {
         </div>
       </div>
       <div className="flex flex-row justify-center mx-6 p-1 bg-card rounded-md shadow-lg overflow-x-auto "> 
-        <CanvasJSChart className="" options={options} />
+        <CanvasJSChart options={options} />
       </div>
       <br />
       <div className="mt-3">

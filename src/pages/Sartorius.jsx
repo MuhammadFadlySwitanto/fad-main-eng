@@ -391,14 +391,9 @@ function Sartorius () {
         </div>
         <br /> 
         {showAllData && (
-        <TableContainer  className="bg-card rounded-md mx-1" 
-        sx={{ 
-        overflowX: "auto", 
-        maxWidth: "94%", }}>
+        <TableContainer  className="bg-card rounded-md mx-1" sx={{ overflowX: "auto", maxWidth: "94%" }}>
           <Table key={colorMode} variant="simple" sx={{ minWidth: "1200px" /* Adjust as needed */ }}>
-            <TableCaption sx={{
-            color: tulisanColor,
-            }}>Imperial to metric conversion factors</TableCaption>
+            <TableCaption sx={{color: tulisanColor}}>Imperial to metric conversion factors</TableCaption>
             <Thead>
               <Tr>
                   <Th sx={{color: tulisanColor}} onClick={() => handleSort('id_setup')} className="hover:bg-tombol">

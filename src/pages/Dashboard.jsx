@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from "react";
-import Header from "../components/header";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { Spinner, 
@@ -451,7 +450,7 @@ import MyDocument from '../components/MyDocument';
     const handleParameterChange = (e, paramKey) => {
       const value = parseFloat(e.target.value) || 0;
       
-      // Update the parameterLimits state
+      // Update state-nya parameterLimits
       if (value >= 0) {
         setParameterLimits(prev => ({
           ...prev,
@@ -653,8 +652,7 @@ import MyDocument from '../components/MyDocument';
   // console.log("MVMDP coba:", data.MVMDP);
     
     return (
-      <div>
-        
+      <div>       
         <div className="min-h-screen bg-cobabg mx-auto p-4 md:p-6 2xl:p-10 relative">
           {/* Section Title */}
           <div className="text-text text-4xl font-sans font-bold mb-8 text-center">
@@ -688,7 +686,7 @@ import MyDocument from '../components/MyDocument';
             </div>
           </div>
 
-          {/* Pop-Up */}
+          {/* Pop-Up punya si create bill*/}
           <Modal isOpen={isOpen} onClose={onClose} size="xl">
             <ModalOverlay />
             <ModalContent
@@ -700,7 +698,7 @@ import MyDocument from '../components/MyDocument';
               <ModalHeader>Create Bill</ModalHeader>
               <ModalCloseButton />
               <ModalBody>
-                  {/* First Row - Full Width Dropdown */}
+                  {/* First Row - Full Width pake Dropdown */}
                   <FormControl mb={4}>
                     <FormLabel>Limit Option</FormLabel>
                     <Select placeholder="Select option" onChange={limitOption} >
@@ -906,38 +904,36 @@ import MyDocument from '../components/MyDocument';
             </div>
             
             {/* <div className={`flex items-center p-8 bg-coba shadow-buatcard rounded-lg dark:border-strokedark cursor-pointer transform transition duration-300 hover:scale-105 active:scale-65 ${
-              activeCard === "NVMDP" ? "ring-4 ring-blue-500" : ""
-            }`}
-            onClick={() => handleCardClick("NVMDP")}>
+              activeCard === "NVMDP" ? "ring-4 ring-blue-500" : ""}`} onClick={() => handleCardClick("NVMDP")}>
               <div className="inline-flex flex-shrink-0 items-center justify-center h-16 w-16 text-purple-600 bg-purple-100 rounded-full mr-6">
                 <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6">
                   <path strokeLinecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
               </div>
-                    <div>
-                      <h1 className="text-2xl text-text font-bold font-DMSans">MVMDP</h1>
-                      <span className="block text-xl text-text font-semibold">{data.MVMDP ?? "Loading..."}</span>
-                      <span className="block text-gray-500">Kwh</span>
-                      <span className="block text-green-700 text-xl mb-1 font-semibold">{(data.MVMDP * dataTotalUang).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</span>
-                     
-                      <span
-                            className="flex items-center gap-1 text-[16px] pt-1 justify-end font-medium text-gray-500">{((data.MVMDP/getLimit.Limit_Listrik )*100).toFixed(1)}%
-                            <svg
-                              className="fill-gray-500"
-                              width="10"
-                              height="11"
-                              viewBox="0 0 10 11"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M4.35716 2.47737L0.908974 5.82987L5.0443e-07 4.94612L5 0.0848689L10 4.94612L9.09103 5.82987L5.64284 2.47737L5.64284 10.0849L4.35716 10.0849L4.35716 2.47737Z"
-                                fill=""
-                              />
-                            </svg>
-                          </span>
-                    </div>                   
+              <div>
+                <h1 className="text-2xl text-text font-bold font-DMSans">MVMDP</h1>
+                <span className="block text-xl text-text font-semibold">{data.MVMDP ?? "Loading..."}</span>
+                <span className="block text-gray-500">Kwh</span>
+                <span className="block text-green-700 text-xl mb-1 font-semibold">{(data.MVMDP * dataTotalUang).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</span>
+                
+                <span className="flex items-center gap-1 text-[16px] pt-1 justify-end font-medium text-gray-500">{((data.MVMDP/getLimit.Limit_Listrik )*100).toFixed(1)}%
+                  <svg
+                    className="fill-gray-500"
+                    width="10"
+                    height="11"
+                    viewBox="0 0 10 11"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M4.35716 2.47737L0.908974 5.82987L5.0443e-07 4.94612L5 0.0848689L10 4.94612L9.09103 5.82987L5.64284 2.47737L5.64284 10.0849L4.35716 10.0849L4.35716 2.47737Z"
+                      fill=""
+                    />
+                  </svg>
+                </span>
+              </div>                   
             </div> */}
+
             <div className={`p-8 shadow-buatcard bg-coba rounded-lg dark:border-strokedark cursor-pointer transform transition duration-300 hover:scale-105 active:scale-65 ${
                 activeCard === "PDAM" ? "ring-4 ring-blue-500" : ""
               }`}
@@ -979,6 +975,7 @@ import MyDocument from '../components/MyDocument';
                 </div>
               </div>
             </div>
+
             {/* <div className="p-8 shadow-buatcard bg-coba rounded-lg dark:border-strokedark">
               <div className="flex w-full">
                 <div className="inline-flex flex-shrink-0 items-center justify-center h-16 w-16 text-red-600 bg-red-100 rounded-full mr-6">
@@ -1197,4 +1194,4 @@ import MyDocument from '../components/MyDocument';
     );
   }
 
-  export default Dashboard;
+export default Dashboard;

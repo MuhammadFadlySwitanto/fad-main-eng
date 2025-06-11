@@ -307,7 +307,6 @@ function BuildingEMS() {
         lineColor: isDarkMode ? "#00bfff" : "#1e90ff",  
         color: isDarkMode ? "#00bfff" : "#1e90ff",  
         markerColor: isDarkMode ? "#00bfff" : "#1e90ff", 
-        markerSize: 2,
         dataPoints: tempChartData,
       },
       {
@@ -319,7 +318,6 @@ function BuildingEMS() {
         color: isDarkMode ? "#ffa500" : "#ff4500",
         lineColor: isDarkMode ? "#ffa500" : "#ff4500",
         markerColor: isDarkMode ? "#ffa500" : "#ff4500",
-        markerSize: 2,
         dataPoints: rhChartData,
       },
       {
@@ -331,7 +329,7 @@ function BuildingEMS() {
         lineColor: isDarkMode ? "#00ff00" : "#32cd32",
         color: isDarkMode ? "#00ff00" : "#32cd32",
         markerColor: isDarkMode ? "#00ff00" : "#32cd32",
-        markerSize: 2,
+        // markerSize: 2,
         dataPoints: dpChartData,
       },
     ],
@@ -414,7 +412,7 @@ function BuildingEMS() {
           </div>
         </div>
       </div>
-      <div className="block bg-card rounded-lg p-1 shadow-lg mx-auto">
+      <div className="block bg-card rounded-lg p-1 shadow-lg mx-auto overflow-x-auto">
       {loading ? (
       <div className="flex flex-col items-center">
         <Spinner
