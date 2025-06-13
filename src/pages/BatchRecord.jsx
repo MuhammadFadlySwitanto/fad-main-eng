@@ -15,6 +15,8 @@ import {
 import axios from "axios";
 import { useColorMode, useColorModeValue } from "@chakra-ui/react";
 import * as XLSX from 'xlsx';
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -492,7 +494,7 @@ function formatTimestampUTC(uniqueTimestamp) {
     return value;
   };
 
-  // Helper: dapatkan data terfilter & terformat seperti di tabel
+  // Helper: dapatkan data terfilter & terformat seperti di tabel 
   const getFormattedExportData = () => {
     // Export semua data yang sudah terurut/terfilter
     return sortedData.map(row => {
@@ -516,6 +518,55 @@ function formatTimestampUTC(uniqueTimestamp) {
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "BatchRecord");
     XLSX.writeFile(workbook, "BatchRecord.xlsx");
+  };
+
+  const exportToPDF = () => {
+    const exportData = getFormattedExportData(); // sama seperti untuk Excel
+
+    if (!exportData || exportData.length === 0) {
+      toast.warning("No data to export!");
+      return;
+    }
+
+    // Siapkan header kolom dari key object
+    const columns = Object.keys(exportData[0]).map((key) => ({ header: key, dataKey: key }));
+
+    // Siapkan data array (array of object)
+    // const rows = exportData;
+
+    const doc = new jsPDF({
+      orientation: "landscape", // atau "portrait" juga boleh
+      unit: "pt",
+      format: "A4"
+    });
+
+    // Judul PDF
+    doc.setFontSize(16);
+    doc.text("Batch Record", 40, 30);
+
+    // Keterangannya bos ngikutin state yg distate
+    doc.setFontSize(10);
+    let infoY = 50; // Y awal
+    const infoLineHeight = 16;
+    doc.text(`Line: ${newLine || "-"}`, 40, infoY);
+    doc.text(`Process: ${newProces || "-"}`, 180, infoY);
+    doc.text(`Machine: ${newMachine || "-"}`, 380, infoY);
+    infoY += infoLineHeight;
+    doc.text(`Start Date: ${startDate || "-"}`, 40, infoY);
+    doc.text(`Finish Date: ${finishDate || "-"}`, 180, infoY);
+    doc.text(`Batch: ${selectedBatch || "-"}`, 380, infoY);
+
+    // Render tabel setelah keterangan
+    autoTable(doc, {
+      columns,
+      body: exportData,
+      startY: infoY + infoLineHeight + 10,
+      styles: { fontSize: 8, cellPadding: 4 },
+      headStyles: { fillColor: [41, 128, 185] },
+      margin: { left: 40, right: 40 },
+    });
+
+    doc.save("BatchRecord.pdf");
   };
 
   const renderData = () => {
@@ -816,6 +867,9 @@ function formatTimestampUTC(uniqueTimestamp) {
         </Select>
         <Button colorScheme="green" className="mb-4" onClick={exportToExcel}>
           Export to Excel
+        </Button>
+        <Button colorScheme="red" className="mb-4" onClick={exportToPDF}>
+          Export to PDF
         </Button>
       </div>
       {isLoading ? (
