@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import axios from 'axios';
 
 const LogLogin = () => {
   const [loginLogs, setLoginLogs] = useState([]);
@@ -8,174 +9,296 @@ const LogLogin = () => {
   const [filterLevel, setFilterLevel] = useState('all');
   const [dateFilter, setDateFilter] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
+  const [userIP, setUserIP] = useState('');
+   const [isLoading, setIsLoading] = useState(false);
   const logsPerPage = 10;
 
   // Ambil data user dari Redux store
   const currentUser = useSelector(state => state.user);
 
   // Mock data untuk demo - dalam implementasi nyata, data ini akan diambil dari API
-  useEffect(() => {
-    const mockLoginLogs = [
-      {
-        id: 1,
-        userId: '001',
-        username: 'admin@example.com',
-        name: 'Administrator',
-        level: 1,
-        imagePath: '/api/uploads/admin-avatar.jpg',
-        loginTime: '2024-06-04T08:30:00Z',
-        logoutTime: '2024-06-04T17:45:00Z',
-        ipAddress: '192.168.1.100',
-        userAgent: 'Chrome 125.0.0.0',
-        status: 'completed'
-      },
-      {
-        id: 2,
-        userId: '002',
-        username: 'manager@example.com',
-        name: 'Manager User',
-        level: 2,
-        imagePath: '/api/uploads/manager-avatar.jpg',
-        loginTime: '2024-06-04T09:15:00Z',
-        logoutTime: null,
-        ipAddress: '192.168.1.101',
-        userAgent: 'Firefox 126.0',
-        status: 'active'
-      },
-      {
-        id: 3,
-        userId: '003',
-        username: 'user@example.com',
-        name: 'Regular User',
-        level: 3,
-        imagePath: '/api/uploads/user-avatar.jpg',
-        loginTime: '2024-06-04T10:20:00Z',
-        logoutTime: '2024-06-04T12:30:00Z',
-        ipAddress: '192.168.1.102',
-        userAgent: 'Safari 17.0',
-        status: 'completed'
-      },
-      {
-        id: 4,
-        userId: '004',
-        username: 'operator@example.com',
-        name: 'Operator',
-        level: 4,
-        imagePath: '/api/uploads/operator-avatar.jpg',
-        loginTime: '2024-06-03T14:00:00Z',
-        logoutTime: '2024-06-03T18:00:00Z',
-        ipAddress: '192.168.1.103',
-        userAgent: 'Edge 125.0.0.0',
-        status: 'completed'
-      },
-      {
-        id: 5,
-        userId: '005',
-        username: 'guest@example.com',
-        name: 'Guest User',
-        level: 5,
-        imagePath: null,
-        loginTime: '2024-06-04T11:45:00Z',
-        logoutTime: null,
-        ipAddress: '192.168.1.104',
-        userAgent: 'Chrome Mobile',
-        status: 'active'
-      },
-      {
-        id: 6,
-        userId: '006',
-        username: 'guest@example.com',
-        name: 'Guest User',
-        level: 5,
-        imagePath: null,
-        loginTime: '2024-06-04T11:45:00Z',
-        logoutTime: null,
-        ipAddress: '192.168.1.104',
-        userAgent: 'Chrome Mobile',
-        status: 'active'
-      },
-            {
-        id: 7,
-        userId: '007',
-        username: 'guest@example.com',
-        name: 'Guest User',
-        level: 5,
-        imagePath: null,
-        loginTime: '2024-06-04T11:45:00Z',
-        logoutTime: null,
-        ipAddress: '192.168.1.104',
-        userAgent: 'Chrome Mobile',
-        status: 'active'
-      },
-      {
-        id: 8,
-        userId: '008',
-        username: 'guest@example.com',
-        name: 'Guest User',
-        level: 5,
-        imagePath: null,
-        loginTime: '2024-06-04T11:45:00Z',
-        logoutTime: null,
-        ipAddress: '192.168.1.104',
-        userAgent: 'Chrome Mobile',
-        status: 'active'
-      },
-      {
-        id: 9,
-        userId: '009',
-        username: 'guest@example.com',
-        name: 'Guest User',
-        level: 5,
-        imagePath: null,
-        loginTime: '2024-06-04T11:45:00Z',
-        logoutTime: null,
-        ipAddress: '192.168.1.104',
-        userAgent: 'Chrome Mobile',
-        status: 'active'
-      },
-      {
-        id: 10,
-        userId: '010',
-        username: 'guest@example.com',
-        name: 'Guest User',
-        level: 5,
-        imagePath: null,
-        loginTime: '2024-06-04T11:45:00Z',
-        logoutTime: null,
-        ipAddress: '192.168.1.104',
-        userAgent: 'Chrome Mobile',
-        status: 'active'
-      },
-      {
-        id: 11,
-        userId: '011',
-        username: 'guest@example.com',
-        name: 'Guest User',
-        level: 5,
-        imagePath: null,
-        loginTime: '2024-06-04T11:45:00Z',
-        logoutTime: null,
-        ipAddress: '192.168.1.104',
-        userAgent: 'Chrome Mobile',
-        status: 'active'
-      },
-    ];
+  // useEffect(() => {
+  //   const mockLoginLogs = [
+  //     {
+  //       id: 1,
+  //       userId: '001',
+  //       username: 'admin@example.com',
+  //       name: 'Administrator',
+  //       level: 1,
+  //       imagePath: '/api/uploads/admin-avatar.jpg',
+  //       loginTime: '2024-06-04T08:30:00Z',
+  //       logoutTime: '2024-06-04T17:45:00Z',
+  //       ipAddress: '192.168.1.100',
+  //       userAgent: 'Chrome 125.0.0.0',
+  //       status: 'completed'
+  //     },
+  //     {
+  //       id: 2,
+  //       userId: '002',
+  //       username: 'manager@example.com',
+  //       name: 'Manager User',
+  //       level: 2,
+  //       imagePath: '/api/uploads/manager-avatar.jpg',
+  //       loginTime: '2024-06-04T09:15:00Z',
+  //       logoutTime: null,
+  //       ipAddress: '192.168.1.101',
+  //       userAgent: 'Firefox 126.0',
+  //       status: 'active'
+  //     },
+  //     {
+  //       id: 3,
+  //       userId: '003',
+  //       username: 'user@example.com',
+  //       name: 'Regular User',
+  //       level: 3,
+  //       imagePath: '/api/uploads/user-avatar.jpg',
+  //       loginTime: '2024-06-04T10:20:00Z',
+  //       logoutTime: '2024-06-04T12:30:00Z',
+  //       ipAddress: '192.168.1.102',
+  //       userAgent: 'Safari 17.0',
+  //       status: 'completed'
+  //     },
+  //     {
+  //       id: 4,
+  //       userId: '004',
+  //       username: 'operator@example.com',
+  //       name: 'Operator',
+  //       level: 4,
+  //       imagePath: '/api/uploads/operator-avatar.jpg',
+  //       loginTime: '2024-06-03T14:00:00Z',
+  //       logoutTime: '2024-06-03T18:00:00Z',
+  //       ipAddress: '192.168.1.103',
+  //       userAgent: 'Edge 125.0.0.0',
+  //       status: 'completed'
+  //     },
+  //     {
+  //       id: 5,
+  //       userId: '005',
+  //       username: 'guest@example.com',
+  //       name: 'Guest User',
+  //       level: 5,
+  //       imagePath: null,
+  //       loginTime: '2024-06-04T11:45:00Z',
+  //       logoutTime: null,
+  //       ipAddress: '192.168.1.104',
+  //       userAgent: 'Chrome Mobile',
+  //       status: 'active'
+  //     },
+  //     {
+  //       id: 6,
+  //       userId: '006',
+  //       username: 'guest@example.com',
+  //       name: 'Guest User',
+  //       level: 5,
+  //       imagePath: null,
+  //       loginTime: '2024-06-04T11:45:00Z',
+  //       logoutTime: null,
+  //       ipAddress: '192.168.1.104',
+  //       userAgent: 'Chrome Mobile',
+  //       status: 'active'
+  //     },
+  //           {
+  //       id: 7,
+  //       userId: '007',
+  //       username: 'guest@example.com',
+  //       name: 'Guest User',
+  //       level: 5,
+  //       imagePath: null,
+  //       loginTime: '2024-06-04T11:45:00Z',
+  //       logoutTime: null,
+  //       ipAddress: '192.168.1.104',
+  //       userAgent: 'Chrome Mobile',
+  //       status: 'active'
+  //     },
+  //     {
+  //       id: 8,
+  //       userId: '008',
+  //       username: 'guest@example.com',
+  //       name: 'Guest User',
+  //       level: 5,
+  //       imagePath: null,
+  //       loginTime: '2024-06-04T11:45:00Z',
+  //       logoutTime: null,
+  //       ipAddress: '192.168.1.104',
+  //       userAgent: 'Chrome Mobile',
+  //       status: 'active'
+  //     },
+  //     {
+  //       id: 9,
+  //       userId: '009',
+  //       username: 'guest@example.com',
+  //       name: 'Guest User',
+  //       level: 5,
+  //       imagePath: null,
+  //       loginTime: '2024-06-04T11:45:00Z',
+  //       logoutTime: null,
+  //       ipAddress: '192.168.1.104',
+  //       userAgent: 'Chrome Mobile',
+  //       status: 'active'
+  //     },
+  //     {
+  //       id: 10,
+  //       userId: '010',
+  //       username: 'guest@example.com',
+  //       name: 'Guest User',
+  //       level: 5,
+  //       imagePath: null,
+  //       loginTime: '2024-06-04T11:45:00Z',
+  //       logoutTime: null,
+  //       ipAddress: '192.168.1.104',
+  //       userAgent: 'Chrome Mobile',
+  //       status: 'active'
+  //     },
+  //     {
+  //       id: 11,
+  //       userId: '011',
+  //       username: 'guest@example.com',
+  //       name: 'Guest User',
+  //       level: 5,
+  //       imagePath: null,
+  //       loginTime: '2024-06-04T11:45:00Z',
+  //       logoutTime: null,
+  //       ipAddress: '192.168.1.104',
+  //       userAgent: 'Chrome Mobile',
+  //       status: 'active'
+  //     },
+  //   ];
     
-    setLoginLogs(mockLoginLogs);
-    setFilteredLogs(mockLoginLogs);
+  //   setLoginLogs(mockLoginLogs);
+  //   setFilteredLogs(mockLoginLogs);
+  // }, []);
+
+  const getUserIP = async () => {
+    try {
+      // Untuk testing, gunakan IP yang diberikan mentor
+      // const testIP = '10.126.10.41';
+      // setUserIP(testIP);
+      
+      // Alternatif untuk mendapatkan IP real (uncomment jika diperlukan)
+      const response = await fetch('https://api.ipify.org?format=json');
+      const data = await response.json();
+      setUserIP(data.ip);
+      
+      return data.ip;
+    } catch (error) {
+      console.error('Error getting IP:', error);
+      // Fallback ke IP test jika gagal
+      const fallbackIP = '10.126.10.41';
+      setUserIP(fallbackIP);
+      return fallbackIP;
+    }
+  };
+
+  const postLoginData = async () => {
+    if (!currentUser) return;
+    
+    setIsLoading(true);
+    try {
+      const ipAddress = await getUserIP();
+      
+      const loginData = {
+        userId: currentUser.id,
+        name: currentUser.name,
+        level: currentUser.level,
+        isAdmin: currentUser.isAdmin,
+        imagePath: currentUser.imagePath,
+        ipAddress: ipAddress,
+        loginTime: new Date().toISOString(),
+        userAgent: navigator.userAgent
+      };
+
+      console.log('Posting login data:', loginData);
+      
+      // POST ke backend - sesuaikan URL dengan backend Anda
+      const response = await axios.post('http://10.126.15.197:8002/part/LoginData', loginData, {
+        headers: {
+          'Content-Type': 'application/json',
+          // Tambahkan authorization header jika diperlukan
+          // 'Authorization': `Bearer ${currentUser.token}`
+        }
+      });
+
+      console.log('Login data posted successfully:', response.data);
+      
+      // Refresh data setelah posting
+      fetchLoginLogs();
+      
+    } catch (error) {
+      console.error('Error posting login data:', error);
+      alert('Gagal mengirim data login ke server');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fetchLoginLogs = async () => {
+    try {
+      // const response = await axios.get('/api/login-logs');
+      // setLoginLogs(response.data);
+      // setFilteredLogs(response.data);
+      
+      // Sementara gunakan mock data untuk testing
+      const mockLoginLogs = [
+        {
+          id: 1,
+          userId: '28',
+          name: 'Muhammad Fadly Switanto',
+          level: 5,
+          imagePath: '/mukaa-17738177244.png',
+          loginTime: '2024-06-04T08:30:00Z',
+          logoutTime: '2024-06-04T17:45:00Z',
+          ipAddress: '10.126.10.41',
+          userAgent: 'Chrome 125.0.0.0',
+          status: 'completed'
+        },
+        {
+          id: 2,
+          userId: '29',
+          name: 'Admin User',
+          level: 1,
+          imagePath: '/admin-avatar.jpg',
+          loginTime: '2024-06-04T09:15:00Z',
+          logoutTime: null,
+          ipAddress: '10.126.10.42',
+          userAgent: 'Firefox 126.0',
+          status: 'active'
+        }
+      ];
+      
+      setLoginLogs(mockLoginLogs);
+      setFilteredLogs(mockLoginLogs);
+    } catch (error) {
+      console.error('Error fetching login logs:', error);
+    }
+  };
+
+    // Load data saat komponen dimount
+  useEffect(() => {
+    getUserIP();
+    fetchLoginLogs();
   }, []);
 
   // Filter logs berdasarkan pencarian dan filter
-  useEffect(() => {
-    let filtered = loginLogs;
+  // useEffect(() => {
+  //   let filtered = loginLogs;
 
-    // Filter berdasarkan search term
-    if (searchTerm) {
-      filtered = filtered.filter(log => 
-        log.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        log.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        log.ipAddress.includes(searchTerm)
-      );
+  //   // Filter berdasarkan search term
+  //   if (searchTerm) {
+  //     filtered = filtered.filter(log => 
+  //       log.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //       log.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //       log.ipAddress.includes(searchTerm)
+  //     );
+  //   }
+
+    useEffect(() => {
+      let filtered = loginLogs;
+
+      // Filter berdasarkan search term (nama saja)
+      if (searchTerm) {
+        filtered = filtered.filter(log => 
+          log.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
     }
 
     // Filter berdasarkan level
@@ -295,7 +418,32 @@ const LogLogin = () => {
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-text mb-2">Log Login User</h1>
           <p className="text-text2">Monitor aktivitas login dan logout pengguna sistem</p>
+          {userIP && (
+              <p className="text-sm text-blue-600 mt-2">IP Address Anda: {userIP}</p>
+            )}
         </div>
+        <button
+            onClick={postLoginData}
+            disabled={isLoading || !currentUser}
+            className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+          >
+            {isLoading ? (
+              <>
+                <svg className="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span>Mengirim...</span>
+              </>
+            ) : (
+              <>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                </svg>
+                <span>POST Login Data</span>
+              </>
+            )}
+          </button>
 
         {/* Filters */}
         <div className="bg-cardb rounded-lg shadow-lg p-6 mb-6">
