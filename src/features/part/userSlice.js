@@ -58,11 +58,27 @@ export function loginData(data) {
       );
       
       // If login is successful
-      dispatch(setUser(response.data.data));
+      const userData = response.data.data;
+      dispatch(setUser(userData));
       localStorage.setItem("user_token", response.data.token);
 
       // Display success message
       toast.success("Login successful!");
+
+      // LOG LOGIN: langsung POST ke endpoint log login di sini
+      try {
+        await Axios.post("http://10.126.15.197:8002/part/LoginData", {
+          name: userData.name,
+          id: userData.id_users,
+          isAdmin: userData.isAdmin,
+          level: userData.level,
+          imagePath: userData.imagePath ? userData.imagePath : "-",
+        });
+        // Optional: console.log("Log login berhasil");
+      } catch (logErr) {
+        // Boleh tampilkan pesan error log login, tapi tidak memblok login utama
+        // Optional: console.log("Log login gagal:", logErr);
+      }
 
       // Optional: Redirect user if necessary
       return true; // Indicate success

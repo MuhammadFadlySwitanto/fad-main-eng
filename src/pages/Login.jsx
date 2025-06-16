@@ -3,7 +3,7 @@ import imageIcon from '../assets/gambar.jpg';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useState, useEffect, useRef } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router";
 import { loginData } from "../features/part/userSlice";
@@ -21,6 +21,13 @@ function Login () {
   const [rememberMe, setRememberMe] = useState(false);
   const [connectionStatus, setConnectionStatus] = useState('');
   const toastDisplayed = useRef(false);
+
+  const userRedux = useSelector(state => state.user);
+
+  // ganti dengan endpoint backend milikmu
+  const LOG_ENDPOINT = 'http://10.126.15.197:8002/part/LoginData';
+
+  const loginTriggered = useRef(false);
 
   const emailHendeler = (event) => {
     setEmail(event.target.value);
@@ -94,13 +101,71 @@ function Login () {
     const loginSuccess = await dispatch(loginData({ email, password }));
     
 
+
+    // Pastikan loginResult.payload berisi data user (atau sesuaikan dengan return thunk-mu)
     if (loginSuccess) {
+      loginTriggered.current = true; // tandai bahwa login barusan sukses
 
       setTimeout(() => {
         navigate('/dashboard'); // Redirect to Stopwatch after 2 seconds
       }, 2000);
     }
+    // console.log('Logging to backend:', user);
+    console.log('Login result:', loginSuccess);
 
+  };
+
+  // useEffect(() => {
+  //   if (
+  //     loginTriggered.current &&
+  //     userRedux &&
+  //     userRedux.name &&
+  //     userRedux.id_users // pastikan field tidak undefined
+  //   ) {
+  //     logLoginActivity(userRedux);
+  //     loginTriggered.current = false; // reset agar tidak double-call
+  //   }
+  // }, [userRedux]); // listen perubahan userRedux
+
+  // const logLoginActivity = async (user) => {
+  // console.log('Logging to backend 2:', user); // cek data yang dikirim
+  //   try {
+  //     await axios.post(LOG_ENDPOINT, {
+  //       name: user.name,
+  //       id: user.id_users, // atau user.id_users, sesuaikan dengan struktur userRedux
+  //       isAdmin: user.isAdmin,
+  //       level: user.level,
+  //       imagePath: user.imagePath,
+  //     });
+  //   } catch (err) {
+  //     console.log("Log login failed: ", err);
+  //   }
+  // };
+
+
+  // const logLoginActivity = async (user) => {
+  //   try {
+  //     console.log('Logging to backend 2:', user); // cek data yang dikirim
+  //     await axios.post(LOG_ENDPOINT, {
+  //       name: user.name,
+  //       id: user.id_users,
+  //       isAdmin: user.isAdmin,
+  //       level: user.level,
+  //       imagePath: user.imagePath,
+  //     });
+  //   } catch (err) {
+  //     // Optional: handle error log login
+  //     console.log("Log login failed: ", err);
+  //   }
+  // };
+
+  const handleLoginButton = async () => {
+    // 1. Log aktivitas login ke backend (kirim email/password atau data lain yang kamu mau)
+    
+
+    // 2. Proses login seperti biasa
+    addLogin();
+    // logLoginActivity();
   };
 
   return (
