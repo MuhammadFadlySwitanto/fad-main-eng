@@ -16,7 +16,9 @@ import {
 } from "@chakra-ui/react";
 import CanvasJSReact from "../canvasjs.react";
 import axios from "axios";
-import { useReactToPrint } from "react-to-print";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+// import { useReactToPrint } from "react-to-print";
 import { useColorMode, useColorModeValue } from "@chakra-ui/react";
 
 var CanvasJS = CanvasJSReact.CanvasJS;
@@ -242,6 +244,29 @@ function BuildingEMS() {
     ));
   };
 
+  const exportToPDF = () => {
+    const doc = new jsPDF();
+    // Siapkan header kolom sesuai tabel
+    const columns = [
+      { header: "ID", dataKey: "id" },
+      { header: "Date", dataKey: "date" },
+      { header: "Temp", dataKey: "temp" },
+      { header: "RH", dataKey: "RH" },
+      { header: "DP", dataKey: "DP" },
+    ];
+
+    // allDataTable adalah array of object
+    autoTable(doc, {
+      columns,
+      body: allDataTable, // Seluruh data!
+      styles: { fontSize: 10 },
+      headStyles: { fillColor: [71, 85, 105] }, // Tailwind slate-700
+      theme: "grid"
+    });
+
+    doc.save("table-data-EMS.pdf");
+  };
+
   const emsAreaPick = (e) => {
     var dataInput = e.target.value;
     setAreaPicker(dataInput);
@@ -335,10 +360,10 @@ function BuildingEMS() {
     ],
   };
 
-  const generatePDF =  useReactToPrint({
-    content: ()=> ComponentPDF.current,
-    documentTitle: Name+" Data"
-  });
+  // const generatePDF =  useReactToPrint({
+  //   content: ()=> ComponentPDF.current,
+  //   documentTitle: Name+" Data"
+  // });
 
   return (
     <div>
@@ -406,7 +431,7 @@ function BuildingEMS() {
             </Button>
           </div>
           <div className="ml-2 mt-7">
-            <Button isDisabled={state} colorScheme="red" onClick={generatePDF}>
+            <Button onClick={exportToPDF} colorScheme="red">
               Export to PDF
             </Button>
           </div>
@@ -479,7 +504,7 @@ function BuildingEMS() {
         </div>
       </Stack>
       {isTableVisible && (
-      <div className="mt-8 mx-20 bg-card rounded-md" ref={ComponentPDF}>
+      <div className="mt-8 mx-20 bg-card rounded-md">
         <TableContainer>
           <Table key={colorMode} variant="simple">
             <TableCaption sx={{

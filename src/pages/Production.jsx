@@ -1,17 +1,7 @@
-import React from "react";
-import {
-  Tabs,
-  TabList,
-  TabPanels,
-  Tab,
-  TabPanel,
-  Card,
-  CardBody,
-} from "@chakra-ui/react";
 import ProductionSummary from "./ProductionSummary";
 import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import ProductionInput from "./ProductionInput";
 
 function Production() {
@@ -19,7 +9,7 @@ function Production() {
   const [searchParams] = useSearchParams();
   const initialTab = searchParams.get("tab");
 
-  const getTabIndex = () => {
+  const getTabIndex = useCallback(() => {
     switch (initialTab) {
       case "Input":
         return userGlobal.level >= 5 ? "Input" : "Prod";
@@ -27,13 +17,13 @@ function Production() {
       default:
         return "Prod";
     }
-  };
+  }, [initialTab, userGlobal.level]);
 
   const [activeTab, setActiveTab] = useState(getTabIndex());
 
   useEffect(() => {
     setActiveTab(getTabIndex());
-  }, [initialTab, userGlobal.level]);
+  }, [getTabIndex]);
 
   const renderTabContent = () => {
     switch (activeTab) {

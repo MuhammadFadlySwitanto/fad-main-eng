@@ -565,7 +565,7 @@ export default function WaterManagement() {
     zoomEnabled: true,
     theme: isDarkMode ? "dark1" : "light1",
     backgroundColor: isDarkMode ? "#171717" : "#ffffff",
-    margin: 8,
+    
     title: {
       text: "Daily Water Consumption",
       fontColor: isDarkMode ? "white" : "black"
@@ -927,11 +927,11 @@ export default function WaterManagement() {
       </div>
       <div className="flex flex-row justify-center p-1 mx-8 bg-card rounded-lg shadow-lg overflow-x-auto relative">
         {loading ? (
-          <div className="flex justify-center items-center w-full h-[300px]">
+          <div className="flex justify-center items-center w-full ">
             <Spinner size="xl" color="blue.500" />
           </div>
         ) : error ? (
-          <div className="text-red-500 w-full flex justify-center items-center h-[300px]">
+          <div className="text-red-500 w-full flex justify-center items-center ">
             {error}
           </div>
         ) : (

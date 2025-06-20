@@ -4,19 +4,20 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import PersonIcon from '@mui/icons-material/Person';
 import SettingsIcon from '@mui/icons-material/Settings';
 import SearchIcon from '@mui/icons-material/Search';
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useEffect, useState, useRef } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+import store from '../app/store.js'; // pastikan ini mengarah ke redux store-mu
 
 function Header()  {
     const userGlobal = useSelector((state) => state.user.user);
     const navigate = useNavigate();
     const [darkMode, setDarkMode] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
 
     const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
 
@@ -36,12 +37,66 @@ function Header()  {
   //     "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
   // }
 
-  const logOut = () => {
-    toast.success("You have successfully logged out!"); // Add the toast
-    localStorage.removeItem("user_token");
-    navigate("/login");
-    navigate(0);
+  // ini gw nyoba kalau token abis tanpa menekan tombol logout 
+  useEffect(() => {
+    axios.interceptors.response.use(
+    response => response,
+    async error => {
+      if (error.response && error.response.status === 401) {
+        // Token expired
+        const userGlobal = store.getState().user.user;
+        if (userGlobal && userGlobal.id) {
+          await axios.post('http://10.126.15.197:8002/part/LogoutData', {
+            id_char: userGlobal.id,
+            logout_time: new Date().toLocaleString(),
+          });
+        }
+        localStorage.removeItem("user_token");
+        window.location.href = "/login";
+      }
+      return Promise.reject(error);
+    }
+  )}, []);
+
+  let isLoggingOut = false;
+
+  const logOut = async () => {
+    if (isLoggingOut) return;
+    isLoggingOut = true;
+    try {
+      await axios.post('http://10.126.15.197:8002/part/LogoutData', {
+        id_char: userGlobal.id,
+        logout_time: new Date().toLocaleString(),
+      });
+      toast.success("You have successfully logged out!");
+      localStorage.removeItem("user_token");
+      navigate("/login");
+      navigate(0);
+    } catch (err) {
+      // handle error
+    } finally {
+      isLoggingOut = false;
+    }
   };
+
+  // const logOut = async () => {
+  //   try {
+  //   await axios.post('http://10.126.15.197:8002/part/LogoutData', {
+  //     id_char: userGlobal.id,
+  //     logout_time: new Date().toLocaleString(), // atau format apapun yg kamu mau
+  //   });
+    
+  //   } catch (err) {
+  //   // Optional: handle error
+  //   }
+  //     toast.success("You have successfully logged out!"); // Add the toast
+  //     localStorage.removeItem("user_token");
+  //     navigate("/login");
+  //     navigate(0);
+  // };
+
+  // console.log("userRedux", userRedux);
+  // console.log("userGlobal", userGlobal);
 
   const [currentDateTimeString, setCurrentDateTimeString] = useState("");
 
@@ -158,7 +213,7 @@ function Header()  {
 
         </div>
       </div>
-      {/* <ToastContainer position="top-center" /> */}
+      <ToastContainer position="top-center" draggable/>
     </header>
   );
 }

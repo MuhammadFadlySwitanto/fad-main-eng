@@ -12,14 +12,14 @@ import AlarmList from "./AlarmList";
 import Motor from "./MotorVibration";
 import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 function Utility() {
   const userGlobal = useSelector((state) => state.user.user);
   const [searchParams] = useSearchParams();
   const initialTab = searchParams.get("tab");
 
-  const getTabIndex = () => {
+  const getTabIndex = useCallback(() => {
     switch (initialTab) {
       case "motor-vibration":
         return userGlobal.level > 2 ? "motor-vibration" : "power-management";
@@ -43,13 +43,13 @@ function Utility() {
       default:
         return "power-management";
     }
-  };
+  }, [initialTab, userGlobal.level]);
 
   const [activeTab, setActiveTab] = useState(getTabIndex());
 
   useEffect(() => {
     setActiveTab(getTabIndex());
-  }, [initialTab, userGlobal.level]);
+  }, [getTabIndex]);
 
   const renderTabContent = () => {
     switch (activeTab) {

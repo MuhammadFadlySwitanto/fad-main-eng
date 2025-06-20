@@ -140,11 +140,11 @@ function formatTimestampUTC(uniqueTimestamp) {
   };
 
   const fetchBatch = async (line, machine, start, finish) => {
-  // Validate line and machine values
-  if (!line || !machine || typeof line !== 'string' || typeof machine !== 'string') {
-    console.error(`Invalid line or machine value. Line: ${line}, Machine: ${machine}`);
-    return;
-  }
+    // Validate line and machine values
+    if (!line || !machine || typeof line !== 'string' || typeof machine !== 'string') {
+      console.error(`Invalid line or machine value. Line: ${line}, Machine: ${machine}`);
+      return;
+    }
 
     const endpoint = determineEndpoint(line, machine);
     if (!endpoint) {
@@ -237,7 +237,7 @@ function formatTimestampUTC(uniqueTimestamp) {
   };
 
 
-  const getDataEbrData = async () => {
+  const getDataEbrData = async (batchList) => {
     // console.log(selectedBatch);
     if (!selectedBatch) {
       alert("Please select a valid batch before fetching data.");
@@ -251,18 +251,35 @@ function formatTimestampUTC(uniqueTimestamp) {
       return;
     }
 
+    // try {
+    //   const response = await axios.get(endpoint, { params: { data: selectedBatch } });
+    //   const processedData = response.data.map(item => {
+    //     const newItem = { ...item };
+    //     // Convert Buffer objects to strings
+    //     for (const key in newItem) {
+    //       newItem[key] = cleanBuffer(newItem[key]);
+    //       newItem[key] = formatValue(key, newItem[key]);
+    //     }
+    //     return newItem;
+    //   });
+    //   setAllDataEBR(processedData);
     try {
-      const response = await axios.get(endpoint, { params: { data: selectedBatch } });
-      const processedData = response.data.map(item => {
-        const newItem = { ...item };
-        // Convert Buffer objects to strings
-        for (const key in newItem) {
-          newItem[key] = cleanBuffer(newItem[key]);
-          newItem[key] = formatValue(key, newItem[key]);
-        }
-        return newItem;
-      });
-      setAllDataEBR(processedData);
+      let allResults = [];
+      // Loop jika batchList > 1 (All Batch), atau hanya 1 batch
+      for (const batch of batchList) {
+        const response = await axios.get(endpoint, { params: { data: batch } });
+        const processedData = response.data.map(item => {
+          const newItem = { ...item };
+          // Convert Buffer objects to strings
+          for (const key in newItem) {
+            newItem[key] = cleanBuffer(newItem[key]);
+            newItem[key] = formatValue(key, newItem[key]);
+          }
+          return newItem;
+        });
+        allResults = allResults.concat(processedData.map(d => ({ ...d, batch })));
+      }
+      setAllDataEBR(allResults);
     } catch (error) {
       console.error("Error fetching EBR data:", error);
       toast.error("Failed to fetch EBR data.");
@@ -274,7 +291,18 @@ function formatTimestampUTC(uniqueTimestamp) {
   const handleSubmit = async () => {
     // e.preventDefault();
     // await fetchBatch(newLine, newMachine, startDate, finishDate);
-    await getDataEbrData();
+    // await getDataEbrData();
+    if (selectedBatch === "ALL") {
+      if (!cleanBatchData.length) {
+        alert("Batch data kosong.");
+        return;
+      }
+      await getDataEbrData(cleanBatchData);
+    } else if (selectedBatch) {
+      await getDataEbrData([selectedBatch]);
+    } else {
+      alert("Please select a valid batch before fetching data.");
+    }
   };
   
   // Handlers for input changes
@@ -322,10 +350,6 @@ function formatTimestampUTC(uniqueTimestamp) {
       fetchBatch(newLine, newMachine, startDate, finishValue);
     }
   };
-
-  // const cleanBatchData = fetchBatchData.map(batch =>
-  //   batch.replace(/[\u0000-\u001F\u007F-\u009F]/g, "").trim()
-  // );
 
   const cleanBuffer = (buffer) => {
     if (buffer && buffer.type === 'Buffer') {
@@ -815,6 +839,10 @@ function formatTimestampUTC(uniqueTimestamp) {
                 }}
                 onChange={(e) => setSelectedBatch(e.target.value)}
               >
+              {/* Opsi All Batch */}
+              {cleanBatchData.length > 0 && (
+                <option value="ALL">All Batch</option>
+              )}
               {/* <option value="">Select Batch</option> */}
               {cleanBatchData.length > 0 ? (
                 cleanBatchData.map((batch, index) => (

@@ -2,6 +2,152 @@ import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 
+const mockLoginLogs = [
+  {
+    id: 1,
+    userId: '001',
+    username: 'admin@example.com',
+    name: 'Administrator',
+    level: 1,
+    imagePath: '/api/uploads/admin-avatar.jpg',
+    loginTime: '2024-06-04T08:30:00Z',
+    logoutTime: '2024-06-04T17:45:00Z',
+    ipAddress: '192.168.1.100',
+    userAgent: 'Chrome 125.0.0.0',
+    status: 'completed'
+  },
+  {
+    id: 2,
+    userId: '002',
+    username: 'manager@example.com',
+    name: 'Manager User',
+    level: 2,
+    imagePath: '/api/uploads/manager-avatar.jpg',
+    loginTime: '2024-06-04T09:15:00Z',
+    logoutTime: null,
+    ipAddress: '192.168.1.101',
+    userAgent: 'Firefox 126.0',
+    status: 'active'
+  },
+  {
+    id: 3,
+    userId: '003',
+    username: 'user@example.com',
+    name: 'Regular User',
+    level: 3,
+    imagePath: '/api/uploads/user-avatar.jpg',
+    loginTime: '2024-06-04T10:20:00Z',
+    logoutTime: '2024-06-04T12:30:00Z',
+    ipAddress: '192.168.1.102',
+    userAgent: 'Safari 17.0',
+    status: 'completed'
+  },
+  {
+    id: 4,
+    userId: '004',
+    username: 'operator@example.com',
+    name: 'Operator',
+    level: 4,
+    imagePath: '/api/uploads/operator-avatar.jpg',
+    loginTime: '2024-06-03T14:00:00Z',
+    logoutTime: '2024-06-03T18:00:00Z',
+    ipAddress: '192.168.1.103',
+    userAgent: 'Edge 125.0.0.0',
+    status: 'completed'
+  },
+  {
+    id: 5,
+    userId: '005',
+    username: 'guest@example.com',
+    name: 'Guest User',
+    level: 5,
+    imagePath: null,
+    loginTime: '2024-06-04T11:45:00Z',
+    logoutTime: null,
+    ipAddress: '192.168.1.104',
+    userAgent: 'Chrome Mobile',
+    status: 'active'
+  },
+  {
+    id: 6,
+    userId: '006',
+    username: 'guest@example.com',
+    name: 'Guest User',
+    level: 5,
+    imagePath: null,
+    loginTime: '2024-06-04T11:45:00Z',
+    logoutTime: null,
+    ipAddress: '192.168.1.104',
+    userAgent: 'Chrome Mobile',
+    status: 'active'
+  },
+        {
+    id: 7,
+    userId: '007',
+    username: 'guest@example.com',
+    name: 'Guest User',
+    level: 5,
+    imagePath: null,
+    loginTime: '2024-06-04T11:45:00Z',
+    logoutTime: null,
+    ipAddress: '192.168.1.104',
+    userAgent: 'Chrome Mobile',
+    status: 'active'
+  },
+  {
+    id: 8,
+    userId: '008',
+    username: 'guest@example.com',
+    name: 'Guest User',
+    level: 5,
+    imagePath: null,
+    loginTime: '2024-06-04T11:45:00Z',
+    logoutTime: null,
+    ipAddress: '192.168.1.104',
+    userAgent: 'Chrome Mobile',
+    status: 'active'
+  },
+  {
+    id: 9,
+    userId: '009',
+    username: 'guest@example.com',
+    name: 'Guest User',
+    level: 5,
+    imagePath: null,
+    loginTime: '2024-06-04T11:45:00Z',
+    logoutTime: null,
+    ipAddress: '192.168.1.104',
+    userAgent: 'Chrome Mobile',
+    status: 'active'
+  },
+  {
+    id: 10,
+    userId: '010',
+    username: 'guest@example.com',
+    name: 'Guest User',
+    level: 5,
+    imagePath: null,
+    loginTime: '2024-06-04T11:45:00Z',
+    logoutTime: null,
+    ipAddress: '192.168.1.104',
+    userAgent: 'Chrome Mobile',
+    status: 'active'
+  },
+  {
+    id: 11,
+    userId: '011',
+    username: 'guest@example.com',
+    name: 'Guest User',
+    level: 5,
+    imagePath: null,
+    loginTime: '2024-06-04T11:45:00Z',
+    logoutTime: null,
+    ipAddress: '192.168.1.104',
+    userAgent: 'Chrome Mobile',
+    status: 'active'
+  },
+];
+
 const LogLogin = () => {
   const [loginLogs, setLoginLogs] = useState([]);
   const [filteredLogs, setFilteredLogs] = useState([]);
@@ -9,274 +155,66 @@ const LogLogin = () => {
   const [filterLevel, setFilterLevel] = useState('all');
   const [dateFilter, setDateFilter] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
-  const [userIP, setUserIP] = useState('');
    const [isLoading, setIsLoading] = useState(false);
   const logsPerPage = 10;
 
-  // Ambil data user dari Redux store
-  const currentUser = useSelector(state => state.user);
-
   // Mock data untuk demo - dalam implementasi nyata, data ini akan diambil dari API
   // useEffect(() => {
-  //   const mockLoginLogs = [
-  //     {
-  //       id: 1,
-  //       userId: '001',
-  //       username: 'admin@example.com',
-  //       name: 'Administrator',
-  //       level: 1,
-  //       imagePath: '/api/uploads/admin-avatar.jpg',
-  //       loginTime: '2024-06-04T08:30:00Z',
-  //       logoutTime: '2024-06-04T17:45:00Z',
-  //       ipAddress: '192.168.1.100',
-  //       userAgent: 'Chrome 125.0.0.0',
-  //       status: 'completed'
-  //     },
-  //     {
-  //       id: 2,
-  //       userId: '002',
-  //       username: 'manager@example.com',
-  //       name: 'Manager User',
-  //       level: 2,
-  //       imagePath: '/api/uploads/manager-avatar.jpg',
-  //       loginTime: '2024-06-04T09:15:00Z',
-  //       logoutTime: null,
-  //       ipAddress: '192.168.1.101',
-  //       userAgent: 'Firefox 126.0',
-  //       status: 'active'
-  //     },
-  //     {
-  //       id: 3,
-  //       userId: '003',
-  //       username: 'user@example.com',
-  //       name: 'Regular User',
-  //       level: 3,
-  //       imagePath: '/api/uploads/user-avatar.jpg',
-  //       loginTime: '2024-06-04T10:20:00Z',
-  //       logoutTime: '2024-06-04T12:30:00Z',
-  //       ipAddress: '192.168.1.102',
-  //       userAgent: 'Safari 17.0',
-  //       status: 'completed'
-  //     },
-  //     {
-  //       id: 4,
-  //       userId: '004',
-  //       username: 'operator@example.com',
-  //       name: 'Operator',
-  //       level: 4,
-  //       imagePath: '/api/uploads/operator-avatar.jpg',
-  //       loginTime: '2024-06-03T14:00:00Z',
-  //       logoutTime: '2024-06-03T18:00:00Z',
-  //       ipAddress: '192.168.1.103',
-  //       userAgent: 'Edge 125.0.0.0',
-  //       status: 'completed'
-  //     },
-  //     {
-  //       id: 5,
-  //       userId: '005',
-  //       username: 'guest@example.com',
-  //       name: 'Guest User',
-  //       level: 5,
-  //       imagePath: null,
-  //       loginTime: '2024-06-04T11:45:00Z',
-  //       logoutTime: null,
-  //       ipAddress: '192.168.1.104',
-  //       userAgent: 'Chrome Mobile',
-  //       status: 'active'
-  //     },
-  //     {
-  //       id: 6,
-  //       userId: '006',
-  //       username: 'guest@example.com',
-  //       name: 'Guest User',
-  //       level: 5,
-  //       imagePath: null,
-  //       loginTime: '2024-06-04T11:45:00Z',
-  //       logoutTime: null,
-  //       ipAddress: '192.168.1.104',
-  //       userAgent: 'Chrome Mobile',
-  //       status: 'active'
-  //     },
-  //           {
-  //       id: 7,
-  //       userId: '007',
-  //       username: 'guest@example.com',
-  //       name: 'Guest User',
-  //       level: 5,
-  //       imagePath: null,
-  //       loginTime: '2024-06-04T11:45:00Z',
-  //       logoutTime: null,
-  //       ipAddress: '192.168.1.104',
-  //       userAgent: 'Chrome Mobile',
-  //       status: 'active'
-  //     },
-  //     {
-  //       id: 8,
-  //       userId: '008',
-  //       username: 'guest@example.com',
-  //       name: 'Guest User',
-  //       level: 5,
-  //       imagePath: null,
-  //       loginTime: '2024-06-04T11:45:00Z',
-  //       logoutTime: null,
-  //       ipAddress: '192.168.1.104',
-  //       userAgent: 'Chrome Mobile',
-  //       status: 'active'
-  //     },
-  //     {
-  //       id: 9,
-  //       userId: '009',
-  //       username: 'guest@example.com',
-  //       name: 'Guest User',
-  //       level: 5,
-  //       imagePath: null,
-  //       loginTime: '2024-06-04T11:45:00Z',
-  //       logoutTime: null,
-  //       ipAddress: '192.168.1.104',
-  //       userAgent: 'Chrome Mobile',
-  //       status: 'active'
-  //     },
-  //     {
-  //       id: 10,
-  //       userId: '010',
-  //       username: 'guest@example.com',
-  //       name: 'Guest User',
-  //       level: 5,
-  //       imagePath: null,
-  //       loginTime: '2024-06-04T11:45:00Z',
-  //       logoutTime: null,
-  //       ipAddress: '192.168.1.104',
-  //       userAgent: 'Chrome Mobile',
-  //       status: 'active'
-  //     },
-  //     {
-  //       id: 11,
-  //       userId: '011',
-  //       username: 'guest@example.com',
-  //       name: 'Guest User',
-  //       level: 5,
-  //       imagePath: null,
-  //       loginTime: '2024-06-04T11:45:00Z',
-  //       logoutTime: null,
-  //       ipAddress: '192.168.1.104',
-  //       userAgent: 'Chrome Mobile',
-  //       status: 'active'
-  //     },
-  //   ];
-    
-  //   setLoginLogs(mockLoginLogs);
-  //   setFilteredLogs(mockLoginLogs);
+    //   setLoginLogs(mockLoginLogs);
+    //   setFilteredLogs(mockLoginLogs);
   // }, []);
 
-  const getUserIP = async () => {
-    try {
-      // Untuk testing, gunakan IP yang diberikan mentor
-      // const testIP = '10.126.10.41';
-      // setUserIP(testIP);
-      
-      // Alternatif untuk mendapatkan IP real (uncomment jika diperlukan)
-      const response = await fetch('https://api.ipify.org?format=json');
-      const data = await response.json();
-      setUserIP(data.ip);
-      
-      return data.ip;
-    } catch (error) {
-      console.error('Error getting IP:', error);
-      // Fallback ke IP test jika gagal
-      const fallbackIP = '10.126.10.41';
-      setUserIP(fallbackIP);
-      return fallbackIP;
-    }
-  };
 
-  const postLoginData = async () => {
-    if (!currentUser) return;
-    
-    setIsLoading(true);
-    try {
-      const ipAddress = await getUserIP();
-      
-      const loginData = {
-        userId: currentUser.id,
-        name: currentUser.name,
-        level: currentUser.level,
-        isAdmin: currentUser.isAdmin,
-        imagePath: currentUser.imagePath,
-        ipAddress: ipAddress,
-        loginTime: new Date().toISOString(),
-        userAgent: navigator.userAgent
-      };
-
-      console.log('Posting login data:', loginData);
-      
-      // POST ke backend - sesuaikan URL dengan backend Anda
-      const response = await axios.post('http://10.126.15.197:8002/part/LoginData', loginData, {
-        headers: {
-          'Content-Type': 'application/json',
-          // Tambahkan authorization header jika diperlukan
-          // 'Authorization': `Bearer ${currentUser.token}`
-        }
+  useEffect(() => {
+    axios.get("http://10.126.15.197:8002/part/LogData")
+      .then(res => {
+        setLoginLogs(res.data);
+        setFilteredLogs(res.data);
+        setIsLoading(false);
+      })
+      .catch(err => {
+        // Optional: handle error (tampilkan pesan, dsb)
+        setLoginLogs(mockLoginLogs);
+        setFilteredLogs(mockLoginLogs);
+        setIsLoading(false);
       });
+  }, []);
 
-      console.log('Login data posted successfully:', response.data);
-      
-      // Refresh data setelah posting
-      fetchLoginLogs();
-      
-    } catch (error) {
-      console.error('Error posting login data:', error);
-      alert('Gagal mengirim data login ke server');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  useEffect(() => {
+    let filtered = loginLogs;
 
-  const fetchLoginLogs = async () => {
-    try {
-      // const response = await axios.get('/api/login-logs');
-      // setLoginLogs(response.data);
-      // setFilteredLogs(response.data);
-      
-      // Sementara gunakan mock data untuk testing
-      const mockLoginLogs = [
-        {
-          id: 1,
-          userId: '28',
-          name: 'Muhammad Fadly Switanto',
-          level: 5,
-          imagePath: '/mukaa-17738177244.png',
-          loginTime: '2024-06-04T08:30:00Z',
-          logoutTime: '2024-06-04T17:45:00Z',
-          ipAddress: '10.126.10.41',
-          userAgent: 'Chrome 125.0.0.0',
-          status: 'completed'
-        },
-        {
-          id: 2,
-          userId: '29',
-          name: 'Admin User',
-          level: 1,
-          imagePath: '/admin-avatar.jpg',
-          loginTime: '2024-06-04T09:15:00Z',
-          logoutTime: null,
-          ipAddress: '10.126.10.42',
-          userAgent: 'Firefox 126.0',
-          status: 'active'
-        }
-      ];
-      
-      setLoginLogs(mockLoginLogs);
-      setFilteredLogs(mockLoginLogs);
-    } catch (error) {
-      console.error('Error fetching login logs:', error);
-    }
-  };
+    // Filter berdasarkan search term (nama saja)
+    if (searchTerm) {
+      filtered = filtered.filter(log => 
+        log.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    } 
+    setFilteredLogs(filtered);
+    setCurrentPage(1);
+  }, [searchTerm, loginLogs]);
+
+
+  console.log("isi", loginLogs);
+  
 
     // Load data saat komponen dimount
-  useEffect(() => {
-    getUserIP();
-    fetchLoginLogs();
-  }, []);
+  // useEffect(() => {
+  //   getUserIP();
+  //   fetchLoginLogs();
+  // }, []);
+
+  //   useEffect(() => {
+  //   axios.get('http://10.126.15.197:8002/part/LogData/')
+  //     .then(res => {
+  //       setLoginLogs(res.data);
+  //     })
+  //     .catch(err => {
+  //       console.error("Gagal mengambil data login:", err);
+  //     });
+  // }, []);
+
+  // console.log("test", loginLogs);
+
 
   // Filter logs berdasarkan pencarian dan filter
   // useEffect(() => {
@@ -291,15 +229,7 @@ const LogLogin = () => {
   //     );
   //   }
 
-    useEffect(() => {
-      let filtered = loginLogs;
-
-      // Filter berdasarkan search term (nama saja)
-      if (searchTerm) {
-        filtered = filtered.filter(log => 
-          log.name.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-    }
+  
 
     // Filter berdasarkan level
     // if (filterLevel !== 'all') {
@@ -333,10 +263,6 @@ const LogLogin = () => {
     //   }
     // }
 
-    setFilteredLogs(filtered);
-    setCurrentPage(1);
-  }, [searchTerm, filterLevel, dateFilter, loginLogs]);
-
   const getLevelText = (level) => {
     switch(level) {
       case 1: return 'Super Admin';
@@ -350,11 +276,11 @@ const LogLogin = () => {
 
   const getLevelColor = (level) => {
     switch(level) {
-      case 1: return 'bg-red-100 text-red-800';
-      case 2: return 'bg-purple-100 text-purple-800';
+      case 5: return 'bg-red-100 text-red-800';
+      case 4: return 'bg-purple-100 text-purple-800';
       case 3: return 'bg-blue-100 text-blue-800';
-      case 4: return 'bg-green-100 text-green-800';
-      case 5: return 'bg-gray-100 text-gray-800';
+      case 2: return 'bg-green-100 text-green-800';
+      case 1: return 'bg-gray-100 text-gray-800';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
@@ -370,7 +296,7 @@ const LogLogin = () => {
   const formatDateTime = (dateString) => {
     if (!dateString) return '-';
     const date = new Date(dateString);
-    return date.toLocaleString('id-ID', {
+    return date.toLocaleString('en-US', {
       year: 'numeric',
       month: '2-digit',
       day: '2-digit',
@@ -389,8 +315,13 @@ const LogLogin = () => {
     
     const hours = Math.floor(duration / (1000 * 60 * 60));
     const minutes = Math.floor((duration % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((duration % (1000 * 60)) / 1000);
     
-    return `${hours}j ${minutes}m`;
+    if (hours > 0) {
+      return `${hours}j ${minutes}m ${seconds}d`;
+    } else {
+      return `${minutes}m ${seconds}d`;
+    }
   };
 
   // Pagination
@@ -411,6 +342,8 @@ const LogLogin = () => {
   //   );
   // }
 
+  if (isLoading) return <div>Loading...</div>;
+
   return (
     <div className="min-h-screen bg-card p-6">
       <div className="max-w-7xl mx-auto">
@@ -418,11 +351,8 @@ const LogLogin = () => {
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-text mb-2">Log Login User</h1>
           <p className="text-text2">Monitor aktivitas login dan logout pengguna sistem</p>
-          {userIP && (
-              <p className="text-sm text-blue-600 mt-2">IP Address Anda: {userIP}</p>
-            )}
         </div>
-        <button
+        {/* <button
             onClick={postLoginData}
             disabled={isLoading || !currentUser}
             className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
@@ -443,7 +373,7 @@ const LogLogin = () => {
                 <span>POST Login Data</span>
               </>
             )}
-          </button>
+          </button> */}
 
         {/* Filters */}
         <div className="bg-cardb rounded-lg shadow-lg p-6 mb-6">
@@ -512,7 +442,7 @@ const LogLogin = () => {
 
         {/* Statistics */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-          <div className="bg-cardb p-6 rounded-lg shadow-sm">
+          <div className="bg-cardb p-6 rounded-lg shadow-lg">
             <div className="flex items-center">
               <div className="p-3 rounded-full bg-blue-100">
                 <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -593,12 +523,12 @@ const LogLogin = () => {
                   <th className="px-6 py-3 text-left text-xs font-medium text-text uppercase tracking-wider">
                     Login
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-text uppercase tracking-wider">
+                  {/* <th className="px-6 py-3 text-left text-xs font-medium text-text uppercase tracking-wider">
                     Logout
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-text uppercase tracking-wider">
                     Durasi
-                  </th>
+                  </th> */}
                   <th className="px-6 py-3 text-left text-xs font-medium text-text uppercase tracking-wider">
                     IP Address
                   </th>
@@ -632,30 +562,30 @@ const LogLogin = () => {
                         </div>
                         <div className="ml-4">
                           <div className="text-sm font-medium text-text">{log.name}</div>
-                          <div className="text-sm text-text">{log.username}</div>
+                          <div className="text-sm text-text">{log.email}</div>
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getLevelColor(log.level)}`}>
-                        {getLevelText(log.level)}
+                        {log.level}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-text">
-                      {formatDateTime(log.loginTime)}
+                      {formatDateTime(log.Date)}
+                    </td>
+                    {/* <td className="px-6 py-4 whitespace-nowrap text-sm text-text">
+                      {log.logout_time}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-text">
-                      {formatDateTime(log.logoutTime)}
-                    </td>
+                      {calculateDuration(log.Date, log.logout_time)}
+                    </td> */}
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-text">
-                      {calculateDuration(log.loginTime, log.logoutTime)}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-text">
-                      {log.ipAddress}
+                      {log.ip_address}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(log.status)}`}>
-                        {log.status === 'active' ? 'Aktif' : 'Selesai'}
+                        {log.status === 'completed' ? 'Selesai' : 'Aktif'}
                       </span>
                     </td>
                   </tr>

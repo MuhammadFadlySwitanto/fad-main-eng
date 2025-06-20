@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useSelector } from "react-redux";
-import {  useColorMode, useColorModeValue, Select, Input } from "@chakra-ui/react";
+import { useColorModeValue, Select, Input } from "@chakra-ui/react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -20,7 +20,6 @@ const ProductionInput = () => {
   const [error, setError] = useState('');
   const userGlobal = useSelector((state) => state.user.user);
 
-  const { colorMode } = useColorMode();
   const borderColor = useColorModeValue("rgba(var(--color-border))", "rgba(var(--color-border))");
   const hoverBorderColor = useColorModeValue("rgba(var(--color-border2))", "rgba(var(--color-border2))");
   const buatSiSelect = useColorModeValue("rgba(var(--color-text))", "rgba(var(--color-text))");
@@ -36,7 +35,7 @@ const ProductionInput = () => {
     Unplanned: []
   });
 
-  // Fungsi untuk format tanggal menjadi dd/mm/yyyy
+  // Fungsi untuk format tanggal menjadi dd/mm/yyyy kalau pake yg formatted date di params axios dibawah
   function formatDate(date) {
     const day = String(date.getDate()).padStart(2, '0');
     const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -86,7 +85,7 @@ const ProductionInput = () => {
       // const [day, month, year] = formData.date.split('/');
       // const formattedDate = `${year}-${month}-${day}`;
       
-      // Ganti dengan endpoint API yang sebenarnya
+      // langsung pake aja endpoint dari king
       const response = await axios.get("http://10.126.15.197:8002/part/HM1Report", {
         params: {
           shift: formData.shift,
@@ -148,7 +147,7 @@ const getNextTime = (startTime, durationMinutes) => {
   return convertMinutesToTime(endMinutes);
 };
 
-// Fungsi untuk memastikan waktu berada dalam range yang diizinkan
+// Fungsi buat memastikan waktu berada dalam range tapi ini gak kepake sih mending dihapus dah
 const ensureTimeInRange = (timeStr, minTimeStr, maxTimeStr) => {
   const time = convertTimeToMinutes(timeStr);
   const minTime = convertTimeToMinutes(minTimeStr);
@@ -448,7 +447,7 @@ const handleSubRowTotalMinutesChange = (rowIndex, subRowIndex, newTotalMinutes) 
         nextSubRow.total_menit = Math.max(1, nextSubRow.total_menit - increasedBy); // minimum 1 menit
         nextSubRow.finish = getNextTime(nextSubRow.start, nextSubRow.total_menit);
         
-        // Recalculate all subsequent sub-rows
+        // Recalculate urutan sub-rows
         for (let i = subRowIndex + 2; i < mainRow.subRows.length; i++) {
           mainRow.subRows[i].start = mainRow.subRows[i - 1].finish;
           mainRow.subRows[i].finish = getNextTime(
@@ -462,7 +461,7 @@ const handleSubRowTotalMinutesChange = (rowIndex, subRowIndex, newTotalMinutes) 
         subRow.finish = getNextTime(subRow.start, newTotalMinutes);
       }
     } else {
-      // This is the last sub-row, make sure it doesn't exceed main row's finish time
+      // Ini last sub-row, pastiin gak melampaui yang main row finish form (yang bukan sub row)
       if (newTotalMinutes > maxPossibleDuration) {
         toast.warning(`Durasi maksimum yang tersedia adalah ${maxPossibleDuration} menit`);
         newTotalMinutes = maxPossibleDuration;
@@ -472,7 +471,7 @@ const handleSubRowTotalMinutesChange = (rowIndex, subRowIndex, newTotalMinutes) 
       subRow.finish = getNextTime(subRow.start, newTotalMinutes);
     }
     
-    // Validate total duration of all sub-rows
+    // buat validasi total dari semua sub-rows
     const totalSubRowMinutes = mainRow.subRows.reduce(
       (sum, sr) => sum + sr.total_menit, 0
     );
@@ -480,7 +479,7 @@ const handleSubRowTotalMinutesChange = (rowIndex, subRowIndex, newTotalMinutes) 
     if (totalSubRowMinutes > mainRow.total_menit) {
       toast.error(`Total durasi (${totalSubRowMinutes}) melebihi durasi main row (${mainRow.total_menit})`);
       
-      // Reset back to original value
+      // Reset ke value awal atau yg ori
       subRow.total_menit = subRow.total_menit - (totalSubRowMinutes - mainRow.total_menit);
       subRow.finish = getNextTime(subRow.start, subRow.total_menit);
     }
@@ -548,11 +547,11 @@ const handleSubRowTotalMinutesChange = (rowIndex, subRowIndex, newTotalMinutes) 
     );
   };
 
-  // 12. Submit downtime dengan axios
+  // 12. Submit downtime dengan axios dari king
   const handleSubmitDowntime = async (rowIndex) => {
     const currentRow = tableData[rowIndex];
     
-      // Cek jika user menggunakan sub-rows atau tidak
+    // Cek jika user menggunakan sub-rows atau tidak
     const useSubRows = currentRow.showSubRows && currentRow.subRows && currentRow.subRows.length > 0;
     
     // Validasi untuk main row (hanya jika tidak menggunakan sub-rows)
@@ -625,7 +624,7 @@ const handleSubRowTotalMinutesChange = (rowIndex, subRowIndex, newTotalMinutes) 
       submitted_at: submitDateTime
     };
     
-    // Jika menggunakan sub-rows, persiapkan data sub-rows untuk dikirim
+    // Jika pake sub-rows, persiapkan data sub-rows untuk dikirim
     if (useSubRows) {
       // Siapkan data sub-rows
       const subRowsData = currentRow.subRows.map(subRow => ({
@@ -654,7 +653,7 @@ const handleSubRowTotalMinutesChange = (rowIndex, subRowIndex, newTotalMinutes) 
       // Ganti URL dengan endpoint yang sesuai
       await axios.post("http://10.126.15.197:8002/part/HM1InsertDowntimeWithSubRows", payload);
     } else {
-      // Kirim hanya data main row
+      // Kirim hanya data main row (kalau gak buka atau pake sub-row)
       console.log('Data yang dikirim ke server:', mainRowData);
       await axios.post("http://10.126.15.197:8002/part/HM1InsertDowntime", mainRowData);
     }
@@ -668,8 +667,6 @@ const handleSubRowTotalMinutesChange = (rowIndex, subRowIndex, newTotalMinutes) 
     console.error(err);
   }
 };
-
-
 
   useEffect(() => {
     const handleThemeChange = () => {
@@ -870,7 +867,7 @@ const handleSubRowTotalMinutesChange = (rowIndex, subRowIndex, newTotalMinutes) 
                           sx={{
                             border: "1px solid",
                             borderColor: borderColor,
-                            background: "var(--color-background)", // background color from Tailwind config
+                            background: "var(--color-background)",
                   
                             _hover: {
                               borderColor: hoverBorderColor,

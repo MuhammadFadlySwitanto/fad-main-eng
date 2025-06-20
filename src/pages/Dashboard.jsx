@@ -388,11 +388,11 @@ import MyDocument from '../components/MyDocument';
       var objData1 = {
       variable1 : Number (priceInputs.price1),
       variable2 : Number (priceInputs.price2 )
-    }
-      if(inputKey == 'price1'){
-        objData1.variable1 = Number (value)
-      }else if (inputKey == 'price2'){
-        objData1.variable2 = Number (value)
+      }
+        if(inputKey == 'price1'){
+          objData1.variable1 = Number (value)
+        }else if (inputKey == 'price2'){
+          objData1.variable2 = Number (value)
       }
       console.log(objData1);
       
@@ -585,6 +585,8 @@ import MyDocument from '../components/MyDocument';
     }
   };
 
+  console.log();
+
   useEffect(() => {
     // console.log("MVMDP:", data.MVMDP);
     // console.log("dataTotalUang:", dataTotalUang);
@@ -592,7 +594,10 @@ import MyDocument from '../components/MyDocument';
     // console.log("dataTotalUangAir:", dataTotalUangAir);
     // console.log("Total_Gas_Boiler:", data.Total_Gas_Boiler);
     // console.log("dataTotalUangGas:", dataTotalUangGas);
-    
+    console.log("Total_Gas_Boiler:", data.Total_Gas_Boiler);
+    console.log("Limit_Gas:", getLimit.Limit_Gas);
+    console.log("Perhitungan Persen:", (data.Total_Gas_Boiler / getLimit.Limit_Gas) * 100);
+        
     // Menghitung TotalCost
     const MVMDP = data.MVMDP ?? 0;
     const PDAM = data.PDAM ?? 0;

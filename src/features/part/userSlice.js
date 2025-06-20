@@ -60,6 +60,7 @@ export function loginData(data) {
       // If login is successful
       const userData = response.data.data;
       dispatch(setUser(userData));
+      // console.log("uyyyyyyyy", userData);
       localStorage.setItem("user_token", response.data.token);
 
       // Display success message
@@ -67,12 +68,15 @@ export function loginData(data) {
 
       // LOG LOGIN: langsung POST ke endpoint log login di sini
       try {
+        const now = new Date().toLocaleString(); // atau sesuai format yang kamu mau
         await Axios.post("http://10.126.15.197:8002/part/LoginData", {
           name: userData.name,
           id: userData.id_users,
+          email: userData.email,
           isAdmin: userData.isAdmin,
           level: userData.level,
           imagePath: userData.imagePath ? userData.imagePath : "-",
+          loginAt: now,
         });
         // Optional: console.log("Log login berhasil");
       } catch (logErr) {

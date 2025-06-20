@@ -2,7 +2,9 @@ import { useEffect, useState, useRef } from "react";
 import CanvasJSReact from "../canvasjs.react";
 import { Button, Stack, Input, Select, Table, Thead, Tbody, Tr, Th, Td, TableContainer, Spinner } from "@chakra-ui/react";
 import axios from "axios";
-import { useReactToPrint } from "react-to-print";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+// import { useReactToPrint } from "react-to-print";
 import { useColorMode, useColorModeValue } from "@chakra-ui/react";
 
 var CanvasJS = CanvasJSReact.CanvasJS;
@@ -164,6 +166,37 @@ export default function BuildingRnD() {
       </Tr>
     ));
   };
+
+  const exportToPDF = () => {
+    const doc = new jsPDF();
+    // Siapkan header kolom sesuai tabel
+    const columns = [
+      { header: "No", dataKey: "no" },
+      { header: "Date", dataKey: "tgl" },
+      { header: "Temp", dataKey: "temp" },
+      { header: "RH", dataKey: "RH" },
+    ];
+
+    // Buat body dengan tambahan nomor urut (No)
+    const body = AllDataWH1.map((data, idx) => ({
+      no: idx + 1,
+      tgl: data.tgl,
+      temp: data.temp,
+      RH: data.RH
+    }));
+
+    // allDataTable adalah array of object
+    autoTable(doc, {
+      columns,
+      body,
+      styles: { fontSize: 10 },
+      headStyles: { fillColor: [71, 85, 105] }, // Tailwind slate-700
+      theme: "grid"
+    });
+
+    doc.save("table-data-WH1.pdf");
+  };
+
   let dateStart = (e) => {
     var dataInput = e.target.value;
     setStartDate(dataInput);
@@ -245,10 +278,10 @@ export default function BuildingRnD() {
     ],
   };
 
-  const generatePDF =  useReactToPrint({
-    content: ()=> ComponentPDF.current,
-    documentTitle: "Building WH1 "+Area+" Data"
-  });
+  // const generatePDF =  useReactToPrint({
+  //   content: ()=> ComponentPDF.current,
+  //   documentTitle: "Building WH1 "+Area+" Data"
+  // });
 
   return(
     <div>
@@ -324,7 +357,7 @@ export default function BuildingRnD() {
             <Button
               isDisabled={state}
               colorScheme="red"
-              onClick={generatePDF}>
+              onClick={exportToPDF}>
               Export to PDF
             </Button>
           </div>
@@ -393,7 +426,7 @@ export default function BuildingRnD() {
         </div>
       </Stack>
       {isTableVisible && (
-      <div className="mt-8 bg-card rounded-md mx-20" ref={ComponentPDF}>
+      <div className="mt-8 bg-card rounded-md mx-20">
         <TableContainer>
           <Table key={colorMode} variant="simple">
             <Thead>

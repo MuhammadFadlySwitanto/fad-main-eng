@@ -1,5 +1,4 @@
 import React, { useEffect, Component, useState } from "react";
-import CanvasJSReact from "../canvasjs.react";
 import { Button, 
     Stack, 
     Input, 

@@ -1,4 +1,4 @@
-import React, { useEffect, Component, useState } from "react";
+import { useEffect, Component, useState } from "react";
 import CanvasJSReact from "../canvasjs.react";
 
 import {
@@ -12,8 +12,6 @@ import {
   TableCaption,
   TableContainer,
   Button,
-  ButtonGroup,
-  Stack,
   Input,
   Select,
   Spinner
@@ -108,10 +106,10 @@ function HardnessPage() {
       }
     );
 
-      // Preprocess data to format created_date
+      // buat format
       const processedData = response.data.map((row) => ({
       ...row,
-      label: row.label.split("T")[0], // Extract YYYY-MM-DD
+      label: row.label.split("T")[0],
     }));
 
     setHardnessData(processedData);
@@ -127,7 +125,7 @@ function HardnessPage() {
         },
       }
     );
-      // Preprocess data to format created_date
+      // sama aja buat format
       const processedData2 = response2.data.map((row) => ({
       ...row,
       label: row.label.split("T")[0], // Extract YYYY-MM-DD
@@ -145,7 +143,7 @@ function HardnessPage() {
       }
     );
 
-      // Preprocess data to format created_date
+      // buat format
     const processedData3 = response3.data.map((row) => ({
       ...row,
       label: row.label.split("T")[0], // Extract YYYY-MM-DD
@@ -203,18 +201,18 @@ function HardnessPage() {
 
   // Handle submit
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Mencegah perilaku default pengiriman formulir
+    e.preventDefault();
     setLoading(true); // Start spinner
-    setError(null);   // Clear previous errors
+    setError(null);  
 
     try {
       if (!startDate || !finishDate) {
         toast.error("Please enter both start and finish dates.");
-        setLoading(false); // Stop spinner when validation fails
+        setLoading(false); // Stop spinner when kalau input form gak keisi
         return;
       }
 
-      // fetching table data and 3 charts
+      // fetching table data dan 3 charts
       await fetchGraphHardness();
       await fetchTableData1();
     } catch (err) {

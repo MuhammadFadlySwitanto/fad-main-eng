@@ -149,7 +149,7 @@ export default function Loopo() {
       maintainAspectRatio: true,
       theme: isDarkMode ? "dark2" : "light2",
       backgroundColor: isDarkMode ? "#171717" : "#ffffff",
-      Margin: 8,
+      // Margin: 8,
       title: {
         text: "Loopo Data Graph",
         fontColor: isDarkMode ? "white" : "black"

@@ -4,18 +4,18 @@ import BuildingRnD from "./buildingRnD";
 import BuildingWH1 from "./buildingWH1";
 import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 function Building() {
   const userGlobal = useSelector((state) => state.user.user);
   const [searchParams] = useSearchParams();
   const initialTab = searchParams.get("tab");
 
-  const getTabIndex = () => {
+  const getTabIndex = useCallback(() => {
     switch (initialTab) {
       case "WH1":
         return userGlobal.level > 2 ? "WH1" : "EMS";
-      case "RnD":
+      case "RD":
         return userGlobal.level > 2 ? "RnD" : "EMS";
       case "BAS":
         return "BAS";
@@ -23,13 +23,13 @@ function Building() {
       default:
         return "EMS";
     }
-  };
+  },  [initialTab, userGlobal.level]);
 
   const [activeTab, setActiveTab] = useState(getTabIndex());
 
   useEffect(() => {
     setActiveTab(getTabIndex());
-  }, [initialTab, userGlobal.level]);
+  }, [getTabIndex]);
 
   const renderTabContent = () => {
     switch (activeTab) {

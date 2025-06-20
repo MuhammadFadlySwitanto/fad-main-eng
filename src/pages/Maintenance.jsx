@@ -4,14 +4,14 @@ import MachineHistorical from "./MachineHistorical";
 import DataReportMTC from "./DataReportMTC";
 import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 function Maintenance() {
   const userGlobal = useSelector((state) => state.user.user);
   const [searchParams] = useSearchParams();
   const initialTab = searchParams.get("tab");
 
-  const getTabIndex = () => {
+  const getTabIndex = useCallback(() => {
     switch (initialTab) {
       case "historical":
         return userGlobal.level > 2 ? "historical" : "maintenance-breakdown";
@@ -23,13 +23,13 @@ function Maintenance() {
       default:
         return "maintenance-breakdown";
     }
-  };
+  }, [initialTab, userGlobal.level]);
 
   const [activeTab, setActiveTab] = useState(getTabIndex());
 
   useEffect(() => {
     setActiveTab(getTabIndex());
-  }, [initialTab, userGlobal.level]);
+  }, [getTabIndex]);
 
   const renderTabContent = () => {
     switch (activeTab) {
