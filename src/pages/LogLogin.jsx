@@ -542,7 +542,7 @@ const LogLogin = () => {
                   <tr key={log.id} className="hover:bg-cta">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
-                        <div className="flex-shrink-0 h-10 w-10">
+                        {/* <div className="flex-shrink-0 h-10 w-10">
                           {log.imagePath ? (
                             <img
                               className="h-10 w-10 rounded-full object-cover"
@@ -559,7 +559,7 @@ const LogLogin = () => {
                               </svg>
                             </div>
                           )}
-                        </div>
+                        </div> */}
                         <div className="ml-4">
                           <div className="text-sm font-medium text-text">{log.name}</div>
                           <div className="text-sm text-text">{log.email}</div>
