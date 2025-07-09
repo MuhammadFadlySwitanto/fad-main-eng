@@ -12,7 +12,7 @@ import {
   TableCaption,
   TableContainer,
   Stack,
-  Spinner
+  Spinner,
 } from "@chakra-ui/react";
 import CanvasJSReact from "../canvasjs.react";
 import axios from "axios";
@@ -33,30 +33,39 @@ function BuildingEMS() {
   const [areaPicker, setAreaPicker] = useState();
   const [datePickerStart, setDatePickerStart] = useState();
   const [datePickerFinish, setDatePickerFinish] = useState();
-  const [maxSuhu, setmaxSuhu]= useState ([]);
-  const [minSuhu, setminSuhu]= useState ([]);
-  const [avgSuhu, setavgSuhu]= useState ([]);
-  const [maxRH, setmaxRH]= useState ([]);
-  const [minRH, setminRH]= useState ([]);
-  const [avgRH, setavgRH]= useState ([]);
-  const [maxDP, setmaxDP]= useState ([]);
-  const [minDP, setminDP]= useState ([]);
-  const [avgDP, setavgDP]= useState ([]);
+  const [maxSuhu, setmaxSuhu] = useState([]);
+  const [minSuhu, setminSuhu] = useState([]);
+  const [avgSuhu, setavgSuhu] = useState([]);
+  const [maxRH, setmaxRH] = useState([]);
+  const [minRH, setminRH] = useState([]);
+  const [avgRH, setavgRH] = useState([]);
+  const [maxDP, setmaxDP] = useState([]);
+  const [minDP, setminDP] = useState([]);
+  const [avgDP, setavgDP] = useState([]);
   const [Name, setName] = useState();
   const [state, setState] = useState(true);
-  const ComponentPDF= useRef();
+  const ComponentPDF = useRef();
 
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [isTableVisible, setIsTableVisible] = useState(true);
 
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);  
-  
+  const [error, setError] = useState(null);
+
   const { colorMode } = useColorMode();
-  const borderColor = useColorModeValue("rgba(var(--color-border))", "rgba(var(--color-border))");
-  const tulisanColor = useColorModeValue("rgba(var(--color-text))", "rgba(var(--color-text))");
-  const hoverBorderColor = useColorModeValue("rgba(var(--color-border2))", "rgba(var(--color-border2))");
+  const borderColor = useColorModeValue(
+    "rgba(var(--color-border))",
+    "rgba(var(--color-border))"
+  );
+  const tulisanColor = useColorModeValue(
+    "rgba(var(--color-text))",
+    "rgba(var(--color-text))"
+  );
+  const hoverBorderColor = useColorModeValue(
+    "rgba(var(--color-border2))",
+    "rgba(var(--color-border2))"
+  );
 
   const [isDarkMode, setIsDarkMode] = useState(
     document.documentElement.getAttribute("data-theme") === "dark"
@@ -83,13 +92,13 @@ function BuildingEMS() {
           <option value={tableName}>{cleanedName}</option>;
         </>
       );
-    }); 
-  }; 
+    });
+  };
 
   const getSubmit = async () => {
     setLoading(true); // Start spinner
-    setError(null);   // Clear previous errors
-  
+    setError(null); // Clear previous errors
+
     try {
       const response1 = await axios.get(
         "http://10.126.15.197:8002/part/getTempChart",
@@ -101,7 +110,7 @@ function BuildingEMS() {
             format: 0,
           },
         }
-      ); 
+      );
       const response2 = await axios.get(
         "http://10.126.15.197:8002/part/getTempChart",
         {
@@ -140,88 +149,103 @@ function BuildingEMS() {
       setAllDataTable(response4.data);
       setIsTableVisible(true); // Show the table
 
-      if (response1.data.length !== 0 
-        && response2.data.length !== 0 
-        && response3.data.length !== 0
-        && response4.data.length !== 0){
+      if (
+        response1.data.length !== 0 &&
+        response2.data.length !== 0 &&
+        response3.data.length !== 0 &&
+        response4.data.length !== 0
+      ) {
         setState(false);
       } else {
         setState(true);
       }
 
-    const maxSuhu = response1.data.reduce ((acc, data) => Math.max (acc, data.y), Number.NEGATIVE_INFINITY);
-    var max = Number(maxSuhu.toFixed(2))
-    setmaxSuhu(max)
+      const maxSuhu = response1.data.reduce(
+        (acc, data) => Math.max(acc, data.y),
+        Number.NEGATIVE_INFINITY
+      );
+      var max = Number(maxSuhu.toFixed(2));
+      setmaxSuhu(max);
 
-    const minSuhu = Math.min(...response1.data.map((data) => data.y));
-    var min = Number(minSuhu.toFixed(2))
-    setminSuhu(min)
+      const minSuhu = Math.min(...response1.data.map((data) => data.y));
+      var min = Number(minSuhu.toFixed(2));
+      setminSuhu(min);
 
-    const totalSuhu = response1.data.reduce ((sum, data) => sum + data.y, 0);
-    var total = 0
-    total = Number(totalSuhu.toFixed(2))
-    const averageSuhu = totalSuhu / response1.data.length;
-    var avgSuhu = Number(averageSuhu.toFixed(2))
-    setavgSuhu(avgSuhu);
+      const totalSuhu = response1.data.reduce((sum, data) => sum + data.y, 0);
+      var total = 0;
+      total = Number(totalSuhu.toFixed(2));
+      const averageSuhu = totalSuhu / response1.data.length;
+      var avgSuhu = Number(averageSuhu.toFixed(2));
+      setavgSuhu(avgSuhu);
 
-    const maxRH = response2.data.reduce ((acc, data) => Math.max (acc, data.y), Number.NEGATIVE_INFINITY);
-    var max = Number(maxRH.toFixed(2))
-    setmaxRH(max)
+      const maxRH = response2.data.reduce(
+        (acc, data) => Math.max(acc, data.y),
+        Number.NEGATIVE_INFINITY
+      );
+      var max = Number(maxRH.toFixed(2));
+      setmaxRH(max);
 
-    const minRH = Math.min(...response2.data.map((data) => data.y));
-    var min = Number(minRH.toFixed(2))
-    setminRH(min)
+      const minRH = Math.min(...response2.data.map((data) => data.y));
+      var min = Number(minRH.toFixed(2));
+      setminRH(min);
 
-    const totalRH = response2.data.reduce ((sum, data) => sum + data.y, 0);
-    var total = 0
-    total = Number(totalRH.toFixed(2))
-    const averageRH = totalRH / response1.data.length;
-    var avgRH = Number(averageRH.toFixed(2))
-    setavgRH(avgRH);
+      const totalRH = response2.data.reduce((sum, data) => sum + data.y, 0);
+      var total = 0;
+      total = Number(totalRH.toFixed(2));
+      const averageRH = totalRH / response1.data.length;
+      var avgRH = Number(averageRH.toFixed(2));
+      setavgRH(avgRH);
 
-    const maxDP = response3.data.reduce ((acc, data) => Math.max (acc, data.y), Number.NEGATIVE_INFINITY);
-    var max = Number(maxDP.toFixed(2))
-    setmaxDP(max)
+      const maxDP = response3.data.reduce(
+        (acc, data) => Math.max(acc, data.y),
+        Number.NEGATIVE_INFINITY
+      );
+      var max = Number(maxDP.toFixed(2));
+      setmaxDP(max);
 
-    const minDP = Math.min(...response3.data.map((data) => data.y));
-    var min = Number(minDP.toFixed(2))
-    setminDP(min)
+      const minDP = Math.min(...response3.data.map((data) => data.y));
+      var min = Number(minDP.toFixed(2));
+      setminDP(min);
 
-    const totalDP = response3.data.reduce ((sum, data) => sum + data.y, 0);
-    var total = 0
-    total = Number(totalDP.toFixed(2))
-    const averageDP = totalDP / response3.data.length;
-    var avgDP = Number(averageDP.toFixed(2))
-    setavgDP(avgDP);
+      const totalDP = response3.data.reduce((sum, data) => sum + data.y, 0);
+      var total = 0;
+      total = Number(totalDP.toFixed(2));
+      const averageDP = totalDP / response3.data.length;
+      var avgDP = Number(averageDP.toFixed(2));
+      setavgDP(avgDP);
 
-    const areaname = areaPicker
-    .replace("cMT-PMWorkshop_","")
-    .replace("_data","");
-    setName(areaname)
-
+      const areaname = areaPicker
+        .replace("cMT-PMWorkshop_", "")
+        .replace("_data", "");
+      setName(areaname);
     } catch (err) {
       console.error("Error fetching data:", err);
       setError("Failed to fetch data. Please try again.");
     } finally {
       const delay = 2000; // 2 seconds in milliseconds
-        setTimeout(() => {
-          setLoading(false); // Stop spinner
-          console.log("Finished fetching data, stopping spinner...");
-        }, delay);
+      setTimeout(() => {
+        setLoading(false); // Stop spinner
+        console.log("Finished fetching data, stopping spinner...");
+      }, delay);
     }
   };
 
   const handlePrevPage = () => {
     setCurrentPage((prev) => Math.max(prev - 1, 1));
   };
-  
+
   const handleNextPage = () => {
-    setCurrentPage((prev) => Math.min(prev + 1, Math.ceil(allDataTable.length / rowsPerPage)));
+    setCurrentPage((prev) =>
+      Math.min(prev + 1, Math.ceil(allDataTable.length / rowsPerPage))
+    );
   };
 
   const renderTable = () => {
     const startIndex = (currentPage - 1) * rowsPerPage;
-    const visibleData = allDataTable.slice(startIndex, startIndex + rowsPerPage);
+    const visibleData = allDataTable.slice(
+      startIndex,
+      startIndex + rowsPerPage
+    );
 
     if (allDataTable.length === 0) {
       return (
@@ -255,13 +279,15 @@ function BuildingEMS() {
       { header: "DP", dataKey: "DP" },
     ];
 
+    console.log("ALL DATA TABLE FOR PDF EXPORT:", allDataTable);
+
     // allDataTable adalah array of object
     autoTable(doc, {
       columns,
       body: allDataTable, // Seluruh data!
       styles: { fontSize: 10 },
       headStyles: { fillColor: [71, 85, 105] }, // Tailwind slate-700
-      theme: "grid"
+      theme: "grid",
     });
 
     doc.save("table-data-EMS.pdf");
@@ -283,12 +309,15 @@ function BuildingEMS() {
 
   useEffect(() => {
     const handleThemeChange = () => {
-      const currentTheme = document.documentElement.getAttribute('data-theme');
-      setIsDarkMode(currentTheme === 'dark');
+      const currentTheme = document.documentElement.getAttribute("data-theme");
+      setIsDarkMode(currentTheme === "dark");
     };
     // Observe attribute changes
     const observer = new MutationObserver(handleThemeChange);
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
+    });
 
     return () => observer.disconnect();
   }, []);
@@ -298,10 +327,14 @@ function BuildingEMS() {
     theme: isDarkMode ? "dark2" : "light2",
     backgroundColor: isDarkMode ? "#171717" : "#ffffff",
     Margin: 8,
-    title: { text: "Environment Room", fontColor: isDarkMode ? "white" : "black" },
+    title: {
+      text: "Environment Room",
+      fontColor: isDarkMode ? "white" : "black",
+    },
     subtitles: [
       {
-        text: "Enviroment Management System", fontColor: isDarkMode ? "white" : "black"
+        text: "Enviroment Management System",
+        fontColor: isDarkMode ? "white" : "black",
       },
     ],
     axisY: {
@@ -329,9 +362,9 @@ function BuildingEMS() {
         showInLegend: true,
         xValueFormatString: "",
         yValueFormatString: "",
-        lineColor: isDarkMode ? "#00bfff" : "#1e90ff",  
-        color: isDarkMode ? "#00bfff" : "#1e90ff",  
-        markerColor: isDarkMode ? "#00bfff" : "#1e90ff", 
+        lineColor: isDarkMode ? "#00bfff" : "#1e90ff",
+        color: isDarkMode ? "#00bfff" : "#1e90ff",
+        markerColor: isDarkMode ? "#00bfff" : "#1e90ff",
         dataPoints: tempChartData,
       },
       {
@@ -392,7 +425,7 @@ function BuildingEMS() {
               borderColor: borderColor,
               borderRadius: "0.395rem",
               background: "var(--color-background)", // background color from Tailwind config
-    
+
               _hover: {
                 borderColor: hoverBorderColor,
               },
@@ -417,7 +450,7 @@ function BuildingEMS() {
               borderColor: borderColor,
               borderRadius: "0.395rem",
               background: "var(--color-background)", // background color from Tailwind config
-    
+
               _hover: {
                 borderColor: hoverBorderColor,
               },
@@ -438,54 +471,77 @@ function BuildingEMS() {
         </div>
       </div>
       <div className="block bg-card rounded-lg p-1 shadow-lg mx-auto overflow-x-auto">
-      {loading ? (
-      <div className="flex flex-col items-center">
-        <Spinner
-          thickness="4px"
-          speed="0.65s"
-          emptyColor="gray.200"
-          color="blue.500"
-          size="xl"
-        />
-      </div>
-      ) : error ? (
-        <div className="text-red-500 flex flex-col items-center">No available data</div>
-      ) : (
-        <CanvasJSChart options={options} />
-      )}
+        {loading ? (
+          <div className="flex flex-col items-center">
+            <Spinner
+              thickness="4px"
+              speed="0.65s"
+              emptyColor="gray.200"
+              color="blue.500"
+              size="xl"
+            />
+          </div>
+        ) : error ? (
+          <div className="text-red-500 flex flex-col items-center">
+            No available data
+          </div>
+        ) : (
+          <CanvasJSChart options={options} />
+        )}
       </div>
       <Stack
         className="flex flex-row justify-center mb-4  "
         direction="row"
         spacing={4}
         align="center"
-        >
+      >
         <div className="mt-3">
-            <div className="ml-16 text-text">Avg Suhu = {avgSuhu.toLocaleString()} °C</div>
-            <div className="ml-16 text-text">Max Suhu = {maxSuhu.toLocaleString()} °C</div>
-            <div className="ml-16 text-text">Min Suhu = {minSuhu.toLocaleString()} °C</div>
+          <div className="ml-16 text-text">
+            Avg Suhu = {avgSuhu.toLocaleString()} °C
+          </div>
+          <div className="ml-16 text-text">
+            Max Suhu = {maxSuhu.toLocaleString()} °C
+          </div>
+          <div className="ml-16 text-text">
+            Min Suhu = {minSuhu.toLocaleString()} °C
+          </div>
         </div>
         <div className="mt-3">
-            <div className="ml-16 text-text">Avg RH = {avgRH.toLocaleString()} %</div>
-            <div className="ml-16 text-text">Max RH = {maxRH.toLocaleString()} %</div>
-            <div className="ml-16 text-text">Min RH = {minRH.toLocaleString()} %</div>
+          <div className="ml-16 text-text">
+            Avg RH = {avgRH.toLocaleString()} %
+          </div>
+          <div className="ml-16 text-text">
+            Max RH = {maxRH.toLocaleString()} %
+          </div>
+          <div className="ml-16 text-text">
+            Min RH = {minRH.toLocaleString()} %
+          </div>
         </div>
         <div className="mt-3">
-            <div className="ml-16 text-text">Avg DP = {avgDP.toLocaleString()} Pa</div>
-            <div className="ml-16 text-text">Max DP = {maxDP.toLocaleString()} Pa</div>
-            <div className="ml-16 text-text">Min DP = {minDP.toLocaleString()} Pa</div>
+          <div className="ml-16 text-text">
+            Avg DP = {avgDP.toLocaleString()} Pa
+          </div>
+          <div className="ml-16 text-text">
+            Max DP = {maxDP.toLocaleString()} Pa
+          </div>
+          <div className="ml-16 text-text">
+            Min DP = {minDP.toLocaleString()} Pa
+          </div>
         </div>
       </Stack>
       <br />
-      <Stack className="flex flex-row justify-center gap-2"
+      <Stack
+        className="flex flex-row justify-center gap-2"
         direction="row"
         spacing={2}
-        align="center">
+        align="center"
+      >
         <div className="mt-2">
           <Select
             value={rowsPerPage}
             onChange={(e) => setRowsPerPage(Number(e.target.value))}
-            width="80px">
+            width="80px"
+          >
             <option value={5}>5</option>
             <option value={10}>10</option>
             <option value={20}>20</option>
@@ -498,41 +554,66 @@ function BuildingEMS() {
           <Button
             className="w-40 mt-2"
             colorScheme="red"
-            onClick={() => setIsTableVisible(!isTableVisible)}>
+            onClick={() => setIsTableVisible(!isTableVisible)}
+          >
             {isTableVisible ? "Hide All Data" : "Show All Data"}
           </Button>
         </div>
       </Stack>
       {isTableVisible && (
-      <div className="mt-8 mx-20 bg-card rounded-md">
-        <TableContainer>
-          <Table key={colorMode} variant="simple">
-            <TableCaption sx={{
-                color: tulisanColor,
-                }}>EMSe</TableCaption>
-            <Thead>
-              <Tr>
-                <Th sx={{
-                color: tulisanColor,
-                }}>id</Th>
-                <Th sx={{
-                color: tulisanColor,
-                }}>Date Time</Th>
-                <Th sx={{
-                color: tulisanColor,
-                }}>Temperature</Th>
-                <Th sx={{
-                color: tulisanColor,
-                }}>Relative Humidity (RH)</Th>
-                <Th sx={{
-                color: tulisanColor,
-                }}>Differential Presure (DP)</Th>
-              </Tr>
-            </Thead>
-            <Tbody>{renderTable()}</Tbody>
-          </Table>
-        </TableContainer>
-      </div>
+        <div className="mt-8 mx-20 bg-card rounded-md">
+          <TableContainer>
+            <Table key={colorMode} variant="simple">
+              <TableCaption
+                sx={{
+                  color: tulisanColor,
+                }}
+              >
+                EMSe
+              </TableCaption>
+              <Thead>
+                <Tr>
+                  <Th
+                    sx={{
+                      color: tulisanColor,
+                    }}
+                  >
+                    id
+                  </Th>
+                  <Th
+                    sx={{
+                      color: tulisanColor,
+                    }}
+                  >
+                    Date Time
+                  </Th>
+                  <Th
+                    sx={{
+                      color: tulisanColor,
+                    }}
+                  >
+                    Temperature
+                  </Th>
+                  <Th
+                    sx={{
+                      color: tulisanColor,
+                    }}
+                  >
+                    Relative Humidity (RH)
+                  </Th>
+                  <Th
+                    sx={{
+                      color: tulisanColor,
+                    }}
+                  >
+                    Differential Presure (DP)
+                  </Th>
+                </Tr>
+              </Thead>
+              <Tbody>{renderTable()}</Tbody>
+            </Table>
+          </TableContainer>
+        </div>
       )}
       {/* Pagination Controls */}
       <div className="flex justify-center items-center my-4 gap-4">
@@ -548,7 +629,9 @@ function BuildingEMS() {
         </span>
         <Button
           onClick={handleNextPage}
-          isDisabled={currentPage === Math.ceil(allDataTable.length / rowsPerPage)}
+          isDisabled={
+            currentPage === Math.ceil(allDataTable.length / rowsPerPage)
+          }
           colorScheme="blue"
         >
           Next
